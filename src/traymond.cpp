@@ -300,6 +300,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   TRCONTEXT context = {};
   context.instance = hInstance;
+  context.cmdLine = GetCommandLine();
   loadOptions(&context);
 
   NOTIFYICONDATA icon = {};

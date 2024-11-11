@@ -33,28 +33,41 @@ UINT ModToHotkey(UINT fsModifiers) {
 void loadOptions(TRCONTEXT* context) {
     context->hotkey.modifiers = MOD_KEY;
     context->hotkey.vkey = TRAY_KEY;
+    context->autorun = FALSE;
 
     DWORD data = 0, size = sizeof(DWORD);
-    if (ERROR_SUCCESS != RegGetValue(HKEY_CURRENT_USER, REG_SUB_KEY, "Hotkey", RRF_RT_REG_DWORD, NULL, &data, &size)) {
-        return;
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, "Hotkey", RRF_RT_REG_DWORD, NULL, &data, &size)) {
+        auto vkey = LOWORD(data), modifiers = HIWORD(data);
+        if (vkey > 0 && modifiers > 0) {
+            context->hotkey.modifiers = modifiers;
+            context->hotkey.vkey = vkey;
+        }
     }
-    auto vkey = LOWORD(data), modifiers = HIWORD(data);
-    if (vkey <= 0 || modifiers <= 0) {
-        return;
+
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_RUN, APP_NAME, RRF_RT_REG_SZ, NULL, NULL, NULL)) {
+        context->autorun = TRUE;
     }
-    context->hotkey.modifiers = modifiers;
-    context->hotkey.vkey = vkey;
 }
 
 
 void saveOptions(TRCONTEXT* context) {
-    DWORD data = MAKELONG(context->hotkey.vkey, context->hotkey.modifiers);
     HKEY regKey = NULL;
-    if (ERROR_SUCCESS != RegCreateKey(HKEY_CURRENT_USER, REG_SUB_KEY, &regKey)) {
-        return;
+
+    if (ERROR_SUCCESS == RegCreateKey(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, &regKey)) {
+        DWORD data = MAKELONG(context->hotkey.vkey, context->hotkey.modifiers);
+        RegSetValueEx(regKey, "Hotkey", 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        RegCloseKey(regKey);
     }
-    RegSetValueEx(regKey, "Hotkey", 0, REG_DWORD, (BYTE *)&data, sizeof(DWORD));
-    RegCloseKey(regKey);
+
+    if (ERROR_SUCCESS == RegOpenKey(HKEY_CURRENT_USER, REG_KEY_RUN, &regKey)) {
+        if (context->autorun) {
+            RegSetValueEx(regKey, APP_NAME, 0, REG_SZ, (BYTE*)context->cmdLine, strlen(context->cmdLine));
+        }
+        else {
+            RegDeleteValue(regKey, APP_NAME);
+        }
+        RegCloseKey(regKey);
+    }
 }
 
 
@@ -84,11 +97,12 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context) {
     }
     GetKeyNameText(MapVirtualKey(vkey, MAPVK_VK_TO_VSC) << 16, hotkeyText + l, MAX_MSG - l);
     SetWindowText(hotkeyEdit, hotkeyText);
+    CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     return TRUE;
 }
 
 
-static BOOL setHotkey(HWND hwnd, TRCONTEXT* context, WPARAM wParam) {
+static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) {
     DWORD result = SendMessage(GetDlgItem(hwnd, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
     UINT vkey = LOBYTE(LOWORD(result));
     UINT modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
@@ -96,14 +110,19 @@ static BOOL setHotkey(HWND hwnd, TRCONTEXT* context, WPARAM wParam) {
     if (IsDlgButtonChecked(hwnd, IDC_CHECK_USE_WIN)) {
         modifiers |= MOD_WIN;
     }
-    UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
-    if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, modifiers | MOD_NOREPEAT, vkey)) {
-        RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey);
-        MessageBox(hwnd, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
-        return FALSE;
+
+    if (vkey > 0 && modifiers > 0) {
+        UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
+        if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, modifiers | MOD_NOREPEAT, vkey)) {
+            RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey);
+            MessageBox(hwnd, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
+            return FALSE;
+        }
+        context->hotkey.modifiers = modifiers;
+        context->hotkey.vkey = vkey;
     }
-    context->hotkey.modifiers = modifiers;
-    context->hotkey.vkey = vkey;
+    
+    context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
     saveOptions(context);
     return EndDialog(hwnd, wParam);
 }
@@ -115,7 +134,7 @@ static BOOL CALLBACK OptionsDialogProc(HWND hwndDlg, UINT message, WPARAM wParam
     case WM_COMMAND:
         switch (LOWORD(wParam)) {
         case IDOK:
-            return setHotkey(hwndDlg, context, wParam);
+            return setOptions(hwndDlg, context, wParam);
         case IDCANCEL:
             return EndDialog(hwndDlg, wParam);
         }

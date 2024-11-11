@@ -20,7 +20,8 @@
 #define APP_NAME "Traymond"
 #define SAVE_FILE_NAME "traymond.dat"
 #define MUTEX_NAME "traymond_mutex"
-#define REG_SUB_KEY "SOFTWARE\\Traymond"
+#define REG_KEY_SOFTWARE "SOFTWARE\\Traymond"
+#define REG_KEY_RUN "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
 
 #define MENU_RESTORE_ALL_WINDOWS "恢复所有窗口"
 #define MENU_OPTIONS "选项"
@@ -46,9 +47,11 @@ typedef struct HIDDEN_WINDOW {
 
 // Current execution context
 typedef struct TRCONTEXT {
+    BOOL autorun;
     HIDE_WINDOW_HOTKEY hotkey;
     HICON mainIcon;
     HINSTANCE instance;
+    LPSTR cmdLine;
     HWND mainWindow;
     HIDDEN_WINDOW icons[MAXIMUM_WINDOWS];
     HMENU trayMenu;

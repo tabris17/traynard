@@ -1,56 +1,20 @@
-![Traymond](https://github.com/fcFn/fcFn.github.io/blob/master/images/logos/traymond_logo.png) Traymond
+![Traymond](https://github.com/fcFn/fcFn.github.io/blob/master/images/logos/traymond_logo.png) Traymond 增强版
 =======
 
-A very simple app for minimizing any window to tray as an icon. Runs in the background.
+复刻自 [Traymond](https://github.com/fcFn/traymond)。增加了以下功能：
 
-In case it terminates unexpectedly, restart the app and all the icons for minimized windows will come back.
+- 中文界面
+- 自定义热键
+- 开机自动运行
 
-Windows 7 or later required.
+其余功能均与原版一致。
 
-**NB**: Does **_NOT_** work with apps from the Microsoft Store (see [#3](/../../issues/3)).
+## 安装
 
-A binary is available [here](https://github.com/fcFn/traymond/releases).
+1. 从 https://github.com/tabris17/traymond/releases/latest 下载可执行文件直接运行；
 
-Installing
-------------
+2. 使用 Scoop
 
-No installation required, just run Traymond.exe.
-
-Controls
---------
-
-+ __Win key + Shift + Z__: Minimize the currently focused window to tray.
-
-+ __Double click on an icon__: Bring back the corresponding hidden window.
-
-+ __Tray icon menu__ accessible by right-clicking the Traymond tray icon:
-
-  + __Restore all windows__: Restore all previously hidden windows.
-
-  + __Exit__: Exit Traymond and restore all previously hidden windows.
-
-Building
---------
-
-### Nmake
-
-`> nmake`
-
-Please read [this](https://msdn.microsoft.com/en-us/library/f35ctcxw.aspx) if there are any troubles.
-
-### Microsoft Visual Studio
-
-Import and build using the project files (thanks, [Tyler Szabo](https://github.com/tylerszabo)).
-
-Customizing
--------------
-
-Defines at the top of the file control the key and the mod key for sending windows to tray (use virtual key codes from [here](https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx) and mod keys from [here](https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx)):
-```
-#define TRAY_KEY VK_Z_KEY
-#define MOD_KEY MOD_WIN + MOD_SHIFT
-```
-Contributing
-------------
-
-See [Contributing](https://github.com/fcFn/traymond/blob/master/CONTRIBUTING.md).
+   ```cmd
+   scoop install https://github.com/tabris17/traymond/releases/latest/download/traymond.json
+   ```

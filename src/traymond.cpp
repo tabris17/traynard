@@ -194,6 +194,15 @@ static void exitApp() {
 
 // Creates and reads the save file to restore hidden windows in case of unexpected termination
 static void startup(TRCONTEXT *context) {
+  char currDir[MAX_PATH] = { NULL };
+  auto currDirLen = GetModuleFileName(NULL, currDir, MAX_PATH);
+  for (int i = currDirLen; i > 0; i--) {
+    if (currDir[i] == '\\') {
+      currDir[i] = NULL;
+      break;
+    }
+  }
+  SetCurrentDirectory(currDir);
   if ((saveFile = CreateFile(SAVE_FILE_NAME, GENERIC_READ | GENERIC_WRITE, \
     0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)) == INVALID_HANDLE_VALUE) {
     MessageBox(NULL, MSG_SAVE_FILE_ERROR, APP_NAME, MB_OK | MB_ICONERROR);

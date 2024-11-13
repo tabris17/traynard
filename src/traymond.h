@@ -9,13 +9,14 @@
 
 #define WM_ICON 0x1C0A
 #define WM_OURICON 0x1C0B
-#define SHOW_ALL_ID 0x97
-#define OPTIONS_ID 0x98
-#define SEPARATOR_ID 0x99
-#define EXIT_ID 0x100
+#define MI_SHOW_ALL_ID 0x97
+#define MI_OPTIONS_ID 0x98
+#define MI_SEPARATOR_ID 0x99
+#define MI_EXIT_ID 0x100
 #define MAXIMUM_WINDOWS 100
 #define HIDE_WINDOW_HOTKEY_ID 0
 #define MAX_MSG 1024
+#define MAX_WINDOW_TEXT 128
 
 #define APP_NAME "Traymond"
 #define SAVE_FILE_NAME "traymond.dat"
@@ -32,21 +33,36 @@
 #define MSG_ALREADY_RUNNING "程序已经有实例在运行。"
 #define MSG_SAVE_FILE_ERROR "无法创建保存文件。"
 #define MSG_TOO_MANY_HIDDEN_WINDOWS "隐藏太多窗口，请先释放一些。"
-#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION "程序先前意外终止。恢复 %d 个托盘图标。"
+#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION "程序先前意外终止。已恢复 %d 个隐藏窗口。"
 
 typedef struct HIDE_WINDOW_HOTKEY {
     UINT modifiers;
     UINT vkey;
 } HIDE_WINDOW_HOTKEY;
 
+typedef enum {
+    HideTray = 0,
+    HideMenu = 1,
+} HIDE_TYPE;
+
+typedef struct {
+    MENUITEMINFO info;
+    CHAR caption[MAX_WINDOW_TEXT];
+} MENUITEMDATA;
+
 // Stores hidden window record.
 typedef struct HIDDEN_WINDOW {
-    NOTIFYICONDATA icon;
+    HIDE_TYPE hideType;
+    union {
+        NOTIFYICONDATA icon;
+        MENUITEMDATA menu;
+    };
     HWND window;
 } HIDDEN_WINDOW;
 
 // Current execution context
 typedef struct TRCONTEXT {
+    HIDE_TYPE hideType;
     BOOL autorun;
     HIDE_WINDOW_HOTKEY hotkey;
     HICON mainIcon;
@@ -57,3 +73,5 @@ typedef struct TRCONTEXT {
     HMENU trayMenu;
     int iconIndex; // How many windows are currently hidden
 } TRCONTEXT;
+
+int reviseHiddenWindowIcon(TRCONTEXT* context);

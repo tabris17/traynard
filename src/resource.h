@@ -3,6 +3,7 @@
 // π© Traymond.rc  π”√
 //
 #include <windows.h>
+#pragma warning( disable : 4005 )
 #define SW_HIDE                         0
 #define HIDE_WINDOW                     0
 #define WM_NULL                         0x0000
@@ -1256,10 +1257,9 @@
 #define WM_DDE_FIRST                    0x03E0
 #define IDC_HOTKEY                      1000
 #define IDC_EDIT_HOTKEY                 1001
-#define IDC_CHECK1                      1002
 #define IDC_CHECK_USE_WIN               1002
-#define IDC_CHECK2                      1003
 #define IDC_CHECK_AUTORUN               1003
+#define IDC_COMBO_HIDE_TYPE             1004
 #define CF_GDIOBJLAST                   0x03FF
 #define _WIN32_WINNT_NT4                0x0400
 #define _WIN32_IE_IE40                  0x0400
@@ -1609,10 +1609,7 @@
 #define SC_CONTEXTHELP                  0xF180
 #define LVS_TYPESTYLEMASK               0xfc00
 #define SPVERSION_MASK                  0x0000FF00
-#define HTERROR                         -2
 #define UNICODE_NOCHAR                  0xFFFF
-#define PWR_FAIL                        -1
-#define HTTRANSPARENT                   -1
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -1621,7 +1618,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        103
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1004
+#define _APS_NEXT_CONTROL_VALUE         1005
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

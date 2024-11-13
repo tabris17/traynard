@@ -1,8 +1,11 @@
 #include <windows.h>
+#include <windowsx.h>
 #include <commctrl.h>
 #include <string>
-#include "traymond.h"
+
 #include "resource.h"
+#include "traymond.h"
+#include "options.h"
 
 
 UINT HotkeyToMod(UINT fsModifiers) {
@@ -34,6 +37,7 @@ void loadOptions(TRCONTEXT* context) {
     context->hotkey.modifiers = MOD_KEY;
     context->hotkey.vkey = TRAY_KEY;
     context->autorun = FALSE;
+    context->hideType = HideTray;
 
     DWORD data = 0, size = sizeof(DWORD);
     if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, "Hotkey", RRF_RT_REG_DWORD, NULL, &data, &size)) {
@@ -42,6 +46,10 @@ void loadOptions(TRCONTEXT* context) {
             context->hotkey.modifiers = modifiers;
             context->hotkey.vkey = vkey;
         }
+    }
+
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, "HideType", RRF_RT_REG_DWORD, NULL, &data, &size)) {
+        context->hideType = data ? HideMenu : HideTray;
     }
 
     if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_RUN, APP_NAME, RRF_RT_REG_SZ, NULL, NULL, NULL)) {
@@ -56,6 +64,8 @@ void saveOptions(TRCONTEXT* context) {
     if (ERROR_SUCCESS == RegCreateKey(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, &regKey)) {
         DWORD data = MAKELONG(context->hotkey.vkey, context->hotkey.modifiers);
         RegSetValueEx(regKey, "Hotkey", 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        data = context->hideType;
+        RegSetValueEx(regKey, "HideType", 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         RegCloseKey(regKey);
     }
 
@@ -71,10 +81,39 @@ void saveOptions(TRCONTEXT* context) {
 }
 
 
+static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) {
+    DWORD result = SendMessage(GetDlgItem(hwnd, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
+    UINT vkey = LOBYTE(LOWORD(result));
+    UINT modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
+
+    if (IsDlgButtonChecked(hwnd, IDC_CHECK_USE_WIN)) {
+        modifiers |= MOD_WIN;
+    }
+
+    if (vkey > 0 && modifiers > 0) {
+        UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
+        if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, modifiers | MOD_NOREPEAT, vkey)) {
+            RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey);
+            MessageBox(hwnd, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
+            return FALSE;
+        }
+        context->hotkey.modifiers = modifiers;
+        context->hotkey.vkey = vkey;
+    }
+
+    context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
+    context->hideType = ComboBox_GetCurSel(GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE)) ? HideMenu : HideTray;
+    reviseHiddenWindowIcon(context);
+    saveOptions(context);
+    return EndDialog(hwnd, wParam);
+}
+
+
 static BOOL initDialog(HWND hwnd, TRCONTEXT* context) {
     SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG>(context));
     SendMessage(hwnd, WM_SETICON, TRUE, (LPARAM)context->mainIcon);
     SendMessage(hwnd, WM_SETICON, FALSE, (LPARAM)context->mainIcon);
+
     HWND hotkeyEdit = GetDlgItem(hwnd, IDC_EDIT_HOTKEY);
     char hotkeyText[MAX_MSG] = { NULL };
     UINT modifiers = context->hotkey.modifiers, vkey = context->hotkey.vkey;
@@ -98,33 +137,13 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context) {
     GetKeyNameText(MapVirtualKey(vkey, MAPVK_VK_TO_VSC) << 16, hotkeyText + l, MAX_MSG - l);
     SetWindowText(hotkeyEdit, hotkeyText);
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
+
+    HWND hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
+    ComboBox_AddString(hideTypeCombo, COMBO_TEXT_TRAY);
+    ComboBox_AddString(hideTypeCombo, COMBO_TEXT_MENU);
+    ComboBox_SetCurSel(hideTypeCombo, context->hideType);
+
     return TRUE;
-}
-
-
-static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) {
-    DWORD result = SendMessage(GetDlgItem(hwnd, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
-    UINT vkey = LOBYTE(LOWORD(result));
-    UINT modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
-
-    if (IsDlgButtonChecked(hwnd, IDC_CHECK_USE_WIN)) {
-        modifiers |= MOD_WIN;
-    }
-
-    if (vkey > 0 && modifiers > 0) {
-        UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
-        if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, modifiers | MOD_NOREPEAT, vkey)) {
-            RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey);
-            MessageBox(hwnd, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
-            return FALSE;
-        }
-        context->hotkey.modifiers = modifiers;
-        context->hotkey.vkey = vkey;
-    }
-    
-    context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
-    saveOptions(context);
-    return EndDialog(hwnd, wParam);
 }
 
 

@@ -40,17 +40,38 @@ static void removeMenuItem(const TRCONTEXT* context, int index) {
 }
 
 static HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd) {
-    auto icon = GetClassLongPtr(hwnd, GCLP_HICONSM);
+    HICON icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_SMALL2, NULL);
     if (!icon) {
-        icon = SendMessage(hwnd, WM_GETICON, 2, NULL);
+        icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICONSM);
         if (!icon) {
             return context->mainIcon;
         }
     }
-    return (HICON)icon;
+    return icon;
 }
 
-static HBITMAP convertIconToBitmap(HICON icon) {
+static HBITMAP IconToBitmap(HICON icon, int width = 0, int height = 0) {
+    if (!width) width = GetSystemMetrics(SM_CXSMICON);
+    if (!height) height = GetSystemMetrics(SM_CYSMICON);
+    HDC hdc = GetDC(NULL);
+    HDC hdcMem = CreateCompatibleDC(hdc);
+    BITMAPINFO bmi;
+    memset(&bmi, 0, sizeof(BITMAPINFO));
+    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = width;
+    bmi.bmiHeader.biHeight = height;
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    HBITMAP hbmpMem = CreateDIBSection(hdcMem, &bmi, DIB_RGB_COLORS, NULL, NULL, 0);
+    if (hbmpMem) {
+        SelectObject(hdcMem, hbmpMem);
+        DrawIconEx(hdcMem, 0, 0, icon, width, height, 0, NULL, DI_NORMAL);
+    }
+    DeleteDC(hdcMem);
+    ReleaseDC(NULL, hdc);
+    return hbmpMem;
+
     ICONINFO iconInfo;
     GetIconInfo(icon, &iconInfo);
     DeleteObject(iconInfo.hbmMask);
@@ -98,7 +119,7 @@ int reviseHiddenWindowIcon(TRCONTEXT* context) {
                 auto mid = &hiddenWindow.menu;
                 auto mii = &mid->info;
                 hiddenWindow.hideType = HideMenu;
-                mii->hbmpItem = convertIconToBitmap(getWindowIcon(context, currWin));
+                mii->hbmpItem = IconToBitmap(getWindowIcon(context, currWin));
                 mii->cbSize = sizeof(MENUITEMINFO);
                 mii->fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP;
                 mii->fType = MFT_STRING | MFT_BITMAP;
@@ -207,7 +228,7 @@ static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
     break;
   case HideMenu:
     MENUITEMINFO mii;
-    mii.hbmpItem = convertIconToBitmap(getWindowIcon(context, currWin));
+    mii.hbmpItem = IconToBitmap(getWindowIcon(context, currWin));
     mii.cbSize = sizeof(MENUITEMINFO);
     mii.fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP;
     mii.fType = MFT_STRING | MFT_BITMAP;

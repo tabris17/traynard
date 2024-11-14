@@ -71,11 +71,6 @@ static HBITMAP IconToBitmap(HICON icon, int width = 0, int height = 0) {
     DeleteDC(hdcMem);
     ReleaseDC(NULL, hdc);
     return hbmpMem;
-
-    ICONINFO iconInfo;
-    GetIconInfo(icon, &iconInfo);
-    DeleteObject(iconInfo.hbmMask);
-    return iconInfo.hbmColor;
 }
 
 // Revise hidden window icon hide type
@@ -298,6 +293,8 @@ static void createTrayMenu(HMENU* trayMenu) {
   InsertMenuItem(*trayMenu, MI_SHOW_ALL_ID, TRUE, &optionsMenuItem);
   InsertMenuItem(*trayMenu, MI_OPTIONS_ID, TRUE, &separatorMenuItem);
   InsertMenuItem(*trayMenu, MI_SEPARATOR_ID, TRUE, &exitMenuItem);
+
+  SetMenuDefaultItem(*trayMenu, MI_OPTIONS_ID, FALSE);
 }
 
 // Shows all hidden windows;

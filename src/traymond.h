@@ -9,10 +9,6 @@
 
 #define WM_ICON 0x1C0A
 #define WM_OURICON 0x1C0B
-#define MI_SHOW_ALL_ID 0x97
-#define MI_OPTIONS_ID 0x98
-#define MI_SEPARATOR_ID 0x99
-#define MI_EXIT_ID 0x100
 #define MAXIMUM_WINDOWS 100
 #define HIDE_WINDOW_HOTKEY_ID 0
 #define MAX_MSG 1024

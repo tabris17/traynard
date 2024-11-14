@@ -1,6 +1,8 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+
+#include "windows.h"
 /////////////////////////////////////////////////////////////////////////////
 // 中文(简体，中国) resources
 
@@ -10,12 +12,29 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Menu
+//
+
+IDM_POPUP MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "还原所有窗口", IDM_RESTORE_ALL_WINDOW
+        MENUITEM "选项", IDM_OPTIONS
+        MENUITEM SEPARATOR
+        MENUITEM "退出", IDM_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Icon
 //
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-TRAYMOND_ICON           ICON                    "..\\icon\\traymond.ico"
+IDI_TRAYMOND           ICON                    "..\\icon\\traymond.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////

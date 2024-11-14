@@ -116,11 +116,12 @@ int reviseHiddenWindowIcon(TRCONTEXT* context) {
                 hiddenWindow.hideType = HideMenu;
                 mii->hbmpItem = IconToBitmap(getWindowIcon(context, currWin));
                 mii->cbSize = sizeof(MENUITEMINFO);
-                mii->fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP;
+                mii->fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP | MIIM_DATA;
                 mii->fType = MFT_STRING | MFT_BITMAP;
                 mii->dwTypeData = mid->caption;
                 mii->cch = GetWindowText(currWin, mii->dwTypeData, MAX_WINDOW_TEXT);
-                mii->wID = reinterpret_cast<UINT>(currWin);
+                mii->wID = 0;
+                mii->dwItemData = reinterpret_cast<UINT>(currWin);
                 InsertMenuItem(context->trayMenu, 0, TRUE, mii);
                 context->icons[i] = hiddenWindow;
                 count++;
@@ -142,7 +143,7 @@ static void showWindow(TRCONTEXT *context, UINT xID) {
       Shell_NotifyIcon(NIM_DELETE, &context->icons[i].icon);
       break;
     case HideMenu:
-      if (context->icons[i].menu.info.wID != xID) continue;
+      if (context->icons[i].menu.info.dwItemData != xID) continue;
       removeMenuItem(context, i);
       break;
     default:
@@ -164,7 +165,7 @@ static void showWindow(TRCONTEXT *context, UINT xID) {
     context->iconIndex--;
     save(context);
     break;
-}
+  }
 }
 
 // Minimizes the current window to tray or menu.
@@ -225,11 +226,12 @@ static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
     MENUITEMINFO mii;
     mii.hbmpItem = IconToBitmap(getWindowIcon(context, currWin));
     mii.cbSize = sizeof(MENUITEMINFO);
-    mii.fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP;
+    mii.fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP | MIIM_DATA;
     mii.fType = MFT_STRING | MFT_BITMAP;
     mii.dwTypeData = context->icons[context->iconIndex].menu.caption;
     mii.cch = GetWindowText(currWin, mii.dwTypeData, MAX_WINDOW_TEXT);
-    mii.wID = reinterpret_cast<UINT>(currWin);
+    mii.wID = 0;
+    mii.dwItemData = reinterpret_cast<UINT>(currWin);
     context->icons[context->iconIndex].menu.info = mii;
     InsertMenuItem(context->trayMenu, 0, TRUE, &mii);
     break;
@@ -255,46 +257,16 @@ static void createTrayIcon(HWND mainWindow, NOTIFYICONDATA* icon) {
 }
 
 // Creates our tray icon menu
-static void createTrayMenu(HMENU* trayMenu) {
-  *trayMenu = CreatePopupMenu();
-
-  MENUITEMINFO showAllMenuItem;
-  MENUITEMINFO exitMenuItem;
-  MENUITEMINFO optionsMenuItem;
-  MENUITEMINFO separatorMenuItem;
-
-  exitMenuItem.cbSize = sizeof(MENUITEMINFO);
-  exitMenuItem.fMask = MIIM_STRING | MIIM_ID;
-  exitMenuItem.fType = MFT_STRING;
-  exitMenuItem.dwTypeData = MENU_EXIT;
-  exitMenuItem.cch = sizeof(MENU_EXIT);
-  exitMenuItem.wID = MI_EXIT_ID;
-
-  showAllMenuItem.cbSize = sizeof(MENUITEMINFO);
-  showAllMenuItem.fMask = MIIM_STRING | MIIM_ID;
-  showAllMenuItem.fType = MFT_STRING;
-  showAllMenuItem.dwTypeData = MENU_RESTORE_ALL_WINDOWS;
-  showAllMenuItem.cch = sizeof(MENU_RESTORE_ALL_WINDOWS);
-  showAllMenuItem.wID = MI_SHOW_ALL_ID;
-
-  optionsMenuItem.cbSize = sizeof(MENUITEMINFO);
-  optionsMenuItem.fMask = MIIM_STRING | MIIM_ID;
-  optionsMenuItem.fType = MFT_STRING;
-  optionsMenuItem.dwTypeData = MENU_OPTIONS;
-  optionsMenuItem.cch = sizeof(MENU_OPTIONS);
-  optionsMenuItem.wID = MI_OPTIONS_ID;
-
-  separatorMenuItem.cbSize = sizeof(MENUITEMINFO);
-  separatorMenuItem.fMask = MIIM_FTYPE | MIIM_ID;
-  separatorMenuItem.fType = MFT_SEPARATOR;
-  separatorMenuItem.wID = MI_SEPARATOR_ID;
-
-  InsertMenuItem(*trayMenu, 0, FALSE, &showAllMenuItem);
-  InsertMenuItem(*trayMenu, MI_SHOW_ALL_ID, TRUE, &optionsMenuItem);
-  InsertMenuItem(*trayMenu, MI_OPTIONS_ID, TRUE, &separatorMenuItem);
-  InsertMenuItem(*trayMenu, MI_SEPARATOR_ID, TRUE, &exitMenuItem);
-
-  SetMenuDefaultItem(*trayMenu, MI_OPTIONS_ID, FALSE);
+static HMENU createTrayMenu(TRCONTEXT* context) {
+    HMENU popupMenu = GetSubMenu(LoadMenu(context->instance, MAKEINTRESOURCE(IDM_POPUP)), 0);
+    MENUINFO mi;
+    mi.cbSize = sizeof(MENUINFO);
+    mi.fMask = MIM_STYLE;
+    GetMenuInfo(popupMenu, &mi);
+    mi.dwStyle |= MNS_NOTIFYBYPOS;
+    SetMenuInfo(popupMenu, &mi);
+    SetMenuDefaultItem(popupMenu, IDM_OPTIONS, FALSE);
+    return popupMenu;
 }
 
 // Shows all hidden windows;
@@ -393,7 +365,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       GetCursorPos(&pt);
       TrackPopupMenuEx(
         context->trayMenu,
-        (GetSystemMetrics(SM_MENUDROPALIGNMENT) ? TPM_RIGHTALIGN : TPM_LEFTALIGN) | TPM_BOTTOMALIGN, 
+        TPM_BOTTOMALIGN | (GetSystemMetrics(SM_MENUDROPALIGNMENT) ? TPM_RIGHTALIGN : TPM_LEFTALIGN),
         pt.x, pt.y, hwnd, NULL
       );
       break;
@@ -402,7 +374,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       break;
     }
     break;
-  case WM_COMMAND:
+  /*case WM_COMMAND:
     switch (wParam) {
     case MI_SHOW_ALL_ID:
       showAllWindows(context);
@@ -415,6 +387,31 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       break;
     default:
       showWindow(context, wParam);
+    }
+    break;*/
+  case WM_MENUCOMMAND:
+    HMENU menu; 
+    menu = reinterpret_cast<HMENU>(lParam);
+    if (menu == context->trayMenu) {
+      MENUITEMINFO mii;
+      mii.cbSize = sizeof(MENUITEMINFO);
+      mii.fMask = MIIM_ID | MIIM_DATA;
+      if (GetMenuItemInfo(menu, wParam, TRUE, &mii)) {
+        switch (mii.wID) {
+        case IDM_EXIT:
+          exitApp();
+          break;
+        case IDM_OPTIONS:
+          showOptionsDlg(context);
+          break;
+        case IDM_RESTORE_ALL_WINDOW:
+          showAllWindows(context);
+          break;
+        default:
+          showWindow(context, mii.dwItemData);
+          break;
+        }
+      }
     }
     break;
   case WM_HOTKEY: // We only have one hotkey, so no need to check the message
@@ -463,7 +460,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   }
   
   context->mainWindow = CreateWindow(APP_NAME, NULL, NULL, 0, 0, 0, 0, HWND_MESSAGE, NULL, hInstance, NULL);
-  context->mainIcon = icon.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(TRAYMOND_ICON));
+  context->mainIcon = icon.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TRAYMOND));
 
   if (!context->mainWindow) {
     return 1;
@@ -478,7 +475,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   }
 
   createTrayIcon(context->mainWindow, &icon);
-  createTrayMenu(&context->trayMenu);
+  context->trayMenu = createTrayMenu(context);
   startup(context);
 
   while ((bRet = GetMessage(&msg, 0, 0, 0)) != 0)

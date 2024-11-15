@@ -167,11 +167,16 @@ static BOOL CALLBACK OptionsDialogProc(HWND hwndDlg, UINT message, WPARAM wParam
 
 
 void showOptionsDlg(TRCONTEXT* context) {
-    if (DialogBoxParam(context->instance, 
-                       MAKEINTRESOURCE(IDD_DIALOG_OPTIONS), 
-                       NULL, 
-                       (DLGPROC)OptionsDialogProc, 
-                       (LPARAM)context) != IDOK) {
+    static bool dialogOpened = false;
+    if (dialogOpened) {
         return;
     }
+
+    dialogOpened = true;
+    DialogBoxParam(context->instance,
+                   MAKEINTRESOURCE(IDD_DIALOG_OPTIONS),
+                   context->mainWindow,
+                   (DLGPROC)OptionsDialogProc,
+                   (LPARAM)context);
+    dialogOpened = false;
 }

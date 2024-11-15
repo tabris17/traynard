@@ -34,9 +34,24 @@ static void save(const TRCONTEXT *context) {
 
 // Remove menu item from tray popup menu
 static void removeMenuItem(const TRCONTEXT* context, int index) {
-    auto mii = &context->icons[index].menu.info;
-    DeleteObject(mii->hbmpItem);
-    DeleteMenu(context->trayMenu, mii->wID, MF_BYCOMMAND);
+    auto pmii = &context->icons[index].menu.info;
+    DeleteObject(pmii->hbmpItem);
+
+    int pos = context->iconIndex - index - 1;
+    MENUITEMINFO mii;
+    mii.cbSize = sizeof(MENUITEMINFO);
+    mii.fMask = MIIM_ID | MIIM_DATA;
+    if (GetMenuItemInfo(context->trayMenu, pos, TRUE, &mii) && mii.dwItemData == pmii->dwItemData) {
+        DeleteMenu(context->trayMenu, pos, MF_BYPOSITION);
+    }
+    else {
+        for (pos = 0; pos < context->iconIndex; pos++) {
+            if (GetMenuItemInfo(context->trayMenu, pos, TRUE, &mii) && mii.dwItemData == pmii->dwItemData) {
+                DeleteMenu(context->trayMenu, pos, MF_BYPOSITION);
+                break;
+            }
+        }
+    }
 }
 
 static HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd) {
@@ -65,8 +80,9 @@ static HBITMAP IconToBitmap(HICON icon, int width = 0, int height = 0) {
     bmi.bmiHeader.biCompression = BI_RGB;
     HBITMAP hbmpMem = CreateDIBSection(hdcMem, &bmi, DIB_RGB_COLORS, NULL, NULL, 0);
     if (hbmpMem) {
-        SelectObject(hdcMem, hbmpMem);
+        auto oldObj = SelectObject(hdcMem, hbmpMem);
         DrawIconEx(hdcMem, 0, 0, icon, width, height, 0, NULL, DI_NORMAL);
+        SelectObject(hdcMem, oldObj);
     }
     DeleteDC(hdcMem);
     ReleaseDC(NULL, hdc);
@@ -374,21 +390,6 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       break;
     }
     break;
-  /*case WM_COMMAND:
-    switch (wParam) {
-    case MI_SHOW_ALL_ID:
-      showAllWindows(context);
-      break;
-    case MI_EXIT_ID:
-      exitApp();
-      break;
-    case MI_OPTIONS_ID:
-      showOptionsDlg(context);
-      break;
-    default:
-      showWindow(context, wParam);
-    }
-    break;*/
   case WM_MENUCOMMAND:
     HMENU menu; 
     menu = reinterpret_cast<HMENU>(lParam);

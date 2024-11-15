@@ -32,25 +32,35 @@ static void save(const TRCONTEXT *context) {
   }
 }
 
-// Remove menu item from tray popup menu
-static void removeMenuItem(const TRCONTEXT* context, int index) {
-    auto pmii = &context->icons[index].menu.info;
-    DeleteObject(pmii->hbmpItem);
+// Creates our tray icon menu
+static HMENU createTrayMenu(const TRCONTEXT* context) {
+    HMENU popupMenu = GetSubMenu(LoadMenu(context->instance, MAKEINTRESOURCE(IDM_POPUP)), 0);
+    MENUINFO mi;
+    mi.cbSize = sizeof(MENUINFO);
+    mi.fMask = MIM_STYLE;
+    GetMenuInfo(popupMenu, &mi);
+    mi.dwStyle |= MNS_NOTIFYBYPOS;
+    SetMenuInfo(popupMenu, &mi);
+    SetMenuDefaultItem(popupMenu, IDM_OPTIONS, FALSE);
+    return popupMenu;
+}
 
-    int pos = context->iconIndex - index - 1;
-    MENUITEMINFO mii;
-    mii.cbSize = sizeof(MENUITEMINFO);
-    mii.fMask = MIIM_ID | MIIM_DATA;
-    if (GetMenuItemInfo(context->trayMenu, pos, TRUE, &mii) && mii.dwItemData == pmii->dwItemData) {
-        DeleteMenu(context->trayMenu, pos, MF_BYPOSITION);
-    }
-    else {
-        for (pos = 0; pos < context->iconIndex; pos++) {
-            if (GetMenuItemInfo(context->trayMenu, pos, TRUE, &mii) && mii.dwItemData == pmii->dwItemData) {
-                DeleteMenu(context->trayMenu, pos, MF_BYPOSITION);
-                break;
-            }
+// Remove menu item from tray popup menu
+static void removeMenuItem(TRCONTEXT* context, int index) {
+    DestroyMenu(context->trayMenu);
+    context->trayMenu = createTrayMenu(context);
+
+    for (int i = 0; i < context->iconIndex; i++) {
+        auto hw = context->icons + i;
+        if (hw->hideType != HideMenu) {
+            continue;
         }
+        if (i == index) {
+            DeleteObject(hw->menu.info.hbmpItem);
+            continue;
+        }
+        hw->menu.info.dwTypeData = hw->menu.caption;
+        InsertMenuItem(context->trayMenu, 0, TRUE, &hw->menu.info);
     }
 }
 
@@ -270,19 +280,6 @@ static void createTrayIcon(HWND mainWindow, NOTIFYICONDATA* icon) {
   strcpy_s(icon->szTip, APP_NAME);
   Shell_NotifyIcon(NIM_ADD, icon);
   Shell_NotifyIcon(NIM_SETVERSION, icon);
-}
-
-// Creates our tray icon menu
-static HMENU createTrayMenu(TRCONTEXT* context) {
-    HMENU popupMenu = GetSubMenu(LoadMenu(context->instance, MAKEINTRESOURCE(IDM_POPUP)), 0);
-    MENUINFO mi;
-    mi.cbSize = sizeof(MENUINFO);
-    mi.fMask = MIM_STYLE;
-    GetMenuInfo(popupMenu, &mi);
-    mi.dwStyle |= MNS_NOTIFYBYPOS;
-    SetMenuInfo(popupMenu, &mi);
-    SetMenuDefaultItem(popupMenu, IDM_OPTIONS, FALSE);
-    return popupMenu;
 }
 
 // Shows all hidden windows;

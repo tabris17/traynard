@@ -1,6 +1,4 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 Traymond.rc 使用
 //
 #define IDI_TRAYMOND                    201
 #define IDD_DIALOG_OPTIONS              101

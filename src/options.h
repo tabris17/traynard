@@ -1,8 +1,8 @@
 //
 #pragma once
 
-#define COMBO_TEXT_TRAY _T("о╣мЁмпел")
-#define COMBO_TEXT_MENU _T("ср╪Э╡к╣╔")
+#define COMBO_TEXT_TRAY _T("ГЁ╩Г╩÷Ф┴≤Г⌡≤")
+#define COMBO_TEXT_MENU _T("Е▐ЁИ■╝Х▐°Е█∙")
 
 void showOptionsDlg(TRCONTEXT* context);
 void loadOptions(TRCONTEXT* context);

@@ -21,12 +21,12 @@
 #define REG_KEY_SOFTWARE _T("SOFTWARE\\Traymond")
 #define REG_KEY_RUN _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
 
-#define MSG_HOTKEY_ERROR _T("�޷�ע��ϵͳ�ȼ��������ѱ�ռ�á�")
-#define MSG_MUTEX_ERROR _T("�����������ʧ�ܣ��޷���������")
-#define MSG_ALREADY_RUNNING _T("�����Ѿ���ʵ�������С�")
-#define MSG_SAVE_FILE_ERROR _T("�޷����������ļ���")
-#define MSG_TOO_MANY_HIDDEN_WINDOWS _T("����̫�ര�ڣ������ͷ�һЩ��")
-#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION _T("������ǰ������ֹ���ѻָ� %d �����ش��ڡ�")
+#define MSG_HOTKEY_ERROR _T("无法注册系统热键，可能已被占用。")
+#define MSG_MUTEX_ERROR _T("创建互斥对象失败，无法启动程序。")
+#define MSG_ALREADY_RUNNING _T("程序已经有实例在运行。")
+#define MSG_SAVE_FILE_ERROR _T("无法创建保存文件。")
+#define MSG_TOO_MANY_HIDDEN_WINDOWS _T("隐藏太多窗口，请先释放一些。")
+#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION _T("程序先前意外终止。已恢复 %d 个隐藏窗口。")
 
 typedef struct HIDE_WINDOW_HOTKEY {
     UINT modifiers;

@@ -71,7 +71,7 @@ void saveOptions(TRCONTEXT* context) {
 
     if (ERROR_SUCCESS == RegOpenKey(HKEY_CURRENT_USER, REG_KEY_RUN, &regKey)) {
         if (context->autorun) {
-            RegSetValueEx(regKey, APP_NAME, 0, REG_SZ, (BYTE*)context->cmdLine, _tcslen(context->cmdLine));
+            RegSetValueEx(regKey, APP_NAME, 0, REG_SZ, (BYTE*)context->cmdLine, _tcslen(context->cmdLine) * sizeof(TCHAR));
         }
         else {
             RegDeleteValue(regKey, APP_NAME);

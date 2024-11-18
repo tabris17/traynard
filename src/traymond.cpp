@@ -355,7 +355,7 @@ static void startup(TRCONTEXT *context) {
         }
       }
       TCHAR restoreMessage[MAX_MSG];
-      _snwprintf_s(restoreMessage, MAX_MSG, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
+      _sntprintf_s(restoreMessage, MAX_MSG, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
       MessageBox(NULL, restoreMessage, APP_NAME, MB_OK);
     }
   }

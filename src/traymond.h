@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <tchar.h>
 
 
 #define VK_Z_KEY 0x5A
@@ -14,22 +15,18 @@
 #define MAX_MSG 1024
 #define MAX_WINDOW_TEXT 128
 
-#define APP_NAME "Traymond"
-#define SAVE_FILE_NAME "traymond.dat"
-#define MUTEX_NAME "traymond_mutex"
-#define REG_KEY_SOFTWARE "SOFTWARE\\Traymond"
-#define REG_KEY_RUN "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+#define APP_NAME _T("Traymond")
+#define SAVE_FILE_NAME _T("traymond.dat")
+#define MUTEX_NAME _T("traymond_mutex")
+#define REG_KEY_SOFTWARE _T("SOFTWARE\\Traymond")
+#define REG_KEY_RUN _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
 
-#define MENU_RESTORE_ALL_WINDOWS "恢复所有窗口"
-#define MENU_OPTIONS "选项"
-#define MENU_EXIT "退出"
-
-#define MSG_HOTKEY_ERROR "无法注册系统热键，可能已被占用。"
-#define MSG_MUTEX_ERROR "创建互斥对象失败，无法启动程序。"
-#define MSG_ALREADY_RUNNING "程序已经有实例在运行。"
-#define MSG_SAVE_FILE_ERROR "无法创建保存文件。"
-#define MSG_TOO_MANY_HIDDEN_WINDOWS "隐藏太多窗口，请先释放一些。"
-#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION "程序先前意外终止。已恢复 %d 个隐藏窗口。"
+#define MSG_HOTKEY_ERROR _T("无法注册系统热键，可能已被占用。")
+#define MSG_MUTEX_ERROR _T("创建互斥对象失败，无法启动程序。")
+#define MSG_ALREADY_RUNNING _T("程序已经有实例在运行。")
+#define MSG_SAVE_FILE_ERROR _T("无法创建保存文件。")
+#define MSG_TOO_MANY_HIDDEN_WINDOWS _T("隐藏太多窗口，请先释放一些。")
+#define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION _T("程序先前意外终止。已恢复 %d 个隐藏窗口。")
 
 typedef struct HIDE_WINDOW_HOTKEY {
     UINT modifiers;
@@ -43,7 +40,7 @@ typedef enum {
 
 typedef struct {
     MENUITEMINFO info;
-    CHAR caption[MAX_WINDOW_TEXT];
+    TCHAR caption[MAX_WINDOW_TEXT];
 } MENUITEMDATA;
 
 // Stores hidden window record.
@@ -63,7 +60,7 @@ typedef struct TRCONTEXT {
     HIDE_WINDOW_HOTKEY hotkey;
     HICON mainIcon;
     HINSTANCE instance;
-    LPSTR cmdLine;
+    LPTSTR cmdLine;
     HWND mainWindow;
     HIDDEN_WINDOW icons[MAXIMUM_WINDOWS];
     HMENU trayMenu;

@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <windowsx.h>
+#include <tchar.h>
 #include <string>
 #include <vector>
 
@@ -198,7 +199,7 @@ static void showWindow(TRCONTEXT *context, UINT xID) {
 // Uses currently focused window unless supplied a handle as the argument.
 static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
   // Taskbar and desktop windows are restricted from hiding.
-  const char restrictWins[][14] = { {"WorkerW"}, {"Shell_TrayWnd"} };
+  const TCHAR restrictWins[][14] = { {_T("WorkerW")}, {_T("Shell_TrayWnd")} };
 
   HWND currWin = 0;
   if (!restoreWindow) {
@@ -212,14 +213,14 @@ static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
     return;
   }
 
-  char className[256];
+  TCHAR className[256];
   if (!GetClassName(currWin, className, 256)) {
     return;
   }
   else {
     for (int i = 0; i < sizeof(restrictWins) / sizeof(*restrictWins); i++)
     {
-      if (strcmp(restrictWins[i], className) == 0) {
+      if (_tcscmp(restrictWins[i], className) == 0) {
         return;
       }
     }
@@ -277,7 +278,7 @@ static void createTrayIcon(HWND mainWindow, NOTIFYICONDATA* icon) {
   icon->uVersion = NOTIFYICON_VERSION;
   icon->uID = reinterpret_cast<UINT>(mainWindow);
   icon->uCallbackMessage = WM_OURICON;
-  strcpy_s(icon->szTip, APP_NAME);
+  _tcscpy_s(icon->szTip, APP_NAME);
   Shell_NotifyIcon(NIM_ADD, icon);
   Shell_NotifyIcon(NIM_SETVERSION, icon);
 }
@@ -303,7 +304,7 @@ static void exitApp() {
 
 // Creates and reads the save file to restore hidden windows in case of unexpected termination
 static void startup(TRCONTEXT *context) {
-  char currDir[MAX_PATH] = { NULL };
+  TCHAR currDir[MAX_PATH] = { NULL };
   auto currDirLen = GetModuleFileName(NULL, currDir, MAX_PATH);
   for (int i = currDirLen; i > 0; i--) {
     if (currDir[i] == '\\') {
@@ -353,8 +354,8 @@ static void startup(TRCONTEXT *context) {
           memset(handle, 0, sizeof(handle));
         }
       }
-      char restoreMessage[MAX_MSG];
-      snprintf(restoreMessage, MAX_MSG, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
+      TCHAR restoreMessage[MAX_MSG];
+      _snwprintf_s(restoreMessage, MAX_MSG, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
       MessageBox(NULL, restoreMessage, APP_NAME, MB_OK);
     }
   }

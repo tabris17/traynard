@@ -40,7 +40,7 @@ void loadOptions(TRCONTEXT* context) {
     context->hideType = HideTray;
 
     DWORD data = 0, size = sizeof(DWORD);
-    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, "Hotkey", RRF_RT_REG_DWORD, NULL, &data, &size)) {
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, _T("Hotkey"), RRF_RT_REG_DWORD, NULL, &data, &size)) {
         auto vkey = LOWORD(data), modifiers = HIWORD(data);
         if (vkey > 0 && modifiers > 0) {
             context->hotkey.modifiers = modifiers;
@@ -48,7 +48,7 @@ void loadOptions(TRCONTEXT* context) {
         }
     }
 
-    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, "HideType", RRF_RT_REG_DWORD, NULL, &data, &size)) {
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, _T("HideType"), RRF_RT_REG_DWORD, NULL, &data, &size)) {
         context->hideType = data ? HideMenu : HideTray;
     }
 
@@ -63,15 +63,15 @@ void saveOptions(TRCONTEXT* context) {
 
     if (ERROR_SUCCESS == RegCreateKey(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, &regKey)) {
         DWORD data = MAKELONG(context->hotkey.vkey, context->hotkey.modifiers);
-        RegSetValueEx(regKey, "Hotkey", 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        RegSetValueEx(regKey, _T("Hotkey"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->hideType;
-        RegSetValueEx(regKey, "HideType", 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        RegSetValueEx(regKey, _T("HideType"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         RegCloseKey(regKey);
     }
 
     if (ERROR_SUCCESS == RegOpenKey(HKEY_CURRENT_USER, REG_KEY_RUN, &regKey)) {
         if (context->autorun) {
-            RegSetValueEx(regKey, APP_NAME, 0, REG_SZ, (BYTE*)context->cmdLine, strlen(context->cmdLine));
+            RegSetValueEx(regKey, APP_NAME, 0, REG_SZ, (BYTE*)context->cmdLine, _tcslen(context->cmdLine));
         }
         else {
             RegDeleteValue(regKey, APP_NAME);
@@ -115,23 +115,23 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context) {
     SendMessage(hwnd, WM_SETICON, FALSE, (LPARAM)context->mainIcon);
 
     HWND hotkeyEdit = GetDlgItem(hwnd, IDC_EDIT_HOTKEY);
-    char hotkeyText[MAX_MSG] = { NULL };
+    TCHAR hotkeyText[MAX_MSG] = { NULL };
     UINT modifiers = context->hotkey.modifiers, vkey = context->hotkey.vkey;
     if (modifiers & MOD_WIN) {
-        strncat_s(hotkeyText, "Win", MAX_MSG);
+        _tcsnccat_s(hotkeyText, _T("Win"), MAX_MSG);
     }
     if (modifiers & MOD_CONTROL) {
-        strncat_s(hotkeyText, strnlen(hotkeyText, MAX_MSG) ? " + Ctrl" : "Ctrl", MAX_MSG);
+        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Ctrl") : _T("Ctrl"), MAX_MSG);
     }
     if (modifiers & MOD_SHIFT) {
-        strncat_s(hotkeyText, strnlen(hotkeyText, MAX_MSG) ? " + Shift" : "Shift", MAX_MSG);
+        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Shift") : _T("Shift"), MAX_MSG);
     }
     if (modifiers & MOD_ALT) {
-        strncat_s(hotkeyText, strnlen(hotkeyText, MAX_MSG) ? " + Alt" : "Alt", MAX_MSG);
+        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Alt") : _T("Alt"), MAX_MSG);
     }
-    size_t l = strnlen(hotkeyText, MAX_MSG);
+    size_t l = _tcsnlen(hotkeyText, MAX_MSG);
     if (l > 0) {
-        strncat_s(hotkeyText, " + ", MAX_MSG);
+        _tcsnccat_s(hotkeyText, _T(" + "), MAX_MSG);
         l += 3;
     }
     GetKeyNameText(MapVirtualKey(vkey, MAPVK_VK_TO_VSC) << 16, hotkeyText + l, MAX_MSG - l);
@@ -139,8 +139,8 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context) {
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
 
     HWND hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
-    ComboBox_AddString(hideTypeCombo, COMBO_TEXT_TRAY);
-    ComboBox_AddString(hideTypeCombo, COMBO_TEXT_MENU);
+    ComboBox_AddItemData(hideTypeCombo, COMBO_TEXT_TRAY);
+    ComboBox_AddItemData(hideTypeCombo, COMBO_TEXT_MENU);
     ComboBox_SetCurSel(hideTypeCombo, context->hideType);
 
     return TRUE;

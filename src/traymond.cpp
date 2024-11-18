@@ -230,7 +230,7 @@ static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
     return;
   }
 
-  if (!ShowWindow(currWin, SW_HIDE)) {
+  if (IsWindowVisible(currWin) && !ShowWindow(currWin, SW_HIDE)) {
     MessageBeep(MB_ICONWARNING);
     return;
   }

@@ -7,6 +7,7 @@
 - 自定义热键
 - 开机自动运行
 - 最小化窗口到右键菜单
+- 自定义规则隐藏窗口
 
 其余功能均与原版一致。
 
@@ -19,3 +20,13 @@
    ```cmd
    scoop install https://github.com/tabris17/traymond/releases/latest/download/traymond.json
    ```
+
+## Screenshot
+
+选项：
+
+![选项](images/options.png)
+
+自定义隐藏窗口规则：
+
+![自定义隐藏窗口规则](images/rules.png)

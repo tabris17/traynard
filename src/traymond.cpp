@@ -1,3 +1,5 @@
+#define TRAYMON_MAIN
+
 #include <windows.h>
 #include <windowsx.h>
 #include <tchar.h>
@@ -7,6 +9,9 @@
 #include "resource.h"
 #include "traymond.h"
 #include "options.h"
+#include "winevent.h"
+#include "rules.h"
+#include "logging.h"
 
 HANDLE saveFile;
 TRCONTEXT appContext = {};
@@ -21,8 +26,7 @@ static void save(const TRCONTEXT *context) {
   if (!context->iconIndex) {
     return;
   }
-  for (int i = 0; i < context->iconIndex; i++)
-  {
+  for (int i = 0; i < context->iconIndex; i++) {
     if (context->icons[i].window) {
       std::string str;
       str = std::to_string((long)context->icons[i].window);
@@ -89,7 +93,10 @@ static HBITMAP IconToBitmap(HICON icon, int width = 0, int height = 0) {
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biBitCount = 32;
     bmi.bmiHeader.biCompression = BI_RGB;
+#pragma warning(push)
+#pragma warning(disable:6387)
     HBITMAP hbmpMem = CreateDIBSection(hdcMem, &bmi, DIB_RGB_COLORS, NULL, NULL, 0);
+#pragma warning(pop)
     if (hbmpMem) {
         auto oldObj = SelectObject(hdcMem, hbmpMem);
         DrawIconEx(hdcMem, 0, 0, icon, width, height, 0, NULL, DI_NORMAL);
@@ -162,24 +169,26 @@ int reviseHiddenWindowIcon(TRCONTEXT* context) {
 }
 
 // Restores a window
-static void showWindow(TRCONTEXT *context, UINT xID) {
+bool restoreWindow(TRCONTEXT *context, UINT xID, HWND hwnd) {
   for (int i = 0; i < context->iconIndex; i++) {
-    switch (context->icons[i].hideType) {
+    auto icon = context->icons + i;
+    switch (icon->hideType) {
     case HideTray: 
-      if (context->icons[i].icon.uID != xID) continue;
-      Shell_NotifyIcon(NIM_DELETE, &context->icons[i].icon);
+      if (icon->icon.uID != xID && icon->window != hwnd) continue;
+      Shell_NotifyIcon(NIM_DELETE, &icon->icon);
       break;
     case HideMenu:
-      if (context->icons[i].menu.info.dwItemData != xID) continue;
+      if (icon->menu.info.dwItemData != xID && icon->window != hwnd) continue;
       removeMenuItem(context, i);
       break;
     default:
       continue;
     }
 
-    ShowWindow(context->icons[i].window, SW_SHOW);
-    SetForegroundWindow(context->icons[i].window);
-    context->icons[i] = {};
+    auto currWin = icon->window;
+    IsWindow(currWin) && ShowWindow(currWin, SW_SHOW) && SetForegroundWindow(currWin);
+
+    *icon = {};
     std::vector<HIDDEN_WINDOW> temp = std::vector<HIDDEN_WINDOW>(context->iconIndex);
     // Restructure array so there are no holes
     for (int j = 0, x = 0; j < context->iconIndex; j++) {
@@ -191,48 +200,53 @@ static void showWindow(TRCONTEXT *context, UINT xID) {
     memcpy_s(context->icons, sizeof(context->icons), &temp.front(), sizeof(HIDDEN_WINDOW)*context->iconIndex);
     context->iconIndex--;
     save(context);
-    break;
+    context->hiddenWindows.erase(currWin);
+    context->freeWindows.insert(currWin);
+    return true;
   }
+  return false;
 }
 
 // Minimizes the current window to tray or menu.
 // Uses currently focused window unless supplied a handle as the argument.
-static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
+bool minimizeWindow(TRCONTEXT *context, HWND currWin, bool restored) {
   // Taskbar and desktop windows are restricted from hiding.
   const TCHAR restrictWins[][14] = { {_T("WorkerW")}, {_T("Shell_TrayWnd")} };
 
-  HWND currWin = 0;
-  if (!restoreWindow) {
+  if (!currWin) {
     currWin = GetForegroundWindow();
   }
-  else {
-    currWin = reinterpret_cast<HWND>(restoreWindow);
+
+  DWORD processId = 0;
+  GetWindowThreadProcessId(currWin, &processId);
+  if (!currWin || !isTopLevelWindow(currWin) || GetCurrentProcessId() == processId) {
+    return false;
   }
 
-  if (!currWin) {
-    return;
-  }
-
-  TCHAR className[256];
-  if (!GetClassName(currWin, className, 256)) {
-    return;
-  }
-  else {
-    for (int i = 0; i < sizeof(restrictWins) / sizeof(*restrictWins); i++)
-    {
-      if (_tcscmp(restrictWins[i], className) == 0) {
-        return;
-      }
+  for (int i = 0; i < context->iconIndex; i++) {
+    if (currWin == context->icons[i].window) {
+      return IsWindowVisible(currWin) && !ShowWindow(currWin, SW_HIDE);
     }
   }
+
+  TCHAR className[MAX_CLASS_NAME];
+  if (!GetClassName(currWin, className, MAX_CLASS_NAME)) {
+    return false;
+  }
+  for (int i = 0; i < sizeof(restrictWins) / sizeof(*restrictWins); i++) {
+    if (_tcscmp(restrictWins[i], className) == 0) {
+      return false;
+    }
+  }
+
   if (context->iconIndex == MAXIMUM_WINDOWS) {
     MessageBox(NULL, MSG_TOO_MANY_HIDDEN_WINDOWS, APP_NAME, MB_OK | MB_ICONERROR);
-    return;
+    return false;
   }
 
   if (IsWindowVisible(currWin) && !ShowWindow(currWin, SW_HIDE)) {
     MessageBeep(MB_ICONWARNING);
-    return;
+    return false;
   }
   switch (context->icons[context->iconIndex].hideType = context->hideType) {
   case HideTray:
@@ -265,9 +279,12 @@ static void minimizeWindow(TRCONTEXT *context, long restoreWindow) {
   }
   context->icons[context->iconIndex].window = currWin;
   context->iconIndex++;
-  if (!restoreWindow) {
+  if (!restored) {
       save(context);
   }
+  context->hiddenWindows.insert(currWin);
+  context->freeWindows.erase(currWin);
+  return true;
 }
 
 // Adds our own icon to tray
@@ -304,6 +321,8 @@ static void exitApp() {
 
 // Creates and reads the save file to restore hidden windows in case of unexpected termination
 static void startup(TRCONTEXT *context) {
+  loadRules(context);
+  hookWinEvent(context);
   TCHAR currDir[MAX_PATH] = { NULL };
   auto currDirLen = GetModuleFileName(NULL, currDir, MAX_PATH);
   for (int i = currDirLen; i > 0; i--) {
@@ -350,7 +369,7 @@ static void startup(TRCONTEXT *context) {
         }
         else {
           index = 0;
-          minimizeWindow(context, std::stoi(std::string(handle)));
+          minimizeWindow(context, reinterpret_cast<HWND>(std::stoi(std::string(handle))), true);
           memset(handle, 0, sizeof(handle));
         }
       }
@@ -361,6 +380,14 @@ static void startup(TRCONTEXT *context) {
   }
 }
 
+static void shutdown(TRCONTEXT* context)
+{
+  CloseHandle(saveFile);
+  DeleteFile(SAVE_FILE_NAME); // No save file means we have exited gracefully
+  unhookWinEvent(context);
+  clearRules(context);
+}
+
 static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
   TRCONTEXT* context = reinterpret_cast<TRCONTEXT*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -369,7 +396,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
   {
   case WM_ICON:
     if (lParam == WM_LBUTTONDBLCLK) {
-      showWindow(context, wParam);
+      restoreWindow(context, wParam);
     }
     break;
   case WM_OURICON:
@@ -384,7 +411,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       );
       break;
     case WM_LBUTTONDBLCLK: 
-      showOptionsDlg(context);
+      showOptionsDlg(hwnd, context);
       break;
     }
     break;
@@ -401,13 +428,13 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
           exitApp();
           break;
         case IDM_OPTIONS:
-          showOptionsDlg(context);
+          showOptionsDlg(hwnd, context);
           break;
         case IDM_RESTORE_ALL_WINDOW:
           showAllWindows(context);
           break;
         default:
-          showWindow(context, mii.dwItemData);
+          restoreWindow(context, mii.dwItemData);
           break;
         }
       }
@@ -422,29 +449,53 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
   return 0;
 }
 
-#pragma warning( push )
-#pragma warning( disable : 4100 )
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
-#pragma warning( pop )
-  auto context = &appContext;
-  context->instance = hInstance;
-  context->cmdLine = GetCommandLine();
-  loadOptions(context);
+static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+  if (hwnd == reinterpret_cast<HWND>(lParam)) {
+    SetLastError(TOP_LEVEL_WINDOW_ERROR);
+    return FALSE;
+  }
+  return TRUE;
+}
 
-  NOTIFYICONDATA icon = {};
+static BOOL WINAPI _IsTopLevelWindow(HWND hwnd) {
+  if (!EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(hwnd)) && GetLastError() == TOP_LEVEL_WINDOW_ERROR) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+#pragma warning(push)
+#pragma warning(disable:4100)
+#pragma warning(disable:4189)
+#pragma warning(disable:4996)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
+    __LOGGING__;
+#pragma warning(pop)
 
   // Mutex to allow only one instance
   HANDLE mutex = CreateMutex(NULL, TRUE, MUTEX_NAME);
   if (mutex == NULL) {
-    switch (GetLastError()) {
-    case ERROR_ALREADY_EXISTS:
-      MessageBox(NULL, MSG_ALREADY_RUNNING, APP_NAME, MB_OK | MB_ICONERROR);
-      break;
-    default:
-      MessageBox(NULL, MSG_MUTEX_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
-    }
+    MessageBox(NULL, MSG_MUTEX_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
     return 1;
   }
+  else if (GetLastError() == ERROR_ALREADY_EXISTS) {
+    MessageBox(NULL, MSG_ALREADY_RUNNING, APP_NAME, MB_OK | MB_ICONERROR);
+    return 1;
+  }
+  
+  auto context = &appContext;
+  context->instance = hInstance;
+  context->cmdLine = GetCommandLine();
+  auto user32Module = GetModuleHandle(_T("user32.dll"));
+  if (user32Module) {
+    isTopLevelWindow = (IsTopLevelWindow)GetProcAddress(user32Module, "IsTopLevelWindow");
+  }
+  if (NULL == isTopLevelWindow) {
+    isTopLevelWindow = _IsTopLevelWindow;
+  }
+  loadOptions(context);
+
+  NOTIFYICONDATA icon = {};
 
   BOOL bRet;
   MSG msg;
@@ -489,10 +540,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   Shell_NotifyIcon(NIM_DELETE, &icon);
   ReleaseMutex(mutex);
   CloseHandle(mutex);
-  CloseHandle(saveFile);
   DestroyMenu(context->trayMenu);
   DestroyWindow(context->mainWindow);
-  DeleteFile(SAVE_FILE_NAME); // No save file means we have exited gracefully
   UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
+  shutdown(context);
   return msg.wParam;
+}
+
+TRCONTEXT* AppContext()
+{
+  return &appContext;
 }

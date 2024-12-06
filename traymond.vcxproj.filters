@@ -21,6 +21,12 @@
     <ClCompile Include="src\options.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\rules.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\winevent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Traymond.rc">
@@ -35,6 +41,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\traymond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\winevent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

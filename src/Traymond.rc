@@ -1,14 +1,13 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "resource.h"
+#pragma code_page(65001)
 
-#include "windows.h"
+#include "resource.h"
 /////////////////////////////////////////////////////////////////////////////
-// ����(���壬�й�) resources
+// 中文(简体，中国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
-#pragma code_page(936)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -19,10 +18,10 @@ IDM_POPUP MENU
 BEGIN
     POPUP ""
     BEGIN
-        MENUITEM "��ԭ���д���", IDM_RESTORE_ALL_WINDOW
-        MENUITEM "ѡ��", IDM_OPTIONS
+        MENUITEM "还原所有窗口",                      IDM_RESTORE_ALL_WINDOW
+        MENUITEM "选项",                          IDM_OPTIONS
         MENUITEM SEPARATOR
-        MENUITEM "�˳�", IDM_EXIT
+        MENUITEM "退出",                          IDM_EXIT
     END
 END
 
@@ -34,7 +33,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_TRAYMOND           ICON                    "..\\icon\\traymond.ico"
+IDI_TRAYMOND            ICON                    "..\\icon\\traymond.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,8 +42,8 @@ IDI_TRAYMOND           ICON                    "..\\icon\\traymond.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,4,0
- PRODUCTVERSION 1,0,4,0
+ FILEVERSION 2,0,0,0
+ PRODUCTVERSION 2,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -59,15 +58,13 @@ BEGIN
     BEGIN
         BLOCK "000904b0"
         BEGIN
-            VALUE "CompanyName", "fcFn"
             VALUE "FileDescription", "Traymond"
-            VALUE "FileVersion", "1.0.4"
+            VALUE "FileVersion", "2.0.0"
             VALUE "InternalName", "Traymond.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2020 fcFn"
             VALUE "OriginalFilename", "Traymond.exe"
             VALUE "ProductName", "Traymond"
-            VALUE "ProductVersion", "1.0.4"
-            VALUE "Comment", "https://github.com/fcFn/traymond"
+            VALUE "ProductVersion", "2.0.0-beta"
+            VALUE "Comment", "https://github.com/tabris17/traymond"
         END
     END
     BLOCK "VarFileInfo"
@@ -107,23 +104,52 @@ END
 // Dialog
 //
 
-IDD_DIALOG_OPTIONS DIALOGEX 0, 0, 182, 166
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_DIALOG_OPTIONS DIALOGEX 0, 0, 183, 190
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_STATICEDGE
-CAPTION "Traymond ѡ��"
+CAPTION "Traymond 选项"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "ȷ��",IDOK,39,145,50,14
-    PUSHBUTTON      "ȡ��",IDCANCEL,93,145,50,14
-    GROUPBOX        "�Զ����ȼ�",IDC_STATIC,6,24,170,71
+    DEFPUSHBUTTON   "确定",IDOK,39,168,50,14,BS_FLAT
+    PUSHBUTTON      "取消",IDCANCEL,93,168,50,14,BS_FLAT
+    GROUPBOX        "自定义热键",IDC_STATIC,6,24,170,71
     CONTROL         "",IDC_HOTKEY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,14,55,153,14
-    LTEXT           "��ǰ�ȼ�:",IDC_STATIC,6,7,44,10
+    LTEXT           "当前热键:",IDC_STATIC,6,7,44,10
     EDITTEXT        IDC_EDIT_HOTKEY,52,7,124,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "��������а�����ϼ�:",IDC_STATIC,14,42,153,8
-    CONTROL         "ʹ�� Win ��ϼ�",IDC_CHECK_USE_WIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,76,86,11
-    CONTROL         "����ʱ�Զ�����",IDC_CHECK_AUTORUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,120,72,18
-    LTEXT           "���ش������ɵ� ",IDC_STATIC,6,103,66,12
+    LTEXT           "在输入框中按下组合键:",IDC_STATIC,14,42,153,8
+    CONTROL         "使用 Win 组合键",IDC_CHECK_USE_WIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,76,86,11
+    CONTROL         "开机时自动运行",IDC_CHECK_AUTORUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,120,72,18
+    LTEXT           "隐藏窗口收纳到 ",IDC_STATIC,6,103,66,12
     COMBOBOX        IDC_COMBO_HIDE_TYPE,72,101,66,120,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_HASSTRINGS | WS_TABSTOP
+    CONTROL         "启动后自动隐藏这些窗口:",IDC_CHECK_AUTO_HIDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,138,102,18
+    PUSHBUTTON      "编辑规则",IDC_BUTTON_WNDLST,113,140,60,14,BS_FLAT | WS_DISABLED
+END
+
+IDD_DIALOG_RULES DIALOGEX 0, 0, 413, 266
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Traymond 自动隐藏窗口规则"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "关闭", IDCANCEL, 357, 246, 50, 14, BS_FLAT
+    PUSHBUTTON      "帮助",IDHELP,248,246,50,14,BS_FLAT
+    PUSHBUTTON      "取消",IDDROP,302,246,50,14,BS_FLAT | WS_DISABLED
+    LISTBOX         IDC_LIST_RULES,5,5,133,235,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "新建",IDNEW,6,246,42,14,BS_FLAT
+    PUSHBUTTON      "保存",IDSAVE,51,246,42,14,BS_FLAT | WS_DISABLED
+    PUSHBUTTON      "删除",IDREMOVE,97,246,42,14,BS_FLAT | WS_DISABLED
+    LTEXT           "规则名称:",IDC_STATIC,150,8,264,10
+    EDITTEXT        IDC_EDIT_NAME,150,20,252,14,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "选择一个已隐藏窗口:",IDC_STATIC,150,40,264,10
+    COMBOBOX        IDC_COMBO_WINDOWS,150,52,252,200,CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_HASSTRINGS | WS_TABSTOP | WS_DISABLED
+    GROUPBOX        "窗口标题",IDC_STATIC,150,75,252,50
+    GROUPBOX        "窗口类名",IDC_STATIC,150,133,252,50
+    GROUPBOX        "程序路径",IDC_STATIC,150,190,252,50
+    EDITTEXT        IDC_EDIT_TEXT,163,90,227,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT_CLASS,163,148,227,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT_PATH,163,205,227,14,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "正则匹配",IDC_CHECK_REGEX_TEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | WS_DISABLED,163,105,71,12
+    CONTROL         "正则匹配",IDC_CHECK_REGEX_CLASS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | WS_DISABLED,163,163,71,12
+    CONTROL         "正则匹配",IDC_CHECK_REGEX_PATH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | WS_DISABLED,163,220,71,12
 END
 
 
@@ -138,11 +164,19 @@ BEGIN
     IDD_DIALOG_OPTIONS, DIALOG
     BEGIN
         LEFTMARGIN, 6
-        RIGHTMARGIN, 176
+        RIGHTMARGIN, 177
         VERTGUIDE, 14
         VERTGUIDE, 167
         TOPMARGIN, 7
-        BOTTOMMARGIN, 159
+        BOTTOMMARGIN, 183
+    END
+
+    IDD_DIALOG_RULES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 406
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 259
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -158,7 +192,12 @@ BEGIN
     0
 END
 
-#endif    // ����(���壬�й�) resources
+IDD_DIALOG_RULES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

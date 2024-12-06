@@ -72,11 +72,18 @@
     <LinkIncremental>false</LinkIncremental>
     <TargetName>Traymond</TargetName>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Label="Vcpkg" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;DEBUG%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link />
+    <Link>
+      <AdditionalManifestDependencies>"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'";%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -93,6 +100,9 @@
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+    <Link>
+      <AdditionalManifestDependencies>"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'";%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
     </Link>
     <ResourceCompile>
       <NullTerminateStrings>true</NullTerminateStrings>
@@ -114,14 +124,19 @@
   <ItemGroup>
     <ClCompile Include="src\options.cpp" />
     <ClCompile Include="src\traymond.cpp" />
+    <ClCompile Include="src\rules.cpp" />
+    <ClCompile Include="src\winevent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\Traymond.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\logging.h" />
     <ClInclude Include="src\options.h" />
     <ClInclude Include="src\resource.h" />
     <ClInclude Include="src\traymond.h" />
+    <ClInclude Include="src\rules.h" />
+    <ClInclude Include="src\winevent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon\traymond.ico" />

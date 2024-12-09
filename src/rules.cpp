@@ -83,6 +83,23 @@ bool loadRules(TRCONTEXT* context)
     return result;
 }
 
+static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+    auto context = reinterpret_cast<TRCONTEXT*>(lParam);
+    if (IsWindowVisible(hwnd) && matchRule(context, hwnd)) {
+        minimizeWindow(context, hwnd);
+    }
+    return TRUE;
+}
+
+bool applyRules(TRCONTEXT* context)
+{
+    if (!context->autoHiding) {
+        return false;
+    }
+
+    EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(context));
+}
+
 bool clearRules(TRCONTEXT* context)
 {
     if (context->hidingRules.empty()) { 

@@ -322,6 +322,7 @@ static void exitApp() {
 // Creates and reads the save file to restore hidden windows in case of unexpected termination
 static void startup(TRCONTEXT *context) {
   loadRules(context);
+  applyRules(context);
   hookWinEvent(context);
   TCHAR currDir[MAX_PATH] = { NULL };
   auto currDirLen = GetModuleFileName(NULL, currDir, MAX_PATH);

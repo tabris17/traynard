@@ -14,6 +14,7 @@
 #endif
 
 bool loadRules(TRCONTEXT* context);
+bool applyRules(TRCONTEXT* context);
 bool saveRules(TRCONTEXT* context);
 bool clearRules(TRCONTEXT* context);
 bool matchRule(TRCONTEXT* context, HWND hwnd);

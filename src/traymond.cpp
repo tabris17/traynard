@@ -389,12 +389,30 @@ static void shutdown(TRCONTEXT* context)
   clearRules(context);
 }
 
-static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+static void onTaskbarRestart(TRCONTEXT* context) {
+    NOTIFYICONDATA icon {};
+    icon.hIcon = context->mainIcon;
+    createTrayIcon(context->mainWindow, &icon);
+    for (int i = 0; i < context->iconIndex; i++) {
+        auto hiddenWindow = &context->icons[i];
+        if (hiddenWindow->hideType != HideTray) {
+            continue;
+        }
+        Shell_NotifyIcon(NIM_ADD, &hiddenWindow->icon);
+        Shell_NotifyIcon(NIM_SETVERSION, &hiddenWindow->icon);
+    }
+}
 
+static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+  
+  static UINT taskbarRestart;
   TRCONTEXT* context = reinterpret_cast<TRCONTEXT*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
   POINT pt;
   switch (uMsg)
   {
+  case WM_CREATE:
+    taskbarRestart = RegisterWindowMessage(_T("TaskbarCreated"));
+    break;
   case WM_ICON:
     if (lParam == WM_LBUTTONDBLCLK) {
       restoreWindow(context, wParam);
@@ -445,6 +463,9 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
     minimizeWindow(context, NULL);
     break;
   default:
+    if (uMsg == taskbarRestart) {
+      onTaskbarRestart(context);
+    }
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
   return 0;
@@ -510,12 +531,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     return 1;
   }
   
-  context->mainWindow = CreateWindow(APP_NAME, NULL, NULL, 0, 0, 0, 0, HWND_MESSAGE, NULL, hInstance, NULL);
+  context->mainWindow = CreateWindow(APP_NAME, NULL, NULL, 0, 0, 0, 0, NULL, NULL, hInstance, NULL);
   context->mainIcon = icon.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TRAYMOND));
 
   if (!context->mainWindow) {
     return 1;
   }
+  ShowWindow(context->mainWindow, SW_HIDE);
 
   // Store our context in main window for retrieval by WindowProc
   SetWindowLongPtr(context->mainWindow, GWLP_USERDATA, reinterpret_cast<LONG>(context));

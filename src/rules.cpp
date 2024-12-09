@@ -97,7 +97,7 @@ bool applyRules(TRCONTEXT* context)
         return false;
     }
 
-    EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(context));
+    return (bool)EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(context));
 }
 
 bool clearRules(TRCONTEXT* context)

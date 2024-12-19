@@ -375,7 +375,7 @@ static void startup(TRCONTEXT *context) {
         }
       }
       TCHAR restoreMessage[MAX_MSG];
-      _sntprintf_s(restoreMessage, MAX_MSG, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
+      _sntprintf_s(restoreMessage, _countof(restoreMessage) - 1, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
       MessageBox(NULL, restoreMessage, APP_NAME, MB_OK);
     }
   }
@@ -486,6 +486,44 @@ static BOOL WINAPI _IsTopLevelWindow(HWND hwnd) {
   return FALSE;
 }
 
+PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey)
+{
+    constexpr TCHAR KEY_WIN[] = _T("Win");
+    constexpr TCHAR KEY_ALT[] = _T("Alt");
+    constexpr TCHAR KEY_CTRL[] = _T("Ctrl");
+    constexpr TCHAR KEY_SHIFT[] = _T("Shift");
+    constexpr TCHAR KEY_APPEND_ALT[] = _T(" + Alt");
+    constexpr TCHAR KEY_APPEND_CTRL[] = _T(" + Ctrl");
+    constexpr TCHAR KEY_APPEND_SHIFT[] = _T(" + Shift");
+    constexpr TCHAR KEY_PLUS[] = _T(" + ");
+
+    if (modifiers & MOD_WIN) {
+        _tcsnccat_s(text, textSize, KEY_WIN, _countof(KEY_WIN));
+    }
+    if (modifiers & MOD_CONTROL) {
+        _tcsnlen(text, textSize) ?
+            _tcsnccat_s(text, textSize, KEY_APPEND_CTRL, _countof(KEY_APPEND_CTRL)) :
+            _tcsnccat_s(text, textSize, KEY_CTRL, _countof(KEY_CTRL));
+    }
+    if (modifiers & MOD_SHIFT) {
+        _tcsnlen(text, textSize) ?
+            _tcsnccat_s(text, textSize, KEY_APPEND_SHIFT, _countof(KEY_APPEND_SHIFT)) :
+            _tcsnccat_s(text, textSize, KEY_SHIFT, _countof(KEY_SHIFT));
+    }
+    if (modifiers & MOD_ALT) {
+        _tcsnlen(text, textSize) ?
+            _tcsnccat_s(text, textSize, KEY_APPEND_ALT, _countof(KEY_APPEND_ALT)) :
+            _tcsnccat_s(text, textSize, KEY_ALT, _countof(KEY_ALT));
+    }
+    size_t len = _tcsnlen(text, textSize);
+    if (len > 0) {
+        _tcsnccat_s(text, textSize, KEY_PLUS, _countof(KEY_PLUS));
+        len += _countof(KEY_PLUS) - 1;
+    }
+    GetKeyNameText(MapVirtualKey(vkey, MAPVK_VK_TO_VSC) << 0x10, text + len, textSize - len);
+    return text;
+}
+
 #pragma warning(push)
 #pragma warning(disable:4100)
 #pragma warning(disable:4189)
@@ -493,6 +531,8 @@ static BOOL WINAPI _IsTopLevelWindow(HWND hwnd) {
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
     __LOGGING__;
 #pragma warning(pop)
+
+  TCHAR errMsg[MAX_MSG]{ NULL };
 
   // Mutex to allow only one instance
   HANDLE mutex = CreateMutex(NULL, TRUE, MUTEX_NAME);
@@ -542,9 +582,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   // Store our context in main window for retrieval by WindowProc
   SetWindowLongPtr(context->mainWindow, GWLP_USERDATA, reinterpret_cast<LONG>(context));
 
+  TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
   if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey)) {
-    MessageBox(NULL, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
-    return 1;
+    getHotkeyText(hotkeyText, _countof(hotkeyText) - 1, context->hotkey.modifiers, context->hotkey.vkey);
+    _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_HOTKEY_ERROR, hotkeyText);
+    MessageBox(NULL, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
   }
 
   createTrayIcon(context->mainWindow, &icon);

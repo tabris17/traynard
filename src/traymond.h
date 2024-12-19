@@ -9,12 +9,15 @@
 // These keys are used to send windows to tray
 #define TRAY_KEY VK_Z_KEY
 #define MOD_KEY MOD_WIN + MOD_SHIFT
+#define VK_BACKQUOTE_KEY VK_OEM_3
 
 #define WM_ICON 0x1C0A
 #define WM_OURICON 0x1C0B
 #define MAXIMUM_WINDOWS 100
 #define HIDE_WINDOW_HOTKEY_ID 0
+#define RESTORE_WINDOW_HOTKEY_ID 1
 #define MAX_MSG 1024
+#define MAX_HOTKEY_TEXT 64
 #define MAX_WINDOW_TEXT 128
 #define MAX_CLASS_NAME 256
 #define MAX_RULE_NAME 128
@@ -26,7 +29,7 @@
 #define REG_KEY_RUN _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
 #define HELP_URL _T("https://github.com/tabris17/traymond/wiki")
 
-#define MSG_HOTKEY_ERROR _T("无法注册系统热键，可能已被占用。")
+#define MSG_HOTKEY_ERROR _T("无法注册系统热键 %s，可能已被占用。\n可以在“选项”中修改热键设置。")
 #define MSG_MUTEX_ERROR _T("创建互斥对象失败，无法启动程序。")
 #define MSG_ALREADY_RUNNING _T("程序已经有实例在运行。")
 #define MSG_SAVE_FILE_ERROR _T("无法创建保存文件。")
@@ -41,10 +44,10 @@
 
 typedef BOOL(WINAPI *IsTopLevelWindow)(HWND hwnd);
 
-typedef struct HIDE_WINDOW_HOTKEY {
+typedef struct {
     UINT modifiers;
     UINT vkey;
-} HIDE_WINDOW_HOTKEY;
+} HOTKEY;
 
 typedef enum {
     HideTray = 0,
@@ -87,7 +90,8 @@ typedef struct TRCONTEXT {
     HIDE_TYPE hideType;
     BOOL autorun;
     BOOL autoHiding;
-    HIDE_WINDOW_HOTKEY hotkey;
+    HOTKEY hotkey;
+    HOTKEY hotkey2;
     HWINEVENTHOOK hook;
     HICON mainIcon;
     HINSTANCE instance;
@@ -104,6 +108,7 @@ typedef struct TRCONTEXT {
 int reviseHiddenWindowIcon(TRCONTEXT* context);
 bool minimizeWindow(TRCONTEXT* context, HWND currWin, bool restored = false);
 bool restoreWindow(TRCONTEXT* context, UINT xID, HWND hwnd = NULL);
+PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey);
 
 TRCONTEXT* AppContext();
 

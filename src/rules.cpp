@@ -128,7 +128,6 @@ inline static bool compareText(PTCHAR text, PTCHAR pattern, bool isRegex)
     else {
         return _tcscmp(text, pattern) == 0;
     }
-    return false;
 }
 
 bool matchRule(TRCONTEXT* context, HWND hwnd)
@@ -196,7 +195,7 @@ inline static bool testRegex(HWND hwnd, PTCHAR pattern)
         TREGEX expr(pattern);
     }
     catch (const std::regex_error&) {
-        _sntprintf_s(errMsg, MAX_MSG, TEXT_INVALID_REGEX, pattern);
+        _sntprintf_s(errMsg, _countof(errMsg) - 1, TEXT_INVALID_REGEX, pattern);
         MessageBox(hwnd, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
         return false;
     }
@@ -354,7 +353,7 @@ bool RuleEditor::append()
     }
     sync();
     TCHAR ruleName[MAX_RULE_NAME];
-    _sntprintf_s(ruleName, MAX_RULE_NAME, _T("* %s"), TEXT_NEW_RULE);
+    _sntprintf_s(ruleName, _countof(ruleName) - 1, _T("* %s"), TEXT_NEW_RULE);
     auto index = ListBox_AddString(ruleList, ruleName);
     ListBox_SetCurSel(ruleList, index);
     select();

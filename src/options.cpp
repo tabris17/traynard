@@ -132,26 +132,8 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     SendMessage(hwnd, WM_SETICON, FALSE, (LPARAM)context->mainIcon);
 
     HWND hotkeyEdit = GetDlgItem(hwnd, IDC_EDIT_HOTKEY);
-    TCHAR hotkeyText[MAX_MSG] = { NULL };
-    UINT modifiers = context->hotkey.modifiers, vkey = context->hotkey.vkey;
-    if (modifiers & MOD_WIN) {
-        _tcsnccat_s(hotkeyText, _T("Win"), MAX_MSG);
-    }
-    if (modifiers & MOD_CONTROL) {
-        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Ctrl") : _T("Ctrl"), MAX_MSG);
-    }
-    if (modifiers & MOD_SHIFT) {
-        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Shift") : _T("Shift"), MAX_MSG);
-    }
-    if (modifiers & MOD_ALT) {
-        _tcsnccat_s(hotkeyText, _tcsnlen(hotkeyText, MAX_MSG) ? _T(" + Alt") : _T("Alt"), MAX_MSG);
-    }
-    size_t l = _tcsnlen(hotkeyText, MAX_MSG);
-    if (l > 0) {
-        _tcsnccat_s(hotkeyText, _T(" + "), MAX_MSG);
-        l += 3;
-    }
-    GetKeyNameText(MapVirtualKey(vkey, MAPVK_VK_TO_VSC) << 16, hotkeyText + l, MAX_MSG - l);
+    TCHAR hotkeyText[MAX_HOTKEY_TEXT] = { NULL };
+    getHotkeyText(hotkeyText, _countof(hotkeyText), context->hotkey.modifiers, context->hotkey.vkey);
     SetWindowText(hotkeyEdit, hotkeyText);
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     CheckDlgButton(hwnd, IDC_CHECK_AUTO_HIDING, context->autoHiding);

@@ -83,6 +83,7 @@
     <Link />
     <Link>
       <AdditionalManifestDependencies>"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'";%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
+      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -103,6 +104,7 @@
     </Link>
     <Link>
       <AdditionalManifestDependencies>"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'";%(AdditionalManifestDependencies)</AdditionalManifestDependencies>
+      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <NullTerminateStrings>true</NullTerminateStrings>
@@ -122,6 +124,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\icons.cpp" />
     <ClCompile Include="src\options.cpp" />
     <ClCompile Include="src\traymond.cpp" />
     <ClCompile Include="src\rules.cpp" />
@@ -131,6 +134,7 @@
     <ResourceCompile Include="src\Traymond.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\icons.h" />
     <ClInclude Include="src\logging.h" />
     <ClInclude Include="src\options.h" />
     <ClInclude Include="src\resource.h" />

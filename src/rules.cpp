@@ -172,20 +172,23 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
     return editor->dispatchMessage(message, wParam, lParam);
 }
 
-void showRulesDlg(HWND parent, TRCONTEXT* context)
+INT_PTR showRulesDlg(HWND parent, TRCONTEXT* context)
 {
     static bool dialogOpened = false;
     if (dialogOpened) {
-        return;
+        return FALSE;
     }
-    auto editor = RuleEditor(context);
     dialogOpened = true;
-    DialogBoxParam(context->instance,
-        MAKEINTRESOURCE(IDD_DIALOG_WNDLST),
+    auto editor = RuleEditor(context);
+    auto result = DialogBoxParam(
+        context->instance,
+        MAKEINTRESOURCE(IDD_RULES),
         parent,
         (DLGPROC)DialogProc,
-        (LPARAM)&editor);
+        (LPARAM)&editor
+    );
     dialogOpened = false;
+    return result;
 }
 
 inline static bool testRegex(HWND hwnd, PTCHAR pattern)
@@ -272,9 +275,9 @@ void RuleEditor::initialize(HWND hwnd)
     textCheckBox = GetDlgItem(hwnd, IDC_CHECK_REGEX_TEXT);
     classCheckBox = GetDlgItem(hwnd, IDC_CHECK_REGEX_CLASS);
     pathCheckBox = GetDlgItem(hwnd, IDC_CHECK_REGEX_PATH);
-    saveButton = GetDlgItem(hwnd, IDSAVE);
-    removeButton = GetDlgItem(hwnd, IDREMOVE);
-    dropButton = GetDlgItem(hwnd, IDDROP);
+    saveButton = GetDlgItem(hwnd, IDC_SAVE);
+    removeButton = GetDlgItem(hwnd, IDC_REMOVE);
+    dropButton = GetDlgItem(hwnd, IDABORT);
     windowsCombo = GetDlgItem(hwnd, IDC_COMBO_WINDOWS);
     Edit_LimitText(nameEdit, MAX_RULE_NAME);
     Edit_LimitText(textEdit, MAX_WINDOW_TEXT);
@@ -294,16 +297,16 @@ bool RuleEditor::dispatchMessage(UINT message, WPARAM wParam, LPARAM lParam)
         case IDHELP:
             ShellExecute(window, _T("open"), HELP_URL, NULL, NULL, SW_SHOWNORMAL);
             break;
-        case IDDROP:
+        case IDABORT:
             drop();
             return TRUE;
         case IDCANCEL:
             return EndDialog(window, wParam);
-        case IDNEW:
+        case IDC_NEW:
             return append();
-        case IDREMOVE:
+        case IDC_REMOVE:
             return remove();
-        case IDSAVE:
+        case IDC_SAVE:
             return save();
         case IDC_LIST_RULES:
             switch (HIWORD(wParam)) {

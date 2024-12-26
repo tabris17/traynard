@@ -37,23 +37,37 @@ UINT ModToHotkey(UINT fsModifiers)
 }
 
 
+static void loadHotkey(PTCHAR key, HOTKEY *hotkey)
+{
+    DWORD data = 0, size = sizeof(DWORD);
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, key, RRF_RT_REG_DWORD, NULL, &data, &size)) {
+        auto vkey = LOWORD(data), modifiers = HIWORD(data);
+        if (vkey > 0 && modifiers > 0) {
+            hotkey->modifiers = modifiers;
+            hotkey->vkey = vkey;
+        }
+    }
+}
+
+
 void loadOptions(TRCONTEXT* context) 
 {
     context->hotkey.modifiers = MOD_KEY;
     context->hotkey.vkey = TRAY_KEY;
+    context->hotkey2.modifiers = 0;
+    context->hotkey2.vkey = 0;
+    context->hotkey3.modifiers = 0;
+    context->hotkey3.vkey = 0;
     context->autorun = FALSE;
     context->hideType = HideTray;
     context->autoHiding = FALSE;
     context->hook = NULL;
 
+    loadHotkey(_T("Hotkey"), &context->hotkey);
+    loadHotkey(_T("Hotkey2"), &context->hotkey2);
+    loadHotkey(_T("Hotkey3"), &context->hotkey3);
+
     DWORD data = 0, size = sizeof(DWORD);
-    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, _T("Hotkey"), RRF_RT_REG_DWORD, NULL, &data, &size)) {
-        auto vkey = LOWORD(data), modifiers = HIWORD(data);
-        if (vkey > 0 && modifiers > 0) {
-            context->hotkey.modifiers = modifiers;
-            context->hotkey.vkey = vkey;
-        }
-    }
 
     if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, _T("HideType"), RRF_RT_REG_DWORD, NULL, &data, &size)) {
         context->hideType = data ? HideMenu : HideTray;
@@ -76,6 +90,8 @@ void saveOptions(TRCONTEXT* context)
     if (ERROR_SUCCESS == RegCreateKey(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, &regKey)) {
         DWORD data = MAKELONG(context->hotkey.vkey, context->hotkey.modifiers);
         RegSetValueEx(regKey, _T("Hotkey"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        data = MAKELONG(context->hotkey2.vkey, context->hotkey2.modifiers);
+        RegSetValueEx(regKey, _T("Hotkey2"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->hideType;
         RegSetValueEx(regKey, _T("HideType"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->autoHiding;
@@ -95,27 +111,62 @@ void saveOptions(TRCONTEXT* context)
 }
 
 
-static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) 
+static HOTKEY_OPTIONS readHotkey(HWND dialog, int hotkeyId, UINT *modifiers, UINT *vkey)
 {
-    DWORD result = SendMessage(GetDlgItem(hwnd, IDC_HOTKEY), HKM_GETHOTKEY, 0, 0);
-    UINT vkey = LOBYTE(LOWORD(result));
-    UINT modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
-
-    if (IsDlgButtonChecked(hwnd, IDC_CHECK_USE_WIN)) {
-        modifiers |= MOD_WIN;
+    static struct {
+        int ctrlHotkeyId;
+        int ctrlCheckboxId;
+        PTCHAR caption;
+    } hotkeyInfoTable[] = {
+        { IDC_HOTKEY , IDC_CHECK_USE_WIN, TEXT_HOTKEY_HIDE },
+        { IDC_HOTKEY_2, IDC_CHECK_USE_WIN_2, TEXT_HOTKEY_MENU },
+    };
+    auto hotkeyInfo = hotkeyInfoTable + hotkeyId;
+    DWORD result = SendMessage(GetDlgItem(dialog, hotkeyInfo->ctrlHotkeyId), HKM_GETHOTKEY, 0, 0);
+    *vkey = LOBYTE(LOWORD(result));
+    *modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
+    IsDlgButtonChecked(dialog, hotkeyInfo->ctrlCheckboxId) && (*modifiers |= MOD_WIN);
+    if (*vkey == 0 && *modifiers == 0) {
+        return HOTKEY_OPTIONS_IGNORE;
     }
 
-    if (vkey > 0 && modifiers > 0) {
-        UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
-        if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, modifiers | MOD_NOREPEAT, vkey)) {
-            RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey);
-            MessageBox(hwnd, MSG_HOTKEY_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
-            return FALSE;
-        }
+    TCHAR errMsg[MAX_MSG]{ NULL };
+    if (*vkey == 0 || *modifiers == 0) {
+        _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_INVALID_HOTKEY, hotkeyInfo->caption);
+        MessageBox(dialog, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
+        return HOTKEY_OPTIONS_INVALID;
+    }
+
+    if (!tryRegisterHotkey(dialog, TEST_HOTKEY_ID, *modifiers, *vkey)) {
+        return HOTKEY_OPTIONS_INVALID;
+    }
+    UnregisterHotKey(dialog, TEST_HOTKEY_ID);
+    
+    return HOTKEY_OPTIONS_SUCCESS;
+}
+
+
+static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) 
+{
+    UINT modifiers, vkey, modifiers2, vkey2;
+    auto hotkeyOptions = readHotkey(hwnd, IDHOT_HIDE_WINDOW, &modifiers, &vkey),
+         hotkeyOptions2 = readHotkey(hwnd, IDHOT_POPUP_ICONS, &modifiers2, &vkey2);
+    if (HOTKEY_OPTIONS_INVALID == hotkeyOptions || HOTKEY_OPTIONS_INVALID == hotkeyOptions2) {
+        return FALSE;
+    }
+
+    if (HOTKEY_OPTIONS_SUCCESS == hotkeyOptions) {
+        UnregisterHotKey(context->mainWindow, IDHOT_HIDE_WINDOW);
+        RegisterHotKey(context->mainWindow, IDHOT_HIDE_WINDOW, modifiers | MOD_NOREPEAT, vkey);
         context->hotkey.modifiers = modifiers;
         context->hotkey.vkey = vkey;
     }
-
+    if (HOTKEY_OPTIONS_SUCCESS == hotkeyOptions2) {
+        UnregisterHotKey(context->mainWindow, IDHOT_POPUP_ICONS);
+        RegisterHotKey(context->mainWindow, IDHOT_POPUP_ICONS, modifiers2 | MOD_NOREPEAT, vkey2);
+        context->hotkey2.modifiers = modifiers2;
+        context->hotkey2.vkey = vkey2;
+    }
     context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
     context->autoHiding = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTO_HIDING);
     context->hideType = ComboBox_GetCurSel(GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE)) ? HideMenu : HideTray;
@@ -137,11 +188,11 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     SetWindowText(hotkeyEdit, hotkeyText);
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     CheckDlgButton(hwnd, IDC_CHECK_AUTO_HIDING, context->autoHiding);
-    Button_Enable(GetDlgItem(hwnd, IDC_BUTTON_WNDLST), context->autoHiding);
+    Button_Enable(GetDlgItem(hwnd, IDC_BUTTON_RULES), context->autoHiding);
 
     HWND hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
-    ComboBox_AddItemData(hideTypeCombo, COMBO_TEXT_TRAY);
-    ComboBox_AddItemData(hideTypeCombo, COMBO_TEXT_MENU);
+    ComboBox_AddItemData(hideTypeCombo, TEXT_TRAY);
+    ComboBox_AddItemData(hideTypeCombo, TEXT_MENU);
     ComboBox_SetCurSel(hideTypeCombo, context->hideType);
 
     return TRUE;
@@ -159,32 +210,34 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
         case IDCANCEL:
             return EndDialog(hwndDlg, wParam);
         case IDC_CHECK_AUTO_HIDING:
-            return Button_Enable(GetDlgItem(hwndDlg, IDC_BUTTON_WNDLST), IsDlgButtonChecked(hwndDlg, IDC_CHECK_AUTO_HIDING));
-        case IDC_BUTTON_WNDLST:
+            return Button_Enable(GetDlgItem(hwndDlg, IDC_BUTTON_RULES), IsDlgButtonChecked(hwndDlg, IDC_CHECK_AUTO_HIDING));
+        case IDC_BUTTON_RULES:
             showRulesDlg(hwndDlg, context);
             return TRUE;
         }
         break;
     case WM_INITDIALOG:
-        context = reinterpret_cast<TRCONTEXT*>(lParam);
-        return initDialog(hwndDlg, context);
+        return initDialog(hwndDlg, reinterpret_cast<TRCONTEXT*>(lParam));
     }
     return FALSE;
 }
 
 
-void showOptionsDlg(HWND parent, TRCONTEXT* context)
+INT_PTR showOptionsDlg(TRCONTEXT* context)
 {
     static bool dialogOpened = false;
     if (dialogOpened) {
-        return;
+        return FALSE;
     }
 
     dialogOpened = true;
-    DialogBoxParam(context->instance,
-                   MAKEINTRESOURCE(IDD_DIALOG_OPTIONS),
-                   parent,
-                   (DLGPROC)DialogProc,
-                   (LPARAM)context);
+    auto result = DialogBoxParam(
+        context->instance,
+        MAKEINTRESOURCE(IDD_OPTIONS),
+        HWND_DESKTOP,
+        (DLGPROC)DialogProc,
+        (LPARAM)context
+    );
     dialogOpened = false;
+    return result;
 }

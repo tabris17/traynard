@@ -18,10 +18,9 @@ bool applyRules(TRCONTEXT* context);
 bool saveRules(TRCONTEXT* context);
 bool clearRules(TRCONTEXT* context);
 bool matchRule(TRCONTEXT* context, HWND hwnd);
-void showRulesDlg(HWND parent, TRCONTEXT* context);
+INT_PTR showRulesDlg(HWND parent, TRCONTEXT* context);
 
-class RuleEditor 
-{
+class RuleEditor final {
 private:
     TRCONTEXT* context;
     HWND window = NULL;

@@ -12,6 +12,7 @@
 #include "winevent.h"
 #include "rules.h"
 #include "logging.h"
+#include "icons.h"
 
 HANDLE saveFile;
 TRCONTEXT appContext = {};
@@ -69,7 +70,7 @@ static void removeMenuItem(TRCONTEXT* context, int index) {
     }
 }
 
-static HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd) {
+HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd) {
     HICON icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_SMALL2, NULL);
     if (!icon) {
         icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICONSM);
@@ -186,7 +187,10 @@ bool restoreWindow(TRCONTEXT *context, UINT xID, HWND hwnd) {
     }
 
     auto currWin = icon->window;
-    IsWindow(currWin) && ShowWindow(currWin, SW_SHOW) && SetForegroundWindow(currWin);
+    if (IsWindow(currWin)) {
+      ShowWindow(currWin, SW_SHOW);
+      SetForegroundWindow(currWin);
+    }
 
     *icon = {};
     std::vector<HIDDEN_WINDOW> temp = std::vector<HIDDEN_WINDOW>(context->iconIndex);
@@ -302,9 +306,12 @@ static void createTrayIcon(HWND mainWindow, NOTIFYICONDATA* icon) {
 
 // Shows all hidden windows;
 static void showAllWindows(TRCONTEXT *context) {
+  context->hiddenWindows.clear();
   for (int i = 0; i < context->iconIndex; i++)
   {
+    auto currWin = context->icons[i].window;
     ShowWindow(context->icons[i].window, SW_SHOW);
+    context->freeWindows.insert(currWin);
     switch (context->icons[i].hideType) {
     case HideTray: Shell_NotifyIcon(NIM_DELETE, &context->icons[i].icon); break;
     case HideMenu: removeMenuItem(context, i); break;
@@ -319,8 +326,35 @@ static void exitApp() {
   PostQuitMessage(0);
 }
 
+static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+    if (hwnd == reinterpret_cast<HWND>(lParam)) {
+        SetLastError(TOP_LEVEL_WINDOW_ERROR);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+static BOOL WINAPI _IsTopLevelWindow(HWND hwnd) {
+    if (!EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(hwnd)) && GetLastError() == TOP_LEVEL_WINDOW_ERROR) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static void setupIsTopLevelWindow()
+{
+    auto user32Module = GetModuleHandle(_T("user32.dll"));
+    if (user32Module) {
+        isTopLevelWindow = (IsTopLevelWindow)GetProcAddress(user32Module, "IsTopLevelWindow");
+    }
+    if (NULL == isTopLevelWindow) {
+        isTopLevelWindow = _IsTopLevelWindow;
+    }
+}
+
 // Creates and reads the save file to restore hidden windows in case of unexpected termination
 static void startup(TRCONTEXT *context) {
+  setupIsTopLevelWindow();
   loadRules(context);
   applyRules(context);
   hookWinEvent(context);
@@ -389,7 +423,8 @@ static void shutdown(TRCONTEXT* context)
   clearRules(context);
 }
 
-static void onTaskbarRestart(TRCONTEXT* context) {
+static void onTaskbarRestart(TRCONTEXT* context)
+{
     NOTIFYICONDATA icon {};
     icon.hIcon = context->mainIcon;
     createTrayIcon(context->mainWindow, &icon);
@@ -403,8 +438,8 @@ static void onTaskbarRestart(TRCONTEXT* context) {
     }
 }
 
-static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-  
+static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
   static UINT taskbarRestart;
   TRCONTEXT* context = reinterpret_cast<TRCONTEXT*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
   POINT pt;
@@ -418,6 +453,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       restoreWindow(context, wParam);
     }
     break;
+  case WM_KEYDOWN:debugf("KEY DOWN"); break;
   case WM_OURICON:
     switch (lParam) {
     case WM_RBUTTONUP:
@@ -430,7 +466,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       );
       break;
     case WM_LBUTTONDBLCLK: 
-      showOptionsDlg(hwnd, context);
+      showOptionsDlg(context);
       break;
     }
     break;
@@ -447,10 +483,13 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
           exitApp();
           break;
         case IDM_OPTIONS:
-          showOptionsDlg(hwnd, context);
+          showOptionsDlg(context);
           break;
-        case IDM_RESTORE_ALL_WINDOW:
+        case IDM_RESTORE_ALL_WINDOWS:
           showAllWindows(context);
+          break;
+        case IDM_RESTORE_LAST_WINDOW:
+          restoreWindow(context, 0, context->icons[context->iconIndex - 1].window);
           break;
         default:
           restoreWindow(context, mii.dwItemData);
@@ -459,8 +498,18 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
       }
     }
     break;
-  case WM_HOTKEY: // We only have one hotkey, so no need to check the message
-    minimizeWindow(context, NULL);
+  case WM_HOTKEY:
+    switch (wParam) {
+    case IDHOT_HIDE_WINDOW:
+      minimizeWindow(context, NULL);
+      break;
+    case IDHOT_POPUP_ICONS:
+      showIconsDlg(context);
+      break;
+    case IDHOT_RESTORE_LAST_WINDOW:
+      restoreWindow(context, 0, context->icons[context->iconIndex - 1].window);
+      break;
+    }
     break;
   default:
     if (uMsg == taskbarRestart) {
@@ -469,21 +518,6 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
   return 0;
-}
-
-static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
-  if (hwnd == reinterpret_cast<HWND>(lParam)) {
-    SetLastError(TOP_LEVEL_WINDOW_ERROR);
-    return FALSE;
-  }
-  return TRUE;
-}
-
-static BOOL WINAPI _IsTopLevelWindow(HWND hwnd) {
-  if (!EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(hwnd)) && GetLastError() == TOP_LEVEL_WINDOW_ERROR) {
-    return TRUE;
-  }
-  return FALSE;
 }
 
 PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey)
@@ -524,6 +558,23 @@ PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey)
     return text;
 }
 
+bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey)
+{
+  if (modifiers == 0 || vkey == 0) {
+      return false;
+  }
+  if (RegisterHotKey(hwnd, id, modifiers | MOD_NOREPEAT, vkey)) {
+    return true;
+  }
+
+  TCHAR errMsg[MAX_MSG]{ NULL };
+  TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
+  getHotkeyText(hotkeyText, _countof(hotkeyText) - 1, modifiers, vkey);
+  _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_HOTKEY_ERROR, hotkeyText);
+  MessageBox(NULL, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
+  return false;
+}
+
 #pragma warning(push)
 #pragma warning(disable:4100)
 #pragma warning(disable:4189)
@@ -531,8 +582,6 @@ PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey)
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
     __LOGGING__;
 #pragma warning(pop)
-
-  TCHAR errMsg[MAX_MSG]{ NULL };
 
   // Mutex to allow only one instance
   HANDLE mutex = CreateMutex(NULL, TRUE, MUTEX_NAME);
@@ -544,36 +593,28 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     MessageBox(NULL, MSG_ALREADY_RUNNING, APP_NAME, MB_OK | MB_ICONERROR);
     return 1;
   }
-  
-  auto context = &appContext;
-  context->instance = hInstance;
-  context->cmdLine = GetCommandLine();
-  auto user32Module = GetModuleHandle(_T("user32.dll"));
-  if (user32Module) {
-    isTopLevelWindow = (IsTopLevelWindow)GetProcAddress(user32Module, "IsTopLevelWindow");
-  }
-  if (NULL == isTopLevelWindow) {
-    isTopLevelWindow = _IsTopLevelWindow;
-  }
-  loadOptions(context);
-
-  NOTIFYICONDATA icon = {};
-
-  BOOL bRet;
-  MSG msg;
 
   WNDCLASS wc = {};
   wc.lpfnWndProc = WindowProc;
   wc.hInstance = hInstance;
   wc.lpszClassName = APP_NAME;
-
   if (!RegisterClass(&wc)) {
-    return 1;
+      return 1;
   }
-  
-  context->mainWindow = CreateWindow(APP_NAME, NULL, NULL, 0, 0, 0, 0, NULL, NULL, hInstance, NULL);
-  context->mainIcon = icon.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TRAYMOND));
 
+  GetClassInfo(NULL, WC_DIALOG, &wc);
+  wc.style |= CS_DROPSHADOW;
+  wc.lpszClassName = _T(POPUP_CLASS);
+  if (!RegisterClass(&wc)) {
+      return 1;
+  }
+
+  auto context = &appContext;
+  context->instance = hInstance;
+  context->cmdLine = GetCommandLine();
+  loadOptions(context);
+
+  context->mainWindow = CreateWindow(APP_NAME, NULL, NULL, 0, 0, 0, 0, NULL, NULL, hInstance, NULL);
   if (!context->mainWindow) {
     return 1;
   }
@@ -582,17 +623,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   // Store our context in main window for retrieval by WindowProc
   SetWindowLongPtr(context->mainWindow, GWLP_USERDATA, reinterpret_cast<LONG>(context));
 
-  TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
-  if (!RegisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID, context->hotkey.modifiers | MOD_NOREPEAT, context->hotkey.vkey)) {
-    getHotkeyText(hotkeyText, _countof(hotkeyText) - 1, context->hotkey.modifiers, context->hotkey.vkey);
-    _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_HOTKEY_ERROR, hotkeyText);
-    MessageBox(NULL, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
-  }
-
+  NOTIFYICONDATA icon = {};
+  context->mainIcon = icon.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_TRAYMOND));
   createTrayIcon(context->mainWindow, &icon);
   context->trayMenu = createTrayMenu(context);
   startup(context);
 
+  tryRegisterHotkey(context->mainWindow, IDHOT_HIDE_WINDOW, context->hotkey.modifiers, context->hotkey.vkey);
+  tryRegisterHotkey(context->mainWindow, IDHOT_POPUP_ICONS, context->hotkey2.modifiers, context->hotkey2.vkey);
+  tryRegisterHotkey(context->mainWindow, IDHOT_RESTORE_LAST_WINDOW, context->hotkey3.modifiers, context->hotkey3.vkey);
+
+  BOOL bRet;
+  MSG msg;
   while ((bRet = GetMessage(&msg, 0, 0, 0)) != 0)
   {
     if (bRet != -1) {
@@ -601,14 +643,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     }
   }
   // Clean up on exit;
+  UnregisterHotKey(context->mainWindow, IDHOT_HIDE_WINDOW);
+  UnregisterHotKey(context->mainWindow, IDHOT_POPUP_ICONS);
+  UnregisterHotKey(context->mainWindow, IDHOT_RESTORE_LAST_WINDOW);
   showAllWindows(context);
   Shell_NotifyIcon(NIM_DELETE, &icon);
-  ReleaseMutex(mutex);
-  CloseHandle(mutex);
   DestroyMenu(context->trayMenu);
   DestroyWindow(context->mainWindow);
-  UnregisterHotKey(context->mainWindow, HIDE_WINDOW_HOTKEY_ID);
   shutdown(context);
+  ReleaseMutex(mutex);
+  CloseHandle(mutex);
   return msg.wParam;
 }
 

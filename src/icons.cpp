@@ -20,7 +20,8 @@ static BOOL initDialog(HWND hwnd, IconsDialog* state)
 
     SetWindowLongPtr(hwnd, GWL_EXSTYLE, WS_EX_TOOLWINDOW | WS_EX_TOPMOST);
     SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG>(state));
-    ListView_SetExtendedListViewStyle(listView, LVS_EX_BORDERSELECT | LVS_EX_AUTOSIZECOLUMNS | LVS_EX_FULLROWSELECT | LVS_EX_TRACKSELECT);
+    ListView_SetExtendedListViewStyle(listView, LVS_EX_BORDERSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_AUTOSIZECOLUMNS | LVS_EX_FULLROWSELECT | LVS_EX_TRACKSELECT);
+    ListView_SetHoverTime(listView, 0);
     ListView_SetImageList(listView, imageList, LVSIL_NORMAL);
     ListView_SetImageList(listView, imageList, LVSIL_SMALL);
 
@@ -76,7 +77,7 @@ static LRESULT CALLBACK DialogProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
         break;
     case WM_NOTIFY:
         if (wParam == IDC_ICON_LIST && 
-            reinterpret_cast<LPNMHDR>(lParam)->code == NM_DBLCLK) {
+            reinterpret_cast<LPNMHDR>(lParam)->code == NM_CLICK) {
 
             return restoreSelectedWindow(hwnd);
         }

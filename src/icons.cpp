@@ -34,7 +34,6 @@ static BOOL initDialog(HWND hwnd, IconsDialog* state)
     ListView_InsertColumn(listView, 0, &lvc);
 
     lvi.mask = LVIF_TEXT | LVIF_IMAGE;
-    lvi.cchTextMax = MAX_WINDOW_TEXT;
     for (int i = 0; i < context->iconIndex; i++) {
         TCHAR text[MAX_WINDOW_TEXT]{};
         HWND hiddenWindow = context->icons[i].window;

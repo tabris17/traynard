@@ -17,7 +17,7 @@
 #define IDD_ICONS                       104
 #define IDI_TRAYMOND                    201
 #define IDC_HOTKEY                      1000
-#define IDC_EDIT_HOTKEY                 1001
+#define IDC_HOTKEY_LIST                 1001
 #define IDC_CHECK_USE_WIN               1002
 #define IDC_CHECK_AUTORUN               1003
 #define IDC_COMBO_HIDE_TYPE             1004
@@ -33,6 +33,4 @@
 #define IDC_CHECK_REGEX_PATH            1014
 #define IDC_EDIT_NAME                   1015
 #define IDC_COMBO_WINDOWS               1016
-#define IDC_HOTKEY_2                    1017
-#define IDC_CHECK_USE_WIN_2             1018
 #define IDC_ICON_LIST                   1019

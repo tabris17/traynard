@@ -531,6 +531,8 @@ PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey)
     constexpr TCHAR KEY_APPEND_SHIFT[] = _T(" + Shift");
     constexpr TCHAR KEY_PLUS[] = _T(" + ");
 
+    text[0] = NULL;
+
     if (modifiers & MOD_WIN) {
         _tcsnccat_s(text, textSize, KEY_WIN, _countof(KEY_WIN));
     }

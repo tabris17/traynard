@@ -111,61 +111,49 @@ void saveOptions(TRCONTEXT* context)
 }
 
 
-static HOTKEY_OPTIONS readHotkey(HWND dialog, int hotkeyId, UINT *modifiers, UINT *vkey)
-{
-    static struct {
-        int ctrlHotkeyId;
-        int ctrlCheckboxId;
-        PTCHAR caption;
-    } hotkeyInfoTable[] = {
-        { IDC_HOTKEY , IDC_CHECK_USE_WIN, TEXT_HOTKEY_HIDE },
-        { IDC_HOTKEY_2, IDC_CHECK_USE_WIN_2, TEXT_HOTKEY_MENU },
-    };
-    auto hotkeyInfo = hotkeyInfoTable + hotkeyId;
-    DWORD result = SendMessage(GetDlgItem(dialog, hotkeyInfo->ctrlHotkeyId), HKM_GETHOTKEY, 0, 0);
-    *vkey = LOBYTE(LOWORD(result));
-    *modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
-    IsDlgButtonChecked(dialog, hotkeyInfo->ctrlCheckboxId) && (*modifiers |= MOD_WIN);
-    if (*vkey == 0 && *modifiers == 0) {
-        return HOTKEY_OPTIONS_IGNORE;
-    }
-
-    TCHAR errMsg[MAX_MSG]{ NULL };
-    if (*vkey == 0 || *modifiers == 0) {
-        _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_INVALID_HOTKEY, hotkeyInfo->caption);
-        MessageBox(dialog, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
-        return HOTKEY_OPTIONS_INVALID;
-    }
-
-    if (!tryRegisterHotkey(dialog, TEST_HOTKEY_ID, *modifiers, *vkey)) {
-        return HOTKEY_OPTIONS_INVALID;
-    }
-    UnregisterHotKey(dialog, TEST_HOTKEY_ID);
-    
-    return HOTKEY_OPTIONS_SUCCESS;
-}
-
-
 static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) 
 {
-    UINT modifiers, vkey, modifiers2, vkey2;
-    auto hotkeyOptions = readHotkey(hwnd, IDHOT_HIDE_WINDOW, &modifiers, &vkey),
-         hotkeyOptions2 = readHotkey(hwnd, IDHOT_POPUP_ICONS, &modifiers2, &vkey2);
-    if (HOTKEY_OPTIONS_INVALID == hotkeyOptions || HOTKEY_OPTIONS_INVALID == hotkeyOptions2) {
-        return FALSE;
+    UINT hotkeyIds[] = { IDHOT_HIDE_WINDOW, IDHOT_POPUP_ICONS, IDHOT_RESTORE_LAST_WINDOW };
+    HOTKEY* hotkeys[] = { &context->hotkey, &context->hotkey2, &context->hotkey3 };
+    HOTKEY readHotkeys[_countof(hotkeyIds)]{0};
+    auto listView = GetDlgItem(hwnd, IDC_HOTKEY_LIST);
+    LVITEM lvi{};
+    lvi.mask = LVIF_PARAM;
+    lvi.iSubItem = 0;
+    for (int i = 0; i < _countof(readHotkeys); i++) {
+        auto readHotkey = &readHotkeys[i];
+        auto hotkey = hotkeys[i];
+        lvi.iItem = i;
+        if (ListView_GetItem(listView, &lvi)) {
+            readHotkey->modifiers = HotkeyToMod(HIBYTE(LOWORD(lvi.lParam)));
+            readHotkey->vkey = LOBYTE(LOWORD(lvi.lParam));
+            if (hotkey->modifiers == readHotkey->modifiers && hotkey->vkey == readHotkey->vkey) {
+                hotkeys[i] = nullptr;
+                continue;
+            }
+            if (lvi.lParam == 0) {
+                continue;
+            }
+            if (!tryRegisterHotkey(hwnd, TEST_HOTKEY_ID, readHotkey->modifiers, readHotkey->vkey)) {
+                return FALSE;
+            }
+            UnregisterHotKey(hwnd, TEST_HOTKEY_ID);
+        }
     }
-
-    if (HOTKEY_OPTIONS_SUCCESS == hotkeyOptions) {
-        UnregisterHotKey(context->mainWindow, IDHOT_HIDE_WINDOW);
-        RegisterHotKey(context->mainWindow, IDHOT_HIDE_WINDOW, modifiers | MOD_NOREPEAT, vkey);
-        context->hotkey.modifiers = modifiers;
-        context->hotkey.vkey = vkey;
-    }
-    if (HOTKEY_OPTIONS_SUCCESS == hotkeyOptions2) {
-        UnregisterHotKey(context->mainWindow, IDHOT_POPUP_ICONS);
-        RegisterHotKey(context->mainWindow, IDHOT_POPUP_ICONS, modifiers2 | MOD_NOREPEAT, vkey2);
-        context->hotkey2.modifiers = modifiers2;
-        context->hotkey2.vkey = vkey2;
+    for (int i = 0; i < _countof(hotkeys); i++) {
+        auto hotkeyId = hotkeyIds[i];
+        auto readHotkey = readHotkeys[i];
+        auto hotkey = hotkeys[i];
+        if (hotkey == nullptr) {
+            continue;
+        }
+        printf("hotkey id %d; vkey: %d; modifiers: %d\n", i, readHotkey.vkey, readHotkey.modifiers);
+        UnregisterHotKey(context->mainWindow, hotkeyId);
+        if (readHotkey.modifiers > 0 && readHotkey.vkey > 0) {
+            RegisterHotKey(context->mainWindow, hotkeyId, readHotkey.modifiers | MOD_NOREPEAT, readHotkey.vkey);
+        }
+        hotkey->modifiers = readHotkey.modifiers;
+        hotkey->vkey = readHotkey.vkey;
     }
     context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
     context->autoHiding = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTO_HIDING);
@@ -182,19 +170,122 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     SendMessage(hwnd, WM_SETICON, TRUE, (LPARAM)context->mainIcon);
     SendMessage(hwnd, WM_SETICON, FALSE, (LPARAM)context->mainIcon);
 
-    HWND hotkeyEdit = GetDlgItem(hwnd, IDC_EDIT_HOTKEY);
-    TCHAR hotkeyText[MAX_HOTKEY_TEXT] = { NULL };
-    getHotkeyText(hotkeyText, _countof(hotkeyText), context->hotkey.modifiers, context->hotkey.vkey);
-    SetWindowText(hotkeyEdit, hotkeyText);
+    auto listView = GetDlgItem(hwnd, IDC_HOTKEY_LIST);
+    ListView_SetExtendedListViewStyle(listView, LVS_EX_BORDERSELECT | LVS_EX_FULLROWSELECT);
+    LVCOLUMN lvc{};
+    lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+    lvc.fmt = LVCFMT_LEFT;
+    lvc.cx = 148;
+    lvc.pszText = TEXT_COL_KEY;
+    ListView_InsertColumn(listView, 0, &lvc);
+    lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+    lvc.fmt = LVCFMT_LEFT;
+    lvc.cx = 120;
+    lvc.pszText = TEXT_COL_ACTION;
+    ListView_InsertColumn(listView, 1, &lvc);
+
+    TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
+    PTCHAR actions[] = { TEXT_ACT_1, TEXT_ACT_2, TEXT_ACT_3 };
+    LVITEM lvi{};
+    lvi.mask = LVIF_TEXT;
+    for (int i = 0; i < _countof(actions); i++) {
+        lvi.iSubItem = 0;
+        lvi.iItem = i;
+        lvi.pszText = NULL;
+        ListView_InsertItem(listView, &lvi);
+        lvi.iSubItem = 1;
+        lvi.pszText = actions[i];
+        ListView_SetItem(listView, &lvi);
+    }
+
+    HOTKEY* hotkeys[] = { &context->hotkey, &context->hotkey2, &context->hotkey3 };
+    lvi.mask = LVIF_TEXT | LVIF_PARAM;
+    lvi.iSubItem = 0;
+    for (int i = 0; i < _countof(hotkeys); i++) {
+        auto hotkey = hotkeys[i];
+        if (hotkey->modifiers == 0 || hotkey->vkey == 0) {
+            continue;
+        }
+        getHotkeyText(hotkeyText, _countof(hotkeyText), hotkey->modifiers, hotkey->vkey);
+        lvi.pszText = hotkeyText;
+        lvi.iItem = i;
+        lvi.lParam = MAKEWORD(hotkey->vkey, ModToHotkey(hotkey->modifiers));
+        ListView_SetItem(listView, &lvi);
+    }
+
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     CheckDlgButton(hwnd, IDC_CHECK_AUTO_HIDING, context->autoHiding);
     Button_Enable(GetDlgItem(hwnd, IDC_BUTTON_RULES), context->autoHiding);
 
-    HWND hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
+    auto hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
     ComboBox_AddItemData(hideTypeCombo, TEXT_TRAY);
     ComboBox_AddItemData(hideTypeCombo, TEXT_MENU);
     ComboBox_SetCurSel(hideTypeCombo, context->hideType);
 
+    return TRUE;
+}
+
+
+static BOOL onHotkeyListItemChanged(HWND hwndDlg)
+{
+    auto hotkeyListView = GetDlgItem(hwndDlg, IDC_HOTKEY_LIST);
+    auto hotkeyEdit = GetDlgItem(hwndDlg, IDC_HOTKEY);
+    auto hotkeyUseWinCheck = GetDlgItem(hwndDlg, IDC_CHECK_USE_WIN);
+    auto selectedIndex = ListView_GetNextItem(GetDlgItem(hwndDlg, IDC_HOTKEY_LIST), -1, LVNI_SELECTED);
+    if (selectedIndex < 0) {
+        return FALSE;
+    }
+
+    LVITEM lvi{};
+    lvi.mask = LVIF_PARAM;
+    lvi.iItem = selectedIndex;
+    lvi.iSubItem = 0;
+    if (!ListView_GetItem(hotkeyListView, &lvi)) {
+        return FALSE;
+    }
+
+    EnableWindow(hotkeyEdit, TRUE);
+    EnableWindow(hotkeyUseWinCheck, TRUE);
+
+    SendMessage(hotkeyEdit, HKM_SETHOTKEY, lvi.lParam, 0);
+
+    auto modifers = HotkeyToMod(HIBYTE(LOWORD(lvi.lParam)));
+    return CheckDlgButton(hwndDlg, IDC_CHECK_USE_WIN, (modifers & MOD_WIN) ? BST_CHECKED : BST_UNCHECKED);
+}
+
+
+static BOOL onHotkeyChanged(HWND hwndDlg)
+{
+    auto hotkeyListView = GetDlgItem(hwndDlg, IDC_HOTKEY_LIST);
+    auto hotkeyEdit = GetDlgItem(hwndDlg, IDC_HOTKEY);
+    auto selectedIndex = ListView_GetNextItem(GetDlgItem(hwndDlg, IDC_HOTKEY_LIST), -1, LVNI_SELECTED);
+    if (selectedIndex < 0) {
+        return FALSE;
+    }
+
+    UINT vkey, modifiers;
+    DWORD result = SendMessage(hotkeyEdit, HKM_GETHOTKEY, 0, 0);
+    vkey = LOBYTE(LOWORD(result));
+    modifiers = HotkeyToMod(HIBYTE(LOWORD(result)));
+    if (BST_UNCHECKED != IsDlgButtonChecked(hwndDlg, IDC_CHECK_USE_WIN)) {
+        modifiers |= MOD_WIN;
+    }
+    else {
+        modifiers &= ~MOD_WIN;
+    }
+
+    if (vkey + modifiers > 0 && (vkey == 0 || modifiers == 0)) {
+        return FALSE;
+    }
+    TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
+    LVITEM lvi{};
+    lvi.mask = LVIF_TEXT | LVIF_PARAM;
+    lvi.iSubItem = 0;
+    lvi.pszText = hotkeyText;
+    lvi.iItem = selectedIndex;
+    getHotkeyText(hotkeyText, _countof(hotkeyText), modifiers, vkey);
+    lvi.lParam = MAKEWORD(vkey, ModToHotkey(modifiers));
+    ListView_SetItem(hotkeyListView, &lvi);
     return TRUE;
 }
 
@@ -214,6 +305,25 @@ static BOOL CALLBACK DialogProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARA
         case IDC_BUTTON_RULES:
             showRulesDlg(hwndDlg, context);
             return TRUE;
+        case IDC_HOTKEY:
+            if (HIWORD(wParam) == EN_CHANGE) {
+                return onHotkeyChanged(hwndDlg);
+            }
+            break;
+        case IDC_CHECK_USE_WIN:
+            return onHotkeyChanged(hwndDlg);
+        }
+        break;
+    case WM_NOTIFY:
+        switch (LOWORD(wParam)) {
+        case IDC_HOTKEY_LIST:
+            if (LVN_ITEMCHANGED == reinterpret_cast<LPNMHDR>(lParam)->code &&
+                (reinterpret_cast<LPNMLISTVIEW>(lParam)->uChanged & LVIF_STATE) &&
+                (reinterpret_cast<LPNMLISTVIEW>(lParam)->uNewState & LVIS_SELECTED)) {
+
+                onHotkeyListItemChanged(hwndDlg);
+            }
+            break;
         }
         break;
     case WM_INITDIALOG:

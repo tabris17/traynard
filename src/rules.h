@@ -4,8 +4,6 @@
 #define TEXT_UNSAVED _T("当前编辑的规则未保存。是否要保存？")
 #define TEXT_RULE_INFO_REQUIRED _T("必须输入完整的规则信息")
 #define TEXT_INVALID_REGEX _T("\"%s\" 不是正经的正则表达式")
-#define ENTER_EDIT(_WND_)
-#define LEAVE_EDIT(_WND_)
 
 #ifdef UNICODE
 #define TREGEX std::wregex
@@ -17,7 +15,8 @@ bool loadRules(TRCONTEXT* context);
 bool applyRules(TRCONTEXT* context);
 bool saveRules(TRCONTEXT* context);
 bool clearRules(TRCONTEXT* context);
-bool matchRule(TRCONTEXT* context, HWND hwnd);
+_Success_(return)
+bool matchRule(TRCONTEXT* context, HWND hwnd, _Out_ bool *showNotification);
 INT_PTR showRulesDlg(HWND parent, TRCONTEXT* context);
 
 class RuleEditor final {
@@ -26,6 +25,7 @@ private:
     HWND window = NULL;
     HWND ruleList = NULL;
     HWND nameEdit = NULL;
+    HWND showNotificationCheckBox = NULL;
     HWND textEdit = NULL;
     HWND classEdit = NULL;
     HWND pathEdit = NULL;

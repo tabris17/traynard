@@ -74,8 +74,12 @@ static void WINAPI AutoHidingWinEventProc(HWINEVENTHOOK hWinEventHook,
     }
 
     auto context = AppContext();
-    if (!SET_CONTAINS(context->freeWindows, hwnd) && matchRule(context, hwnd)) {
+    bool showNotification = false;
+    if (!SET_CONTAINS(context->freeWindows, hwnd) && matchRule(context, hwnd, &showNotification)) {
         minimizeWindow(context, hwnd);
+        if (showNotification) {
+            notifyHidingWindow(context, hwnd);
+        }
     }
 }
 

@@ -41,6 +41,7 @@
 #define MSG_TOO_MANY_HIDDEN_WINDOWS _T("隐藏太多窗口，请先释放一些。")
 #define MSG_RESTORE_FROM_UNEXPECTED_TERMINATION _T("程序先前意外终止。已恢复 %d 个隐藏窗口。")
 #define MSG_INVALID_HOTKEY _T("为「%s」设置的热键无效。")
+#define MSG_HIDING_WINDOW _T("最小化窗口至托盘")
 
 #define APPLICATION_ERROR_CODE 0x10000000
 #define TOP_LEVEL_WINDOW_ERROR (APPLICATION_ERROR_CODE | 1)
@@ -83,6 +84,7 @@ typedef struct HIDING_RULE {
     bool isWindowTextRegex;
     bool isWindowClassNameRegex;
     bool isExeFileNameRegex;
+    bool showNotification;
     TCHAR ruleData[0];
 } HIDING_RULE;
 #pragma warning(push)
@@ -118,6 +120,7 @@ bool restoreWindow(TRCONTEXT* context, UINT xID, HWND hwnd = NULL);
 PTCHAR getHotkeyText(PTCHAR text, rsize_t textSize, UINT modifiers, UINT vkey);
 bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey);
 HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd);
+BOOL notifyHidingWindow(TRCONTEXT* context, HWND hwnd);
 
 TRCONTEXT* AppContext();
 

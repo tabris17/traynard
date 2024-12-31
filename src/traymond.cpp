@@ -304,6 +304,26 @@ static void createTrayIcon(HWND mainWindow, NOTIFYICONDATA* icon) {
   Shell_NotifyIcon(NIM_SETVERSION, icon);
 }
 
+BOOL notifyHidingWindow(TRCONTEXT* context, HWND hwnd)
+{
+    TCHAR message[MAX_MSG]{ NULL };
+    TCHAR windowText[MAX_WINDOW_TEXT]{ NULL };
+    TCHAR exeFileName[MAX_PATH]{ NULL };
+    GetWindowText(hwnd, windowText, MAX_WINDOW_TEXT);
+    GetWindowExeFileName(hwnd, exeFileName, MAX_PATH);
+    _stprintf_s(message, _T("%s:\n%s"), windowText, exeFileName);
+    auto mainWindow = context->mainWindow;
+    NOTIFYICONDATA icon{};
+    icon.cbSize = sizeof(icon);
+    icon.hWnd = mainWindow;
+    icon.uFlags = NIF_INFO;
+    icon.uVersion = NOTIFYICON_VERSION;
+    icon.uID = reinterpret_cast<UINT>(mainWindow);
+    _tcscpy_s(icon.szInfo, message);
+    _tcscpy_s(icon.szInfoTitle, MSG_HIDING_WINDOW);
+    return Shell_NotifyIcon(NIM_MODIFY, &icon);
+}
+
 // Shows all hidden windows;
 static void showAllWindows(TRCONTEXT *context) {
   context->hiddenWindows.clear();

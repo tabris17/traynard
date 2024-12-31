@@ -85,8 +85,12 @@ bool loadRules(TRCONTEXT* context)
 
 static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
     auto context = reinterpret_cast<TRCONTEXT*>(lParam);
-    if (IsWindowVisible(hwnd) && matchRule(context, hwnd)) {
+    bool showNotification = false;
+    if (IsWindowVisible(hwnd) && matchRule(context, hwnd, &showNotification)) {
         minimizeWindow(context, hwnd);
+        if (showNotification) {
+            notifyHidingWindow(context, hwnd);
+        }
     }
     return TRUE;
 }
@@ -130,7 +134,8 @@ inline static bool compareText(PTCHAR text, PTCHAR pattern, bool isRegex)
     }
 }
 
-bool matchRule(TRCONTEXT* context, HWND hwnd)
+_Success_(return)
+bool matchRule(TRCONTEXT* context, HWND hwnd, _Out_ bool *showNotification)
 {
     TCHAR windowText[MAX_WINDOW_TEXT] {};
     TCHAR className[MAX_CLASS_NAME] {};
@@ -155,6 +160,7 @@ bool matchRule(TRCONTEXT* context, HWND hwnd)
         if (!compareText(exeFileName, text, rule->isExeFileNameRegex)) {
             continue;
         }
+        *showNotification = rule->showNotification;
         return true;
     }
     return false;
@@ -219,7 +225,8 @@ HIDING_RULE* RuleEditor::newRule()
          exeFileNameSize = Edit_GetText(pathEdit, exeFileName, MAX_PATH) + 1;
     bool isWindowTextRegex = Button_GetCheck(textCheckBox) == BST_CHECKED,
          isWindowClassNameRegex = Button_GetCheck(classCheckBox) == BST_CHECKED,
-         isExeFileNameRegex = Button_GetCheck(pathCheckBox) == BST_CHECKED;
+         isExeFileNameRegex = Button_GetCheck(pathCheckBox) == BST_CHECKED,
+         showNotification = Button_GetCheck(showNotificationCheckBox) == BST_CHECKED;
     
     if (ruleNameSize == 1 || windowTextSize == 1 || windowClassNameSize == 1 || exeFileNameSize == 1) {
         MessageBox(window, TEXT_RULE_INFO_REQUIRED, APP_NAME, MB_OK | MB_ICONWARNING);
@@ -242,6 +249,7 @@ HIDING_RULE* RuleEditor::newRule()
     rule->isWindowTextRegex = isWindowTextRegex;
     rule->isWindowClassNameRegex = isWindowClassNameRegex;
     rule->isExeFileNameRegex = isExeFileNameRegex;
+    rule->showNotification = showNotification;
     PTCHAR ruleDataOffset = rule->ruleData;
     memcpy(ruleDataOffset, ruleName, ruleNameSize * sizeof(TCHAR));
     ruleDataOffset += ruleNameSize;
@@ -268,9 +276,10 @@ void RuleEditor::initialize(HWND hwnd)
     SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG>(this));
     window = hwnd;
     ruleList = GetDlgItem(hwnd, IDC_LIST_RULES);
-    nameEdit = GetDlgItem(hwnd, IDC_EDIT_NAME),
-    textEdit = GetDlgItem(hwnd, IDC_EDIT_TEXT),
-    classEdit = GetDlgItem(hwnd, IDC_EDIT_CLASS),
+    nameEdit = GetDlgItem(hwnd, IDC_EDIT_NAME);
+    showNotificationCheckBox = GetDlgItem(hwnd, IDC_CHECK_SHOW_NOTIFICATION);
+    textEdit = GetDlgItem(hwnd, IDC_EDIT_TEXT);
+    classEdit = GetDlgItem(hwnd, IDC_EDIT_CLASS);
     pathEdit = GetDlgItem(hwnd, IDC_EDIT_PATH);
     textCheckBox = GetDlgItem(hwnd, IDC_CHECK_REGEX_TEXT);
     classCheckBox = GetDlgItem(hwnd, IDC_CHECK_REGEX_CLASS);
@@ -327,6 +336,7 @@ bool RuleEditor::dispatchMessage(UINT message, WPARAM wParam, LPARAM lParam)
         case IDC_CHECK_REGEX_CLASS:
         case IDC_CHECK_REGEX_PATH:
         case IDC_CHECK_REGEX_TEXT:
+        case IDC_CHECK_SHOW_NOTIFICATION:
             touch();
             break;
         case IDC_COMBO_WINDOWS:
@@ -393,9 +403,11 @@ void RuleEditor::enable(bool val)
     Button_SetCheck(textCheckBox, BST_UNCHECKED);
     Button_SetCheck(classCheckBox, BST_UNCHECKED);
     Button_SetCheck(pathCheckBox, BST_UNCHECKED);
+    Button_SetCheck(showNotificationCheckBox, BST_UNCHECKED);
     Button_Enable(textCheckBox, val);
     Button_Enable(classCheckBox, val);
     Button_Enable(pathCheckBox, val);
+    Button_Enable(showNotificationCheckBox, val);
     ComboBox_Enable(windowsCombo, val);
     Edit_SetText(nameEdit, NULL);
     Edit_SetText(textEdit, NULL);
@@ -472,6 +484,7 @@ void RuleEditor::select()
         Button_SetCheck(textCheckBox, rule->isWindowTextRegex ? BST_CHECKED : BST_UNCHECKED);
         Button_SetCheck(classCheckBox, rule->isWindowClassNameRegex ? BST_CHECKED : BST_UNCHECKED);
         Button_SetCheck(pathCheckBox, rule->isExeFileNameRegex ? BST_CHECKED : BST_UNCHECKED);
+        Button_SetCheck(showNotificationCheckBox, rule->showNotification ? BST_CHECKED : BST_UNCHECKED);
     }
     isBusy = false;
 }
@@ -481,6 +494,7 @@ void RuleEditor::fill()
     Button_SetCheck(textCheckBox, BST_UNCHECKED);
     Button_SetCheck(classCheckBox, BST_UNCHECKED);
     Button_SetCheck(pathCheckBox, BST_UNCHECKED);
+    Button_SetCheck(showNotificationCheckBox, BST_UNCHECKED);
     
     auto index = ComboBox_GetItemData(windowsCombo, ComboBox_GetCurSel(windowsCombo));
     if (index >= context->iconIndex) {

@@ -34,3 +34,4 @@
 #define IDC_EDIT_NAME                   1015
 #define IDC_COMBO_WINDOWS               1016
 #define IDC_ICON_LIST                   1019
+#define IDC_CHECK_SHOW_NOTIFICATION     1020

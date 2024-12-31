@@ -43,4 +43,4 @@ Traymond（增强版）是一款能将任意窗口最小化到系统托盘的 Wi
 
 ![自定义隐藏窗口规则](images/rules.png)
 
-具体设置方法请参考项目[维基](/tabris17/traymond/wiki)。
+具体设置方法请参考项目[维基](https://github.com/tabris17/traymond/wiki)。

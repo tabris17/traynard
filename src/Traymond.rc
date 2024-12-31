@@ -60,11 +60,11 @@ BEGIN
         BLOCK "000904b0"
         BEGIN
             VALUE "FileDescription", "Traymond"
-            VALUE "FileVersion", "2.0.1"
+            VALUE "FileVersion", "2.1.0"
             VALUE "InternalName", "Traymond.exe"
             VALUE "OriginalFilename", "Traymond.exe"
             VALUE "ProductName", "Traymond"
-            VALUE "ProductVersion", "2.0.1"
+            VALUE "ProductVersion", "2.1.0"
             VALUE "Comment", "https://github.com/tabris17/traymond"
         END
     END

@@ -1,7 +1,7 @@
 //
 #pragma once
 
-#define TEXT_TRAY _T("系统托盘")
+#define TEXT_TRAY _T("托盘图标")
 #define TEXT_MENU _T("右键菜单")
 #define TEXT_HOTKEY_HIDE _T("隐藏窗口热键")
 #define TEXT_HOTKEY_MENU _T("菜单热键")

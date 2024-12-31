@@ -92,6 +92,8 @@ void saveOptions(TRCONTEXT* context)
         RegSetValueEx(regKey, _T("Hotkey"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = MAKELONG(context->hotkey2.vkey, context->hotkey2.modifiers);
         RegSetValueEx(regKey, _T("Hotkey2"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        data = MAKELONG(context->hotkey3.vkey, context->hotkey3.modifiers);
+        RegSetValueEx(regKey, _T("Hotkey3"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->hideType;
         RegSetValueEx(regKey, _T("HideType"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->autoHiding;

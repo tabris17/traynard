@@ -1,4 +1,4 @@
-CPPFLAGS=/nologo /EHsc /O2 /GL /GS /Oi /MD /D "_UNICODE" /D "UNICODE"
+CPPFLAGS=/nologo /EHsc /O2 /GL /GS /Oi /MD /D "_UNICODE" /D "UNICODE" /Zc:inline
 RFLAGS=/nologo /n /r
 
 {src\}.cpp.obj:

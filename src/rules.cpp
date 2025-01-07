@@ -204,7 +204,7 @@ inline static bool testRegex(HWND hwnd, PTCHAR pattern)
         TREGEX expr(pattern);
     }
     catch (const std::regex_error&) {
-        _sntprintf_s(errMsg, _countof(errMsg) - 1, TEXT_INVALID_REGEX, pattern);
+        _sntprintf_s(errMsg, _countof(errMsg) - 1, ResourceString(NULL, IDS_INVALID_REGEX), pattern);
         MessageBox(hwnd, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
         return false;
     }
@@ -229,7 +229,7 @@ HIDING_RULE* RuleEditor::newRule()
          showNotification = Button_GetCheck(showNotificationCheckBox) == BST_CHECKED;
     
     if (ruleNameSize == 1 || windowTextSize == 1 || windowClassNameSize == 1 || exeFileNameSize == 1) {
-        MessageBox(window, TEXT_RULE_INFO_REQUIRED, APP_NAME, MB_OK | MB_ICONWARNING);
+        MessageBox(window, ResourceString(NULL, IDS_RULE_INFO_REQUIRED), APP_NAME, MB_OK | MB_ICONWARNING);
         return NULL;
     }
 
@@ -353,7 +353,7 @@ bool RuleEditor::dispatchMessage(UINT message, WPARAM wParam, LPARAM lParam)
 bool RuleEditor::append()
 {
     if (dirty()) {
-        switch (MessageBox(window, TEXT_UNSAVED, APP_NAME, MB_YESNOCANCEL | MB_ICONQUESTION)) {
+        switch (MessageBox(window, ResourceString(NULL, IDS_UNSAVED), APP_NAME, MB_YESNOCANCEL | MB_ICONQUESTION)) {
         case IDYES:
             save();
             break;
@@ -366,12 +366,12 @@ bool RuleEditor::append()
     }
     sync();
     TCHAR ruleName[MAX_RULE_NAME];
-    _sntprintf_s(ruleName, _countof(ruleName) - 1, _T("* %s"), TEXT_NEW_RULE);
+    _sntprintf_s(ruleName, _countof(ruleName) - 1, _T("* %s"), ResourceString(NULL, IDS_NEW_RULE));
     auto index = ListBox_AddString(ruleList, ruleName);
     ListBox_SetCurSel(ruleList, index);
     select();
     enable();
-    Edit_SetText(nameEdit, TEXT_NEW_RULE);
+    Edit_SetText(nameEdit, ResourceString(NULL, IDS_NEW_RULE));
     return TRUE;
 }
 

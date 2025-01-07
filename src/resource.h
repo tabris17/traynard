@@ -35,3 +35,25 @@
 #define IDC_COMBO_WINDOWS               1016
 #define IDC_ICON_LIST                   1019
 #define IDC_CHECK_SHOW_NOTIFICATION     1020
+
+#define IDS_HOTKEY_ERROR                2001
+#define IDS_MUTEX_ERROR                 2002
+#define IDS_ALREADY_RUNNING             2003
+#define IDS_SAVE_FILE_ERROR             2004
+#define IDS_TOO_MANY_HIDDEN_WINDOWS     2005
+#define IDS_RESTORE_FROM_UNEXPECTED_TERMINATION 2006
+#define IDS_INVALID_HOTKEY              2007
+#define IDS_HIDING_WINDOW               2008
+#define IDS_TRAY                        2009
+#define IDS_MENU                        2010
+#define IDS_HOTKEY_HIDE                 2011
+#define IDS_HOTKEY_MENU                 2012
+#define IDS_COL_KEY                     2013
+#define IDS_COL_ACTION                  2014
+#define IDS_ACT_1                       2015
+#define IDS_ACT_2                       2016
+#define IDS_ACT_3                       2017
+#define IDS_NEW_RULE                    2018
+#define IDS_UNSAVED                     2019
+#define IDS_RULE_INFO_REQUIRED          2020
+#define IDS_INVALID_REGEX               2021

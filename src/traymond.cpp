@@ -17,6 +17,7 @@
 HANDLE saveFile;
 TRCONTEXT appContext = {};
 
+
 // Saves our hidden windows so they can be restored in case
 // of crashing.
 static void save(const TRCONTEXT *context) {
@@ -244,7 +245,7 @@ bool minimizeWindow(TRCONTEXT *context, HWND currWin, bool restored) {
   }
 
   if (context->iconIndex == MAXIMUM_WINDOWS) {
-    MessageBox(NULL, MSG_TOO_MANY_HIDDEN_WINDOWS, APP_NAME, MB_OK | MB_ICONERROR);
+    MessageBox(NULL, ResourceString(NULL, IDS_TOO_MANY_HIDDEN_WINDOWS), APP_NAME, MB_OK | MB_ICONERROR);
     return false;
   }
 
@@ -320,7 +321,7 @@ BOOL notifyHidingWindow(TRCONTEXT* context, HWND hwnd)
     icon.uVersion = NOTIFYICON_VERSION;
     icon.uID = reinterpret_cast<UINT>(mainWindow);
     _tcscpy_s(icon.szInfo, message);
-    _tcscpy_s(icon.szInfoTitle, MSG_HIDING_WINDOW);
+    _tcscpy_s(icon.szInfoTitle, ResourceString(NULL, IDS_HIDING_WINDOW));
     return Shell_NotifyIcon(NIM_MODIFY, &icon);
 }
 
@@ -389,7 +390,7 @@ static void startup(TRCONTEXT *context) {
   SetCurrentDirectory(currDir);
   if ((saveFile = CreateFile(SAVE_FILE_NAME, GENERIC_READ | GENERIC_WRITE, \
     0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL)) == INVALID_HANDLE_VALUE) {
-    MessageBox(NULL, MSG_SAVE_FILE_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
+    MessageBox(NULL, ResourceString(NULL, IDS_SAVE_FILE_ERROR), APP_NAME, MB_OK | MB_ICONERROR);
     exitApp();
   }
   // Check if we've crashed (i. e. there is a save file) during current uptime and
@@ -429,7 +430,7 @@ static void startup(TRCONTEXT *context) {
         }
       }
       TCHAR restoreMessage[MAX_MSG];
-      _sntprintf_s(restoreMessage, _countof(restoreMessage) - 1, MSG_RESTORE_FROM_UNEXPECTED_TERMINATION, context->iconIndex);
+      _sntprintf_s(restoreMessage, _countof(restoreMessage) - 1, ResourceString(NULL, IDS_RESTORE_FROM_UNEXPECTED_TERMINATION), context->iconIndex);
       MessageBox(NULL, restoreMessage, APP_NAME, MB_OK);
     }
   }
@@ -592,7 +593,7 @@ bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey)
   TCHAR errMsg[MAX_MSG]{ NULL };
   TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
   getHotkeyText(hotkeyText, _countof(hotkeyText) - 1, modifiers, vkey);
-  _sntprintf_s(errMsg, _countof(errMsg) - 1, MSG_HOTKEY_ERROR, hotkeyText);
+  _sntprintf_s(errMsg, _countof(errMsg) - 1, ResourceString(NULL, IDS_HOTKEY_ERROR), hotkeyText);
   MessageBox(NULL, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
   return false;
 }
@@ -608,11 +609,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   // Mutex to allow only one instance
   HANDLE mutex = CreateMutex(NULL, TRUE, MUTEX_NAME);
   if (mutex == NULL) {
-    MessageBox(NULL, MSG_MUTEX_ERROR, APP_NAME, MB_OK | MB_ICONERROR);
+    MessageBox(NULL, ResourceString(NULL, IDS_MUTEX_ERROR), APP_NAME, MB_OK | MB_ICONERROR);
     return 1;
   }
   else if (GetLastError() == ERROR_ALREADY_EXISTS) {
-    MessageBox(NULL, MSG_ALREADY_RUNNING, APP_NAME, MB_OK | MB_ICONERROR);
+    MessageBox(NULL, ResourceString(NULL, IDS_ALREADY_RUNNING), APP_NAME, MB_OK | MB_ICONERROR);
     return 1;
   }
 

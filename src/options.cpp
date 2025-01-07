@@ -178,16 +178,16 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
     lvc.fmt = LVCFMT_LEFT;
     lvc.cx = 148;
-    lvc.pszText = TEXT_COL_KEY;
+    lvc.pszText = ResourceString(NULL, IDS_COL_KEY);
     ListView_InsertColumn(listView, 0, &lvc);
     lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
     lvc.fmt = LVCFMT_LEFT;
     lvc.cx = 120;
-    lvc.pszText = TEXT_COL_ACTION;
+    lvc.pszText = ResourceString(NULL, IDS_COL_ACTION);
     ListView_InsertColumn(listView, 1, &lvc);
 
     TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
-    PTCHAR actions[] = { TEXT_ACT_1, TEXT_ACT_2, TEXT_ACT_3 };
+    PTCHAR actions[] = { ResourceString(NULL, IDS_ACT_1), ResourceString(NULL, IDS_ACT_2), ResourceString(NULL, IDS_ACT_3) };
     LVITEM lvi{};
     lvi.mask = LVIF_TEXT;
     for (int i = 0; i < _countof(actions); i++) {
@@ -220,8 +220,8 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     Button_Enable(GetDlgItem(hwnd, IDC_BUTTON_RULES), context->autoHiding);
 
     auto hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
-    ComboBox_AddItemData(hideTypeCombo, TEXT_TRAY);
-    ComboBox_AddItemData(hideTypeCombo, TEXT_MENU);
+    ComboBox_AddItemData(hideTypeCombo, ResourceString(NULL, IDS_TRAY));
+    ComboBox_AddItemData(hideTypeCombo, ResourceString(NULL, IDS_MENU));
     ComboBox_SetCurSel(hideTypeCombo, context->hideType);
 
     return TRUE;

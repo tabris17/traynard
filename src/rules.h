@@ -1,10 +1,5 @@
 #pragma once
 
-#define TEXT_NEW_RULE _T("新规则")
-#define TEXT_UNSAVED _T("当前编辑的规则未保存。是否要保存？")
-#define TEXT_RULE_INFO_REQUIRED _T("必须输入完整的规则信息")
-#define TEXT_INVALID_REGEX _T("\"%s\" 不是正经的正则表达式")
-
 #ifdef UNICODE
 #define TREGEX std::wregex
 #else

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "traymond", "traymond.vcxproj", "{7FDF991D-57D7-48AE-BDAC-8DD9BE849241}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "traymond.locale.en_US", "locale\en_US\en_US.vcxproj", "{EE43692D-0E29-4699-9007-7F1D41BB38D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{7FDF991D-57D7-48AE-BDAC-8DD9BE849241}.Release|x64.Build.0 = Release|x64
 		{7FDF991D-57D7-48AE-BDAC-8DD9BE849241}.Release|x86.ActiveCfg = Release|Win32
 		{7FDF991D-57D7-48AE-BDAC-8DD9BE849241}.Release|x86.Build.0 = Release|Win32
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Debug|x64.ActiveCfg = Debug|x64
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Debug|x64.Build.0 = Debug|x64
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Debug|x86.ActiveCfg = Debug|Win32
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Debug|x86.Build.0 = Debug|Win32
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Release|x64.ActiveCfg = Release|x64
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Release|x64.Build.0 = Release|x64
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Release|x86.ActiveCfg = Release|Win32
+		{EE43692D-0E29-4699-9007-7F1D41BB38D5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

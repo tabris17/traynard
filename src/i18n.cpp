@@ -17,49 +17,57 @@ bool I18n::loadLangMod()
     }
     for (int i = fileNameLength - 1; i >= 0; i--) {
         if (fileName[i] == _T("\\")[0]) {
-            auto localeLen = _tcsclen(locale);
-            if (i + _countof(LOCALE_DIR) + localeLen + 1 >= MAX_PATH) {
-                return false;
-            }
-            rsize_t destSize, srcSize;
-            auto offset = i + 1;
-            destSize = (MAX_PATH - offset) * sizeof(TCHAR);
-            srcSize = _countof(LOCALE_DIR) * sizeof(TCHAR);
-            if (memcpy_s(fileName + offset, destSize, LOCALE_DIR, srcSize) != 0) {
-                return false;
-            }
-            offset += _countof(LOCALE_DIR) - 1;
-            destSize = (MAX_PATH - offset) * sizeof(TCHAR);
-            srcSize = localeLen * sizeof(TCHAR);
-            if (memcpy_s(fileName + offset, destSize, locale, srcSize) != 0) {
-                return false;
-            }
-            TCHAR dotTail[] = _T(".");
-            offset += localeLen;
-            destSize = (MAX_PATH - offset) * sizeof(TCHAR);
-            srcSize = _countof(dotTail) * sizeof(TCHAR);
-            if (memcpy_s(fileName + offset, destSize, dotTail, srcSize) != 0) {
+            constexpr TCHAR dotTail[] = _T(".");
+            fileName[i + 1] = _T("")[0];
+            if (
+                _tcsncat_s(fileName, MAX_PATH, LOCALE_DIR, _countof(LOCALE_DIR)) != 0 ||
+                _tcsncat_s(fileName, MAX_PATH, locale, MAX_LOCALE) != 0 ||
+                _tcsncat_s(fileName, MAX_PATH, dotTail, _countof(dotTail))
+            ) {
                 return false;
             }
             langMod = LoadLibrary(fileName);
+            if (langMod) {
+                return true;
+            }
+            fileName[i + 1] = _T("")[0];
+            if (
+                _tcsncat_s(fileName, MAX_PATH, LOCALE_DIR, _countof(LOCALE_DIR)) != 0 ||
+                _tcsncat_s(fileName, MAX_PATH, fallback, MAX_LOCALE) != 0 ||
+                _tcsncat_s(fileName, MAX_PATH, dotTail, _countof(dotTail))
+            ) {
+                return false;
+            }
+            langMod = LoadLibrary(fileName);
+            if (langMod) {
+                return true;
+            }
             break;
         }
     }
-    return langMod != NULL;
+    return false;
+}
+
+bool I18n::getLocale()
+{
+    constexpr auto MAX_CTRY = 4;
+    TCHAR country[MAX_CTRY]{ NULL };
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, fallback, MAX_LOCALE) == 0) {
+        return false;
+    }
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, country, MAX_CTRY) == 0) {
+        return false;
+    }
+    _stprintf_s(locale, _T("%s_%s"), fallback, country);
+    return true;
 }
 
 I18n::I18n()
 {
-    constexpr auto MAX_CTRY = 4;
-    TCHAR country[MAX_CTRY]{ NULL };
-    auto ret = GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, locale, MAX_LOCALE);
-    if (ret > 0) {
-        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, country, MAX_CTRY) > 0) {
-            locale[ret - 1] = L'_';
-            _tcscpy_s(locale + ret, MAX_LOCALE - ret, country);
-        }
+    if (getLocale()) {
+        loadLangMod();
     }
-    loadLangMod();
+
     for (int i = 0; i < _countof(stringTable); i++) {
         LoadString(langMod, IDS_BEGIN + i, reinterpret_cast<PTCHAR>(stringTable + i), 0);
     }

@@ -9,9 +9,11 @@
 class I18n {
 private:
     TCHAR locale[MAX_LOCALE]{};
+    TCHAR fallback[MAX_LOCALE]{};
     LPTSTR stringTable[IDS_MAX_SIZE]{};
     HINSTANCE langMod = NULL;
     bool loadLangMod();
+    bool getLocale();
 public:
     I18n();
     LPTSTR operator[](int stringId);

@@ -149,7 +149,6 @@ static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam)
         if (hotkey == nullptr) {
             continue;
         }
-        printf("hotkey id %d; vkey: %d; modifiers: %d\n", i, readHotkey.vkey, readHotkey.modifiers);
         UnregisterHotKey(context->mainWindow, hotkeyId);
         if (readHotkey.modifiers > 0 && readHotkey.vkey > 0) {
             RegisterHotKey(context->mainWindow, hotkeyId, readHotkey.modifiers | MOD_NOREPEAT, readHotkey.vkey);

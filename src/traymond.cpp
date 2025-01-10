@@ -429,7 +429,7 @@ static void startup(TRCONTEXT *context) {
         }
       }
       TCHAR restoreMessage[MAX_MSG];
-      _sntprintf_s(restoreMessage, _countof(restoreMessage) - 1, i18n[IDS_RESTORE_FROM_UNEXPECTED_TERMINATION], context->iconIndex);
+      _stprintf_s(restoreMessage, i18n[IDS_RESTORE_FROM_UNEXPECTED_TERMINATION], context->iconIndex);
       MessageBox(NULL, restoreMessage, APP_NAME, MB_OK);
     }
   }
@@ -592,7 +592,7 @@ bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey)
   TCHAR errMsg[MAX_MSG]{ NULL };
   TCHAR hotkeyText[MAX_HOTKEY_TEXT]{ NULL };
   getHotkeyText(hotkeyText, _countof(hotkeyText) - 1, modifiers, vkey);
-  _sntprintf_s(errMsg, _countof(errMsg) - 1, i18n[IDS_HOTKEY_ERROR], hotkeyText);
+  _stprintf_s(errMsg, i18n[IDS_HOTKEY_ERROR], hotkeyText);
   MessageBox(NULL, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
   return false;
 }

@@ -204,7 +204,7 @@ inline static bool testRegex(HWND hwnd, PTCHAR pattern)
         TREGEX expr(pattern);
     }
     catch (const std::regex_error&) {
-        _sntprintf_s(errMsg, _countof(errMsg) - 1, i18n[IDS_INVALID_REGEX], pattern);
+        _stprintf_s(errMsg, i18n[IDS_INVALID_REGEX], pattern);
         MessageBox(hwnd, errMsg, APP_NAME, MB_OK | MB_ICONWARNING);
         return false;
     }
@@ -366,7 +366,7 @@ bool RuleEditor::append()
     }
     sync();
     TCHAR ruleName[MAX_RULE_NAME];
-    _sntprintf_s(ruleName, _countof(ruleName) - 1, _T("* %s"), i18n[IDS_NEW_RULE]);
+    _stprintf_s(ruleName, _T("* %s"), i18n[IDS_NEW_RULE]);
     auto index = ListBox_AddString(ruleList, ruleName);
     ListBox_SetCurSel(ruleList, index);
     select();

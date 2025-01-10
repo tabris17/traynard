@@ -172,16 +172,16 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     SendMessage(hwnd, WM_SETICON, FALSE, (LPARAM)context->mainIcon);
 
     auto listView = GetDlgItem(hwnd, IDC_HOTKEY_LIST);
-    ListView_SetExtendedListViewStyle(listView, LVS_EX_BORDERSELECT | LVS_EX_FULLROWSELECT);
+    ListView_SetExtendedListViewStyle(listView, LVS_EX_BORDERSELECT | LVS_EX_FULLROWSELECT | LVS_EX_AUTOSIZECOLUMNS);
     LVCOLUMN lvc{};
-    lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+    lvc.mask = LVCF_FMT | LVCF_MINWIDTH | LVCF_TEXT;
     lvc.fmt = LVCFMT_LEFT;
-    lvc.cx = 148;
+    lvc.cxMin = 120;
     lvc.pszText = i18n[IDS_COL_KEY];
     ListView_InsertColumn(listView, 0, &lvc);
-    lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
+    lvc.mask = LVCF_FMT | LVCF_MINWIDTH | LVCF_TEXT;
     lvc.fmt = LVCFMT_LEFT;
-    lvc.cx = 120;
+    lvc.cxMin = 120;
     lvc.pszText = i18n[IDS_COL_ACTION];
     ListView_InsertColumn(listView, 1, &lvc);
 
@@ -213,6 +213,8 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
         lvi.lParam = MAKEWORD(hotkey->vkey, ModToHotkey(hotkey->modifiers));
         ListView_SetItem(listView, &lvi);
     }
+    ListView_SetColumnWidth(listView, 0, LVSCW_AUTOSIZE);
+    ListView_SetColumnWidth(listView, 1, LVSCW_AUTOSIZE);
 
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     CheckDlgButton(hwnd, IDC_CHECK_AUTO_HIDING, context->autoHiding);

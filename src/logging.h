@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 
 #ifdef DEBUG
 #define __LOGGING__ AllocConsole();\

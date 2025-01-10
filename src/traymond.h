@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "resource.h"
+#include "i18n.h"
 
 
 #define VK_Z_KEY 0x5A
@@ -113,16 +114,12 @@ bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey);
 HICON getWindowIcon(const TRCONTEXT* context, HWND hwnd);
 BOOL notifyHidingWindow(TRCONTEXT* context, HWND hwnd);
 
-inline PTCHAR ResourceString(HINSTANCE instance, UINT id) {
-    PTCHAR text = nullptr;
-    LoadString(instance, id, reinterpret_cast<PTCHAR>(&text), 0);
-    return text;
-}
-
 TRCONTEXT* AppContext();
 
 #ifdef TRAYMON_MAIN
 IsTopLevelWindow isTopLevelWindow = NULL;
+I18n i18n;
 #else
 extern IsTopLevelWindow isTopLevelWindow;
+extern I18n i18n;
 #endif

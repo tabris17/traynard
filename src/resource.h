@@ -3,7 +3,16 @@
 #define PROJECT_NAME                    "Traymond"
 #define PROJECT_NAME_LC                 "traymond"
 #define PROJECT_NAME_UC                 "TRAYMOND"
+#define VERSION_MAJOR                   2
+#define VERSION_MINOR                   1
+#define VERSION_PATCH                   1
+#define VERSION_BUILD                   102
+#define _VERSTR(number)                 __VERSTR(number)
+#define __VERSTR(number)                #number
+#define MAKEVERSION                     _VERSTR(VERSION_MAJOR) "." _VERSTR(VERSION_MINOR) "." _VERSTR(VERSION_PATCH)
+#define MAKEFULLVERSION                 MAKEVERSION "." _VERSTR(VERSION_BUILD)
 #define POPUP_CLASS                     "POPUP_WINDOW"
+
 #define IDC_STATIC                      -1
 #define IDM_EXIT                        1
 #define IDM_RESTORE_ALL_WINDOWS         2
@@ -36,6 +45,7 @@
 #define IDC_ICON_LIST                   1019
 #define IDC_CHECK_SHOW_NOTIFICATION     1020
 
+#define IDS_BEGIN                       2001
 #define IDS_HOTKEY_ERROR                2001
 #define IDS_MUTEX_ERROR                 2002
 #define IDS_ALREADY_RUNNING             2003
@@ -57,3 +67,5 @@
 #define IDS_UNSAVED                     2019
 #define IDS_RULE_INFO_REQUIRED          2020
 #define IDS_INVALID_REGEX               2021
+#define IDS_END                         2022
+#define IDS_MAX_SIZE                    (IDS_END - IDS_BEGIN)

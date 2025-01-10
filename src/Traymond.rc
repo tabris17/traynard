@@ -1,30 +1,6 @@
-// Microsoft Visual C++ generated resource script.
-//
 #pragma code_page(65001)
 
 #include "resource.h"
-/////////////////////////////////////////////////////////////////////////////
-// 中文(简体，中国) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDM_POPUP MENU
-BEGIN
-    POPUP ""
-    BEGIN
-        MENUITEM "还原所有窗口", IDM_RESTORE_ALL_WINDOWS
-        MENUITEM "还原最后一个窗口", IDM_RESTORE_LAST_WINDOW
-        MENUITEM "选项", IDM_OPTIONS
-        MENUITEM SEPARATOR
-        MENUITEM "退出", IDM_EXIT
-    END
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -32,8 +8,6 @@ END
 // Icon
 //
 
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
 IDI_TRAYMOND            ICON                    "..\\icon\\traymond.ico"
 
 
@@ -43,61 +17,54 @@ IDI_TRAYMOND            ICON                    "..\\icon\\traymond.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,1,102
- PRODUCTVERSION 2,1,1,102
+ FILEVERSION VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD
+ PRODUCTVERSION VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
 #else
  FILEFLAGS 0x0L
 #endif
- FILEOS 0x40004L
- FILETYPE 0x1L
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "000904b0"
+        BLOCK "000004b0"
         BEGIN
             VALUE "FileDescription", "Traymond"
-            VALUE "FileVersion", "2.1.0"
-            VALUE "InternalName", "Traymond.exe"
-            VALUE "OriginalFilename", "Traymond.exe"
-            VALUE "ProductName", "Traymond"
-            VALUE "ProductVersion", "2.1.0"
-            VALUE "Comment", "https://github.com/tabris17/traymond"
+            VALUE "FileVersion", MAKEFULLVERSION
+            VALUE "InternalName", PROJECT_NAME ".exe"
+            VALUE "OriginalFilename", PROJECT_NAME ".exe"
+            VALUE "ProductName", PROJECT_NAME
+            VALUE "ProductVersion", MAKEVERSION
+            VALUE "LegalCopyright", "https://github.com/tabris17/traymond"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x9, 1200
+        VALUE "Translation", LANG_NEUTRAL, 1200
     END
 END
 
 
-#ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
-// TEXTINCLUDE
+// Menu
 //
 
-1 TEXTINCLUDE 
+IDM_POPUP MENU
 BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE 
+POPUP ""
 BEGIN
-    "\0"
+MENUITEM "还原所有窗口", IDM_RESTORE_ALL_WINDOWS
+MENUITEM "还原最后一个窗口", IDM_RESTORE_LAST_WINDOW
+MENUITEM "选项", IDM_OPTIONS
+MENUITEM SEPARATOR
+MENUITEM "退出", IDM_EXIT
 END
-
-3 TEXTINCLUDE 
-BEGIN
-    "\r\n"
-    "\0"
 END
-
-#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -163,35 +130,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO
-BEGIN
-    IDD_OPTIONS, DIALOG
-    BEGIN
-        LEFTMARGIN, 6
-        RIGHTMARGIN, 177
-        VERTGUIDE, 14
-        VERTGUIDE, 167
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 183
-    END
-
-    IDD_RULES, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 406
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 259
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
@@ -205,7 +143,6 @@ BEGIN
     IDS_RESTORE_FROM_UNEXPECTED_TERMINATION "程序先前意外终止。已恢复 %d 个隐藏窗口。"
     IDS_INVALID_HOTKEY          "为「%s」设置的热键无效。"
     IDS_HIDING_WINDOW           "最小化窗口至托盘"
-
     IDS_TRAY                    "托盘图标"
     IDS_MENU                    "右键菜单"
     IDS_HOTKEY_HIDE             "隐藏窗口热键"
@@ -220,40 +157,3 @@ BEGIN
     IDS_RULE_INFO_REQUIRED      "必须输入完整的规则信息"
     IDS_INVALID_REGEX           """%s"" 不是正经的正则表达式"
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// AFX_DIALOG_LAYOUT
-//
-
-IDD_OPTIONS AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
-IDD_RULES AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
-IDD_ICONS AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
-#endif    // 中文(简体，中国) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-
-#ifndef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 3 resource.
-//
-
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // not APSTUDIO_INVOKED
-

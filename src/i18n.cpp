@@ -26,7 +26,7 @@ bool I18n::loadLangMod()
             ) {
                 return false;
             }
-            langMod = LoadLibrary(fileName);
+            langMod = LoadLangMod(fileName);
             if (langMod) {
                 return true;
             }
@@ -38,7 +38,7 @@ bool I18n::loadLangMod()
             ) {
                 return false;
             }
-            langMod = LoadLibrary(fileName);
+            langMod = LoadLangMod(fileName);
             if (langMod) {
                 return true;
             }

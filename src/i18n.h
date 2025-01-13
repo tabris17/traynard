@@ -5,6 +5,7 @@
 #define MAX_LOCALE 10
 #define DEFAULT_LOCALE _T("zh_CN")
 #define LOCALE_DIR _T("locale\\")
+#define LoadLangMod(lmfn) LoadLibraryEx(lmfn, NULL, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE)
 
 class I18n {
 private:

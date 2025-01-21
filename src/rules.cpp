@@ -86,7 +86,7 @@ bool loadRules(TRCONTEXT* context)
 static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
     auto context = reinterpret_cast<TRCONTEXT*>(lParam);
     bool showNotification = false;
-    if (IsWindowVisible(hwnd) && matchRule(context, hwnd, &showNotification)) {
+    if (IsWindowVisible(hwnd) && matchRule(context, hwnd, false , &showNotification)) {
         minimizeWindow(context, hwnd);
         if (showNotification) {
             notifyHidingWindow(context, hwnd);
@@ -135,7 +135,7 @@ inline static bool compareText(PTCHAR text, PTCHAR pattern, bool isRegex)
 }
 
 _Success_(return)
-bool matchRule(TRCONTEXT* context, HWND hwnd, _Out_ bool *showNotification)
+bool matchRule(TRCONTEXT* context, HWND hwnd, bool isMinimizing, _Out_ bool *showNotification)
 {
     TCHAR windowText[MAX_WINDOW_TEXT] {};
     TCHAR className[MAX_CLASS_NAME] {};
@@ -147,20 +147,30 @@ bool matchRule(TRCONTEXT* context, HWND hwnd, _Out_ bool *showNotification)
         return false;
     }
     for (auto rule : context->hidingRules) {
+        if (isMinimizing) {
+            if (!(rule->flag & RULE_ON_MINIMIZE)) {
+                continue;
+            }
+        }
+        else {
+            if (rule->flag & RULE_AUTO_OFF) {
+                continue;
+            }
+        }
         auto text = rule->ruleData;
         text += _tcsclen(text) + 1;
-        if (!compareText(windowText, text, rule->isWindowTextRegex)) {
+        if (!compareText(windowText, text, rule->flag & RULE_REGEX_WINDOW_TEXT)) {
             continue;
         }
         text += _tcsclen(text) + 1;
-        if (!compareText(className, text, rule->isWindowClassNameRegex)) {
+        if (!compareText(className, text, rule->flag & RULE_REGEX_WINDOW_CLASS)) {
             continue;
         }
         text += _tcsclen(text) + 1;
-        if (!compareText(exeFileName, text, rule->isExeFileNameRegex)) {
+        if (!compareText(exeFileName, text, rule->flag & RULE_REGEX_EXE_FILENAME)) {
             continue;
         }
-        *showNotification = rule->showNotification;
+        *showNotification = rule->flag & RULE_SHOW_NOTIFICATION;
         return true;
     }
     return false;
@@ -224,9 +234,12 @@ HIDING_RULE* RuleEditor::newRule()
          windowClassNameSize = Edit_GetText(classEdit, windowClassName, MAX_CLASS_NAME) + 1,
          exeFileNameSize = Edit_GetText(pathEdit, exeFileName, MAX_PATH) + 1;
     bool isWindowTextRegex = Button_GetCheck(textCheckBox) == BST_CHECKED,
-         isWindowClassNameRegex = Button_GetCheck(classCheckBox) == BST_CHECKED,
-         isExeFileNameRegex = Button_GetCheck(pathCheckBox) == BST_CHECKED,
-         showNotification = Button_GetCheck(showNotificationCheckBox) == BST_CHECKED;
+        isWindowClassNameRegex = Button_GetCheck(classCheckBox) == BST_CHECKED,
+        isExeFileNameRegex = Button_GetCheck(pathCheckBox) == BST_CHECKED,
+        showNotification = Button_GetCheck(showNotificationCheckBox) == BST_CHECKED,
+        isOnMinimize = Button_GetCheck(onMinimizeRadioBox) == BST_CHECKED,
+        isOnFirstShow = Button_GetCheck(onFirstShowRadioBox) == BST_CHECKED,
+        isOnBoth = Button_GetCheck(onBothRadioBox) == BST_CHECKED;
     
     if (ruleNameSize == 1 || windowTextSize == 1 || windowClassNameSize == 1 || exeFileNameSize == 1) {
         MessageBox(window, i18n[IDS_RULE_INFO_REQUIRED], APP_NAME, MB_OK | MB_ICONWARNING);
@@ -246,10 +259,20 @@ HIDING_RULE* RuleEditor::newRule()
     size += (ruleNameSize + windowTextSize + windowClassNameSize + exeFileNameSize) * sizeof(TCHAR);
     HIDING_RULE* rule = (HIDING_RULE*)new BYTE[size];
     rule->size = size;
-    rule->isWindowTextRegex = isWindowTextRegex;
-    rule->isWindowClassNameRegex = isWindowClassNameRegex;
-    rule->isExeFileNameRegex = isExeFileNameRegex;
-    rule->showNotification = showNotification;
+    rule->flag = 0;
+    if (isWindowTextRegex) rule->flag |= RULE_REGEX_WINDOW_TEXT;
+    if (isWindowClassNameRegex) rule->flag |= RULE_REGEX_WINDOW_CLASS;
+    if (isExeFileNameRegex) rule->flag |= RULE_REGEX_EXE_FILENAME;
+    if (showNotification) rule->flag |= RULE_SHOW_NOTIFICATION;
+    if (isOnMinimize) {
+        rule->flag |= (RULE_ON_MINIMIZE | RULE_AUTO_OFF);
+    }
+    else if (isOnFirstShow) {
+
+    }
+    else if (isOnBoth) {
+        rule->flag |= RULE_ON_MINIMIZE;
+    }
     PTCHAR ruleDataOffset = rule->ruleData;
     memcpy(ruleDataOffset, ruleName, ruleNameSize * sizeof(TCHAR));
     ruleDataOffset += ruleNameSize;
@@ -288,6 +311,9 @@ void RuleEditor::initialize(HWND hwnd)
     removeButton = GetDlgItem(hwnd, IDC_REMOVE);
     dropButton = GetDlgItem(hwnd, IDABORT);
     windowsCombo = GetDlgItem(hwnd, IDC_COMBO_WINDOWS);
+    onMinimizeRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_MINIMIZE);
+    onFirstShowRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_FIRST_SHOW);
+    onBothRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_BOTH);
     Edit_LimitText(nameEdit, MAX_RULE_NAME);
     Edit_LimitText(textEdit, MAX_WINDOW_TEXT);
     Edit_LimitText(classEdit, MAX_CLASS_NAME);
@@ -333,6 +359,9 @@ bool RuleEditor::dispatchMessage(UINT message, WPARAM wParam, LPARAM lParam)
                 touch();
             }
             break;
+        case IDC_RADIO_ON_MINIMIZE:
+        case IDC_RADIO_ON_FIRST_SHOW:
+        case IDC_RADIO_ON_BOTH:
         case IDC_CHECK_REGEX_CLASS:
         case IDC_CHECK_REGEX_PATH:
         case IDC_CHECK_REGEX_TEXT:
@@ -413,6 +442,12 @@ void RuleEditor::enable(bool val)
     Edit_SetText(textEdit, NULL);
     Edit_SetText(classEdit, NULL);
     Edit_SetText(pathEdit, NULL);
+    Button_Enable(onMinimizeRadioBox, val);
+    Button_Enable(onFirstShowRadioBox, val);
+    Button_Enable(onBothRadioBox, val);
+    Button_SetCheck(onMinimizeRadioBox, BST_UNCHECKED);
+    Button_SetCheck(onFirstShowRadioBox, BST_UNCHECKED);
+    Button_SetCheck(onBothRadioBox, BST_UNCHECKED);
 }
 
 void RuleEditor::touch()
@@ -481,10 +516,28 @@ void RuleEditor::select()
         Edit_SetText(classEdit, text);
         text += _tcsclen(text) + 1;
         Edit_SetText(pathEdit, text);
-        Button_SetCheck(textCheckBox, rule->isWindowTextRegex ? BST_CHECKED : BST_UNCHECKED);
-        Button_SetCheck(classCheckBox, rule->isWindowClassNameRegex ? BST_CHECKED : BST_UNCHECKED);
-        Button_SetCheck(pathCheckBox, rule->isExeFileNameRegex ? BST_CHECKED : BST_UNCHECKED);
-        Button_SetCheck(showNotificationCheckBox, rule->showNotification ? BST_CHECKED : BST_UNCHECKED);
+        Button_SetCheck(textCheckBox, rule->flag & RULE_REGEX_WINDOW_TEXT ? BST_CHECKED : BST_UNCHECKED);
+        Button_SetCheck(classCheckBox, rule->flag & RULE_REGEX_WINDOW_CLASS ? BST_CHECKED : BST_UNCHECKED);
+        Button_SetCheck(pathCheckBox, rule->flag & RULE_REGEX_EXE_FILENAME ? BST_CHECKED : BST_UNCHECKED);
+        Button_SetCheck(showNotificationCheckBox, rule->flag & RULE_SHOW_NOTIFICATION ? BST_CHECKED : BST_UNCHECKED);
+
+        int onMinimizeChecked = BST_UNCHECKED,
+            onFirstShowChecked = BST_UNCHECKED,
+            onBothChecked = BST_UNCHECKED;
+        if (rule->flag & RULE_ON_MINIMIZE) {
+            if (rule->flag & RULE_AUTO_OFF) {
+                onMinimizeChecked = BST_CHECKED;
+            }
+            else {
+                onBothChecked = BST_CHECKED;
+            }
+        }
+        else {
+            onFirstShowChecked = BST_CHECKED;
+        }
+        Button_SetCheck(onMinimizeRadioBox, onMinimizeChecked);
+        Button_SetCheck(onFirstShowRadioBox, onFirstShowChecked);
+        Button_SetCheck(onBothRadioBox, onBothChecked);
     }
     isBusy = false;
 }
@@ -495,6 +548,9 @@ void RuleEditor::fill()
     Button_SetCheck(classCheckBox, BST_UNCHECKED);
     Button_SetCheck(pathCheckBox, BST_UNCHECKED);
     Button_SetCheck(showNotificationCheckBox, BST_UNCHECKED);
+    Button_SetCheck(onMinimizeRadioBox, BST_UNCHECKED);
+    Button_SetCheck(onFirstShowRadioBox, BST_UNCHECKED);
+    Button_SetCheck(onBothRadioBox, BST_UNCHECKED);
     
     auto index = ComboBox_GetItemData(windowsCombo, ComboBox_GetCurSel(windowsCombo));
     if (index >= context->iconIndex) {

@@ -44,6 +44,9 @@
 #define IDC_COMBO_WINDOWS               1016
 #define IDC_ICON_LIST                   1019
 #define IDC_CHECK_SHOW_NOTIFICATION     1020
+#define IDC_RADIO_ON_MINIMIZE           1021
+#define IDC_RADIO_ON_FIRST_SHOW         1022
+#define IDC_RADIO_ON_BOTH               1023
 
 #define IDS_BEGIN                       2001
 #define IDS_HOTKEY_ERROR                2001

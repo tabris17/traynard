@@ -11,7 +11,7 @@ bool applyRules(TRCONTEXT* context);
 bool saveRules(TRCONTEXT* context);
 bool clearRules(TRCONTEXT* context);
 _Success_(return)
-bool matchRule(TRCONTEXT* context, HWND hwnd, _Out_ bool *showNotification);
+bool matchRule(TRCONTEXT* context, HWND hwnd, bool isMinimizing, _Out_ bool *showNotification);
 INT_PTR showRulesDlg(HWND parent, TRCONTEXT* context);
 
 class RuleEditor final {
@@ -31,6 +31,9 @@ private:
     HWND removeButton = NULL;
     HWND dropButton = NULL;
     HWND windowsCombo = NULL;
+    HWND onMinimizeRadioBox = NULL;
+    HWND onFirstShowRadioBox = NULL;
+    HWND onBothRadioBox = NULL;
     int ruleId = -1;
     bool isDirty = false;
     bool isBusy = false;

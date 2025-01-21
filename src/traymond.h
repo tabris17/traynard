@@ -68,15 +68,19 @@ typedef struct HIDDEN_WINDOW {
     HWND window;
 } HIDDEN_WINDOW;
 
+#define RULE_REGEX_WINDOW_TEXT      1
+#define RULE_REGEX_WINDOW_CLASS     (1 << 8)
+#define RULE_REGEX_EXE_FILENAME     (1 << 16)
+#define RULE_SHOW_NOTIFICATION      (1 << 24)
+#define RULE_ON_MINIMIZE            (1 << 1)
+#define RULE_AUTO_OFF               (1 << 2)
+
 // Auto hiding window rule
 #pragma warning(push)
 #pragma warning(disable:4200)
 typedef struct HIDING_RULE {
     size_t size;
-    bool isWindowTextRegex;
-    bool isWindowClassNameRegex;
-    bool isExeFileNameRegex;
-    bool showNotification;
+    DWORD flag;
     TCHAR ruleData[0];
 } HIDING_RULE;
 #pragma warning(push)

@@ -188,7 +188,7 @@ bool restoreWindow(TRCONTEXT *context, UINT xID, HWND hwnd) {
 
     auto currWin = icon->window;
     if (IsWindow(currWin)) {
-      ShowWindow(currWin, SW_SHOW);
+      ShowWindow(currWin, SW_NORMAL);
       SetForegroundWindow(currWin);
     }
 
@@ -330,7 +330,7 @@ static void showAllWindows(TRCONTEXT *context) {
   for (int i = 0; i < context->iconIndex; i++)
   {
     auto currWin = context->icons[i].window;
-    ShowWindow(context->icons[i].window, SW_SHOW);
+    ShowWindow(context->icons[i].window, SW_NORMAL);
     context->freeWindows.insert(currWin);
     switch (context->icons[i].hideType) {
     case HideTray: Shell_NotifyIcon(NIM_DELETE, &context->icons[i].icon); break;

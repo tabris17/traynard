@@ -46,7 +46,11 @@ static void WINAPI AutoHidingWinEventProc(HWINEVENTHOOK hWinEventHook,
                                           LONG idObject, LONG idChild, 
                                           DWORD idEventThread, DWORD dwmsEventTime)
 {
+    bool isMinimizing = false;
     switch (event) {
+    case EVENT_SYSTEM_MINIMIZESTART:
+        isMinimizing = true;
+        break;
     case EVENT_OBJECT_CREATE:
         break;
     case EVENT_OBJECT_DESTROY:
@@ -69,13 +73,15 @@ static void WINAPI AutoHidingWinEventProc(HWINEVENTHOOK hWinEventHook,
 
     if ((OBJID_WINDOW != idObject || CHILDID_SELF != idChild) ||
         !isTopLevelWindow(hwnd) || !IsWindowVisible(hwnd)) {
-
+        
         return;
     }
 
     auto context = AppContext();
     bool showNotification = false;
-    if (!SET_CONTAINS(context->freeWindows, hwnd) && matchRule(context, hwnd, &showNotification)) {
+    if ((isMinimizing || !SET_CONTAINS(context->freeWindows, hwnd)) && 
+        matchRule(context, hwnd, isMinimizing, &showNotification)) {
+        
         minimizeWindow(context, hwnd);
         if (showNotification) {
             notifyHidingWindow(context, hwnd);
@@ -87,7 +93,7 @@ static void WINAPI AutoHidingWinEventProc(HWINEVENTHOOK hWinEventHook,
 void hookWinEvent(TRCONTEXT* context)
 {
     context->hook = SetWinEventHook(
-        EVENT_OBJECT_CREATE, 
+        EVENT_SYSTEM_MINIMIZESTART,
         EVENT_OBJECT_NAMECHANGE,
         NULL, 
         context->autoHiding ? AutoHidingWinEventProc : DefaultWinEventProc,

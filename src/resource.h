@@ -4,9 +4,9 @@
 #define PROJECT_NAME_LC                 "traymond"
 #define PROJECT_NAME_UC                 "TRAYMOND"
 #define VERSION_MAJOR                   2
-#define VERSION_MINOR                   1
-#define VERSION_PATCH                   1
-#define VERSION_BUILD                   102
+#define VERSION_MINOR                   2
+#define VERSION_PATCH                   0
+#define VERSION_BUILD                   1
 #define _VERSTR(number)                 __VERSTR(number)
 #define __VERSTR(number)                #number
 #define MAKEVERSION                     _VERSTR(VERSION_MAJOR) "." _VERSTR(VERSION_MINOR) "." _VERSTR(VERSION_PATCH)

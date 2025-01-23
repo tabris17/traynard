@@ -39,7 +39,10 @@
 #define TOP_LEVEL_WINDOW_ERROR (APPLICATION_ERROR_CODE | 1)
 
 #define SET_CONTAINS(_THE_SET_, _THE_VALUE_) ((_THE_SET_).find(_THE_VALUE_) != (_THE_SET_).end())
+#define SET_NOT_CONTAINS(_THE_SET_, _THE_VALUE_) ((_THE_SET_).find(_THE_VALUE_) == (_THE_SET_).end())
 #define VECTOR_ERASE(_THE_VECTOR_, _THE_INDEX_) ((_THE_VECTOR_).erase((_THE_VECTOR_).begin() + (_THE_INDEX_)))
+#define RULE_IS_ALWAYS_NOTIFY(_FLAG_) (_FLAG_ & RULE_ALWAYS_NOTIFY)
+#define RULE_IS_NOTIFY_FIRST_TIME(_FLAG_) (_FLAG_ & RULE_NOTIFY_FIRST_TIME)
 
 typedef BOOL(WINAPI *IsTopLevelWindow)(HWND hwnd);
 
@@ -71,9 +74,10 @@ typedef struct HIDDEN_WINDOW {
 #define RULE_REGEX_WINDOW_TEXT      1
 #define RULE_REGEX_WINDOW_CLASS     (1 << 8)
 #define RULE_REGEX_EXE_FILENAME     (1 << 16)
-#define RULE_SHOW_NOTIFICATION      (1 << 24)
 #define RULE_ON_MINIMIZE            (1 << 1)
 #define RULE_AUTO_OFF               (1 << 2)
+#define RULE_NOTIFY_FIRST_TIME      (1 << 24)
+#define RULE_ALWAYS_NOTIFY          (1 << 23)
 
 // Auto hiding window rule
 #pragma warning(push)

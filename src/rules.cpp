@@ -85,10 +85,12 @@ bool loadRules(TRCONTEXT* context)
 
 static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
     auto context = reinterpret_cast<TRCONTEXT*>(lParam);
-    bool showNotification = false;
-    if (IsWindowVisible(hwnd) && matchRule(context, hwnd, false , &showNotification)) {
+    HIDING_RULE *rule = nullptr;
+    if (IsWindowVisible(hwnd) && matchRule(context, hwnd, false , &rule)) {
         minimizeWindow(context, hwnd);
-        if (showNotification) {
+        if (RULE_IS_ALWAYS_NOTIFY(rule->flag) || 
+            RULE_IS_NOTIFY_FIRST_TIME(rule->flag)) {
+
             notifyHidingWindow(context, hwnd);
         }
     }
@@ -135,7 +137,7 @@ inline static bool compareText(PTCHAR text, PTCHAR pattern, bool isRegex)
 }
 
 _Success_(return)
-bool matchRule(TRCONTEXT* context, HWND hwnd, bool isMinimizing, _Out_ bool *showNotification)
+bool matchRule(TRCONTEXT* context, HWND hwnd, bool isMinimizing, _Out_ HIDING_RULE **rulePtr)
 {
     TCHAR windowText[MAX_WINDOW_TEXT] {};
     TCHAR className[MAX_CLASS_NAME] {};
@@ -170,7 +172,7 @@ bool matchRule(TRCONTEXT* context, HWND hwnd, bool isMinimizing, _Out_ bool *sho
         if (!compareText(exeFileName, text, rule->flag & RULE_REGEX_EXE_FILENAME)) {
             continue;
         }
-        *showNotification = rule->flag & RULE_SHOW_NOTIFICATION;
+        *rulePtr = rule;
         return true;
     }
     return false;
@@ -236,9 +238,9 @@ HIDING_RULE* RuleEditor::newRule()
     bool isWindowTextRegex = Button_GetCheck(textCheckBox) == BST_CHECKED,
         isWindowClassNameRegex = Button_GetCheck(classCheckBox) == BST_CHECKED,
         isExeFileNameRegex = Button_GetCheck(pathCheckBox) == BST_CHECKED,
-        showNotification = Button_GetCheck(showNotificationCheckBox) == BST_CHECKED,
+        isAlwaysNotify = Button_GetCheck(alwaysNotifyRadioBox) == BST_CHECKED,
+        isNotifyFirstTime = Button_GetCheck(notifyFirstTimeRadioBox) == BST_CHECKED,
         isOnMinimize = Button_GetCheck(onMinimizeRadioBox) == BST_CHECKED,
-        isOnFirstShow = Button_GetCheck(onFirstShowRadioBox) == BST_CHECKED,
         isOnBoth = Button_GetCheck(onBothRadioBox) == BST_CHECKED;
     
     if (ruleNameSize == 1 || windowTextSize == 1 || windowClassNameSize == 1 || exeFileNameSize == 1) {
@@ -263,15 +265,17 @@ HIDING_RULE* RuleEditor::newRule()
     if (isWindowTextRegex) rule->flag |= RULE_REGEX_WINDOW_TEXT;
     if (isWindowClassNameRegex) rule->flag |= RULE_REGEX_WINDOW_CLASS;
     if (isExeFileNameRegex) rule->flag |= RULE_REGEX_EXE_FILENAME;
-    if (showNotification) rule->flag |= RULE_SHOW_NOTIFICATION;
     if (isOnMinimize) {
         rule->flag |= (RULE_ON_MINIMIZE | RULE_AUTO_OFF);
     }
-    else if (isOnFirstShow) {
-
-    }
     else if (isOnBoth) {
         rule->flag |= RULE_ON_MINIMIZE;
+    }
+    if (isAlwaysNotify) {
+        rule->flag |= RULE_ALWAYS_NOTIFY;
+    }
+    else if (isNotifyFirstTime) {
+        rule->flag |= RULE_NOTIFY_FIRST_TIME;
     }
     PTCHAR ruleDataOffset = rule->ruleData;
     memcpy(ruleDataOffset, ruleName, ruleNameSize * sizeof(TCHAR));
@@ -300,7 +304,6 @@ void RuleEditor::initialize(HWND hwnd)
     window = hwnd;
     ruleList = GetDlgItem(hwnd, IDC_LIST_RULES);
     nameEdit = GetDlgItem(hwnd, IDC_EDIT_NAME);
-    showNotificationCheckBox = GetDlgItem(hwnd, IDC_CHECK_SHOW_NOTIFICATION);
     textEdit = GetDlgItem(hwnd, IDC_EDIT_TEXT);
     classEdit = GetDlgItem(hwnd, IDC_EDIT_CLASS);
     pathEdit = GetDlgItem(hwnd, IDC_EDIT_PATH);
@@ -314,6 +317,9 @@ void RuleEditor::initialize(HWND hwnd)
     onMinimizeRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_MINIMIZE);
     onFirstShowRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_FIRST_SHOW);
     onBothRadioBox = GetDlgItem(hwnd, IDC_RADIO_ON_BOTH);
+    neverNotifyRadioBox = GetDlgItem(hwnd, IDC_RADIO_NEVER_NOTIFY);
+    alwaysNotifyRadioBox = GetDlgItem(hwnd, IDC_RADIO_ALWAYS_NOTIFY);
+    notifyFirstTimeRadioBox = GetDlgItem(hwnd, IDC_RADIO_NOTIFY_FIRST_TIME);
     Edit_LimitText(nameEdit, MAX_RULE_NAME);
     Edit_LimitText(textEdit, MAX_WINDOW_TEXT);
     Edit_LimitText(classEdit, MAX_CLASS_NAME);
@@ -362,10 +368,12 @@ bool RuleEditor::dispatchMessage(UINT message, WPARAM wParam, LPARAM lParam)
         case IDC_RADIO_ON_MINIMIZE:
         case IDC_RADIO_ON_FIRST_SHOW:
         case IDC_RADIO_ON_BOTH:
+        case IDC_RADIO_NEVER_NOTIFY:
+        case IDC_RADIO_ALWAYS_NOTIFY:
+        case IDC_RADIO_NOTIFY_FIRST_TIME:
         case IDC_CHECK_REGEX_CLASS:
         case IDC_CHECK_REGEX_PATH:
         case IDC_CHECK_REGEX_TEXT:
-        case IDC_CHECK_SHOW_NOTIFICATION:
             touch();
             break;
         case IDC_COMBO_WINDOWS:
@@ -398,6 +406,7 @@ bool RuleEditor::append()
     _stprintf_s(ruleName, _T("* %s"), i18n[IDS_NEW_RULE]);
     auto index = ListBox_AddString(ruleList, ruleName);
     ListBox_SetCurSel(ruleList, index);
+    reset(true);
     select();
     enable();
     Edit_SetText(nameEdit, i18n[IDS_NEW_RULE]);
@@ -419,8 +428,32 @@ bool RuleEditor::remove()
     ListBox_SetCurSel(ruleList, -1);
     select();
     enable(false);
+    reset(false);
     clean();
     return saveRules(context);
+}
+
+void RuleEditor::reset(bool init)
+{
+    Button_SetCheck(textCheckBox, BST_UNCHECKED);
+    Button_SetCheck(classCheckBox, BST_UNCHECKED);
+    Button_SetCheck(pathCheckBox, BST_UNCHECKED);
+    Button_SetCheck(onMinimizeRadioBox, BST_UNCHECKED);
+    Button_SetCheck(onBothRadioBox, BST_UNCHECKED);
+    Button_SetCheck(alwaysNotifyRadioBox, BST_UNCHECKED);
+    Button_SetCheck(notifyFirstTimeRadioBox, BST_UNCHECKED);
+    Edit_SetText(nameEdit, NULL);
+    Edit_SetText(textEdit, NULL);
+    Edit_SetText(classEdit, NULL);
+    Edit_SetText(pathEdit, NULL);
+    if (init) {
+        Button_SetCheck(onFirstShowRadioBox, BST_CHECKED);
+        Button_SetCheck(neverNotifyRadioBox, BST_CHECKED);
+    }
+    else {
+        Button_SetCheck(onFirstShowRadioBox, BST_UNCHECKED);
+        Button_SetCheck(neverNotifyRadioBox, BST_UNCHECKED);
+    }
 }
 
 void RuleEditor::enable(bool val)
@@ -429,25 +462,16 @@ void RuleEditor::enable(bool val)
     Edit_Enable(textEdit, val);
     Edit_Enable(classEdit, val);
     Edit_Enable(pathEdit, val);
-    Button_SetCheck(textCheckBox, BST_UNCHECKED);
-    Button_SetCheck(classCheckBox, BST_UNCHECKED);
-    Button_SetCheck(pathCheckBox, BST_UNCHECKED);
-    Button_SetCheck(showNotificationCheckBox, BST_UNCHECKED);
     Button_Enable(textCheckBox, val);
     Button_Enable(classCheckBox, val);
     Button_Enable(pathCheckBox, val);
-    Button_Enable(showNotificationCheckBox, val);
     ComboBox_Enable(windowsCombo, val);
-    Edit_SetText(nameEdit, NULL);
-    Edit_SetText(textEdit, NULL);
-    Edit_SetText(classEdit, NULL);
-    Edit_SetText(pathEdit, NULL);
     Button_Enable(onMinimizeRadioBox, val);
     Button_Enable(onFirstShowRadioBox, val);
     Button_Enable(onBothRadioBox, val);
-    Button_SetCheck(onMinimizeRadioBox, BST_UNCHECKED);
-    Button_SetCheck(onFirstShowRadioBox, BST_UNCHECKED);
-    Button_SetCheck(onBothRadioBox, BST_UNCHECKED);
+    Button_Enable(neverNotifyRadioBox, val);
+    Button_Enable(alwaysNotifyRadioBox, val);
+    Button_Enable(notifyFirstTimeRadioBox, val);
 }
 
 void RuleEditor::touch()
@@ -497,6 +521,7 @@ void RuleEditor::drop()
     ListBox_SetCurSel(ruleList, -1);
     select();
     enable(false);
+    reset(false);
     clean();
 }
 
@@ -519,7 +544,6 @@ void RuleEditor::select()
         Button_SetCheck(textCheckBox, rule->flag & RULE_REGEX_WINDOW_TEXT ? BST_CHECKED : BST_UNCHECKED);
         Button_SetCheck(classCheckBox, rule->flag & RULE_REGEX_WINDOW_CLASS ? BST_CHECKED : BST_UNCHECKED);
         Button_SetCheck(pathCheckBox, rule->flag & RULE_REGEX_EXE_FILENAME ? BST_CHECKED : BST_UNCHECKED);
-        Button_SetCheck(showNotificationCheckBox, rule->flag & RULE_SHOW_NOTIFICATION ? BST_CHECKED : BST_UNCHECKED);
 
         int onMinimizeChecked = BST_UNCHECKED,
             onFirstShowChecked = BST_UNCHECKED,
@@ -538,6 +562,21 @@ void RuleEditor::select()
         Button_SetCheck(onMinimizeRadioBox, onMinimizeChecked);
         Button_SetCheck(onFirstShowRadioBox, onFirstShowChecked);
         Button_SetCheck(onBothRadioBox, onBothChecked);
+
+        int neverNotifyChecked = BST_UNCHECKED,
+            alwaysNotifyChecked = BST_UNCHECKED,
+            notifyFirstTimeChecked = BST_UNCHECKED;
+        if (rule->flag & RULE_ALWAYS_NOTIFY) {
+            alwaysNotifyChecked = true;
+        } else if (rule->flag & RULE_NOTIFY_FIRST_TIME) {
+            notifyFirstTimeChecked = true;
+        }
+        else {
+            neverNotifyChecked = true;
+        }
+        Button_SetCheck(neverNotifyRadioBox, neverNotifyChecked);
+        Button_SetCheck(alwaysNotifyRadioBox, alwaysNotifyChecked);
+        Button_SetCheck(notifyFirstTimeRadioBox, notifyFirstTimeChecked);
     }
     isBusy = false;
 }
@@ -547,10 +586,6 @@ void RuleEditor::fill()
     Button_SetCheck(textCheckBox, BST_UNCHECKED);
     Button_SetCheck(classCheckBox, BST_UNCHECKED);
     Button_SetCheck(pathCheckBox, BST_UNCHECKED);
-    Button_SetCheck(showNotificationCheckBox, BST_UNCHECKED);
-    Button_SetCheck(onMinimizeRadioBox, BST_UNCHECKED);
-    Button_SetCheck(onFirstShowRadioBox, BST_UNCHECKED);
-    Button_SetCheck(onBothRadioBox, BST_UNCHECKED);
     
     auto index = ComboBox_GetItemData(windowsCombo, ComboBox_GetCurSel(windowsCombo));
     if (index >= context->iconIndex) {
@@ -594,6 +629,7 @@ bool RuleEditor::save()
     }
     ListBox_DeleteString(ruleList, index);
     ListBox_InsertString(ruleList, index, rule->ruleData);
+    ListBox_SetCurSel(ruleList, index);
     select();
     clean();
     return saveRules(context);

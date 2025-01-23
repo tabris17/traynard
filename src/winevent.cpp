@@ -78,12 +78,14 @@ static void WINAPI AutoHidingWinEventProc(HWINEVENTHOOK hWinEventHook,
     }
 
     auto context = AppContext();
-    bool showNotification = false;
-    if ((isMinimizing || !SET_CONTAINS(context->freeWindows, hwnd)) && 
-        matchRule(context, hwnd, isMinimizing, &showNotification)) {
-        
+    HIDING_RULE *rule = nullptr;
+    if ((isMinimizing || SET_NOT_CONTAINS(context->freeWindows, hwnd)) && 
+        matchRule(context, hwnd, isMinimizing, &rule)) {
+        bool isFirstTime = SET_NOT_CONTAINS(context->freeWindows, hwnd);
         minimizeWindow(context, hwnd);
-        if (showNotification) {
+        if (RULE_IS_ALWAYS_NOTIFY(rule->flag) || 
+            RULE_IS_NOTIFY_FIRST_TIME(rule->flag) && isFirstTime) {
+
             notifyHidingWindow(context, hwnd);
         }
     }

@@ -6,7 +6,7 @@ RFLAGS=/nologo /n /r
 {src\}.rc.res:
 	$(RC) $(RFLAGS) /fo$(@F) $<
 
-Traymond.exe: options.obj rules.obj winevent.obj icons.obj traymond.obj Traymond.res
+Traymond.exe: options.obj rules.obj winevent.obj icons.obj traymond.obj Traymond.res i18n.obj
 	$(CPP) $(CPPFLAGS) /Fe$(@F) $** user32.lib shell32.lib comctl32.lib advapi32.lib gdi32.lib /link /MACHINE:X86 /MANIFESTDEPENDENCY:"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'"
 
 clean:

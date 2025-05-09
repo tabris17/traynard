@@ -49,6 +49,7 @@
 #define IDC_RADIO_NEVER_NOTIFY          1024
 #define IDC_RADIO_ALWAYS_NOTIFY         1025
 #define IDC_RADIO_NOTIFY_FIRST_TIME     1026
+#define IDC_CHECK_AUTO_ELEVATE_PRIVILEGE 1027
 
 #define IDS_BEGIN                       2001
 #define IDS_HOTKEY_ERROR                2001

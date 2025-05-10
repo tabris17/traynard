@@ -98,6 +98,7 @@ typedef struct TRCONTEXT {
     HIDE_TYPE hideType;
     BOOL autorun;
     BOOL autoHiding;
+    BOOL autoElevatePrivilege;
     HOTKEY hotkey;
     HOTKEY hotkey2;
     HOTKEY hotkey3;

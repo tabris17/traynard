@@ -5,6 +5,7 @@
 #include <tchar.h>
 #include <string>
 #include <vector>
+#include <shellapi.h>
 
 #include "traymond.h"
 #include "options.h"
@@ -597,6 +598,44 @@ bool tryRegisterHotkey(HWND hwnd, int id, UINT modifiers, UINT vkey)
   return false;
 }
 
+BOOL IsRunAsAdmin()
+{
+    // DEBUG
+    // debugf("Checking if running as admin\n");
+
+    BOOL isAdmin = FALSE;
+    PSID adminGroup = NULL;
+    SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
+
+    if (AllocateAndInitializeSid(&ntAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS,
+                                 0, 0, 0, 0, 0, 0, &adminGroup)) {
+        CheckTokenMembership(NULL, adminGroup, &isAdmin);
+        FreeSid(adminGroup);
+    }
+    // DEBUG
+    // debugf("IsRunAsAdmin: %s\n", isAdmin ? "true" : "false");
+
+    return isAdmin;
+}
+
+void RelaunchAsAdmin()
+{
+    // DEBUG
+    // debugf("Relaunching as admin");
+
+    TCHAR exePath[MAX_PATH];
+    GetModuleFileName(NULL, exePath, MAX_PATH);
+
+    SHELLEXECUTEINFO sei = { sizeof(SHELLEXECUTEINFO) };
+    sei.lpVerb = _T("runas");
+    sei.lpFile = exePath;
+    sei.nShow = SW_SHOWNORMAL;
+
+    if (!ShellExecuteEx(&sei)) {
+        MessageBox(NULL, _T("Failed to elevate privileges."), _T(PROJECT_NAME), MB_ICONERROR);
+    }
+}
+
 #pragma warning(push)
 #pragma warning(disable:4100)
 #pragma warning(disable:4189)
@@ -654,6 +693,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
   tryRegisterHotkey(context->mainWindow, IDHOT_HIDE_WINDOW, context->hotkey.modifiers, context->hotkey.vkey);
   tryRegisterHotkey(context->mainWindow, IDHOT_POPUP_ICONS, context->hotkey2.modifiers, context->hotkey2.vkey);
   tryRegisterHotkey(context->mainWindow, IDHOT_RESTORE_LAST_WINDOW, context->hotkey3.modifiers, context->hotkey3.vkey);
+
+  if (context->autoElevatePrivilege && !IsRunAsAdmin()) {
+      RelaunchAsAdmin();
+      return 0;
+  }
 
   BOOL bRet;
   MSG msg;

@@ -10,6 +10,10 @@
 #include "rules.h"
 
 
+#define REG_KEY_SOFTWARE _T("Software\\Traymond")
+#define REG_KEY_RUN _T("Software\\Microsoft\\Windows\\CurrentVersion\\Run")
+
+
 UINT HotkeyToMod(UINT fsModifiers) 
 {
     if ((fsModifiers & HOTKEYF_SHIFT) && !(fsModifiers & HOTKEYF_ALT)) {
@@ -61,6 +65,7 @@ void loadOptions(TRCONTEXT* context)
     context->autorun = FALSE;
     context->hideType = HideTray;
     context->autoHiding = FALSE;
+    context->autoElevatePrivilege = FALSE;
     context->hook = NULL;
 
     loadHotkey(_T("Hotkey"), &context->hotkey);
@@ -80,6 +85,10 @@ void loadOptions(TRCONTEXT* context)
     if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_RUN, APP_NAME, RRF_RT_REG_SZ, NULL, NULL, NULL)) {
         context->autorun = TRUE;
     }
+
+    if (ERROR_SUCCESS == RegGetValue(HKEY_CURRENT_USER, REG_KEY_SOFTWARE, _T("AutoElevatePrivilege"), RRF_RT_REG_DWORD, NULL, &data, &size)) {
+        context->autoElevatePrivilege = (BOOL)data;
+    }
 }
 
 
@@ -98,6 +107,8 @@ void saveOptions(TRCONTEXT* context)
         RegSetValueEx(regKey, _T("HideType"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         data = context->autoHiding;
         RegSetValueEx(regKey, _T("AutoHiding"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
+        data = context->autoElevatePrivilege;
+        RegSetValueEx(regKey, _T("AutoElevatePrivilege"), 0, REG_DWORD, (BYTE*)&data, sizeof(DWORD));
         RegCloseKey(regKey);
     }
 
@@ -115,6 +126,7 @@ void saveOptions(TRCONTEXT* context)
 
 static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam) 
 {
+    // Set hotkeys
     UINT hotkeyIds[] = { IDHOT_HIDE_WINDOW, IDHOT_POPUP_ICONS, IDHOT_RESTORE_LAST_WINDOW };
     HOTKEY* hotkeys[] = { &context->hotkey, &context->hotkey2, &context->hotkey3 };
     HOTKEY readHotkeys[_countof(hotkeyIds)]{0};
@@ -156,9 +168,12 @@ static BOOL setOptions(HWND hwnd, TRCONTEXT* context, WPARAM wParam)
         hotkey->modifiers = readHotkey.modifiers;
         hotkey->vkey = readHotkey.vkey;
     }
+    // Read other options
     context->autorun = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTORUN);
     context->autoHiding = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTO_HIDING);
+    context->autoElevatePrivilege = IsDlgButtonChecked(hwnd, IDC_CHECK_AUTO_ELEVATE_PRIVILEGE);
     context->hideType = ComboBox_GetCurSel(GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE)) ? HideMenu : HideTray;
+
     reviseHiddenWindowIcon(context);
     saveOptions(context);
     return EndDialog(hwnd, wParam);
@@ -219,6 +234,7 @@ static BOOL initDialog(HWND hwnd, TRCONTEXT* context)
     CheckDlgButton(hwnd, IDC_CHECK_AUTORUN, context->autorun);
     CheckDlgButton(hwnd, IDC_CHECK_AUTO_HIDING, context->autoHiding);
     Button_Enable(GetDlgItem(hwnd, IDC_BUTTON_RULES), context->autoHiding);
+    CheckDlgButton(hwnd, IDC_CHECK_AUTO_ELEVATE_PRIVILEGE, context->autoElevatePrivilege);
 
     auto hideTypeCombo = GetDlgItem(hwnd, IDC_COMBO_HIDE_TYPE);
     ComboBox_AddItemData(hideTypeCombo, i18n[IDS_TRAY]);

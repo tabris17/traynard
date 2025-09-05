@@ -53,7 +53,7 @@ uses
 const
   EXT_NAME = '.toml';
   KEY_NOT_FOUND = 'Key not found';
-  APP_DATA_DIR = 'data';
+  APP_DATA_DIR = 'config';
   LANGUAGES_DIR = 'languages';
 
 { TConfigHelper }

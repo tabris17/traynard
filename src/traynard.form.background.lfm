@@ -1,0 +1,98 @@
+object FormBackground: TFormBackground
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  BorderStyle = bsNone
+  OnClick = FormClick
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  object ApplicationProperties: TApplicationProperties
+    OnException = ApplicationPropertiesException
+    Left = 56
+    Top = 8
+  end
+  object UniqueInstance: TUniqueInstance
+    Enabled = True
+    OnOtherInstance = UniqueInstanceOtherInstance
+    Left = 56
+    Top = 64
+  end
+  object TrayIcon: TTrayIcon
+    PopUpMenu = TrayMenu
+    Visible = True
+    OnDblClick = TrayIconDblClick
+    Left = 56
+    Top = 120
+  end
+  object ActionList: TActionList
+    Left = 56
+    Top = 176
+    object ActionOpen: TAction
+      Caption = 'Open'
+      OnExecute = ActionOpenExecute
+    end
+    object ActionClose: TAction
+      Caption = 'Close'
+      OnExecute = ActionCloseExecute
+    end
+    object ActionExit: TAction
+      Caption = 'Exit'
+      OnExecute = ActionExitExecute
+    end
+    object ActionRestoreAll: TAction
+      Caption = 'Restore All'
+      Enabled = False
+      OnExecute = ActionRestoreAllExecute
+    end
+    object ActionRestoreLast: TAction
+      Caption = 'Restore Last Window'
+      Enabled = False
+      OnExecute = ActionRestoreLastExecute
+    end
+    object ActionAutoMinimize: TAction
+      Caption = 'Auto-minimize'
+      OnExecute = ActionAutoMinimizeExecute
+    end
+    object ActionApplyRules: TAction
+      Caption = 'Apply Rules'
+      OnExecute = ActionApplyRulesExecute
+    end
+  end
+  object TrayMenu: TPopupMenu
+    OnPopup = TrayMenuPopup
+    Left = 168
+    Top = 8
+    object MenuItemOpen: TMenuItem
+      Action = ActionOpen
+      Default = True
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object Separator2: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemRestoreAll: TMenuItem
+      Action = ActionRestoreAll
+    end
+    object MenuItemRestoreLast: TMenuItem
+      Action = ActionRestoreLast
+    end
+    object Separator3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemAutoMinimize: TMenuItem
+      Action = ActionAutoMinimize
+    end
+    object MenuItemUseRules: TMenuItem
+      Action = ActionApplyRules
+    end
+    object Separator4: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemExit: TMenuItem
+      Action = ActionExit
+    end
+  end
+end

@@ -1,0 +1,19 @@
+{"version":1,"strings":[
+{"hash":46116983,"name":"tpagerules.panelwelcome.caption","sourcebytes":[83,101,108,101,99,116,32,97,32,114,117,108,101,32,102,114,111,109,32,116,104,101,32,108,101,102,116,32,108,105,115,116,32,116,111,32,101,100,105,116,32,111,114,32,99,114,101,97,116,101,32,97,32,110,101,119],"value":"Select a rule from the left list to edit or create a new"},
+{"hash":122814378,"name":"tpagerules.labelrulename.caption","sourcebytes":[82,117,108,101,32,78,97,109,101,58],"value":"Rule Name:"},
+{"hash":187373749,"name":"tpagerules.editrulename.texthint","sourcebytes":[85,110,105,113,117,101,32,110,97,109,101],"value":"Unique name"},
+{"hash":188853818,"name":"tpagerules.labelwindowtitle.caption","sourcebytes":[87,105,110,100,111,119,32,84,105,116,105,108,101,58],"value":"Window Titile:"},
+{"hash":173176978,"name":"tpagerules.editwindowtitle.texthint","sourcebytes":[84,101,120,116,32,105,110,32,116,104,101,32,119,105,110,100,111,119,32,116,105,116,108,101,32,98,97,114],"value":"Text in the window title bar"},
+{"hash":178666666,"name":"tpagerules.labelwindowclass.caption","sourcebytes":[87,105,110,100,111,119,32,67,108,97,115,115,58],"value":"Window Class:"},
+{"hash":44795319,"name":"tpagerules.editwindowclass.texthint","sourcebytes":[73,109,109,117,116,97,98,108,101,32,112,114,111,112,101,114,116,121,32,111,102,32,116,104,101,32,119,105,110,100,111,119],"value":"Immutable property of the window"},
+{"hash":260461370,"name":"tpagerules.labelapppath.caption","sourcebytes":[65,112,112,108,105,99,97,116,105,111,110,32,80,97,116,104,58],"value":"Application Path:"},
+{"hash":104021624,"name":"tpagerules.editapppath.texthint","sourcebytes":[87,105,110,100,111,119,32,111,119,110,101,114,32,112,114,111,99,101,115,115,32,102,105,108,101,32,112,97,116,104],"value":"Window owner process file path"},
+{"hash":181272990,"name":"tpagerules.radiogroupnotification.caption","sourcebytes":[78,111,116,105,102,105,99,97,116,105,111,110],"value":"Notification"},
+{"hash":232390062,"name":"tpagerules.checkgrouptriggeron.caption","sourcebytes":[84,114,105,103,103,101,114,32,79,110],"value":"Trigger On"},
+{"hash":74626720,"name":"tpagerules.labelminimizeto.caption","sourcebytes":[77,105,110,105,109,105,122,101,32,116,111,58,32],"value":"Minimize to: "},
+{"hash":21703,"name":"tpagerules.actionnew.caption","sourcebytes":[78,101,119],"value":"New"},
+{"hash":366789,"name":"tpagerules.actionsave.caption","sourcebytes":[83,97,118,101],"value":"Save"},
+{"hash":78392485,"name":"tpagerules.actiondelete.caption","sourcebytes":[68,101,108,101,116,101],"value":"Delete"},
+{"hash":4863637,"name":"tpagerules.actionclose.caption","sourcebytes":[67,108,111,115,101],"value":"Close"},
+{"hash":353982,"name":"tpagerules.actionopen.caption","sourcebytes":[79,112,101,110],"value":"Open"}
+]}

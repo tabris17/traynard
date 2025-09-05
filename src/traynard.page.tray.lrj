@@ -1,0 +1,11 @@
+{"version":1,"strings":[
+{"hash":346165,"name":"tpagetray.listview.columns[0].caption","sourcebytes":[78,97,109,101],"value":"Name"},
+{"hash":22371,"name":"tpagetray.listview.columns[1].caption","sourcebytes":[80,111,115],"value":"Pos"},
+{"hash":82332453,"name":"tpagetray.listview.columns[2].caption","sourcebytes":[72,97,110,100,108,101],"value":"Handle"},
+{"hash":4860067,"name":"tpagetray.listview.columns[3].caption","sourcebytes":[67,108,97,115,115],"value":"Class"},
+{"hash":21716,"name":"tpagetray.listview.columns[4].caption","sourcebytes":[80,73,68],"value":"PID"},
+{"hash":265345406,"name":"tpagetray.listview.columns[5].caption","sourcebytes":[65,112,112,108,105,99,97,116,105,111,110],"value":"Application"},
+{"hash":147502805,"name":"tpagetray.actionrestore.caption","sourcebytes":[82,101,115,116,111,114,101],"value":"Restore"},
+{"hash":115314332,"name":"tpagetray.actionrestoreall.caption","sourcebytes":[82,101,115,116,111,114,101,32,65,108,108],"value":"Restore All"},
+{"hash":172521431,"name":"tpagetray.actionrestorelast.caption","sourcebytes":[82,101,115,116,111,114,101,32,76,97,115,116,32,87,105,110,100,111,119],"value":"Restore Last Window"}
+]}

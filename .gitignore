@@ -1,0 +1,5 @@
+*.obj
+*.res
+*.exe
+*.lps
+out/

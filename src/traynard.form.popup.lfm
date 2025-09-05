@@ -1,0 +1,96 @@
+object FormPopup: TFormPopup
+  Left = 0
+  Height = 280
+  Top = 0
+  Width = 300
+  AlphaBlend = True
+  AlphaBlendValue = 0
+  AutoSize = True
+  BorderIcons = []
+  BorderStyle = bsNone
+  ClientHeight = 280
+  ClientWidth = 300
+  Color = clInfoBk
+  Constraints.MinHeight = 30
+  Constraints.MinWidth = 300
+  FormStyle = fsStayOnTop
+  PopupMode = pmExplicit
+  ShowInTaskBar = stNever
+  OnCreate = FormCreate
+  object ImageIcon: TImage
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 5
+    Height = 32
+    Top = 5
+    Width = 32
+    BorderSpacing.Around = 5
+    Visible = False
+  end
+  object LabelTitle: TLabel
+    AnchorSideLeft.Control = ImageIcon
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 42
+    Height = 1
+    Top = 5
+    Width = 1
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    Constraints.MaxWidth = 235
+    Font.Style = [fsBold]
+    ParentFont = False
+    WordWrap = True
+  end
+  object LabelMessage: TLabel
+    AnchorSideLeft.Control = LabelTitle
+    AnchorSideTop.Control = LabelTitle
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 42
+    Height = 264
+    Top = 11
+    Width = 1
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Top = 5
+    BorderSpacing.Bottom = 5
+    Constraints.MaxWidth = 235
+    WordWrap = True
+  end
+  object ShapeClose: TShape
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 283
+    Height = 12
+    Top = 5
+    Width = 12
+    Anchors = [akTop, akRight]
+    BorderSpacing.Around = 5
+    Brush.Color = clBtnFace
+    Pen.Color = clBtnText
+    Shape = stRoundSquare
+    OnClick = ShapeCloseClick
+    OnPaint = ShapeClosePaint
+  end
+  object TimerClose: TTimer
+    Interval = 2500
+    OnTimer = TimerCloseTimer
+    Left = 192
+    Top = 208
+  end
+  object TimerFadeIn: TTimer
+    Interval = 20
+    OnTimer = TimerFadeInTimer
+    Left = 120
+    Top = 208
+  end
+  object TimerFadeOut: TTimer
+    Enabled = False
+    Interval = 20
+    OnTimer = TimerFadeOutTimer
+    Left = 40
+    Top = 208
+  end
+end

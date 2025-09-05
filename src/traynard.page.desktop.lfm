@@ -1,0 +1,327 @@
+inherited PageDesktop: TPageDesktop
+  Width = 560
+  ClientWidth = 560
+  inherited Header: TToolBar
+    Height = 0
+    Width = 560
+    TabOrder = 1
+    Visible = False
+    inherited HeaderTitle: TLabel
+      ParentFont = True
+    end
+  end
+  object ListView: TListView[1]
+    Left = 0
+    Height = 461
+    Top = 0
+    Width = 560
+    Align = alClient
+    AutoSortIndicator = True
+    AutoWidthLastColumn = True
+    BorderStyle = bsNone
+    Columns = <    
+      item
+        Caption = 'Name'
+        MinWidth = 20
+        Width = 180
+      end    
+      item
+        Caption = 'Handle'
+        Width = 60
+      end    
+      item
+        Caption = 'Class'
+        MinWidth = 20
+        Width = 100
+      end    
+      item
+        Alignment = taRightJustify
+        Caption = 'PID'
+        MinWidth = 20
+        Width = 60
+      end    
+      item
+        Caption = 'Application'
+        MinWidth = 20
+        Width = 200
+      end>
+    HideSelection = False
+    PopupMenu = ListViewMenu
+    ReadOnly = True
+    RowSelect = True
+    SmallImages = IconList
+    SortType = stText
+    TabOrder = 0
+    ViewStyle = vsReport
+    OnCustomDrawItem = ListViewCustomDrawItem
+    OnSelectItem = ListViewSelectItem
+  end
+  object ButtonPanel: TPanel[2]
+    Left = 6
+    Height = 27
+    Top = 467
+    Width = 548
+    Align = alBottom
+    BorderSpacing.Around = 6
+    BevelOuter = bvNone
+    ClientHeight = 27
+    ClientWidth = 548
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 2
+    object ButtonMinimize: TButton
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 80
+      AutoSize = True
+      Caption = 'Minimize'
+      Constraints.MinWidth = 80
+      Enabled = False
+      TabOrder = 0
+      OnClick = ButtonMinimizeClick
+    end
+    object ButtonRule: TButton
+      AnchorSideLeft.Control = ButtonMinimize
+      AnchorSideLeft.Side = asrBottom
+      Left = 86
+      Height = 27
+      Top = 0
+      Width = 81
+      Action = ActionNewRule
+      AutoSize = True
+      BorderSpacing.Left = 6
+      Constraints.MinWidth = 80
+      TabOrder = 1
+    end
+    object ButtonRefresh: TButton
+      AnchorSideRight.Control = ButtonPanel
+      AnchorSideRight.Side = asrBottom
+      Left = 468
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionRefresh
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      Constraints.MinWidth = 80
+      TabOrder = 2
+    end
+    object ShapeColor: TShape
+      AnchorSideLeft.Control = ButtonRule
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ButtonPanel
+      AnchorSideTop.Side = asrCenter
+      Left = 187
+      Height = 16
+      Top = 5
+      Width = 16
+      BorderSpacing.Left = 20
+      Brush.Color = 16764108
+    end
+    object LabelManaged: TLabel
+      AnchorSideLeft.Control = ShapeColor
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ButtonPanel
+      AnchorSideTop.Side = asrCenter
+      Left = 205
+      Height = 17
+      Top = 5
+      Width = 83
+      BorderSpacing.Left = 2
+      Caption = 'Auto-minimize'
+    end
+  end
+  object IconList: TImageList[3]
+    Height = 32
+    Width = 32
+    Left = 72
+    Top = 96
+  end
+  object IdleTimer: TIdleTimer[4]
+    Enabled = False
+    Interval = 100
+    OnTimer = IdleTimerTimer
+    Left = 72
+    Top = 168
+  end
+  object ListViewMenu: TPopupMenu[5]
+    Left = 72
+    Top = 240
+    object MenuItemTopmost: TMenuItem
+      Action = ActionTopmost
+    end
+    object Separator3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemMinimize: TMenuItem
+      Caption = 'Minimize'
+      Enabled = False
+      object MenuItemToMenu: TMenuItem
+        Action = ActionTrayMenu
+      end
+      object MenuItemToIcon: TMenuItem
+        Action = ActionTrayIcon
+      end
+      object Separator7: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemAutoMenu: TMenuItem
+        Action = ActionAutoTrayMenu
+      end
+      object MenuItemAutoIcon: TMenuItem
+        Action = ActionAutoTrayIcon
+      end
+    end
+    object MenuItemRule: TMenuItem
+      Action = ActionNewRule
+    end
+    object MenuItemFlash: TMenuItem
+      Action = ActionFlash
+    end
+    object MenuItemClose: TMenuItem
+      Action = ActionClose
+    end
+    object Separator5: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemCopy: TMenuItem
+      Caption = 'Copy'
+      object MenuItemCopyName: TMenuItem
+        Action = ActionCopyName
+      end
+      object MenuItemCopyClass: TMenuItem
+        Action = ActionCopyClass
+      end
+      object MenuItemCopyPath: TMenuItem
+        Action = ActionCopyPath
+      end
+      object Separator2: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemCopyEntireRow: TMenuItem
+        Action = ActionCopyEntireRow
+      end
+    end
+    object Separator4: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemLocate: TMenuItem
+      Action = ActionLocate
+    end
+    object MenuItemProperties: TMenuItem
+      Action = ActionProperties
+    end
+    object Separator1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemRefresh: TMenuItem
+      Action = ActionRefresh
+    end
+  end
+  object ActionList: TActionList[6]
+    Left = 72
+    Top = 312
+    object ActionTrayMenu: TAction
+      Caption = 'To Tray Menu'
+      Enabled = False
+      ShortCut = 16461
+      OnExecute = ActionTrayMenuExecute
+    end
+    object ActionTrayIcon: TAction
+      Caption = 'To Tray Icon'
+      Enabled = False
+      ShortCut = 16462
+      OnExecute = ActionTrayIconExecute
+    end
+    object ActionNewRule: TAction
+      Caption = 'New Rule'
+      Enabled = False
+      Hint = 'New rule from the window'
+      OnExecute = ActionNewRuleExecute
+    end
+    object ActionClose: TAction
+      Caption = 'Close'
+      Enabled = False
+      Hint = 'Close window'
+      ShortCut = 16499
+      OnExecute = ActionCloseExecute
+    end
+    object ActionCopyName: TAction
+      Caption = 'Window Name'
+      Enabled = False
+      OnExecute = ActionCopyNameExecute
+    end
+    object ActionCopyClass: TAction
+      Caption = 'Window Class'
+      Enabled = False
+      OnExecute = ActionCopyClassExecute
+    end
+    object ActionCopyPath: TAction
+      Caption = 'Application Path'
+      Enabled = False
+      OnExecute = ActionCopyPathExecute
+    end
+    object ActionCopyEntireRow: TAction
+      Caption = 'Entire Row'
+      Enabled = False
+      ShortCut = 16451
+      OnExecute = ActionCopyEntireRowExecute
+    end
+    object ActionLocate: TAction
+      Caption = 'Open File Location'
+      Enabled = False
+      OnExecute = ActionLocateExecute
+    end
+    object ActionTopmost: TAction
+      Caption = 'Always on Top'
+      Enabled = False
+      ShortCut = 16468
+      OnExecute = ActionTopmostExecute
+    end
+    object ActionProperties: TAction
+      Caption = 'File Properties'
+      Enabled = False
+      OnExecute = ActionPropertiesExecute
+    end
+    object ActionRefresh: TAction
+      Caption = 'Refresh'
+      ShortCut = 116
+      OnExecute = ActionRefreshExecute
+    end
+    object ActionFlash: TAction
+      Caption = 'Flash'
+      Enabled = False
+      OnExecute = ActionFlashExecute
+    end
+    object ActionAutoTrayIcon: TAction
+      Caption = 'Auto to Tray Icon'
+      Enabled = False
+      OnExecute = ActionAutoTrayIconExecute
+    end
+    object ActionAutoTrayMenu: TAction
+      Caption = 'Auto to Tray Menu'
+      Enabled = False
+      OnExecute = ActionAutoTrayMenuExecute
+    end
+  end
+  object MinimizeMenu: TPopupMenu[7]
+    Left = 72
+    Top = 384
+    object MenuItemToMenu1: TMenuItem
+      Action = ActionTrayMenu
+    end
+    object MenuItemToIcon1: TMenuItem
+      Action = ActionTrayIcon
+    end
+    object Separator6: TMenuItem
+      Caption = '-'
+    end
+    object MenuItemAutoMenu1: TMenuItem
+      Action = ActionAutoTrayMenu
+    end
+    object MenuItemAutoIcon1: TMenuItem
+      Action = ActionAutoTrayIcon
+    end
+  end
+end

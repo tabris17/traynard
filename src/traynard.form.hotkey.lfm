@@ -1,0 +1,52 @@
+object FormHotkey: TFormHotkey
+  Left = 0
+  Height = 120
+  Top = 0
+  Width = 300
+  BorderStyle = bsDialog
+  Caption = 'Hotkey'
+  ClientHeight = 120
+  ClientWidth = 300
+  Color = clWindow
+  KeyPreview = True
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  object ButtonOK: TButton
+    Left = 65
+    Height = 25
+    Top = 85
+    Width = 80
+    Caption = 'OK'
+    Default = True
+    TabOrder = 0
+    OnClick = ButtonOKClick
+  end
+  object ButtonCancel: TButton
+    Left = 155
+    Height = 25
+    Top = 85
+    Width = 80
+    Cancel = True
+    Caption = 'Cancel'
+    TabOrder = 1
+    OnClick = ButtonCancelClick
+  end
+  object LabelTitle: TLabel
+    Left = 8
+    Height = 1
+    Top = 10
+    Width = 1
+  end
+  object LabelHotkey: TLabel
+    Left = 64
+    Height = 21
+    Top = 40
+    Width = 170
+    Caption = 'Press any shortcut key'
+    Font.Height = -16
+    ParentFont = False
+    OnResize = LabelHotkeyResize
+  end
+end

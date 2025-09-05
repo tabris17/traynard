@@ -1,0 +1,45 @@
+inherited PageAbout: TPageAbout
+  OnResize = FrameResize
+  DesignLeft = 710
+  DesignTop = 350
+  inherited Header: TToolBar
+    Font.Height = -16
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object HtmlPanel: TIpHtmlPanel[1]
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    Left = 0
+    Height = 466
+    Top = 34
+    Width = 500
+    Align = alCustom
+    Anchors = [akTop, akLeft, akBottom]
+    Constraints.MaxWidth = 800
+    DataProvider = HtmlDataProvider
+    FixedTypeface = 'Tahoma'
+    FontQuality = fqCleartypeNatural
+    DefaultTypeFace = 'Segoe UI'
+    DefaultFontSize = 12
+    FlagErrors = False
+    LinkColor = clHotLight
+    MarginHeight = 0
+    PrintSettings.MarginLeft = 0.5
+    PrintSettings.MarginTop = 0.5
+    PrintSettings.MarginRight = 0.5
+    PrintSettings.MarginBottom = 0.5
+    PrintSettings.Preview.Left = 480
+    PrintSettings.Preview.Top = 300
+    PrintSettings.Preview.Width = 1440
+    PrintSettings.Preview.Height = 900
+    TabOrder = 1
+    TextColor = clInfoText
+    OnHotClick = HtmlPanelHotClick
+  end
+  object HtmlDataProvider: TIpHtmlDataProvider[2]
+    OnGetImage = HtmlDataProviderGetImage
+    Left = 369
+    Top = 159
+  end
+end

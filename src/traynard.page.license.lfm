@@ -1,0 +1,26 @@
+inherited PageLicense: TPageLicense
+  inherited Header: TToolBar
+    inherited HeaderTitle: TLabel
+      Caption = 'License'
+    end
+    inherited HeaderMenu: TToolButton
+      Visible = False
+    end
+  end
+  object Memo: TMemo[1]
+    Left = 20
+    Height = 426
+    Top = 54
+    Width = 460
+    Align = alClient
+    BorderSpacing.Around = 20
+    BorderStyle = bsNone
+    Font.Height = -13
+    Font.Name = 'Lucida Console'
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 1
+    WantReturns = False
+    WordWrap = False
+  end
+end

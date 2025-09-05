@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{Title}}</title>
+<style type="text/css">
+h1 { font-size: 24px; margin: 0px; }
+h2 { font-size: 20px; margin: 20px 0px 10px 0px; }
+body { margin: 0px; }
+p { margin: 5px 0px;}
+.intro { margin-top: 20px; line-height: 1.5; }
+.label { font-weight: normal; }
+.subtitle { font-size: 14px; margin: 0px; color: #666; }
+</style>
+</head>
+<body>
+<table align="center" cellpadding="0" cellspacing="10">
+  <tr>
+    <td><img src="logo.png"></td>
+    <td align="center"><h1>{{AppName}}</h1><span class="subtitle">{{Description}}</span></td>
+  </tr>
+</table>
+<hr color="#ccc" size="1" noshade>
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <td><span class="label">{{LabelVersion}}</span></td>
+    <td width="20"></td>
+    <td>{{Version}}</td>
+  </tr>
+  <tr>
+    <td><span class="label">{{LabelLicense}}</span></td>
+    <td width="20"></td>
+    <td><a href="about:license" title="{{License}}">{{License}}</a></td>
+  </tr>
+  <tr>
+    <td><span class="label">{{LabelMaintainer}}</span></td>
+    <td width="20"></td>
+    <td>{{Maintainer}}</td>
+  </tr>
+  <tr>
+    <td><span class="label">{{LabelSourceCode}}</span></td>
+    <td width="20"></td>
+    <td><a href="{{GitHub}}">{{GitHub}}</a></td>
+  </tr>
+  <tr>
+    <td><span class="label">{{LabelBuildDate}}</span></td>
+    <td width="20"></td>
+    <td>{{BuildDate}}</td>
+  </tr>
+  <tr>
+    <td><span class="label">{{LabelCompiler}}</span></td>
+    <td width="20"></td>
+    <td>FPC {{FPCVersion}}; LCL {{LCLVersion}}; {{Platform}}</td>
+  </tr>
+</table>
+<div class="intro">{{Intro}}</div>
+<h2>Features</h2>
+<ol>
+  <li>{{FeatureManagedWindow}}</li>
+  <li>{{FeatureHotkeys}}</li>
+  <li>{{FeatureSystemMenu}}</li>
+  <li>{{FeatureRules}}</li>
+</ol>
+<h2>Usage</h2>
+<h2>Known issues</h2>
+</body>
+</html>

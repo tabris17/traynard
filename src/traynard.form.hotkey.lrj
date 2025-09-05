@@ -1,0 +1,6 @@
+{"version":1,"strings":[
+{"hash":83276233,"name":"tformhotkey.caption","sourcebytes":[72,111,116,107,101,121],"value":"Hotkey"},
+{"hash":1339,"name":"tformhotkey.buttonok.caption","sourcebytes":[79,75],"value":"OK"},
+{"hash":77089212,"name":"tformhotkey.buttoncancel.caption","sourcebytes":[67,97,110,99,101,108],"value":"Cancel"},
+{"hash":117974297,"name":"tformhotkey.labelhotkey.caption","sourcebytes":[80,114,101,115,115,32,97,110,121,32,115,104,111,114,116,99,117,116,32,107,101,121],"value":"Press any shortcut key"}
+]}

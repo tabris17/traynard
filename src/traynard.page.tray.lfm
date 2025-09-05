@@ -1,0 +1,138 @@
+inherited PageTray: TPageTray
+  inherited Header: TToolBar
+    Height = 0
+    Visible = False
+  end
+  object ButtonPanel: TPanel[1]
+    Left = 6
+    Height = 27
+    Top = 467
+    Width = 488
+    Align = alBottom
+    BorderSpacing.Around = 6
+    BevelOuter = bvNone
+    ClientHeight = 27
+    ClientWidth = 488
+    TabOrder = 1
+    object ButtonRestore: TButton
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionRestore
+      AutoSize = True
+      Constraints.MinWidth = 80
+      TabOrder = 0
+    end
+    object ButtonRestoreAll: TButton
+      AnchorSideLeft.Control = ButtonRestore
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = ButtonPanel
+      AnchorSideRight.Side = asrBottom
+      Left = 399
+      Height = 27
+      Top = 0
+      Width = 89
+      Action = ActionRestoreAll
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      BorderSpacing.Left = 6
+      Constraints.MinWidth = 80
+      TabOrder = 1
+    end
+  end
+  object ListView: TListView[2]
+    Left = 0
+    Height = 461
+    Top = 0
+    Width = 500
+    Align = alClient
+    AutoSortIndicator = True
+    AutoWidthLastColumn = True
+    BorderStyle = bsNone
+    Columns = <    
+      item
+        Caption = 'Name'
+        MinWidth = 20
+        Width = 180
+      end    
+      item
+        Caption = 'Pos'
+      end    
+      item
+        Caption = 'Handle'
+        Width = 100
+      end    
+      item
+        Caption = 'Class'
+        MinWidth = 20
+        Width = 100
+      end    
+      item
+        Alignment = taRightJustify
+        Caption = 'PID'
+        MinWidth = 20
+        Width = 60
+      end    
+      item
+        Caption = 'Application'
+        MinWidth = 20
+        Width = 200
+      end>
+    HideSelection = False
+    PopupMenu = ListViewMenu
+    ReadOnly = True
+    RowSelect = True
+    SmallImages = IconList
+    SortType = stText
+    TabOrder = 2
+    ViewStyle = vsReport
+    OnSelectItem = ListViewSelectItem
+  end
+  object IconList: TImageList[3]
+    Height = 32
+    Width = 32
+    Left = 84
+    Top = 136
+  end
+  object IdleTimer: TIdleTimer[4]
+    Enabled = False
+    Interval = 100
+    OnTimer = IdleTimerTimer
+    Left = 84
+    Top = 71
+  end
+  object ActionList: TActionList[5]
+    Left = 82
+    Top = 205
+    object ActionRestore: TAction
+      Caption = 'Restore'
+      Enabled = False
+      OnExecute = ActionRestoreExecute
+    end
+    object ActionRestoreAll: TAction
+      Caption = 'Restore All'
+      Enabled = False
+      OnExecute = ActionRestoreAllExecute
+    end
+    object ActionRestoreLast: TAction
+      Caption = 'Restore Last Window'
+      Enabled = False
+      OnExecute = ActionRestoreLastExecute
+    end
+  end
+  object ListViewMenu: TPopupMenu[6]
+    Left = 82
+    Top = 272
+    object MenuItemRestore: TMenuItem
+      Action = ActionRestore
+    end
+    object MenuItemRestoreLast: TMenuItem
+      Action = ActionRestoreLast
+    end
+    object MenuItemRestoreAll: TMenuItem
+      Action = ActionRestoreAll
+    end
+  end
+end

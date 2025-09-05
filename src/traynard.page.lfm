@@ -1,0 +1,46 @@
+object FramePage: TFramePage
+  Left = 0
+  Height = 500
+  Top = 0
+  Width = 500
+  ClientHeight = 500
+  ClientWidth = 500
+  TabOrder = 0
+  object Header: TToolBar
+    Left = 0
+    Height = 34
+    Top = 0
+    Width = 500
+    ButtonHeight = 32
+    ButtonWidth = 32
+    Images = FormMain.MinorIcons
+    Indent = 0
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    OnResize = HeaderResize
+    object HeaderBackward: TToolButton
+      Left = 0
+      Top = 2
+      ImageIndex = 0
+      OnClick = HeaderBackwardClick
+    end
+    object HeaderTitle: TLabel
+      Left = 32
+      Height = 32
+      Top = 2
+      Width = 415
+      Align = alCustom
+      Alignment = taCenter
+      AutoSize = False
+      Font.Height = -16
+      Layout = tlCenter
+      ParentFont = False
+    end
+    object HeaderMenu: TToolButton
+      Left = 447
+      Top = 2
+      ImageIndex = 1
+    end
+  end
+end

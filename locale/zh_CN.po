@@ -1,0 +1,783 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TraymondR 1.0\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: tabris17\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Language-Name: 简体中文\n"
+"X-Generator: Poedit 3.7\n"
+
+#: tformbackground.actionapplyrules.caption
+msgid "Apply Rules"
+msgstr "应用规则"
+
+#: tformbackground.actionautominimize.caption
+msgctxt "tformbackground.actionautominimize.caption"
+msgid "Auto-minimize"
+msgstr "自动最小化"
+
+#: tformbackground.actionclose.caption
+msgctxt "tformbackground.actionclose.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tformbackground.actionexit.caption
+msgctxt "tformbackground.actionexit.caption"
+msgid "Exit"
+msgstr "退出"
+
+#: tformbackground.actionopen.caption
+msgctxt "tformbackground.actionopen.caption"
+msgid "Open"
+msgstr "打开"
+
+#: tformbackground.actionrestoreall.caption
+msgctxt "tformbackground.actionrestoreall.caption"
+msgid "Restore All"
+msgstr "全部还原"
+
+#: tformbackground.actionrestorelast.caption
+msgctxt "tformbackground.actionrestorelast.caption"
+msgid "Restore Last Window"
+msgstr "还原上一个窗口"
+
+#: tformhotkey.buttoncancel.caption
+msgid "Cancel"
+msgstr "取消"
+
+#: tformhotkey.buttonok.caption
+msgid "OK"
+msgstr "确定"
+
+#: tformhotkey.caption
+msgctxt "tformhotkey.caption"
+msgid "Hotkey"
+msgstr "热键"
+
+#: tformhotkey.labelhotkey.caption
+msgid "Press any shortcut key"
+msgstr "按下组合键"
+
+#: tformmain.actionabout.caption
+msgctxt "tformmain.actionabout.caption"
+msgid "About"
+msgstr "关于"
+
+#: tformmain.actionabout.hint
+msgctxt "tformmain.actionabout.hint"
+msgid "About"
+msgstr "关于"
+
+#: tformmain.actiondesktop.caption
+msgid "Desktop"
+msgstr "桌面"
+
+#: tformmain.actiondesktop.hint
+msgid "Ordinary windows on desktop"
+msgstr "桌面上的窗口"
+
+#: tformmain.actionexit.caption
+msgctxt "tformmain.actionexit.caption"
+msgid "Exit"
+msgstr "退出"
+
+#: tformmain.actionlicense.caption
+msgctxt "tformmain.actionlicense.caption"
+msgid "License"
+msgstr "许可证"
+
+#: tformmain.actionoptions.caption
+msgctxt "tformmain.actionoptions.caption"
+msgid "Options"
+msgstr "选项"
+
+#: tformmain.actionoptions.hint
+msgctxt "tformmain.actionoptions.hint"
+msgid "Options"
+msgstr "选项"
+
+#: tformmain.actionrules.caption
+msgid "Rules"
+msgstr "规则"
+
+#: tformmain.actiontray.caption
+msgid "Tray"
+msgstr "托盘"
+
+#: tformmain.actiontray.hint
+msgid "Windows managed by program"
+msgstr "由程序管理的窗口"
+
+#: tformmain.menuitemgithub.caption
+msgid "GitHub Repo"
+msgstr "GitHub 仓库"
+
+#: tformmain.menuitemhelp.caption
+msgid "Help"
+msgstr "帮助"
+
+#: tformmain.menuitemissue.caption
+msgid "Report Issue"
+msgstr "报告问题"
+
+#: tformmain.menuitemusage.caption
+msgid "Usage"
+msgstr "使用说明"
+
+#: tformmain.toolbuttonmenu.hint
+msgid "Main menu"
+msgstr "主菜单"
+
+#: tformmain.toolbuttonrules.hint
+msgid "Custom rules"
+msgstr "自定义规则"
+
+#: tformmain.toolbuttontray.hint
+msgid "Minimized windows in tray"
+msgstr "最小化到托盘的窗口"
+
+#: tpagedesktop.actionautotrayicon.caption
+msgid "Auto to Tray Icon"
+msgstr "自动到托盘图标"
+
+#: tpagedesktop.actionautotraymenu.caption
+msgid "Auto to Tray Menu"
+msgstr "自动到托盘菜单"
+
+#: tpagedesktop.actionclose.caption
+msgctxt "tpagedesktop.actionclose.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tpagedesktop.actionclose.hint
+msgid "Close window"
+msgstr "关闭窗口"
+
+#: tpagedesktop.actioncopyclass.caption
+msgid "Window Class"
+msgstr "窗口类"
+
+#: tpagedesktop.actioncopyentirerow.caption
+msgid "Entire Row"
+msgstr "整行"
+
+#: tpagedesktop.actioncopyname.caption
+msgid "Window Name"
+msgstr "窗口名称"
+
+#: tpagedesktop.actioncopypath.caption
+msgid "Application Path"
+msgstr "应用程序路径"
+
+#: tpagedesktop.actionflash.caption
+msgid "Flash"
+msgstr "闪烁"
+
+#: tpagedesktop.actionlocate.caption
+msgid "Open File Location"
+msgstr "打开文件所在位置"
+
+#: tpagedesktop.actionnewrule.caption
+msgid "New Rule"
+msgstr "新规则"
+
+#: tpagedesktop.actionnewrule.hint
+msgid "New rule from the window"
+msgstr "新建此窗口规则"
+
+#: tpagedesktop.actionproperties.caption
+msgid "File Properties"
+msgstr "文件属性"
+
+#: tpagedesktop.actionrefresh.caption
+msgctxt "tpagedesktop.actionrefresh.caption"
+msgid "Refresh"
+msgstr "刷新"
+
+#: tpagedesktop.actiontopmost.caption
+msgctxt "tpagedesktop.actiontopmost.caption"
+msgid "Always on Top"
+msgstr "保持置顶"
+
+#: tpagedesktop.actiontrayicon.caption
+msgid "To Tray Icon"
+msgstr "到托盘图标"
+
+#: tpagedesktop.actiontraymenu.caption
+msgid "To Tray Menu"
+msgstr "到托盘菜单"
+
+#: tpagedesktop.buttonminimize.caption
+msgctxt "tpagedesktop.buttonminimize.caption"
+msgid "Minimize"
+msgstr "最小化"
+
+#: tpagedesktop.labelmanaged.caption
+msgctxt "tpagedesktop.labelmanaged.caption"
+msgid "Auto-minimize"
+msgstr "自动最小化"
+
+#: tpagedesktop.listview.columns[0].caption
+msgctxt "tpagedesktop.listview.columns[0].caption"
+msgid "Name"
+msgstr "名称"
+
+#: tpagedesktop.listview.columns[1].caption
+msgctxt "tpagedesktop.listview.columns[1].caption"
+msgid "Handle"
+msgstr "句柄"
+
+#: tpagedesktop.listview.columns[2].caption
+msgctxt "tpagedesktop.listview.columns[2].caption"
+msgid "Class"
+msgstr "类"
+
+#: tpagedesktop.listview.columns[3].caption
+msgctxt "tpagedesktop.listview.columns[3].caption"
+msgid "PID"
+msgstr "进程ID"
+
+#: tpagedesktop.listview.columns[4].caption
+msgctxt "tpagedesktop.listview.columns[4].caption"
+msgid "Application"
+msgstr "应用程序"
+
+#: tpagedesktop.menuitemcopy.caption
+msgid "Copy"
+msgstr "复制"
+
+#: tpagedesktop.menuitemminimize.caption
+msgctxt "tpagedesktop.menuitemminimize.caption"
+msgid "Minimize"
+msgstr "最小化"
+
+#: tpagelicense.headertitle.caption
+msgctxt "tpagelicense.headertitle.caption"
+msgid "License"
+msgstr "许可证"
+
+#: tpageoptions.actionconfigdir.caption
+msgid "..."
+msgstr ""
+
+#: tpageoptions.actionconfigdir.hint
+msgid "Open Config Directory"
+msgstr "打开配置文件所在位置"
+
+#: tpageoptions.actionhotkeybind.caption
+msgid "Bind"
+msgstr "绑定"
+
+#: tpageoptions.actionhotkeyclear.caption
+msgid "Clear"
+msgstr "清除"
+
+#: tpageoptions.actionhotkeyreset.caption
+msgctxt "tpageoptions.actionhotkeyreset.caption"
+msgid "Reset"
+msgstr "重置"
+
+#: tpageoptions.actionlanguageapply.caption
+msgctxt "tpageoptions.actionlanguageapply.caption"
+msgid "Apply"
+msgstr "应用"
+
+#: tpageoptions.actionlanguagerefresh.caption
+msgctxt "tpageoptions.actionlanguagerefresh.caption"
+msgid "Refresh"
+msgstr "刷新"
+
+#: tpageoptions.actionlanguagereset.caption
+msgctxt "tpageoptions.actionlanguagereset.caption"
+msgid "Reset"
+msgstr "重置"
+
+#: tpageoptions.buttoneditrules.caption
+msgid "Edit Rules"
+msgstr "编辑规则"
+
+#: tpageoptions.checkboxautominimize.caption
+msgid "Enable auto-minimize to tray"
+msgstr "启用自动最小化到托盘"
+
+#: tpageoptions.checkboxautorun.caption
+msgid "Autorun at system startup"
+msgstr "随系统启动自动运行"
+
+#: tpageoptions.checkboxicongrouped.caption
+msgid "Group tray icons by application"
+msgstr "托盘图标按应用程序分组"
+
+#: tpageoptions.checkboxmenugrouped.caption
+msgid "Group tray menu items by application"
+msgstr "托盘菜单按应用程序分组"
+
+#: tpageoptions.checkboxnotification.caption
+msgid "Show notification when window is auto-minimized"
+msgstr "当窗口自动最小化到托盘时显示通知"
+
+#: tpageoptions.checkboxruleonstartup.caption
+msgid "Apply rules to existing windows at startup"
+msgstr "程序启动时将规则应用于现有窗口"
+
+#: tpageoptions.checkboxuserules.caption
+msgid "Enable custom rules"
+msgstr "启用自定义规则"
+
+#: tpageoptions.checkgroupsystemmenu.caption
+msgid "Window System Menu"
+msgstr "窗口系统菜单"
+
+#: tpageoptions.dividerbeveladvanced.caption
+msgid "Advanced"
+msgstr "高级"
+
+#: tpageoptions.dividerbevelgeneral.caption
+msgid "General"
+msgstr "通用"
+
+#: tpageoptions.dividerbevelhotkey.caption
+msgctxt "tpageoptions.dividerbevelhotkey.caption"
+msgid "Hotkey"
+msgstr "热键"
+
+#: tpageoptions.labelconfigdir.caption
+msgid "Config directory"
+msgstr "配置保存路径"
+
+#: tpageoptions.labellanguage.caption
+msgid "Select language"
+msgstr "选择语言"
+
+#: tpageoptions.listviewhotkeys.columns[0].caption
+msgid "Action"
+msgstr "动作"
+
+#: tpageoptions.listviewhotkeys.columns[1].caption
+msgid "Key"
+msgstr "按键"
+
+#: tpageoptions.listviewhotkeys.columns[2].caption
+msgid "Conflict"
+msgstr "冲突"
+
+#: tpagerules.actionclose.caption
+msgctxt "tpagerules.actionclose.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tpagerules.actiondelete.caption
+msgid "Delete"
+msgstr "删除"
+
+#: tpagerules.actionnew.caption
+msgid "New"
+msgstr "新建"
+
+#: tpagerules.actionopen.caption
+msgctxt "tpagerules.actionopen.caption"
+msgid "Open"
+msgstr "打开"
+
+#: tpagerules.actionsave.caption
+msgid "Save"
+msgstr "保存"
+
+#: tpagerules.checkgrouptriggeron.caption
+msgid "Trigger On"
+msgstr "触发条件"
+
+#: tpagerules.editapppath.texthint
+msgid "Window owner process file path"
+msgstr "窗口所属进程的文件路径"
+
+#: tpagerules.editrulename.texthint
+msgid "Unique name"
+msgstr "唯一名称"
+
+#: tpagerules.editwindowclass.texthint
+msgid "Immutable property of the window"
+msgstr "窗口的不可变属性"
+
+#: tpagerules.editwindowtitle.texthint
+msgid "Text in the window title bar"
+msgstr "窗口标题栏中的文本"
+
+#: tpagerules.labelapppath.caption
+msgid "Application Path:"
+msgstr "应用程序路径:"
+
+#: tpagerules.labelminimizeto.caption
+msgid "Minimize to: "
+msgstr "最小化到:"
+
+#: tpagerules.labelrulename.caption
+msgid "Rule Name:"
+msgstr "规则名称:"
+
+#: tpagerules.labelwindowclass.caption
+msgid "Window Class:"
+msgstr "窗口类:"
+
+#: tpagerules.labelwindowtitle.caption
+msgid "Window Titile:"
+msgstr "窗口标题:"
+
+#: tpagerules.panelwelcome.caption
+msgid "Select a rule from the left list to edit or create a new"
+msgstr "创建新规则, 或者从左侧列表中选择一条规则进行编辑"
+
+#: tpagerules.radiogroupnotification.caption
+msgid "Notification"
+msgstr "通知"
+
+#: tpagetray.actionrestore.caption
+msgid "Restore"
+msgstr "还原"
+
+#: tpagetray.actionrestoreall.caption
+msgctxt "tpagetray.actionrestoreall.caption"
+msgid "Restore All"
+msgstr "全部还原"
+
+#: tpagetray.actionrestorelast.caption
+msgctxt "tpagetray.actionrestorelast.caption"
+msgid "Restore Last Window"
+msgstr "还原上一个窗口"
+
+#: tpagetray.listview.columns[0].caption
+msgctxt "tpagetray.listview.columns[0].caption"
+msgid "Name"
+msgstr "名称"
+
+#: tpagetray.listview.columns[1].caption
+msgid "Pos"
+msgstr "位置"
+
+#: tpagetray.listview.columns[2].caption
+msgctxt "tpagetray.listview.columns[2].caption"
+msgid "Handle"
+msgstr "句柄"
+
+#: tpagetray.listview.columns[3].caption
+msgctxt "tpagetray.listview.columns[3].caption"
+msgid "Class"
+msgstr "类"
+
+#: tpagetray.listview.columns[4].caption
+msgctxt "tpagetray.listview.columns[4].caption"
+msgid "PID"
+msgstr "进程ID"
+
+#: tpagetray.listview.columns[5].caption
+msgctxt "tpagetray.listview.columns[5].caption"
+msgid "Application"
+msgstr "应用程序"
+
+#: traynard.strings.check_group_system_menu_label_1
+msgid "Add \"Minimize to Tray Icon\" to every window menu"
+msgstr "添加 \"最小化到托盘图标\" 项到所有窗口菜单"
+
+#: traynard.strings.check_group_system_menu_label_2
+msgid "Add \"Minimize to Tray Menu\" to every window menu"
+msgstr "添加 \"最小化到托盘菜单\" 项到所有窗口菜单"
+
+#: traynard.strings.check_group_system_menu_label_3
+msgid "Add \"Always on Top\" to every window menu"
+msgstr "添加 \"保持置顶\" 项到所有窗口菜单"
+
+#: traynard.strings.error_close_window
+msgid "Failed to close the window"
+msgstr "无法关闭窗口"
+
+#: traynard.strings.error_file_properties
+msgid "Cannot access file properties"
+msgstr "无法访问文件属性"
+
+#: traynard.strings.error_get_os_version
+msgid "Failed to get OS version info"
+msgstr "无法获取操作系统版本信息"
+
+#: traynard.strings.error_no_selected_window
+msgid "No selected window"
+msgstr "未选中窗口"
+
+#: traynard.strings.error_register_shell_hook_window
+msgid "Failed to register shell hook window"
+msgstr "无法注册外壳钩子窗口"
+
+#: traynard.strings.error_restore_window
+msgid "Failed to restore window"
+msgstr "无法还原窗口"
+
+#: traynard.strings.error_set_topmost
+msgid "Cannot set window topmost status"
+msgstr "无法设置窗口置顶状态"
+
+#: traynard.strings.error_uwp_window
+msgid "Unable to minimize the UWP app window"
+msgstr "无法最小化 UWP 应用窗口"
+
+#: traynard.strings.error_window_not_found
+msgid "Window not found"
+msgstr "未找到窗口"
+
+#: traynard.strings.hotkey_minimize_to_icon
+msgctxt "traynard.strings.hotkey_minimize_to_icon"
+msgid "Minimize foreground window to tray icon"
+msgstr "将当前窗口最小化到托盘图标"
+
+#: traynard.strings.hotkey_minimize_to_menu
+msgctxt "traynard.strings.hotkey_minimize_to_menu"
+msgid "Minimize foreground window to tray menu"
+msgstr "将当前窗口最小化到托盘菜单"
+
+#: traynard.strings.hotkey_open_close
+msgctxt "traynard.strings.hotkey_open_close"
+msgid "Open/Close main window"
+msgstr "打开或关闭程序主窗口"
+
+#: traynard.strings.hotkey_restore_all
+msgctxt "traynard.strings.hotkey_restore_all"
+msgid "Restore all windows"
+msgstr "还原所有窗口"
+
+#: traynard.strings.hotkey_restore_last_window
+msgctxt "traynard.strings.hotkey_restore_last_window"
+msgid "Restore the last window"
+msgstr "还原上一个窗口"
+
+#: traynard.strings.hotkey_toggle_autominimize
+msgctxt "traynard.strings.hotkey_toggle_autominimize"
+msgid "Toggle auto-minimize to tray"
+msgstr "开启或关闭自动最小化到托盘功能"
+
+#: traynard.strings.hotkey_toggle_rules
+msgctxt "traynard.strings.hotkey_toggle_rules"
+msgid "Toggle custom rules"
+msgstr "开启或关闭自定义规则功能"
+
+#: traynard.strings.hotkey_toggle_topmost
+msgctxt "traynard.strings.hotkey_toggle_topmost"
+msgid "Toggle foreground window always on top"
+msgstr "切换当前窗口置顶状态"
+
+#: traynard.strings.html_about_build_date
+msgctxt "traynard.strings.html_about_build_date"
+msgid "Build date:"
+msgstr "构建日期:"
+
+#: traynard.strings.html_about_compiler
+msgctxt "traynard.strings.html_about_compiler"
+msgid "Compiler:"
+msgstr "编译器:"
+
+#: traynard.strings.html_about_feature_1
+msgctxt "traynard.strings.html_about_feature_1"
+msgid "Enable \"Minimize to tray\" for any window"
+msgstr ""
+
+#: traynard.strings.html_about_feature_2
+msgctxt "traynard.strings.html_about_feature_2"
+msgid "Convenient operation via global hotkeys"
+msgstr ""
+
+#: traynard.strings.html_about_feature_3
+msgctxt "traynard.strings.html_about_feature_3"
+msgid "Enhance default system menu for any window (managed window)"
+msgstr ""
+
+#: traynard.strings.html_about_feature_4
+msgctxt "traynard.strings.html_about_feature_4"
+msgid "Automatically minimize windows based on user-defined rules"
+msgstr ""
+
+#: traynard.strings.html_about_intro
+msgctxt "traynard.strings.html_about_intro"
+msgid ""
+"A desktop utility for minimizing any application window to the system tray, "
+"A.K.A. \"notification area\". The project is inspired by <a href=\"https://"
+"github.com/fcFn/traynard\">Traymond</a> and completely rewritten in Lazarus "
+"(free pascal). The \"R\" in <strong>TraymondR</strong> stands for "
+"\"Remake\". "
+msgstr ""
+
+#: traynard.strings.html_about_license
+msgctxt "traynard.strings.html_about_license"
+msgid "License:"
+msgstr "许可证:"
+
+#: traynard.strings.html_about_maintainer
+msgctxt "traynard.strings.html_about_maintainer"
+msgid "Maintainer:"
+msgstr "维护者:"
+
+#: traynard.strings.html_about_source_code
+msgctxt "traynard.strings.html_about_source_code"
+msgid "Source code:"
+msgstr "源代码:"
+
+#: traynard.strings.html_about_title
+msgctxt "traynard.strings.html_about_title"
+msgid "About"
+msgstr "关于"
+
+#: traynard.strings.html_about_version
+msgctxt "traynard.strings.html_about_version"
+msgid "Version:"
+msgstr "版本:"
+
+#: traynard.strings.menu_item_always_on_top
+msgctxt "traynard.strings.menu_item_always_on_top"
+msgid "Always on Top"
+msgstr "保持置顶"
+
+#: traynard.strings.menu_item_minimize_to_tray_icon
+msgid "Minimize to Tray Icon"
+msgstr "最小化到托盘图标"
+
+#: traynard.strings.menu_item_minimize_to_tray_menu
+msgid "Minimize to Tray Menu"
+msgstr "最小化到托盘菜单"
+
+#: traynard.strings.menu_item_restore_group
+msgid "Restore Group"
+msgstr "还原全组"
+
+#: traynard.strings.msg_question_delete_rule
+#, object-pascal-format
+msgid "Delete rule \"%s\"?"
+msgstr "是否删除规则 \"%s\"?"
+
+#: traynard.strings.msg_question_save_rule
+#, object-pascal-format
+msgid "Save rule to \"%s\"?"
+msgstr "是否保存规则 \"%s\"?"
+
+#: traynard.strings.msg_rule_app_path_required
+msgid "App path is required"
+msgstr "需要填写应用程序路径"
+
+#: traynard.strings.msg_rule_name_duplicate
+msgid "Rule name is duplicate"
+msgstr "同名规则已存在"
+
+#: traynard.strings.msg_rule_name_required
+msgid "Rule name is required"
+msgstr "需要填写规则名称"
+
+#: traynard.strings.msg_rule_notification_required
+msgid "Notification condition is required"
+msgstr "需要选择通知条件"
+
+#: traynard.strings.msg_rule_trigger_on_required
+msgid "Trigger condition is reuqired"
+msgstr "需要选择触发条件"
+
+#: traynard.strings.msg_rule_window_class_required
+msgid "Window class is required"
+msgstr "需要填写窗口类"
+
+#: traynard.strings.msg_rule_window_title_required
+msgid "Window title is required"
+msgstr "需要填写窗口标题"
+
+#: traynard.strings.msg_windows_restored
+#, object-pascal-format
+msgid "%d window(s) restored"
+msgstr "%d 个窗口已还原"
+
+#: traynard.strings.msg_windows_restored_failed
+#, object-pascal-format
+msgid "%0:d window(s) restored, %1:d failed"
+msgstr "成功还原 %0:d 个窗口, 失败 %1:d 个"
+
+#: traynard.strings.msg_window_minimized
+msgid "Window minimized"
+msgstr "窗口已最小化"
+
+#: traynard.strings.msg_window_restored
+msgid "Window restored"
+msgstr "窗口已还原"
+
+#: traynard.strings.rule_action_window_creation
+msgid "Window creation"
+msgstr "窗口创建"
+
+#: traynard.strings.rule_action_window_minimizing
+msgid "Window minimizing"
+msgstr "窗口最小化"
+
+#: traynard.strings.rule_action_window_title_change
+msgid "Window title change"
+msgstr "窗口标题改变"
+
+#: traynard.strings.rule_notification_always
+msgid "Always"
+msgstr "总是"
+
+#: traynard.strings.rule_notification_first
+msgid "First-time only"
+msgstr "仅首次"
+
+#: traynard.strings.rule_notification_global
+msgid "Follow global settings"
+msgstr "跟随全局设置"
+
+#: traynard.strings.rule_notification_never
+msgid "Never"
+msgstr "从不"
+
+#: traynard.strings.text_any
+msgid "Any"
+msgstr "任意"
+
+#: traynard.strings.text_contains
+msgid "Contains"
+msgstr "包含"
+
+#: traynard.strings.text_ends_with
+msgid "Ends with"
+msgstr "结尾为"
+
+#: traynard.strings.text_equals
+msgid "Equals"
+msgstr "等于"
+
+#: traynard.strings.text_icon
+msgid "Icon"
+msgstr "图标"
+
+#: traynard.strings.text_language_auto
+msgctxt "traynard.strings.text_language_auto"
+msgid "<Auto>"
+msgstr "<自动>"
+
+#: traynard.strings.text_menu
+msgid "Menu"
+msgstr "菜单"
+
+#: traynard.strings.text_regex_match
+msgid "Regex match"
+msgstr "正则匹配"
+
+#: traynard.strings.text_starts_with
+msgid "Starts with"
+msgstr "开头为"
+
+#: traynard.strings.text_tray_icon
+msgid "Tray Icon"
+msgstr "托盘图标"
+
+#: traynard.strings.text_tray_menu
+msgid "Tray Menu"
+msgstr "托盘菜单"
+
+#: traynard.strings.text_yes
+msgid "Yes"
+msgstr "是"

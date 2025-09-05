@@ -1,0 +1,453 @@
+inherited PageRules: TPageRules
+  Height = 600
+  Width = 600
+  ClientHeight = 600
+  ClientWidth = 600
+  inherited Header: TToolBar
+    Height = 0
+    Width = 600
+    Visible = False
+  end
+  object ButtonPanel: TPanel[1]
+    Left = 6
+    Height = 27
+    Top = 567
+    Width = 588
+    Align = alBottom
+    BorderSpacing.Around = 6
+    BevelOuter = bvNone
+    ClientHeight = 27
+    ClientWidth = 588
+    TabOrder = 1
+    object ButtonNew: TButton
+      AnchorSideLeft.Control = ButtonPanel
+      AnchorSideTop.Control = ButtonPanel
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionNew
+      AutoSize = True
+      Constraints.MinWidth = 80
+      TabOrder = 0
+    end
+    object ButtonSave: TButton
+      AnchorSideLeft.Control = ButtonNew
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ButtonPanel
+      Left = 90
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionSave
+      AutoSize = True
+      BorderSpacing.Left = 10
+      Constraints.MinWidth = 80
+      TabOrder = 1
+    end
+    object ButtonDelete: TButton
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ButtonPanel
+      AnchorSideRight.Control = ButtonPanel
+      AnchorSideRight.Side = asrBottom
+      Left = 508
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionDelete
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      Constraints.MinWidth = 80
+      TabOrder = 2
+    end
+    object ButtonClose: TButton
+      AnchorSideLeft.Control = ButtonSave
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = ButtonSave
+      Left = 180
+      Height = 27
+      Top = 0
+      Width = 80
+      Action = ActionClose
+      AutoSize = True
+      BorderSpacing.Left = 10
+      Constraints.MinWidth = 80
+      TabOrder = 3
+    end
+  end
+  object PairSplitter: TPairSplitter[2]
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    Cursor = crDefault
+    Left = 5
+    Height = 561
+    Top = 0
+    Width = 590
+    Align = alClient
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 5
+    Position = 200
+    OnResize = PairSplitterResize
+    object PairSplitterSideLeft: TPairSplitterSide
+      Cursor = crArrow
+      Left = 0
+      Height = 561
+      Top = 0
+      Width = 200
+      ClientWidth = 200
+      ClientHeight = 561
+      Constraints.MinWidth = 100
+      object PanelLeft: TPanel
+        Left = 0
+        Height = 561
+        Top = 0
+        Width = 200
+        Align = alClient
+        BevelColor = clActiveBorder
+        ClientHeight = 561
+        ClientWidth = 200
+        TabOrder = 0
+        object ListBoxRules: TListBox
+          Left = 1
+          Height = 559
+          Top = 1
+          Width = 198
+          Align = alClient
+          BorderStyle = bsNone
+          ItemHeight = 0
+          TabOrder = 0
+          OnSelectionChange = ListBoxRulesSelectionChange
+        end
+      end
+    end
+    object PairSplitterSideRight: TPairSplitterSide
+      Cursor = crArrow
+      Left = 205
+      Height = 561
+      Top = 0
+      Width = 385
+      ClientWidth = 385
+      ClientHeight = 561
+      Constraints.MinWidth = 300
+      object PanelWelcome: TPanel
+        Left = 0
+        Height = 561
+        Top = 0
+        Width = 385
+        Align = alClient
+        BevelColor = clActiveBorder
+        Caption = 'Select a rule from the left list to edit or create a new'
+        TabOrder = 0
+        Wordwrap = True
+      end
+      object ScrollBoxEditor: TScrollBox
+        Left = 0
+        Height = 561
+        Top = 0
+        Width = 385
+        HorzScrollBar.Increment = 20
+        HorzScrollBar.Page = 205
+        HorzScrollBar.Smooth = True
+        HorzScrollBar.Tracking = True
+        VertScrollBar.Increment = 42
+        VertScrollBar.Page = 421
+        VertScrollBar.Smooth = True
+        VertScrollBar.Tracking = True
+        Align = alClient
+        ChildSizing.TopBottomSpacing = 50
+        ClientHeight = 557
+        ClientWidth = 381
+        TabOrder = 1
+        Visible = False
+        object LabelRuleName: TLabel
+          AnchorSideLeft.Control = ScrollBoxEditor
+          Left = 10
+          Height = 17
+          Top = 10
+          Width = 67
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Rule Name:'
+        end
+        object EditRuleName: TEdit
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = LabelRuleName
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 25
+          Top = 29
+          Width = 361
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 2
+          BorderSpacing.Right = 10
+          Constraints.MaxWidth = 600
+          TabOrder = 0
+          TextHint = 'Unique name'
+          OnChange = RuleChange
+        end
+        object LabelWindowTitle: TLabel
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = EditRuleName
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 17
+          Top = 64
+          Width = 81
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Window Titile:'
+        end
+        object EditWindowTitle: TEdit
+          AnchorSideLeft.Control = ComboBoxWindowTitle
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = LabelWindowTitle
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 115
+          Height = 25
+          Top = 83
+          Width = 256
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Top = 2
+          BorderSpacing.Right = 10
+          Constraints.MaxWidth = 595
+          TabOrder = 2
+          TextHint = 'Text in the window title bar'
+          OnChange = RuleChange
+        end
+        object LabelWindowClass: TLabel
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = EditWindowTitle
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 17
+          Top = 118
+          Width = 84
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          Caption = 'Window Class:'
+        end
+        object EditWindowClass: TEdit
+          AnchorSideLeft.Control = ComboBoxWindowClass
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = LabelWindowClass
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 115
+          Height = 25
+          Top = 137
+          Width = 256
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Top = 2
+          BorderSpacing.Right = 10
+          Constraints.MaxWidth = 595
+          TabOrder = 4
+          TextHint = 'Immutable property of the window'
+          OnChange = RuleChange
+        end
+        object LabelAppPath: TLabel
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = EditWindowClass
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 17
+          Top = 172
+          Width = 97
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          Caption = 'Application Path:'
+        end
+        object EditAppPath: TEdit
+          AnchorSideLeft.Control = ComboBoxAppPath
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = LabelAppPath
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 115
+          Height = 25
+          Top = 191
+          Width = 256
+          Anchors = [akTop, akLeft, akRight]
+          BorderSpacing.Left = 5
+          BorderSpacing.Top = 2
+          BorderSpacing.Right = 10
+          Constraints.MaxWidth = 595
+          TabOrder = 6
+          TextHint = 'Window owner process file path'
+          OnChange = RuleChange
+        end
+        object RadioGroupNotification: TRadioGroup
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = EditAppPath
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 50
+          Top = 226
+          Width = 361
+          Anchors = [akTop, akLeft, akRight]
+          AutoFill = True
+          AutoSize = True
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Notification'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
+          TabOrder = 7
+          OnSelectionChanged = RuleChange
+        end
+        object ComboBoxWindowTitle: TComboBox
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = LabelWindowTitle
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 25
+          Top = 83
+          Width = 100
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 2
+          ItemHeight = 17
+          Style = csDropDownList
+          TabOrder = 1
+          OnChange = ComboBoxWindowTitleChange
+        end
+        object ComboBoxWindowClass: TComboBox
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = LabelWindowClass
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 25
+          Top = 137
+          Width = 100
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 2
+          ItemHeight = 17
+          Style = csDropDownList
+          TabOrder = 3
+          OnChange = ComboBoxWindowClassChange
+        end
+        object ComboBoxAppPath: TComboBox
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = LabelAppPath
+          AnchorSideTop.Side = asrBottom
+          Left = 10
+          Height = 25
+          Top = 191
+          Width = 100
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 2
+          ItemHeight = 17
+          Style = csDropDownList
+          TabOrder = 5
+          OnChange = ComboBoxAppPathChange
+        end
+        object CheckGroupTriggerOn: TCheckGroup
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = RadioGroupNotification
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 50
+          Top = 286
+          Width = 361
+          Anchors = [akTop, akLeft, akRight]
+          AutoFill = True
+          AutoSize = True
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Trigger On'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 1
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
+          TabOrder = 8
+          OnItemClick = CheckItemClick
+        end
+        object LabelMinimizeTo: TLabel
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = ComboBoxMinimizeTo
+          AnchorSideTop.Side = asrCenter
+          Left = 10
+          Height = 17
+          Top = 350
+          Width = 75
+          BorderSpacing.Left = 10
+          Caption = 'Minimize to: '
+        end
+        object ComboBoxMinimizeTo: TComboBox
+          AnchorSideLeft.Control = LabelMinimizeTo
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = CheckGroupTriggerOn
+          AnchorSideTop.Side = asrBottom
+          Left = 90
+          Height = 25
+          Top = 346
+          Width = 100
+          BorderSpacing.Left = 5
+          BorderSpacing.Top = 10
+          ItemHeight = 17
+          Style = csDropDownList
+          TabOrder = 9
+        end
+      end
+    end
+  end
+  object ActionList: TActionList[3]
+    Left = 63
+    Top = 105
+    object ActionNew: TAction
+      Caption = 'New'
+      OnExecute = ActionNewExecute
+    end
+    object ActionSave: TAction
+      Caption = 'Save'
+      Enabled = False
+      OnExecute = ActionSaveExecute
+    end
+    object ActionDelete: TAction
+      Caption = 'Delete'
+      Enabled = False
+      OnExecute = ActionDeleteExecute
+    end
+    object ActionClose: TAction
+      Caption = 'Close'
+      Enabled = False
+      OnExecute = ActionCloseExecute
+    end
+    object ActionOpen: TAction
+      Caption = 'Open'
+      OnExecute = ActionOpenExecute
+    end
+  end
+end

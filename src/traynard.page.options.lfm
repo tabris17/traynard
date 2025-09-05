@@ -1,0 +1,418 @@
+inherited PageOptions: TPageOptions
+  Height = 900
+  HorzScrollBar.Increment = 1
+  HorzScrollBar.Page = 1
+  HorzScrollBar.Smooth = True
+  HorzScrollBar.Tracking = True
+  VertScrollBar.Increment = 1
+  VertScrollBar.Page = 1
+  VertScrollBar.Smooth = True
+  VertScrollBar.Tracking = True
+  AutoScroll = True
+  ChildSizing.TopBottomSpacing = 50
+  ClientHeight = 900
+  inherited Header: TToolBar
+    Height = 0
+    Top = 50
+    Visible = False
+  end
+  object DividerBevelGeneral: TDividerBevel[1]
+    Left = 10
+    Height = 17
+    Top = 0
+    Width = 480
+    Caption = 'General'
+    Anchors = [akTop, akLeft, akRight]
+    Font.Style = [fsBold]
+    LeftIndent = 0
+    ParentFont = False
+    Style = gsHorLines
+  end
+  object CheckBoxAutorun: TCheckBox[2]
+    AnchorSideTop.Control = DividerBevelGeneral
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 27
+    Width = 168
+    BorderSpacing.Top = 10
+    Caption = 'Autorun at system startup'
+    TabOrder = 1
+    OnChange = CheckBoxAutorunChange
+  end
+  object CheckBoxMenuGrouped: TCheckBox[3]
+    AnchorSideTop.Control = CheckBoxAutorun
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 53
+    Width = 238
+    BorderSpacing.Top = 5
+    Caption = 'Group tray menu items by application'
+    TabOrder = 2
+    OnChange = CheckBoxMenuGroupedChange
+  end
+  object CheckBoxIconGrouped: TCheckBox[4]
+    AnchorSideTop.Control = CheckBoxMenuGrouped
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 79
+    Width = 201
+    BorderSpacing.Top = 5
+    Caption = 'Group tray icons by application'
+    TabOrder = 3
+    OnChange = CheckBoxIconGroupedChange
+  end
+  object CheckBoxNotification: TCheckBox[5]
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = CheckBoxIconGrouped
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 105
+    Width = 306
+    BorderSpacing.Top = 5
+    Caption = 'Show notification when window is auto-minimized'
+    TabOrder = 4
+    OnChange = CheckBoxNotificationChange
+  end
+  object DividerBevelHotkey: TDividerBevel[6]
+    AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 17
+    Top = 200
+    Width = 480
+    Caption = 'Hotkey'
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 20
+    Font.Style = [fsBold]
+    LeftIndent = 0
+    ParentFont = False
+    Style = gsHorLines
+  end
+  object ListViewHotkeys: TListView[7]
+    AnchorSideTop.Control = DividerBevelHotkey
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 200
+    Top = 227
+    Width = 480
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 10
+    Columns = <    
+      item
+        AutoSize = True
+        Caption = 'Action'
+        MinWidth = 100
+        Width = 53
+      end    
+      item
+        Caption = 'Key'
+        Width = 150
+      end    
+      item
+        Caption = 'Conflict'
+        Width = 60
+      end>
+    Constraints.MaxWidth = 600
+    HideSelection = False
+    PopupMenu = HotkeyMenu
+    ReadOnly = True
+    RowSelect = True
+    TabOrder = 7
+    ViewStyle = vsReport
+    OnDblClick = ListViewHotkeysDblClick
+    OnSelectItem = ListViewHotkeysSelectItem
+  end
+  object LabelLanguage: TLabel[8]
+    AnchorSideTop.Control = CheckBoxNotification
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 17
+    Top = 136
+    Width = 92
+    BorderSpacing.Top = 10
+    Caption = 'Select language'
+    FocusControl = ComboBoxLanguages
+  end
+  object ComboBoxLanguages: TComboBox[9]
+    AnchorSideTop.Control = LabelLanguage
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 25
+    Top = 155
+    Width = 200
+    BorderSpacing.Top = 2
+    ItemHeight = 17
+    Style = csDropDownList
+    TabOrder = 5
+    OnChange = ComboBoxLanguagesChange
+  end
+  object ButtonHotkeyClear: TButton[10]
+    AnchorSideLeft.Control = ButtonHotkeyBind
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ListViewHotkeys
+    AnchorSideTop.Side = asrBottom
+    Left = 95
+    Height = 27
+    Top = 432
+    Width = 80
+    Action = ActionHotkeyClear
+    AutoSize = True
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    Constraints.MinWidth = 80
+    TabOrder = 9
+  end
+  object ButtonRefreshLanguage: TButton[11]
+    AnchorSideLeft.Control = ButtonApplyLanguage
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrCenter
+    Left = 300
+    Height = 27
+    Top = 154
+    Width = 80
+    Action = ActionLanguageRefresh
+    BorderSpacing.Left = 5
+    Constraints.MinWidth = 80
+    TabOrder = 17
+  end
+  object ButtonHotkeyReset: TButton[12]
+    AnchorSideLeft.Control = ButtonHotkeyClear
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ListViewHotkeys
+    AnchorSideTop.Side = asrBottom
+    Left = 180
+    Height = 27
+    Top = 432
+    Width = 80
+    Action = ActionHotkeyReset
+    AutoSize = True
+    BorderSpacing.Left = 5
+    BorderSpacing.Top = 5
+    Constraints.MinWidth = 80
+    TabOrder = 10
+    Visible = False
+  end
+  object ButtonApplyLanguage: TButton[13]
+    AnchorSideLeft.Control = ComboBoxLanguages
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrCenter
+    Left = 215
+    Height = 27
+    Top = 154
+    Width = 80
+    Action = ActionLanguageApply
+    BorderSpacing.Left = 5
+    Constraints.MinWidth = 80
+    TabOrder = 6
+  end
+  object ButtonHotkeyBind: TButton[14]
+    AnchorSideTop.Control = ListViewHotkeys
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 27
+    Top = 432
+    Width = 80
+    Action = ActionHotkeyBind
+    AutoSize = True
+    BorderSpacing.Top = 5
+    Constraints.MinWidth = 80
+    TabOrder = 8
+  end
+  object DividerBevelAdvanced: TDividerBevel[15]
+    AnchorSideTop.Control = ButtonHotkeyBind
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 17
+    Top = 479
+    Width = 480
+    Caption = 'Advanced'
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 20
+    Font.Style = [fsBold]
+    LeftIndent = 0
+    ParentFont = False
+    Style = gsHorLines
+  end
+  object CheckGroupSystemMenu: TCheckGroup[16]
+    AnchorSideTop.Control = DividerBevelAdvanced
+    Left = 10
+    Height = 60
+    Top = 504
+    Width = 480
+    Anchors = [akTop, akLeft, akRight]
+    AutoFill = False
+    AutoSize = True
+    BorderSpacing.Top = 25
+    Caption = 'Window System Menu'
+    ChildSizing.LeftRightSpacing = 10
+    ChildSizing.TopBottomSpacing = 10
+    ChildSizing.VerticalSpacing = 5
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    Constraints.MaxWidth = 600
+    Constraints.MinHeight = 60
+    TabOrder = 11
+    OnItemClick = CheckGroupSystemMenuItemClick
+  end
+  object CheckBoxAutoMinimize: TCheckBox[17]
+    AnchorSideTop.Control = CheckGroupSystemMenu
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 569
+    Width = 185
+    BorderSpacing.Top = 5
+    Caption = 'Enable auto-minimize to tray'
+    TabOrder = 12
+    OnChange = CheckBoxAutoMinimizeChange
+  end
+  object CheckBoxUseRules: TCheckBox[18]
+    AnchorSideTop.Control = CheckBoxAutoMinimize
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 595
+    Width = 135
+    BorderSpacing.Top = 5
+    Caption = 'Enable custom rules'
+    TabOrder = 13
+    OnChange = CheckBoxUseRulesChange
+  end
+  object ButtonEditRules: TButton[19]
+    AnchorSideTop.Control = CheckBoxRuleOnStartup
+    AnchorSideTop.Side = asrBottom
+    Left = 26
+    Height = 27
+    Top = 647
+    Width = 83
+    AutoSize = True
+    BorderSpacing.Top = 5
+    Caption = 'Edit Rules'
+    Constraints.MinWidth = 80
+    Enabled = False
+    TabOrder = 14
+    OnClick = ButtonEditRulesClick
+  end
+  object CheckBoxRuleOnStartup: TCheckBox[20]
+    AnchorSideTop.Control = CheckBoxUseRules
+    AnchorSideTop.Side = asrBottom
+    Left = 26
+    Height = 21
+    Top = 621
+    Width = 261
+    BorderSpacing.Top = 5
+    Caption = 'Apply rules to existing windows at startup'
+    Enabled = False
+    TabOrder = 15
+  end
+  object LabelConfigDir: TLabel[21]
+    AnchorSideTop.Control = ButtonEditRules
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 17
+    Top = 684
+    Width = 94
+    BorderSpacing.Top = 10
+    Caption = 'Config directory'
+  end
+  object PanelConfigDir: TPanel[22]
+    AnchorSideTop.Control = LabelConfigDir
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 27
+    Top = 703
+    Width = 480
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    BorderSpacing.Top = 2
+    BevelOuter = bvNone
+    ClientHeight = 27
+    ClientWidth = 480
+    Constraints.MaxWidth = 600
+    TabOrder = 16
+    object EditConfigDir: TEdit
+      AnchorSideRight.Control = ButtonConfigDir
+      Left = 0
+      Height = 25
+      Top = 1
+      Width = 435
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Right = 5
+      Color = clBtnFace
+      ReadOnly = True
+      TabOrder = 0
+    end
+    object ButtonConfigDir: TButton
+      AnchorSideRight.Control = PanelConfigDir
+      AnchorSideRight.Side = asrBottom
+      Left = 440
+      Height = 27
+      Top = 0
+      Width = 40
+      Action = ActionConfigDir
+      Anchors = [akTop, akRight]
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+  end
+  object HotkeyMenu: TPopupMenu[23]
+    Left = 424
+    Top = 88
+    object MenuItemModify: TMenuItem
+      Action = ActionHotkeyBind
+      Default = True
+    end
+    object MenuItemClear: TMenuItem
+      Action = ActionHotkeyClear
+    end
+    object MenuItemReset: TMenuItem
+      Action = ActionHotkeyReset
+    end
+  end
+  object ActionList: TActionList[24]
+    Left = 424
+    Top = 32
+    object ActionHotkeyBind: TAction
+      Caption = 'Bind'
+      Enabled = False
+      OnExecute = ActionHotkeyBindExecute
+    end
+    object ActionHotkeyClear: TAction
+      Caption = 'Clear'
+      Enabled = False
+      OnExecute = ActionHotkeyClearExecute
+    end
+    object ActionHotkeyReset: TAction
+      Caption = 'Reset'
+      Enabled = False
+      OnExecute = ActionHotkeyResetExecute
+    end
+    object ActionConfigDir: TAction
+      Caption = '...'
+      Hint = 'Open Config Directory'
+      OnExecute = ActionConfigDirExecute
+    end
+    object ActionLanguageRefresh: TAction
+      Caption = 'Refresh'
+      OnExecute = ActionLanguageRefreshExecute
+    end
+    object ActionLanguageApply: TAction
+      Caption = 'Apply'
+      Enabled = False
+      OnExecute = ActionLanguageApplyExecute
+    end
+    object ActionLanguageReset: TAction
+      Caption = 'Reset'
+      OnExecute = ActionLanguageResetExecute
+    end
+  end
+end

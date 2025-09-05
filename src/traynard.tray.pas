@@ -418,10 +418,13 @@ begin
 
   for MenuItem in Self do
   begin
-    MenuItem.Caption := Window.Text;
-    MenuItem.Hint := Window.Text;
-    MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
-    Break;
+    if MenuItem.Tag = Window.Handle then
+    begin
+      MenuItem.Caption := Window.Text;
+      MenuItem.Hint := Window.Text;
+      MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
+      Break;
+    end;
   end;
 end;
 

@@ -106,7 +106,7 @@ inherited PageOptions: TPageOptions
         AutoSize = True
         Caption = 'Action'
         MinWidth = 100
-        Width = 53
+        Width = 100
       end    
       item
         Caption = 'Key'

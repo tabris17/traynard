@@ -398,6 +398,8 @@ begin
 
   for HotkeyID := Low(THotkeyID) to High(THotkeyID) do
     ListViewHotkeys.Items[Ord(HotkeyID)].Caption := HOTKEY_DESCRIPTIONS[HotkeyID];
+
+  ComboBoxLanguages.Items[0] := TEXT_ANGLE_BRACKETED_AUTO;
 end;
 
 end.

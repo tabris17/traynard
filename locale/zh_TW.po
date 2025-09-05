@@ -44,10 +44,9 @@ msgstr "全部還原"
 #: tformbackground.actionrestorelast.caption
 msgctxt "tformbackground.actionrestorelast.caption"
 msgid "Restore Last Window"
-msgstr "還原上一個視窗"
+msgstr "還原上個視窗"
 
 #: tformhotkey.buttoncancel.caption
-msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
 msgstr "取消"
 
@@ -62,7 +61,7 @@ msgstr "快速鍵"
 
 #: tformhotkey.labelhotkey.caption
 msgid "Press any shortcut key"
-msgstr "按下任意組合鍵"
+msgstr "按下快捷鍵組合"
 
 #: tformmain.actionabout.caption
 msgctxt "tformmain.actionabout.caption"
@@ -79,7 +78,6 @@ msgid "Desktop"
 msgstr "桌面"
 
 #: tformmain.actiondesktop.hint
-msgctxt "tformmain.actiondesktop.hint"
 msgid "Ordinary windows on desktop"
 msgstr "桌面上的視窗"
 
@@ -108,17 +106,14 @@ msgid "Rules"
 msgstr "規則"
 
 #: tformmain.actiontray.caption
-msgctxt "tformmain.actiontray.caption"
 msgid "Tray"
-msgstr "系統匣"
+msgstr "系統托盤"
 
 #: tformmain.actiontray.hint
-msgctxt "tformmain.actiontray.hint"
 msgid "Windows managed by program"
 msgstr "由程式管理的視窗"
 
 #: tformmain.menuitemgithub.caption
-msgctxt "tformmain.menuitemgithub.caption"
 msgid "GitHub Repo"
 msgstr "GitHub 倉庫"
 
@@ -127,17 +122,14 @@ msgid "Help"
 msgstr "說明"
 
 #: tformmain.menuitemissue.caption
-msgctxt "tformmain.menuitemissue.caption"
 msgid "Report Issue"
 msgstr "回報問題"
 
 #: tformmain.menuitemusage.caption
-msgctxt "tformmain.menuitemusage.caption"
 msgid "Usage"
 msgstr "使用說明"
 
 #: tformmain.toolbuttonmenu.hint
-msgctxt "tformmain.toolbuttonmenu.hint"
 msgid "Main menu"
 msgstr "主選單"
 
@@ -147,15 +139,15 @@ msgstr "自訂規則"
 
 #: tformmain.toolbuttontray.hint
 msgid "Minimized windows in tray"
-msgstr "最小化至系統匣的視窗"
+msgstr "最小化到系統托盤的視窗"
 
 #: tpagedesktop.actionautotrayicon.caption
 msgid "Auto to Tray Icon"
-msgstr "自動到系統匣圖示"
+msgstr "自動最小化到托盤圖示"
 
 #: tpagedesktop.actionautotraymenu.caption
 msgid "Auto to Tray Menu"
-msgstr "自動到系統匣選單"
+msgstr "自動最小化到托盤選單"
 
 #: tpagedesktop.actionclose.caption
 msgctxt "tpagedesktop.actionclose.caption"
@@ -167,47 +159,43 @@ msgid "Close window"
 msgstr "關閉視窗"
 
 #: tpagedesktop.actioncopyclass.caption
-msgctxt "tpagedesktop.actioncopyclass.caption"
 msgid "Window Class"
 msgstr "視窗類別"
 
 #: tpagedesktop.actioncopyentirerow.caption
-msgctxt "tpagedesktop.actioncopyentirerow.caption"
 msgid "Entire Row"
-msgstr "整列"
+msgstr "整行"
 
 #: tpagedesktop.actioncopyname.caption
-msgctxt "tpagedesktop.actioncopyname.caption"
 msgid "Window Name"
 msgstr "視窗名稱"
 
 #: tpagedesktop.actioncopypath.caption
-msgctxt "tpagedesktop.actioncopypath.caption"
 msgid "Application Path"
-msgstr "程式路徑"
+msgstr "應用程式路徑"
 
 #: tpagedesktop.actionflash.caption
 msgid "Flash"
-msgstr "閃爍"
+msgstr "高亮"
 
 #: tpagedesktop.actionlocate.caption
 msgid "Open File Location"
 msgstr "開啟檔案所在位置"
 
 #: tpagedesktop.actionnewrule.caption
-msgctxt "tpagedesktop.actionnewrule.caption"
 msgid "New Rule"
 msgstr "新增規則"
 
 #: tpagedesktop.actionnewrule.hint
 msgid "New rule from the window"
-msgstr "依視窗建立新規則"
+msgstr "依視窗新增規則"
 
 #: tpagedesktop.actionproperties.caption
 msgid "File Properties"
 msgstr "檔案屬性"
 
 #: tpagedesktop.actionrefresh.caption
+msgctxt "tpagedesktop.actionrefresh.caption"
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -218,11 +206,11 @@ msgstr "保持最上層"
 
 #: tpagedesktop.actiontrayicon.caption
 msgid "To Tray Icon"
-msgstr "至系統匣圖示"
+msgstr "最小化到托盤圖示"
 
 #: tpagedesktop.actiontraymenu.caption
 msgid "To Tray Menu"
-msgstr "至系統匣選單"
+msgstr "最小化到托盤選單"
 
 #: tpagedesktop.buttonminimize.caption
 msgctxt "tpagedesktop.buttonminimize.caption"
@@ -257,7 +245,7 @@ msgstr "程序 ID"
 #: tpagedesktop.listview.columns[4].caption
 msgctxt "tpagedesktop.listview.columns[4].caption"
 msgid "Application"
-msgstr "程式"
+msgstr "應用程式"
 
 #: tpagedesktop.menuitemcopy.caption
 msgid "Copy"
@@ -274,7 +262,6 @@ msgid "License"
 msgstr "授權"
 
 #: tpageoptions.actionconfigdir.caption
-msgctxt "tpageoptions.actionconfigdir.caption"
 msgid "..."
 msgstr "..."
 
@@ -287,7 +274,6 @@ msgid "Bind"
 msgstr "綁定"
 
 #: tpageoptions.actionhotkeyclear.caption
-msgctxt "tpageoptions.actionhotkeyclear.caption"
 msgid "Clear"
 msgstr "清除"
 
@@ -296,43 +282,49 @@ msgctxt "tpageoptions.actionhotkeyreset.caption"
 msgid "Reset"
 msgstr "重設"
 
-#: tpageoptions.buttoneditrules.caption
-msgctxt "tpageoptions.buttoneditrules.caption"
-msgid "Edit Rules"
-msgstr "編輯規則"
-
-#: tpageoptions.buttonlanguage.caption
+#: tpageoptions.actionlanguageapply.caption
 msgid "Apply"
 msgstr "套用"
 
+#: tpageoptions.actionlanguagerefresh.caption
+msgctxt "tpageoptions.actionlanguagerefresh.caption"
+msgid "Refresh"
+msgstr "重新整理"
+
+#: tpageoptions.actionlanguagereset.caption
+msgctxt "tpageoptions.actionlanguagereset.caption"
+msgid "Reset"
+msgstr "重設"
+
+#: tpageoptions.buttoneditrules.caption
+msgid "Edit Rules"
+msgstr "編輯規則"
+
 #: tpageoptions.checkboxautominimize.caption
 msgid "Enable auto-minimize to tray"
-msgstr "啟用自動最小化至系統匣"
+msgstr "啟用自動最小化到托盤"
 
 #: tpageoptions.checkboxautorun.caption
-msgctxt "tpageoptions.checkboxautorun.caption"
 msgid "Autorun at system startup"
-msgstr "開機自動啟動"
+msgstr "隨系統啟動自動執行"
 
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
-msgstr "系統匣圖示依程式分組"
+msgstr "托盤圖示依應用程式分組"
 
 #: tpageoptions.checkboxmenugrouped.caption
 msgid "Group tray menu items by application"
-msgstr "系統匣選單依程式分組"
+msgstr "托盤選單依應用程式分組"
 
 #: tpageoptions.checkboxnotification.caption
 msgid "Show notification when window is auto-minimized"
-msgstr "視窗自動最小化至系統匣時顯示通知"
+msgstr "視窗自動最小化到托盤時顯示通知"
 
 #: tpageoptions.checkboxruleonstartup.caption
-msgctxt "tpageoptions.checkboxruleonstartup.caption"
 msgid "Apply rules to existing windows at startup"
 msgstr "程式啟動時套用規則到現有視窗"
 
 #: tpageoptions.checkboxuserules.caption
-msgctxt "tpageoptions.checkboxuserules.caption"
 msgid "Enable custom rules"
 msgstr "啟用自訂規則"
 
@@ -341,12 +333,10 @@ msgid "Window System Menu"
 msgstr "視窗系統選單"
 
 #: tpageoptions.dividerbeveladvanced.caption
-msgctxt "tpageoptions.dividerbeveladvanced.caption"
 msgid "Advanced"
 msgstr "進階"
 
 #: tpageoptions.dividerbevelgeneral.caption
-msgctxt "tpageoptions.dividerbevelgeneral.caption"
 msgid "General"
 msgstr "一般"
 
@@ -360,17 +350,14 @@ msgid "Config directory"
 msgstr "設定資料夾"
 
 #: tpageoptions.labellanguage.caption
-msgctxt "tpageoptions.labellanguage.caption"
 msgid "Select language"
 msgstr "選擇語言"
 
 #: tpageoptions.listviewhotkeys.columns[0].caption
-msgctxt "tpageoptions.listviewhotkeys.columns[0].caption"
 msgid "Action"
 msgstr "動作"
 
 #: tpageoptions.listviewhotkeys.columns[1].caption
-msgctxt "tpageoptions.listviewhotkeys.columns[1].caption"
 msgid "Key"
 msgstr "按鍵"
 
@@ -384,12 +371,10 @@ msgid "Close"
 msgstr "關閉"
 
 #: tpagerules.actiondelete.caption
-msgctxt "tpagerules.actiondelete.caption"
 msgid "Delete"
 msgstr "刪除"
 
 #: tpagerules.actionnew.caption
-msgctxt "tpagerules.actionnew.caption"
 msgid "New"
 msgstr "新增"
 
@@ -399,7 +384,6 @@ msgid "Open"
 msgstr "開啟"
 
 #: tpagerules.actionsave.caption
-msgctxt "tpagerules.actionsave.caption"
 msgid "Save"
 msgstr "儲存"
 
@@ -409,7 +393,7 @@ msgstr "觸發條件"
 
 #: tpagerules.editapppath.texthint
 msgid "Window owner process file path"
-msgstr "視窗所屬程式的檔案路徑"
+msgstr "視窗所屬程序的檔案路徑"
 
 #: tpagerules.editrulename.texthint
 msgid "Unique name"
@@ -417,19 +401,17 @@ msgstr "唯一名稱"
 
 #: tpagerules.editwindowclass.texthint
 msgid "Immutable property of the window"
-msgstr "視窗的不可變屬性"
+msgstr "視窗不可變屬性"
 
 #: tpagerules.editwindowtitle.texthint
 msgid "Text in the window title bar"
 msgstr "視窗標題列文字"
 
 #: tpagerules.labelapppath.caption
-msgctxt "tpagerules.labelapppath.caption"
 msgid "Application Path:"
-msgstr "程式路徑:"
+msgstr "應用程式路徑:"
 
 #: tpagerules.labelminimizeto.caption
-msgctxt "tpagerules.labelminimizeto.caption"
 msgid "Minimize to: "
 msgstr "最小化至:"
 
@@ -447,7 +429,7 @@ msgstr "視窗標題:"
 
 #: tpagerules.panelwelcome.caption
 msgid "Select a rule from the left list to edit or create a new"
-msgstr "從左側列表選擇規則進行編輯或新增新規則"
+msgstr "從左側清單選擇規則進行編輯，或建立新規則"
 
 #: tpagerules.radiogroupnotification.caption
 msgid "Notification"
@@ -465,7 +447,7 @@ msgstr "全部還原"
 #: tpagetray.actionrestorelast.caption
 msgctxt "tpagetray.actionrestorelast.caption"
 msgid "Restore Last Window"
-msgstr "還原上一個視窗"
+msgstr "還原上個視窗"
 
 #: tpagetray.listview.columns[0].caption
 msgctxt "tpagetray.listview.columns[0].caption"
@@ -473,7 +455,6 @@ msgid "Name"
 msgstr "名稱"
 
 #: tpagetray.listview.columns[1].caption
-msgctxt "tpagetray.listview.columns[1].caption"
 msgid "Pos"
 msgstr "位置"
 
@@ -495,19 +476,7 @@ msgstr "程序 ID"
 #: tpagetray.listview.columns[5].caption
 msgctxt "tpagetray.listview.columns[5].caption"
 msgid "Application"
-msgstr "程式"
-
-#: traynard.strings.check_group_system_menu_label_1
-msgid "Add \"Minimize to Tray Icon\" to every window menu"
-msgstr "將「最小化至系統匣圖示」加入所有視窗選單"
-
-#: traynard.strings.check_group_system_menu_label_2
-msgid "Add \"Minimize to Tray Menu\" to every window menu"
-msgstr "將「最小化至系統匣選單」加入所有視窗選單"
-
-#: traynard.strings.check_group_system_menu_label_3
-msgid "Add \"Always on Top\" to every window menu"
-msgstr "將「保持最上層」加入所有視窗選單"
+msgstr "應用程式"
 
 #: traynard.strings.error_close_window
 msgid "Failed to close the window"
@@ -523,11 +492,11 @@ msgstr "無法取得作業系統版本資訊"
 
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
-msgstr "未選取視窗"
+msgstr "未選擇視窗"
 
 #: traynard.strings.error_register_shell_hook_window
 msgid "Failed to register shell hook window"
-msgstr "無法註冊外殼掛鉤視窗"
+msgstr "無法註冊 shell 鉤子視窗"
 
 #: traynard.strings.error_restore_window
 msgid "Failed to restore window"
@@ -535,7 +504,7 @@ msgstr "無法還原視窗"
 
 #: traynard.strings.error_set_topmost
 msgid "Cannot set window topmost status"
-msgstr "無法設定視窗最上層狀態"
+msgstr "無法設定視窗置頂狀態"
 
 #: traynard.strings.error_uwp_window
 msgid "Unable to minimize the UWP app window"
@@ -543,22 +512,22 @@ msgstr "無法最小化 UWP 應用程式視窗"
 
 #: traynard.strings.error_window_not_found
 msgid "Window not found"
-msgstr "找不到視窗"
+msgstr "未找到視窗"
 
 #: traynard.strings.hotkey_minimize_to_icon
 msgctxt "traynard.strings.hotkey_minimize_to_icon"
 msgid "Minimize foreground window to tray icon"
-msgstr "將前景視窗最小化至系統匣圖示"
+msgstr "將前景視窗最小化到托盤圖示"
 
 #: traynard.strings.hotkey_minimize_to_menu
 msgctxt "traynard.strings.hotkey_minimize_to_menu"
 msgid "Minimize foreground window to tray menu"
-msgstr "將前景視窗最小化至系統匣選單"
+msgstr "將前景視窗最小化到托盤選單"
 
 #: traynard.strings.hotkey_open_close
 msgctxt "traynard.strings.hotkey_open_close"
 msgid "Open/Close main window"
-msgstr "開啟/關閉主程式視窗"
+msgstr "開啟/關閉主視窗"
 
 #: traynard.strings.hotkey_restore_all
 msgctxt "traynard.strings.hotkey_restore_all"
@@ -568,12 +537,12 @@ msgstr "還原所有視窗"
 #: traynard.strings.hotkey_restore_last_window
 msgctxt "traynard.strings.hotkey_restore_last_window"
 msgid "Restore the last window"
-msgstr "還原上一個視窗"
+msgstr "還原上個視窗"
 
 #: traynard.strings.hotkey_toggle_autominimize
 msgctxt "traynard.strings.hotkey_toggle_autominimize"
 msgid "Toggle auto-minimize to tray"
-msgstr "切換自動最小化至系統匣功能"
+msgstr "切換自動最小化到托盤功能"
 
 #: traynard.strings.hotkey_toggle_rules
 msgctxt "traynard.strings.hotkey_toggle_rules"
@@ -583,7 +552,7 @@ msgstr "切換自訂規則功能"
 #: traynard.strings.hotkey_toggle_topmost
 msgctxt "traynard.strings.hotkey_toggle_topmost"
 msgid "Toggle foreground window always on top"
-msgstr "切換前景視窗最上層狀態"
+msgstr "切換前景視窗置頂狀態"
 
 #: traynard.strings.html_about_build_date
 msgctxt "traynard.strings.html_about_build_date"
@@ -595,34 +564,40 @@ msgctxt "traynard.strings.html_about_compiler"
 msgid "Compiler:"
 msgstr "編譯器:"
 
+#: traynard.strings.html_about_features
+msgid "Features"
+msgstr "功能"
+
 #: traynard.strings.html_about_feature_1
 msgctxt "traynard.strings.html_about_feature_1"
-msgid "Enable \"Minimize to tray\" for any window"
-msgstr "啟用任意視窗最小化至系統匣功能"
+msgid "Quick actions via global hotkeys"
+msgstr "透過全域快速鍵快速操作"
 
 #: traynard.strings.html_about_feature_2
 msgctxt "traynard.strings.html_about_feature_2"
-msgid "Convenient operation via global hotkeys"
-msgstr "透過全域快速鍵方便操作"
+msgid "Extended system menu for any window"
+msgstr "擴充視窗系統選單"
 
 #: traynard.strings.html_about_feature_3
 msgctxt "traynard.strings.html_about_feature_3"
-msgid "Enhance default system menu for any window (managed window)"
-msgstr "強化任意視窗的預設系統選單（受程式管理視窗）"
+msgid "Auto-minimize windows by user rules"
+msgstr "依使用者規則自動最小化視窗"
 
 #: traynard.strings.html_about_feature_4
-msgctxt "traynard.strings.html_about_feature_4"
-msgid "Automatically minimize windows based on user-defined rules"
-msgstr "依使用者定義規則自動最小化視窗"
+msgid "Multi-language support"
+msgstr "支援多國語言"
 
 #: traynard.strings.html_about_intro
 msgctxt "traynard.strings.html_about_intro"
 msgid ""
-"A desktop utility for minimizing any application window to the system tray, A.K.A. \"notification area\". The project is inspired by <a href=\"https://"
-"github.com/fcFn/traynard\">Traymond</a> and completely rewritten in Lazarus (free pascal). The \"R\" in <strong>TraymondR</strong> stands for \"Remake\". "
+"A desktop utility for minimizing any application window to the system tray, "
+"A.K.A. \"notification area\". The project is inspired by <a href=\"https://"
+"github.com/fcFn/traymond\">Traymond</a> and completely rewritten in Lazarus "
+"(free pascal). "
 msgstr ""
-"一款桌面工具，可將任意程式視窗最小化至系統匣（又稱「通知區」）。本專案靈感來源於 <a href=\"https://github.com/fcFn/traynard\">Traymond</a>，並以 Lazarus"
-"（Free Pascal）完全重寫。「TraymondR」中的「R」代表「重製」。"
+"一款桌面工具，可將任意應用程式視窗最小化到系統托盤（亦稱「通知區」）。本專案"
+"靈感來自 <a href=\"https://github.com/fcFn/traymond\">Traymond</a>，並完全"
+"以 Lazarus（Free Pascal）重寫。"
 
 #: traynard.strings.html_about_license
 msgctxt "traynard.strings.html_about_license"
@@ -656,11 +631,11 @@ msgstr "保持最上層"
 
 #: traynard.strings.menu_item_minimize_to_tray_icon
 msgid "Minimize to Tray Icon"
-msgstr "最小化至系統匣圖示"
+msgstr "最小化到托盤圖示"
 
 #: traynard.strings.menu_item_minimize_to_tray_menu
 msgid "Minimize to Tray Menu"
-msgstr "最小化至系統匣選單"
+msgstr "最小化到托盤選單"
 
 #: traynard.strings.menu_item_restore_group
 msgid "Restore Group"
@@ -674,40 +649,40 @@ msgstr "是否刪除規則 \"%s\"?"
 #: traynard.strings.msg_question_save_rule
 #, object-pascal-format
 msgid "Save rule to \"%s\"?"
-msgstr "是否儲存規則至 \"%s\"?"
+msgstr "是否儲存規則到 \"%s\"?"
 
 #: traynard.strings.msg_rule_app_path_required
 msgid "App path is required"
-msgstr "程式路徑為必填"
+msgstr "需填寫應用程式路徑"
 
 #: traynard.strings.msg_rule_name_duplicate
 msgid "Rule name is duplicate"
-msgstr "規則名稱已重複"
+msgstr "規則名稱重複"
 
 #: traynard.strings.msg_rule_name_required
 msgid "Rule name is required"
-msgstr "規則名稱為必填"
+msgstr "需填寫規則名稱"
 
 #: traynard.strings.msg_rule_notification_required
 msgid "Notification condition is required"
-msgstr "通知條件為必填"
+msgstr "需選擇通知條件"
 
 #: traynard.strings.msg_rule_trigger_on_required
-msgid "Trigger condition is reuqired"
-msgstr "觸發條件為必填"
+msgid "Trigger condition is required"
+msgstr "需選擇觸發條件"
 
 #: traynard.strings.msg_rule_window_class_required
 msgid "Window class is required"
-msgstr "視窗類別為必填"
+msgstr "需填寫視窗類別"
 
 #: traynard.strings.msg_rule_window_title_required
 msgid "Window title is required"
-msgstr "視窗標題為必填"
+msgstr "需填寫視窗標題"
 
 #: traynard.strings.msg_windows_restored
 #, object-pascal-format
 msgid "%d window(s) restored"
-msgstr "已還原 %d 個視窗"
+msgstr "%d 個視窗已還原"
 
 #: traynard.strings.msg_windows_restored_failed
 #, object-pascal-format
@@ -721,6 +696,16 @@ msgstr "視窗已最小化"
 #: traynard.strings.msg_window_restored
 msgid "Window restored"
 msgstr "視窗已還原"
+
+#: traynard.strings.text_always
+msgctxt "traynard.strings.text_always"
+msgid "Always"
+msgstr "總是"
+
+#: traynard.strings.text_angle_bracketed_auto
+msgctxt "traynard.strings.text_angle_bracketed_auto"
+msgid "<Auto>"
+msgstr "<自動>"
 
 #: traynard.strings.text_any
 msgid "Any"
@@ -738,6 +723,16 @@ msgstr "結尾為"
 msgid "Equals"
 msgstr "等於"
 
+#: traynard.strings.text_first_time_only
+msgctxt "traynard.strings.text_first_time_only"
+msgid "First-time only"
+msgstr "僅首次"
+
+#: traynard.strings.text_follow_global_settings
+msgctxt "traynard.strings.text_follow_global_settings"
+msgid "Follow global settings"
+msgstr "遵循全域設定"
+
 #: traynard.strings.text_icon
 msgid "Icon"
 msgstr "圖示"
@@ -745,6 +740,11 @@ msgstr "圖示"
 #: traynard.strings.text_menu
 msgid "Menu"
 msgstr "選單"
+
+#: traynard.strings.text_never
+msgctxt "traynard.strings.text_never"
+msgid "Never"
+msgstr "從不"
 
 #: traynard.strings.text_regex_match
 msgid "Regex match"
@@ -754,13 +754,43 @@ msgstr "正規表示式匹配"
 msgid "Starts with"
 msgstr "開頭為"
 
+#: traynard.strings.text_system_menu_topmost
+msgctxt "traynard.strings.text_system_menu_topmost"
+msgid "Add \"Always on Top\" to every window menu"
+msgstr "將「保持最上層」項目新增至所有視窗選單"
+
+#: traynard.strings.text_system_menu_tray_icon
+msgctxt "traynard.strings.text_system_menu_tray_icon"
+msgid "Add \"Minimize to Tray Icon\" to every window menu"
+msgstr "將「最小化到托盤圖示」項目新增至所有視窗選單"
+
+#: traynard.strings.text_system_menu_tray_menu
+msgctxt "traynard.strings.text_system_menu_tray_menu"
+msgid "Add \"Minimize to Tray Menu\" to every window menu"
+msgstr "將「最小化到托盤選單」項目新增至所有視窗選單"
+
 #: traynard.strings.text_tray_icon
 msgid "Tray Icon"
-msgstr "系統匣圖示"
+msgstr "托盤圖示"
 
 #: traynard.strings.text_tray_menu
 msgid "Tray Menu"
-msgstr "系統匣選單"
+msgstr "托盤選單"
+
+#: traynard.strings.text_window_creation
+msgctxt "traynard.strings.text_window_creation"
+msgid "Window creation"
+msgstr "視窗建立"
+
+#: traynard.strings.text_window_minimizing
+msgctxt "traynard.strings.text_window_minimizing"
+msgid "Window minimizing"
+msgstr "視窗最小化"
+
+#: traynard.strings.text_window_title_change
+msgctxt "traynard.strings.text_window_title_change"
+msgid "Window title change"
+msgstr "視窗標題變更"
 
 #: traynard.strings.text_yes
 msgid "Yes"

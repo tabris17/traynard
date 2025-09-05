@@ -99,11 +99,12 @@ begin
       TmplParams.AddPair('FPCVersion', {$I %FPCVERSION%});
       TmplParams.AddPair('LCLVersion', LCLVersion);
       TmplParams.AddPair('Platform', {$I %FPCTARGETCPU});
-      TmplParams.AddPair('Intro', HTML_ABOUT_INTRO);
-      TmplParams.AddPair('FeatureManagedWindow', HTML_ABOUT_FEATURE_1);
-      TmplParams.AddPair('FeatureHotkeys', HTML_ABOUT_FEATURE_2);
-      TmplParams.AddPair('FeatureSystemMenu', HTML_ABOUT_FEATURE_3);
-      TmplParams.AddPair('FeatureRules', HTML_ABOUT_FEATURE_4);
+      TmplParams.AddPair('Intro', HTML_ABOUT_INTRO);      
+      TmplParams.AddPair('Features', HTML_ABOUT_FEATURES);
+      TmplParams.AddPair('Feature1', HTML_ABOUT_FEATURE_1);
+      TmplParams.AddPair('Feature2', HTML_ABOUT_FEATURE_2);
+      TmplParams.AddPair('Feature3', HTML_ABOUT_FEATURE_3); 
+      TmplParams.AddPair('Feature4', HTML_ABOUT_FEATURE_4);
       HtmlTmpl.OnGetParam:=@TmplParams.GetParam;
       HtmlPanel.SetHtmlFromStr(HtmlTmpl.GetContent);
     finally

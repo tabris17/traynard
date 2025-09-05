@@ -16,11 +16,13 @@
         <TextDesc Value=""/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="4">
+      <Resources Count="6">
         <Resource_0 FileName="..\assets\about.html" Type="RCDATA" ResourceName="ABOUT_HTML"/>
         <Resource_1 FileName="..\assets\logo.png" Type="RCDATA" ResourceName="LOGO_PNG"/>
         <Resource_2 FileName="..\LICENSE" Type="RCDATA" ResourceName="LICENSE_TXT"/>
         <Resource_3 FileName="..\assets\languages\zh_CN.mo" Type="RCDATA" ResourceName="ZH_CN_MO"/>
+        <Resource_4 FileName="..\assets\languages\zh_HK.mo" Type="RCDATA" ResourceName="ZH_HK_MO"/>
+        <Resource_5 FileName="..\assets\languages\zh_TW.mo" Type="RCDATA" ResourceName="ZH_TW_MO"/>
       </Resources>
     </General>
     <i18n>
@@ -31,7 +33,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="11"/>
+      <BuildNr Value="13"/>
       <StringTable FileDescription="Minimize any window to system tray"/>
     </VersionInfo>
     <BuildModes>

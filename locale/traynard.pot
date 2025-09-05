@@ -563,29 +563,32 @@ msgctxt "traynard.strings.html_about_compiler"
 msgid "Compiler:"
 msgstr ""
 
+#: traynard.strings.html_about_features
+msgid "Features"
+msgstr ""
+
 #: traynard.strings.html_about_feature_1
 msgctxt "traynard.strings.html_about_feature_1"
-msgid "Enable \"Minimize to tray\" for any window"
+msgid "Quick actions via global hotkeys"
 msgstr ""
 
 #: traynard.strings.html_about_feature_2
 msgctxt "traynard.strings.html_about_feature_2"
-msgid "Convenient operation via global hotkeys"
+msgid "Extended system menu for any window"
 msgstr ""
 
 #: traynard.strings.html_about_feature_3
 msgctxt "traynard.strings.html_about_feature_3"
-msgid "Enhance default system menu for any window (managed window)"
+msgid "Auto-minimize windows by user rules"
 msgstr ""
 
 #: traynard.strings.html_about_feature_4
-msgctxt "traynard.strings.html_about_feature_4"
-msgid "Automatically minimize windows based on user-defined rules"
+msgid "Multi-language support"
 msgstr ""
 
 #: traynard.strings.html_about_intro
 msgctxt "traynard.strings.html_about_intro"
-msgid "A desktop utility for minimizing any application window to the system tray, A.K.A. \"notification area\". The project is inspired by <a href=\"https://github.com/fcFn/traynard\">Traynard</a> and completely rewritten in Lazarus (free pascal). "
+msgid "A desktop utility for minimizing any application window to the system tray, A.K.A. \"notification area\". The project is inspired by <a href=\"https://github.com/fcFn/traymond\">Traymond</a> and completely rewritten in Lazarus (free pascal). "
 msgstr ""
 
 #: traynard.strings.html_about_license

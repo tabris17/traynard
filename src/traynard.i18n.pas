@@ -74,7 +74,9 @@ type
 
 const
   BUILTIN_LANGUAGES: array of TLanguageResource = (
-    (ResourceName: 'ZH_CN_MO'; FileName: 'zh_CN.mo')
+    (ResourceName: 'ZH_CN_MO'; FileName: 'zh_CN.mo'), 
+    (ResourceName: 'ZH_TW_MO'; FileName: 'zh_TW.mo'),
+    (ResourceName: 'ZH_HK_MO'; FileName: 'zh_HK.mo')
   );
 
 var

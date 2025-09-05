@@ -37,11 +37,12 @@ resourcestring
   HTML_ABOUT_COMPILER    = 'Compiler:';
   HTML_ABOUT_TITLE       = 'About';
   HTML_ABOUT_INTRO       = 'A desktop utility for minimizing any application window to the system tray, A.K.A. "notification area". ' +
-                           'The project is inspired by <a href="https://github.com/fcFn/traynard">Traynard</a> and completely rewritten in Lazarus (free pascal). ';
-  HTML_ABOUT_FEATURE_1   = 'Enable "Minimize to tray" for any window';
-  HTML_ABOUT_FEATURE_2   = 'Convenient operation via global hotkeys';
-  HTML_ABOUT_FEATURE_3   = 'Enhance default system menu for any window (managed window)';
-  HTML_ABOUT_FEATURE_4   = 'Automatically minimize windows based on user-defined rules';
+                           'The project is inspired by <a href="https://github.com/fcFn/traymond">Traymond</a> and completely rewritten in Lazarus (free pascal). ';
+  HTML_ABOUT_FEATURES    = 'Features';
+  HTML_ABOUT_FEATURE_1   = 'Quick actions via global hotkeys';
+  HTML_ABOUT_FEATURE_2   = 'Extended system menu for any window';
+  HTML_ABOUT_FEATURE_3   = 'Auto-minimize windows by user rules';
+  HTML_ABOUT_FEATURE_4   = 'Multi-language support';
 
   MENU_ITEM_MINIMIZE_TO_TRAY_ICON = 'Minimize to Tray Icon';
   MENU_ITEM_MINIMIZE_TO_TRAY_MENU = 'Minimize to Tray Menu';

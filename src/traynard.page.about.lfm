@@ -6,6 +6,9 @@ inherited PageAbout: TPageAbout
     Font.Height = -16
     Font.Style = [fsBold]
     ParentFont = False
+    inherited HeaderMenu: TToolButton
+      Visible = False
+    end
   end
   object HtmlPanel: TIpHtmlPanel[1]
     AnchorSideLeft.Control = Owner

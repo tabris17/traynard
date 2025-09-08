@@ -71,13 +71,14 @@ type
     FileName: string;
   end;
 
-
+{$IFDEF ALLINONE}
 const
   BUILTIN_LANGUAGES: array of TLanguageResource = (
     (ResourceName: 'ZH_CN_MO'; FileName: 'zh_CN.mo'), 
     (ResourceName: 'ZH_TW_MO'; FileName: 'zh_TW.mo'),
     (ResourceName: 'ZH_HK_MO'; FileName: 'zh_HK.mo')
   );
+{$ENDIF}
 
 var
   I18n: TI18n;
@@ -218,11 +219,13 @@ constructor TI18n.Create;
 var
   LangRes: TLanguageResource;
 begin
+  {$IFDEF ALLINONE}
   if Settings.FirstRun then
   begin
     for LangRes in BUILTIN_LANGUAGES do
       ExtractLanguageResource(LangRes.ResourceName, LangRes.FileName);
   end;
+  {$ENDIF}
   FLanguageList := nil;
   Settings.AddListener(siLanguage, @LanguageChanged);
 end;

@@ -8,6 +8,7 @@
         <MainUnitHasTitleStatement Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
+      <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
@@ -16,13 +17,10 @@
         <TextDesc Value=""/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="6">
+      <Resources Count="3">
         <Resource_0 FileName="..\assets\about.html" Type="RCDATA" ResourceName="ABOUT_HTML"/>
         <Resource_1 FileName="..\assets\logo.png" Type="RCDATA" ResourceName="LOGO_PNG"/>
         <Resource_2 FileName="..\LICENSE" Type="RCDATA" ResourceName="LICENSE_TXT"/>
-        <Resource_3 FileName="..\assets\languages\zh_CN.mo" Type="RCDATA" ResourceName="ZH_CN_MO"/>
-        <Resource_4 FileName="..\assets\languages\zh_HK.mo" Type="RCDATA" ResourceName="ZH_HK_MO"/>
-        <Resource_5 FileName="..\assets\languages\zh_TW.mo" Type="RCDATA" ResourceName="ZH_TW_MO"/>
       </Resources>
     </General>
     <i18n>
@@ -32,8 +30,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MajorVersionNr Value="1"/>
-      <BuildNr Value="13"/>
+      <MinorVersionNr Value="1"/>
       <StringTable FileDescription="Minimize any window to system tray"/>
     </VersionInfo>
     <BuildModes>

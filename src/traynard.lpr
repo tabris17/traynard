@@ -24,6 +24,7 @@ begin
   {$ENDIF}
   I18n.Translate;
   RequireDerivedFormResource := True;
+  Application.Scaled := True;
   Application.Title := APP_NAME;
   Application.ShowMainForm := False;
   Application.Initialize;

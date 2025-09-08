@@ -31,11 +31,13 @@ type
 
   TStorage = class
   private
+    FAppDataDir: string;
     FConfigDir: string;
     FLanguagesDir: string;
   public
     constructor Create;
     destructor Destroy; override;
+    property AppDataDir: string read FAppDataDir;
     property ConfigDir: string read FConfigDir;
     property LanguagesDir: string read FLanguagesDir;
     function Load(const AFilename: string; out Config: TConfig): boolean;
@@ -53,7 +55,8 @@ uses
 const
   EXT_NAME = '.toml';
   KEY_NOT_FOUND = 'Key not found';
-  APP_DATA_DIR = 'data';
+  LOCAL_APP_DATA_DIR = 'data';
+  CONFIG_DIR = 'config';
   LANGUAGES_DIR = 'languages';
 
 { TConfigHelper }
@@ -185,15 +188,27 @@ end;
 { TStorage }
 
 constructor TStorage.Create;
+var
+  AppDir: string;
 begin
-  FConfigDir := IncludeTrailingPathDelimiter(ConcatPaths([ExtractFilePath(ParamStr(0)), APP_DATA_DIR]));
-  if not DirectoryExists(FConfigDir) then
+  AppDir := ExtractFilePath(ParamStr(0));
+
+  FAppDataDir := IncludeTrailingPathDelimiter(ConcatPaths([AppDir, LOCAL_APP_DATA_DIR]));
+  if not DirectoryExists(FAppDataDir) then
   begin
-    FConfigDir := GetAppConfigDir(False);
-    ForceDirectories(FConfigDir);
+    FAppDataDir := GetAppConfigDir(False);
+    ForceDirectories(FAppDataDir);
   end;
-  FLanguagesDir := IncludeTrailingPathDelimiter(FConfigDir + LANGUAGES_DIR);
-  ForceDirectories(FLanguagesDir);
+
+  FLanguagesDir := IncludeTrailingPathDelimiter(ConcatPaths([AppDir, LANGUAGES_DIR]));
+  if not DirectoryExists(FLanguagesDir) then
+  begin
+    FLanguagesDir := IncludeTrailingPathDelimiter(FAppDataDir + LANGUAGES_DIR);
+    ForceDirectories(FLanguagesDir);
+  end; 
+
+  FConfigDir := IncludeTrailingPathDelimiter(FAppDataDir + CONFIG_DIR);
+  ForceDirectories(FConfigDir);
 end;
 
 destructor TStorage.Destroy;

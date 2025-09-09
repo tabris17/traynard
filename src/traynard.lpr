@@ -3,7 +3,7 @@ program Traynard;
 {$mode objfpc}{$H+}
 
 uses
-  Interfaces, Forms, SysUtils, Dialogs,
+  Interfaces, Forms, SysUtils,
   Traynard.Form.Background,
   Traynard.Form.Main,
   Traynard.Strings,
@@ -37,11 +37,7 @@ begin
     HotkeyManager := THotkeyManager.Create(Application.MainForm);
     AutorunManager := TAutorunManager.Create(Application.MainForm);
   except
-    on E: Exception do
-    begin
-      ShowMessage(E.Message);
-      Exit;
-    end;
+    Halt(1);
   end;
   if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) then
   begin

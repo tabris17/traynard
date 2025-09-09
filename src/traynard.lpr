@@ -3,7 +3,7 @@ program Traynard;
 {$mode objfpc}{$H+}
 
 uses
-  Interfaces, Forms, SysUtils,
+  Interfaces, Forms, SysUtils, Dialogs,
   Traynard.Form.Background,
   Traynard.Form.Main,
   Traynard.Strings,
@@ -29,12 +29,20 @@ begin
   Application.ShowMainForm := False;
   Application.Initialize;
   Application.CreateForm(TFormBackground, FormBackground);
-  NotificationManager := TNotificationManager.Create(Application.MainForm);
-  RuleManager := TRuleManager.Create(Application.MainForm);
-  WindowManager := TWindowManager.Create(Application.MainForm);
-  TrayManager := TTrayManager.Create(Application.MainForm);
-  HotkeyManager := THotkeyManager.Create(Application.MainForm);
-  AutorunManager := TAutorunManager.Create(Application.MainForm);
+  try
+    NotificationManager := TNotificationManager.Create(Application.MainForm);
+    RuleManager := TRuleManager.Create(Application.MainForm);
+    WindowManager := TWindowManager.Create(Application.MainForm);
+    TrayManager := TTrayManager.Create(Application.MainForm);
+    HotkeyManager := THotkeyManager.Create(Application.MainForm);
+    AutorunManager := TAutorunManager.Create(Application.MainForm);
+  except
+    on E: Exception do
+    begin
+      ShowMessage(E.Message);
+      Exit;
+    end;
+  end;
   if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) then
   begin
     Application.CreateForm(TFormMain, FormMain);

@@ -67,6 +67,7 @@ uses
   Traynard.Strings,
   Traynard.Window,
   Traynard.Settings,
+  Traynard.Rule,
   Traynard.I18n;
 
 {$R *.lfm}
@@ -166,6 +167,7 @@ begin
   PopupMenu := TrayMenu;
   try
     Settings.Load;
+    Rules.Load;
     I18n.Translate;
   except
     on E: Exception do

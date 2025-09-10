@@ -9,7 +9,6 @@ uses
   Traynard.Strings,
   Traynard.Window,
   Traynard.Hotkey,
-  Traynard.Rule,
   Traynard.Notification,
   Traynard.Tray;
 
@@ -28,7 +27,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TFormBackground, FormBackground);
   NotificationManager := TNotificationManager.Create(Application.MainForm);
-  RuleManager := TRuleManager.Create(Application.MainForm);
   WindowManager := TWindowManager.Create(Application.MainForm);
   TrayManager := TTrayManager.Create(Application.MainForm);
   HotkeyManager := THotkeyManager.Create(Application.MainForm);

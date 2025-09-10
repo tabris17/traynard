@@ -224,8 +224,12 @@ begin
   for Item := Low(TSettingsItem) to High(TSettingsItem) do
     FreeAndNil(FListeners[Item]);
 
-  Storage.Save(CONFIG_NAME, FConfig);
-  FreeAndNil(FConfig);
+  if Assigned(FConfig) then
+  begin
+    Storage.Save(CONFIG_NAME, FConfig);
+    FreeAndNil(FConfig);
+  end;
+
   FreeAndNil(FAutorun);
 
   inherited Destroy;

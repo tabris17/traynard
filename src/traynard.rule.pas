@@ -27,28 +27,34 @@ type
     procedure Save(const Config: TConfig);
   end;
 
-  { TRuleManager }
+  { TRules }
 
-  TRuleManager = class(TComponent)
+  TRules = class
   type
     TRuleList = specialize TList<TRule>;
+    TRuleEnumerator = specialize TEnumerator<TRule>;
   private
     FRules: TRuleList;
     FRegEx: TRegExpr;
     FConfig: TConfig;
     FConfigRules: TTOMLArray;
+    function GetCount: SizeInt;
+    function GetRule(Index: SizeInt): TRule;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create;
     destructor Destroy; override;
-    property Rules: TRuleList read FRules;
+    property Rules[Index: SizeInt]: TRule read GetRule; default;
+    property Count: SizeInt read GetCount;
     function Match(const Window: TWindow; out Rule: TRule; WindowAction: TWindowAction): boolean;
     function AddRule(Rule: TRule): integer;
+    function GetEnumerator: TRuleEnumerator;
+    procedure Load;
     procedure RemoveRule(RuleIndex: integer);
     procedure UpdateRule(RuleIndex: integer; Rule: TRule);
   end;
 
 var
-  RuleManager: TRuleManager = nil;
+  Rules: TRules = nil;
 
 const
   CONFIG_NAME = 'rules';
@@ -167,16 +173,91 @@ begin
   Config.Add(KEY_POSITION, TOMLInteger(Ord(Position)));
 end;
 
-{ TRuleManager }
+{ TRules }
 
-constructor TRuleManager.Create(AOwner: TComponent);
+function TRules.GetRule(Index: SizeInt): TRule;
+begin
+  Result := FRules[Index];
+end;
+
+function TRules.GetEnumerator: TRuleEnumerator;
+begin
+  Result := FRules.GetEnumerator;
+end;
+
+function TRules.GetCount: SizeInt;
+begin
+  Result := FRules.Count;
+end;
+
+constructor TRules.Create;
+begin
+  FRules := TRuleList.Create;
+  FRegEx := TRegExpr.Create;
+end;
+
+destructor TRules.Destroy;
+begin
+  if Assigned(FConfig) then
+  begin
+    Storage.Save(CONFIG_NAME, FConfig);
+    FreeAndNil(FConfig);
+  end;
+
+  FreeAndNil(FRules);
+  FreeAndNil(FRegEx);
+
+  inherited Destroy;
+end;
+
+function TRules.Match(const Window: TWindow; out Rule: TRule; WindowAction: TWindowAction): boolean;
+
+  function Equal(const RuleText: TRuleText; const Text: string): boolean;
+  begin
+    case RuleText.Comparison of 
+      rtcAny:        Exit(True);
+      rtcEquals:     Exit(RuleText.Text = Text);
+      rtcContains:   Exit(Pos(RuleText.Text, Text) > 0);
+      rtcStartsWith: Exit(Text.StartsWith(RuleText.Text));
+      rtcEndsWith:   Exit(Text.EndsWith(RuleText.Text));
+      rtcRegexMatch:
+      begin
+        FRegEx.Expression := RuleText.Text;
+        FRegEx.InputString := Text;
+        Exit(FRegEx.Exec);
+      end;
+    end;
+    Result := False;
+  end;
+
+begin
+  for Rule in FRules do
+  begin
+    if (WindowAction in Rule.TriggerOn) and
+       Equal(Rule.WindowTitle, Window.Text) and
+       Equal(Rule.WindowClass, Window.ClassName) and
+       Equal(Rule.AppPath, Window.AppPath) then Exit(True);
+  end;
+  Result := False;
+end;
+
+function TRules.AddRule(Rule: TRule): integer;
+var
+  ConfigRule: TConfig;
+begin
+  Rule.Validate;
+  Result := FRules.Add(Rule);
+
+  ConfigRule := TOMLTable;
+  Rule.Save(ConfigRule);
+  FConfigRules.Add(ConfigRule);
+end;
+
+procedure TRules.Load;
 var
   ConfigRules, ConfigRule: TTOMLValue;
   Rule: TRule;
 begin
-  inherited Create(AOwner);
-  FRules := TRuleList.Create;
-  FRegEx := TRegExpr.Create;
   Storage.Load(CONFIG_NAME, FConfig);
 
   if FConfig.TryGetValue(KEY_RULES, ConfigRules) then
@@ -188,7 +269,7 @@ begin
       begin
         try
           Rule.Load(ConfigRule as TTOMLTable);
-          Rules.Add(Rule);
+          FRules.Add(Rule);
         except
           Continue;
         end;
@@ -209,79 +290,24 @@ begin
   end;
 end;
 
-destructor TRuleManager.Destroy;
-begin                                       
-  Storage.Save(CONFIG_NAME, FConfig);
-  FreeAndNil(FConfig);
-  FreeAndNil(FRules);
-  FreeAndNil(FRegEx);
-
-  inherited Destroy;
-  {$IFDEF DEBUG}
-  DebugLn('[TRuleManager.Destroy]');
-  {$ENDIF}
-end;
-
-function TRuleManager.Match(const Window: TWindow; out Rule: TRule; WindowAction: TWindowAction): boolean;
-
-  function Equal(const RuleText: TRuleText; const Text: string): boolean;
-  begin
-    case RuleText.Comparison of 
-      rtcAny:        Exit(True);
-      rtcEquals:     Exit(RuleText.Text = Text);
-      rtcContains:   Exit(Pos(RuleText.Text, Text) > 0);
-      rtcStartsWith: Exit(Text.StartsWith(RuleText.Text));
-      rtcEndsWith:   Exit(Text.EndsWith(RuleText.Text));
-      rtcRegexMatch:
-      begin
-        FRegEx.Expression := RuleText.Text;
-        FRegEx.InputString := Text;
-        Exit(FRegEx.Exec);
-      end;
-    end;
-  end;
-
-begin
-  for Rule in FRules do
-  begin
-    if (WindowAction in Rule.TriggerOn) and
-       Equal(Rule.WindowTitle, Window.Text) and
-       Equal(Rule.WindowClass, Window.ClassName) and
-       Equal(Rule.AppPath, Window.AppPath) then Exit(True);
-  end;
-  Result := False;
-end;
-
-function TRuleManager.AddRule(Rule: TRule): integer;
-var
-  ConfigRule: TConfig;
-begin
-  Rule.Validate;
-  Result := Rules.Add(Rule);
-
-  ConfigRule := TOMLTable;
-  Rule.Save(ConfigRule);
-  FConfigRules.Add(ConfigRule);
-end;
-
-procedure TRuleManager.RemoveRule(RuleIndex: integer);
+procedure TRules.RemoveRule(RuleIndex: integer);
 var
   ConfigRule: TTOMLValue;
 begin
-  Rules.Delete(RuleIndex);
+  FRules.Delete(RuleIndex);
 
   ConfigRule := FConfigRules.Items[RuleIndex];
   FConfigRules.Items.Remove(ConfigRule);
   ConfigRule.Free;
 end;
 
-procedure TRuleManager.UpdateRule(RuleIndex: integer; Rule: TRule);
+procedure TRules.UpdateRule(RuleIndex: integer; Rule: TRule);
 var
   OldConfigRule: TTOMLValue;
   NewConfigRule: TConfig;
 begin
   Rule.Validate;
-  Rules.Items[RuleIndex] := Rule;
+  FRules.Items[RuleIndex] := Rule;
 
   OldConfigRule := FConfigRules.Items[RuleIndex];
   FConfigRules.Items.Remove(OldConfigRule);
@@ -290,6 +316,14 @@ begin
   Rule.Save(NewConfigRule);
   FConfigRules.Items.Insert(RuleIndex, NewConfigRule);
 end;
+
+initialization
+
+Rules := TRules.Create;
+
+finalization
+
+FreeAndNil(Rules);
 
 end.
 

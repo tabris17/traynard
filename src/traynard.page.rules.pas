@@ -267,7 +267,7 @@ begin
   ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
   ComboBoxMinimizeTo.ItemIndex := 0;
 
-  for Rule in RuleManager.Rules do
+  for Rule in Rules do
   begin
     ListBoxRules.Items.Add(Rule.Name);
   end;
@@ -337,7 +337,7 @@ begin
     ClearEditor;
     Exit;
   end;
-  Rule := RuleManager.Rules[RuleIndex];
+  Rule := Rules[RuleIndex];
 
   ToggleEditor(False);
   EditRuleName.Text := Rule.Name;
@@ -377,8 +377,8 @@ begin
                   PWideChar(UnicodeString(Application.Title)),
                   MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES) then
   begin
-    if RuleIndex < RuleManager.Rules.Count then
-      RuleManager.RemoveRule(RuleIndex);
+    if RuleIndex < Rules.Count then
+      Rules.RemoveRule(RuleIndex);
     ListBoxRules.Items.Delete(RuleIndex);
     ListBoxRules.ItemIndex := - 1;
     Unsaved := False;
@@ -458,13 +458,13 @@ begin
   case EditState of
     esNew:
     begin
-      RuleIndex := RuleManager.AddRule(Rule);
+      RuleIndex := Rules.AddRule(Rule);
       EditState := esOpen;
     end;
     esOpen:
     begin
       RuleIndex := ListBoxRules.ItemIndex;
-      RuleManager.UpdateRule(RuleIndex, Rule);
+      Rules.UpdateRule(RuleIndex, Rule);
     end;
   else
     Exit;

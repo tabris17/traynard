@@ -684,7 +684,7 @@ begin
     OriginalWindowText := Window.Text;
     Window.Renew;
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
-    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and RuleManager.Match(Window, Rule, waChange) then
+    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
     begin
       TryMinimizeWindow(Handle, Rule.Position);
     end;
@@ -710,7 +710,7 @@ begin
     FDesktop.FWindows.Add(Handle, Window);
     FDesktop.FPONotifyObservers(Self, ooAddItem, Pointer(Handle));
 
-    if not IsRestored and Settings.ApplyRules and RuleManager.Match(Window, Rule, waCreation) then
+    if not IsRestored and Settings.ApplyRules and Rules.Match(Window, Rule, waCreation) then
     begin
       if TryMinimizeWindow(Handle, Rule.Position) then
         NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
@@ -761,7 +761,7 @@ begin
     OriginalWindowText := Window.Text;
     Window.Renew;
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
-    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and RuleManager.Match(Window, Rule, waChange) then
+    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
     begin
       TryMinimizeWindow(Handle, Rule.Position);
     end;
@@ -789,7 +789,7 @@ begin
   if Window.ShowInTaskBar and (Self.FCurrentPID <> Window.PID) then
   begin
     Self.FDesktop.FWindows.Add(Window.Handle, Window);
-    if Settings.ApplyRules and RuleManager.Match(Window, Rule, waExisting) then
+    if Settings.ApplyRules and Rules.Match(Window, Rule, waExisting) then
     begin
       Self.TryMinimizeWindow(Window.Handle, Rule.Position);
     end;
@@ -853,7 +853,7 @@ begin
           NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
         end;
       end
-      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and RuleManager.Match(Window, Rule, waMinimizing) then
+      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and Rules.Match(Window, Rule, waMinimizing) then
       begin
         FSelf.TryMinimizeWindow(hwnd, Rule.Position);
       end;

@@ -61,7 +61,13 @@ var
 
 implementation
 
-uses Traynard.Form.Popup, Traynard.Form.Main, Traynard.Strings, Traynard.Window, Traynard.Settings;
+uses
+  Traynard.Form.Popup,
+  Traynard.Form.Main,
+  Traynard.Strings,
+  Traynard.Window,
+  Traynard.Settings,
+  Traynard.I18n;
 
 {$R *.lfm}
 
@@ -123,7 +129,6 @@ end;
 
 procedure TFormBackground.ActionExitExecute(Sender: TObject);
 begin
-  //Application.Terminate;
   Close;
 end;
 
@@ -159,6 +164,16 @@ begin
   TrayIcon.Hint := APP_NAME;
   TrayIcon.Icon := Application.Icon;
   PopupMenu := TrayMenu;
+  try
+    Settings.Load;
+    I18n.Translate;
+  except
+    on E: Exception do
+    begin
+      MessageDlg(APP_NAME, Format(MSG_FATAL_ERROR, [E.Message]), mtError, [mbOK], 0);
+      Application.Terminate;
+    end;
+  end;
 end;
 
 procedure TFormBackground.TrayIconDblClick(Sender: TObject);

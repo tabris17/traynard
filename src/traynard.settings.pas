@@ -9,12 +9,30 @@ uses
 
 type
 
+  { TSystemMenuPair }
+
+  TSystemMenuPair = record
+    Key: string;
+    Item: TSystemMenuItem;
+  end;
+
+  { TSettingAutorun }
+
+  TSettingAutorun = class
+  private
+    FValue: boolean;
+    procedure SetValue(AValue: boolean);
+  public
+    constructor Create;
+    property Value: boolean read FValue write SetValue;
+  end;
+
   { TSettings }
 
   TSettings = class
   private
     FFirstRun: boolean;
-    FAutorun: boolean;
+    FAutorun: TSettingAutorun;
     FHotkeys: THotkeys;
     FIconGrouped: boolean;
     FMenuGrouped: boolean;
@@ -26,6 +44,7 @@ type
     FApplyRulesOnStartup: boolean;
     FListeners: array[TSettingsItem] of TMethodList;
     FConfig: TConfig;
+    function GetAutorun: boolean;
     function GetHotkey(HotkeyID: THotkeyID): THotkey;
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetAutorun(AValue: boolean);
@@ -41,7 +60,7 @@ type
     constructor Create;
     destructor Destroy; override;
     property FirstRun: boolean read FFirstRun;
-    property Autorun: boolean read FAutorun write SetAutorun;
+    property Autorun: boolean read GetAutorun write SetAutorun;
     property Language: string read FLanguage write SetLanguage;
     property SystemMenuItems: TSystemMenuItems read FSystemMenuItems write SetSystemMenuItems;
     property IconGrouped: boolean read FIconGrouped write SetIconGrouped;
@@ -51,17 +70,11 @@ type
     property ShowNotification: boolean read FShowNotification write SetShowNotification;
     property RuleOnStartup: boolean read FApplyRulesOnStartup write SetRuleOnStartup;
     property Hotkey[HotkeyID: THotkeyID]: THotkey read GetHotkey write SetHotkey;
+    procedure Load;
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure RemoveListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure RemoveListeners(const Item: TSettingsItem; const Listener: TObject);
     procedure RemoveListeners(const Listener: TObject); overload;
-  end;
-
-  { TSystemMenuPair }
-
-  TSystemMenuPair = record
-    Key: string;
-    Item: TSystemMenuItem;
   end;
 
 const
@@ -100,14 +113,14 @@ var
 implementation
 
 uses
-  Traynard.Helpers;
+  Windows, JwaWinReg, Traynard.Helpers, Traynard.Strings;
 
 { TSettings }
 
 procedure TSettings.SetAutorun(AValue: boolean);
 begin
-  if FAutorun = AValue then Exit;
-  FAutorun := AValue;
+  if FAutorun.Value = AValue then Exit;
+  FAutorun.Value := AValue;
   FListeners[siAutorun].CallNotifyEvents(Self);
 end;
 
@@ -130,6 +143,11 @@ end;
 function TSettings.GetHotkey(HotkeyID: THotkeyID): THotkey;
 begin
   Result := FHotkeys[HotkeyID];
+end;
+
+function TSettings.GetAutorun: boolean;
+begin
+  Result := FAutorun.Value;
 end;
 
 procedure TSettings.SetIconGrouped(AValue: boolean);
@@ -194,14 +212,32 @@ end;
 constructor TSettings.Create;
 var
   Item: TSettingsItem;
+begin
+  for Item := Low(TSettingsItem) to High(TSettingsItem) do
+    FListeners[Item] := TMethodList.Create;
+end;
+
+destructor TSettings.Destroy;
+var
+  Item: TSettingsItem;
+begin
+  for Item := Low(TSettingsItem) to High(TSettingsItem) do
+    FreeAndNil(FListeners[Item]);
+
+  Storage.Save(CONFIG_NAME, FConfig);
+  FreeAndNil(FConfig);
+  FreeAndNil(FAutorun);
+
+  inherited Destroy;
+end;
+
+procedure TSettings.Load;
+var
   HotkeyID: THotkeyID;
   HotkeyValue, HotkeyDefaultValue: integer;
   SystemMenuPair: TSystemMenuPair;
 begin
-  for Item := Low(TSettingsItem) to High(TSettingsItem) do
-    FListeners[Item] := TMethodList.Create;
-
-  FAutorun := False;
+  FAutorun := TSettingAutorun.Create;
   FFirstRun := not Storage.Load(CONFIG_NAME, FConfig);
   FLanguage := FConfig.GetString(KEY_GENERAL_LANGUAGE);
   FIconGrouped := FConfig.GetBoolean(KEY_GENERAL_ICON_GROUPED, True);
@@ -222,19 +258,6 @@ begin
     if FConfig.GetBoolean(KEY_ADVANCE_SYSTEM_MENU + SystemMenuPair.Key, False) then
       Include(FSystemMenuItems, SystemMenuPair.Item);
   end;
-end;
-
-destructor TSettings.Destroy;
-var
-  Item: TSettingsItem;
-begin
-  for Item := Low(TSettingsItem) to High(TSettingsItem) do
-    FreeAndNil(FListeners[Item]);
-
-  Storage.Save(CONFIG_NAME, FConfig);
-  FreeAndNil(FConfig);
-
-  inherited Destroy;
 end;
 
 procedure TSettings.AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
@@ -258,6 +281,36 @@ var
 begin
   for Item := Low(TSettingsItem) to High(TSettingsItem) do
     FListeners[Item].RemoveAllMethodsOfObject(Listener);
+end;
+
+{ TSettingAutorun }
+
+constructor TSettingAutorun.Create;
+begin
+  FValue := ERROR_SUCCESS = RegGetValueW(
+    HKEY_CURRENT_USER,
+    unicodestring(REG_AUTORUN),
+    unicodestring(APP_NAME),
+    RRF_RT_REG_SZ,
+    nil, nil, nil
+  );
+end;
+
+procedure TSettingAutorun.SetValue(AValue: boolean);
+var
+  RegKey: HKEY;
+  CommandLine: unicodestring;
+begin
+  if ERROR_SUCCESS <> RegOpenKeyW(HKEY_CURRENT_USER, unicodestring(REG_AUTORUN), RegKey) then Exit;
+  if AValue then
+  begin
+    CommandLine := unicodestring(Format('"%s" -%s', [ParamStr(0), ARGUMENT_SILENT_CHAR]));
+    RegSetValueExW(RegKey, unicodestring(APP_NAME), 0, REG_SZ, PByte(CommandLine), Length(CommandLine) * SizeOf(WideChar));
+  end
+  else
+    RegDeleteValueW(RegKey, unicodestring(APP_NAME));
+  RegCloseKey(RegKey);
+  FValue := AValue;
 end;
 
 initialization

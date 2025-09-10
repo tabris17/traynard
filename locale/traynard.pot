@@ -633,6 +633,11 @@ msgstr ""
 msgid "Restore Group"
 msgstr ""
 
+#: traynard.strings.msg_fatal_error
+#, object-pascal-format
+msgid "Failed to start: fatal error \"%s\""
+msgstr ""
+
 #: traynard.strings.msg_question_delete_rule
 #, object-pascal-format
 msgid "Delete rule \"%s\"?"

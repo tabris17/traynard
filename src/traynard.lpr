@@ -11,9 +11,7 @@ uses
   Traynard.Hotkey,
   Traynard.Rule,
   Traynard.Notification,
-  Traynard.Tray,
-  Traynard.Autorun,
-  Traynard.I18n;
+  Traynard.Tray;
 
 {$R *.res}
 
@@ -22,7 +20,7 @@ begin
   DeleteFile('heap.trc');
   SetHeapTraceOutput('heap.trc');
   {$ENDIF}
-  I18n.Translate;
+
   RequireDerivedFormResource := True;
   Application.Scaled := True;
   Application.Title := APP_NAME;
@@ -34,8 +32,8 @@ begin
   WindowManager := TWindowManager.Create(Application.MainForm);
   TrayManager := TTrayManager.Create(Application.MainForm);
   HotkeyManager := THotkeyManager.Create(Application.MainForm);
-  AutorunManager := TAutorunManager.Create(Application.MainForm);
-  if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) then
+  if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) and
+     not Application.Terminated then
   begin
     Application.CreateForm(TFormMain, FormMain);
     FormMain.Show;

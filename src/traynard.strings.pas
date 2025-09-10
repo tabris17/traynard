@@ -49,6 +49,7 @@ resourcestring
   MENU_ITEM_ALWAYS_ON_TOP         = 'Always on Top';
   MENU_ITEM_RESTORE_GROUP         = 'Restore Group';
 
+  MSG_FATAL_ERROR = 'Failed to start: fatal error "%s"';
   MSG_WINDOW_MINIMIZED = 'Window minimized';
   MSG_WINDOW_RESTORED = 'Window restored';
   MSG_WINDOWS_RESTORED = '%d window(s) restored';

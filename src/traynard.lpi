@@ -288,11 +288,6 @@
         <UnitName Value="Traynard.Storage"/>
       </Unit>
       <Unit>
-        <Filename Value="traynard.autorun.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="Traynard.Autorun"/>
-      </Unit>
-      <Unit>
         <Filename Value="traynard.i18n.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Traynard.I18n"/>

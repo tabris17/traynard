@@ -258,8 +258,10 @@ var
   ConfigRules, ConfigRule: TTOMLValue;
   Rule: TRule;
 begin
-  Storage.Load(CONFIG_NAME, FConfig);
+  if Assigned(FConfig) then
+    raise Exception.Create('Duplicate rules loading');
 
+  Storage.Load(CONFIG_NAME, FConfig);
   if FConfig.TryGetValue(KEY_RULES, ConfigRules) then
   begin
     if ConfigRules is TTOMLArray then

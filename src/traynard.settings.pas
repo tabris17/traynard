@@ -215,6 +215,8 @@ var
 begin
   for Item := Low(TSettingsItem) to High(TSettingsItem) do
     FListeners[Item] := TMethodList.Create;
+
+  FAutorun := TSettingAutorun.Create;
 end;
 
 destructor TSettings.Destroy;
@@ -241,7 +243,9 @@ var
   HotkeyValue, HotkeyDefaultValue: integer;
   SystemMenuPair: TSystemMenuPair;
 begin
-  FAutorun := TSettingAutorun.Create;
+  if Assigned(FConfig) then
+    raise Exception.Create('Duplicate settings loading');
+
   FFirstRun := not Storage.Load(CONFIG_NAME, FConfig);
   FLanguage := FConfig.GetString(KEY_GENERAL_LANGUAGE);
   FIconGrouped := FConfig.GetBoolean(KEY_GENERAL_ICON_GROUPED, True);

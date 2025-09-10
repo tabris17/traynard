@@ -29,16 +29,12 @@ begin
   Application.ShowMainForm := False;
   Application.Initialize;
   Application.CreateForm(TFormBackground, FormBackground);
-  try
-    NotificationManager := TNotificationManager.Create(Application.MainForm);
-    RuleManager := TRuleManager.Create(Application.MainForm);
-    WindowManager := TWindowManager.Create(Application.MainForm);
-    TrayManager := TTrayManager.Create(Application.MainForm);
-    HotkeyManager := THotkeyManager.Create(Application.MainForm);
-    AutorunManager := TAutorunManager.Create(Application.MainForm);
-  except
-    Halt(1);
-  end;
+  NotificationManager := TNotificationManager.Create(Application.MainForm);
+  RuleManager := TRuleManager.Create(Application.MainForm);
+  WindowManager := TWindowManager.Create(Application.MainForm);
+  TrayManager := TTrayManager.Create(Application.MainForm);
+  HotkeyManager := THotkeyManager.Create(Application.MainForm);
+  AutorunManager := TAutorunManager.Create(Application.MainForm);
   if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) then
   begin
     Application.CreateForm(TFormMain, FormMain);

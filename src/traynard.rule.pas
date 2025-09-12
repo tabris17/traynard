@@ -200,7 +200,7 @@ destructor TRules.Destroy;
 begin
   if Assigned(FConfig) then
   begin
-    Storage.Save(CONFIG_NAME, FConfig);
+    Storage.SaveConfig(CONFIG_NAME, FConfig);
     FreeAndNil(FConfig);
   end;
 
@@ -261,7 +261,7 @@ begin
   if Assigned(FConfig) then
     raise Exception.Create('Duplicate rules loading');
 
-  Storage.Load(CONFIG_NAME, FConfig);
+  Storage.LoadConfig(CONFIG_NAME, FConfig);
   if FConfig.TryGetValue(KEY_RULES, ConfigRules) then
   begin
     if ConfigRules is TTOMLArray then

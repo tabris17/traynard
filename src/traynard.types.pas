@@ -129,6 +129,8 @@ type
     Comparison: TRuleTextComparison;
   end;
 
+  THandleArray = specialize TArray<HWND>;
+
 const
   MOD_NOREPEAT = $4000;
 

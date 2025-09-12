@@ -156,6 +156,7 @@ type
     procedure ShellHookProc(var TheMessage: TLMessage);
     procedure AutoMinimizeChanged(Sender: TObject);
     procedure SystemMenuItemsChanged(Sender: TObject);
+    procedure TrayChanged;
     function FindWindowOnDesktop(Handle: HWND): TWindow;
     function AddWindow(const Handle: HWND): boolean;
     function RemoveWindow(const Handle: HWND): boolean;
@@ -196,7 +197,7 @@ implementation
 
 uses
   LazLogger, LazFileUtils, JwaPsApi, DwmApi, Graphics,
-  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification;
+  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification, Traynard.Session;
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
@@ -657,6 +658,11 @@ begin
   SystemMenuItems := (Sender as TSettings).SystemMenuItems;
 end;
 
+procedure TWindowManager.TrayChanged;
+begin
+  Session.Handles := specialize IfThen<THandleArray>(Assigned(FTray), FTray.FWindows.Keys.ToArray, []);
+end;
+
 function TWindowManager.FindWindowOnDesktop(Handle: HWND): TWindow;
 begin
   while not FDesktop.FWindows.TryGetValue(Handle, Result) do
@@ -695,6 +701,7 @@ begin
     { Window already exists in the tray }
     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle)); 
     FTray.FWindows.Remove(Handle);
+    TrayChanged;
     IsRestored := True;
   end
   else
@@ -741,6 +748,7 @@ begin
   begin
     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle));
     FTray.FWindows.Remove(Handle);
+    TrayChanged;
     Exit(True);
   end;
   Result := False;
@@ -869,6 +877,7 @@ end;
 constructor TWindowManager.Create(AOwner: TComponent);
 var
   EventHookType: TEventHookType;
+  TheHandle: HWND;
 begin
   inherited Create(AOwner);
   FSelf := Self;           
@@ -886,6 +895,11 @@ begin
 
   for EventHookType := Low(TEventHookType) to High(TEventHookType) do
     FEventHooks[EventHookType] := 0;
+
+  for TheHandle in Session.Handles do
+  begin
+    ShowWindow(TheHandle, SW_NORMAL);
+  end;
 
   if not RegisterShellHookWindow(FMainForm.Handle) then
     raise Exception.Create(ERROR_REGISTER_SHELL_HOOK_WINDOW);
@@ -1003,6 +1017,7 @@ begin
     TrayWindow := TTrayWindow.Create(Window.Handle, Position);
     FTray.FWindows.Add(Window.Handle, TrayWindow);
     FTray.FPONotifyObservers(Self, ooAddItem, Pointer(Window.Handle));
+    TrayChanged;
   end
   else
     raise Exception.Create(GetLastErrorMsg);
@@ -1031,6 +1046,7 @@ begin
     { Failed to restore window }
     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle));
     FTray.FWindows.Remove(Handle);
+    TrayChanged;
     raise Exception.Create(ERROR_RESTORE_WINDOW);
   end;
 

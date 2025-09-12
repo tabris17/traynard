@@ -292,6 +292,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Traynard.I18n"/>
       </Unit>
+      <Unit>
+        <Filename Value="traynard.session.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Traynard.Session"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

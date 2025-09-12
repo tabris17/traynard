@@ -493,6 +493,11 @@ msgstr ""
 msgid "No selected window"
 msgstr ""
 
+#: traynard.strings.error_parse_toml_file
+#, object-pascal-format
+msgid "Failed to parse TOML file \"%s\""
+msgstr ""
+
 #: traynard.strings.error_register_shell_hook_window
 msgid "Failed to register shell hook window"
 msgstr ""
@@ -631,11 +636,6 @@ msgstr ""
 
 #: traynard.strings.menu_item_restore_group
 msgid "Restore Group"
-msgstr ""
-
-#: traynard.strings.msg_fatal_error
-#, object-pascal-format
-msgid "Failed to start: fatal error \"%s\""
 msgstr ""
 
 #: traynard.strings.msg_question_delete_rule

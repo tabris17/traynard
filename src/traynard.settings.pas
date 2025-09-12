@@ -228,7 +228,7 @@ begin
 
   if Assigned(FConfig) then
   begin
-    Storage.Save(CONFIG_NAME, FConfig);
+    Storage.SaveConfig(CONFIG_NAME, FConfig);
     FreeAndNil(FConfig);
   end;
 
@@ -246,7 +246,7 @@ begin
   if Assigned(FConfig) then
     raise Exception.Create('Duplicate settings loading');
 
-  FFirstRun := not Storage.Load(CONFIG_NAME, FConfig);
+  FFirstRun := not Storage.LoadConfig(CONFIG_NAME, FConfig);
   FLanguage := FConfig.GetString(KEY_GENERAL_LANGUAGE);
   FIconGrouped := FConfig.GetBoolean(KEY_GENERAL_ICON_GROUPED, True);
   FMenuGrouped := FConfig.GetBoolean(KEY_GENERAL_MENU_GROUPED, True);

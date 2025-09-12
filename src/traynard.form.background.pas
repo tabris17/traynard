@@ -12,7 +12,7 @@ type
 
   { TFormBackground }
 
-  TFormBackground = class(TForm, IFPObserver)
+  TFormBackground = class(TForm)
     ActionClose: TAction;
     ActionApplyRules: TAction;
     ActionAutoMinimize: TAction;
@@ -53,7 +53,6 @@ type
 
   public
     procedure Notify(const Title, Message: string; const Timeout: Integer = 0);
-    procedure FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);
   end;
 
 var
@@ -62,13 +61,13 @@ var
 implementation
 
 uses
-  Traynard.Form.Popup,
   Traynard.Form.Main,
   Traynard.Strings,
   Traynard.Window,
   Traynard.Settings,
   Traynard.Rule,
-  Traynard.I18n;
+  Traynard.I18n,
+  Traynard.Session;
 
 {$R *.lfm}
 
@@ -169,10 +168,11 @@ begin
     Settings.Load;
     Rules.Load;
     I18n.Translate;
+    Session.Start;
   except
     on E: Exception do
     begin
-      MessageDlg(APP_NAME, Format(MSG_FATAL_ERROR, [E.Message]), mtError, [mbOK], 0);
+      MessageDlg(APP_NAME, E.Message, mtError, [mbOK], 0);
       Application.Terminate;
     end;
   end;
@@ -209,11 +209,6 @@ begin
     if Timeout > 0 then BalloonTimeout := Timeout;
     ShowBalloonHint;
   end;
-end;
-
-procedure TFormBackground.FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);
-begin
-
 end;
 
 end.

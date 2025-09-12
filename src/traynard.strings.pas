@@ -28,6 +28,7 @@ resourcestring
   ERROR_WINDOW_NOT_FOUND              = 'Window not found';
   ERROR_RESTORE_WINDOW                = 'Failed to restore window';
   ERROR_UWP_WINDOW                    = 'Unable to minimize the UWP app window';
+  ERROR_PARSE_TOML_FILE               = 'Failed to parse TOML file "%s"';
 
   HTML_ABOUT_VERSION     = 'Version:';
   HTML_ABOUT_LICENSE     = 'License:';
@@ -49,7 +50,6 @@ resourcestring
   MENU_ITEM_ALWAYS_ON_TOP         = 'Always on Top';
   MENU_ITEM_RESTORE_GROUP         = 'Restore Group';
 
-  MSG_FATAL_ERROR = 'Failed to start: fatal error "%s"';
   MSG_WINDOW_MINIMIZED = 'Window minimized';
   MSG_WINDOW_RESTORED = 'Window restored';
   MSG_WINDOWS_RESTORED = '%d window(s) restored';

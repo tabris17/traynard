@@ -5,7 +5,7 @@ unit Traynard.Storage;
 interface
 
 uses
-  Classes, SysUtils, TOML.Types;
+  Classes, SysUtils, TOML.Types, Traynard.Types;
 
 type
 
@@ -30,6 +30,8 @@ type
   { TStorage }
 
   TStorage = class
+  type
+    Exception = class(Sysutils.Exception);
   private
     FAppDataDir: string;
     FConfigDir: string;
@@ -40,8 +42,9 @@ type
     property AppDataDir: string read FAppDataDir;
     property ConfigDir: string read FConfigDir;
     property LanguagesDir: string read FLanguagesDir;
-    function Load(const AFilename: string; out Config: TConfig): boolean;
-    function Save(const AFilename: string; const Config: TConfig): boolean;
+    function LoadConfig(const AFilename: string; out Config: TConfig): boolean;
+    function SaveConfig(const AFilename: string; const Config: TConfig): boolean;
+    function OpenOrCreate(const AFilename: string; out Stream: TFileStream): boolean;
   end;
 
 var
@@ -50,10 +53,10 @@ var
 implementation
 
 uses
-  TOML, FileUtil;
+  TOML, FileUtil, Traynard.Strings;
 
 const
-  EXT_NAME = '.toml';
+  CONFIG_EXT = '.toml';
   KEY_NOT_FOUND = 'Key not found';
   LOCAL_APP_DATA_DIR = 'data';
   CONFIG_DIR = 'config';
@@ -195,20 +198,13 @@ begin
 
   FAppDataDir := IncludeTrailingPathDelimiter(ConcatPaths([AppDir, LOCAL_APP_DATA_DIR]));
   if not DirectoryExists(FAppDataDir) then
-  begin
     FAppDataDir := GetAppConfigDir(False);
-    ForceDirectories(FAppDataDir);
-  end;
 
   FLanguagesDir := IncludeTrailingPathDelimiter(ConcatPaths([AppDir, LANGUAGES_DIR]));
   if not DirectoryExists(FLanguagesDir) then
-  begin
     FLanguagesDir := IncludeTrailingPathDelimiter(FAppDataDir + LANGUAGES_DIR);
-    ForceDirectories(FLanguagesDir);
-  end; 
 
   FConfigDir := IncludeTrailingPathDelimiter(FAppDataDir + CONFIG_DIR);
-  ForceDirectories(FConfigDir);
 end;
 
 destructor TStorage.Destroy;
@@ -216,20 +212,42 @@ begin
   inherited Destroy;
 end;
 
-function TStorage.Load(const AFilename: string; out Config: TConfig): boolean;
+function TStorage.LoadConfig(const AFilename: string; out Config: TConfig): boolean;
+var
+  FullPath: string;
 begin
+  Config := nil;
+  ForceDirectories(FConfigDir);
+  FullPath := FConfigDir + AFilename + CONFIG_EXT;
   try
-    Config := ParseTOMLFromFile(FConfigDir + AFilename + EXT_NAME);
+    Config := ParseTOMLFromFile(FullPath);
     Exit(True);
   except
     on EFOpenError do Config := TOMLTable;
+    on ETOMLException do
+      raise Exception.CreateFmt(ERROR_PARSE_TOML_FILE, [FullPath]);
   end;
   Result := False;
 end;
 
-function TStorage.Save(const AFilename: string; const Config: TConfig): boolean;
+function TStorage.SaveConfig(const AFilename: string; const Config: TConfig): boolean;
 begin
-  Result := SerializeTOMLToFile(Config, FConfigDir + AFilename + EXT_NAME);
+  Result := SerializeTOMLToFile(Config, FConfigDir + AFilename + CONFIG_EXT);
+end;
+
+function TStorage.OpenOrCreate(const AFilename: string; out Stream: TFileStream): boolean;
+var
+  FilePath: string;
+begin
+  Stream := nil;
+  FilePath := FAppDataDir + AFilename;
+  Result := FileExists(FilePath);
+  try
+    Stream := TFileStream.Create(FilePath, specialize IfThen<Word>(Result, fmOpenReadWrite, fmCreate) or fmShareExclusive);
+  except
+    on E: EStreamError do
+      raise Exception.Create(E.Message);
+  end;
 end;
 
 initialization

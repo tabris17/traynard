@@ -263,7 +263,7 @@ msgstr "授權"
 
 #: tpageoptions.actionconfigdir.caption
 msgid "..."
-msgstr "..."
+msgstr ""
 
 #: tpageoptions.actionconfigdir.hint
 msgid "Open Config Directory"
@@ -493,6 +493,11 @@ msgstr "無法取得作業系統版本資訊"
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
 msgstr "未選擇視窗"
+
+#: traynard.strings.error_parse_toml_file
+#, object-pascal-format
+msgid "Failed to parse TOML file \"%s\""
+msgstr "無法解析 TOML 檔案 \"%s\""
 
 #: traynard.strings.error_register_shell_hook_window
 msgid "Failed to register shell hook window"

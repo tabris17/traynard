@@ -494,6 +494,11 @@ msgstr "无法获取操作系统版本信息"
 msgid "No selected window"
 msgstr "未选中窗口"
 
+#: traynard.strings.error_parse_toml_file
+#, object-pascal-format
+msgid "Failed to parse TOML file \"%s\""
+msgstr "无法解析 TOML 文件 \"%s\""
+
 #: traynard.strings.error_register_shell_hook_window
 msgid "Failed to register shell hook window"
 msgstr "无法注册外壳钩子窗口"

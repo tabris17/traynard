@@ -292,9 +292,15 @@ procedure TI18n.Translate(const Lang: string);
   var
     Translator: TRestorableTranslator;
     i: Integer;
+    MOFile: TMOFile;
   begin
     try
-      GetText.TranslateResourceStrings(UTF8ToSys(MOFilename));
+      MOFile := TMOFile.Create(UTF8ToSys(MOFilename));
+      try
+        GetText.TranslateResourceStrings(MOFile);
+      finally
+        MOFile.Free;
+      end;
       Translator := TRestorableTranslator.Create(MOFilename);
     except
       Exit(False);

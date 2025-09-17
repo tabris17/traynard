@@ -181,7 +181,11 @@ const
   ICON_SMALL2 = 2;
   DWMWA_CLOAKED = 14;
 
-  RRF_RT_REG_SZ = 2;
+  RRF_RT_REG_SZ = 2;                 
+
+  SYSTEM_MENU_LANG_DATA_TYPE = $21120903;
+  SYSTEM_MENU_LANG_DATA_ITEMS = [smiTrayIcon, smiTrayMenu, smiTopmost];
+  SYSTEM_MENU_LANG_DATA_MIN_SIZE = SizeOf(DWORD) * SizeOf(SYSTEM_MENU_LANG_DATA_ITEMS);
 
   SYSTEM_MENU_ITEM_DETAILS: array [TSystemMenuItem] of TSystemMenuItemDetail = (
     (ID: IDM_SYSTEM_SEPARATOR; Flag: MF_SEPARATOR; Text: '-'),

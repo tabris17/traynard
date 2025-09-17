@@ -150,12 +150,14 @@ type
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetSystemMenuItems(AValue: TSystemMenuItems);
     procedure SetWindowSystemMenu(Window: TWindow; Items: TSystemMenuItems = []);
+    procedure SetSystemMenuLanguage;
     procedure InstallHook;
     procedure UninstallHook;
     procedure WindowProc(var TheMessage: TLMessage);
     procedure ShellHookProc(var TheMessage: TLMessage);
     procedure AutoMinimizeChanged(Sender: TObject);
     procedure SystemMenuItemsChanged(Sender: TObject);
+    procedure LanguageChanged(Sender: TObject);
     procedure TrayChanged;
     function FindWindowOnDesktop(Handle: HWND): TWindow;
     function AddWindow(const Handle: HWND): boolean;
@@ -538,6 +540,41 @@ begin
   SendMessage(Window.Handle, FSystemMenuMessage, ParamUnion.WParam, LPARAM(FMainForm.Handle));
 end;
 
+procedure TWindowManager.SetSystemMenuLanguage;
+var
+  CopyData: COPYDATASTRUCT;
+  Window: TWindow;
+  LangData: TBytes;
+  DataSize: DWORD = SYSTEM_MENU_LANG_DATA_MIN_SIZE;
+  TextLen: DWORD;
+  MenuItem: TSystemMenuItem;
+  MenuItemDetail: PSystemMenuItemDetail;
+  Ptr: PByte;
+begin
+  if not FHookInstalled then Exit;
+  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
+  begin
+    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
+    Inc(DataSize, Length(MenuItemDetail^.Text));
+  end;
+  SetLength(LangData, DataSize);
+  Ptr := @LangData[0];
+  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
+  begin
+    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
+    TextLen := Length(MenuItemDetail^.Text);
+    PDWORD(Ptr)^ := TextLen;
+    Inc(Ptr, SizeOf(DWORD));
+    Move(Pointer(MenuItemDetail^.Text)^, Ptr^, TextLen);
+    Inc(Ptr, TextLen);
+  end;
+  CopyData.dwData := SYSTEM_MENU_LANG_DATA_TYPE;
+  CopyData.cbData := DataSize;
+  CopyData.lpData := @LangData[0];
+  for Window in FDesktop.FWindows.Values do
+    SendMessage(Window.Handle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
+end;
+
 procedure TWindowManager.InstallHook;
 begin
   if FHookInstalled then Exit;
@@ -655,8 +692,17 @@ begin
 end;
 
 procedure TWindowManager.SystemMenuItemsChanged(Sender: TObject);
+var
+  IsFirstTime: boolean;
 begin
+  IsFirstTime := SystemMenuItems = [];
   SystemMenuItems := (Sender as TSettings).SystemMenuItems;
+  if IsFirstTime then SetSystemMenuLanguage;
+end;
+
+procedure TWindowManager.LanguageChanged(Sender: TObject);
+begin
+  SetSystemMenuLanguage;
 end;
 
 procedure TWindowManager.TrayChanged;
@@ -943,8 +989,10 @@ begin
   );
 
   Settings.AddListener(siSystemMenuItems, @SystemMenuItemsChanged);
+  Settings.AddListener(siLanguage, @LanguageChanged);
   EnumWindows(@EnumAndMinimizeWindowsProc, LPARAM(Self));
   SystemMenuItems := Settings.SystemMenuItems;
+  SetSystemMenuLanguage;
 end;
 
 destructor TWindowManager.Destroy;

@@ -52,6 +52,8 @@ type
   TI18n = class
   private
     FLanguageList: TLanguageList;
+    FLocalLanguage: string;
+    FTranslated: boolean;
     procedure ExtractLanguageResource(const ResourceName, Filename: string);
     procedure LanguageChanged(Sender: TObject);
     function GetAvailableLanguages: TLanguageList;
@@ -59,6 +61,8 @@ type
     constructor Create;
     destructor Destroy; override;
     property AvailableLanguages: TLanguageList read GetAvailableLanguages;
+    property LocalLanguage: string read FLocalLanguage;
+    property Translated: boolean read FTranslated;
     procedure RefreshAvailableLanguages;
     procedure Translate(const Lang: string);
     procedure Translate; overload;
@@ -227,6 +231,8 @@ begin
   end;
   {$ENDIF}
   FLanguageList := nil;
+  FTranslated := False;
+  FLocalLanguage := GetLanguageID.LanguageID;
   Settings.AddListener(siLanguage, @LanguageChanged);
 end;
 
@@ -316,19 +322,18 @@ procedure TI18n.Translate(const Lang: string);
       Translator.UpdateTranslation(Screen.CustomForms[i]);
     for i := 0 to Screen.DataModuleCount-1 do
       Translator.UpdateTranslation(Screen.DataModules[i]);
+
+    FTranslated := True;
     Result := True;
   end;
 
 var
   LangCode: string;
-  LangID: TLanguageID;
 begin
   LangCode := Lang;
   if LangCode = '' then
-  begin
-    LangID := GetLanguageID;
-    LangCode := LangID.LanguageID;
-  end;
+    LangCode := FLocalLanguage;
+
   if (LangCode = NATIVE_LANGUAGE_CODE) or
      not SetLanguage(Storage.LanguagesDir + LangCode + '.mo') then
   begin
@@ -339,6 +344,7 @@ begin
         (LRSTranslator as TRestorableTranslator).Restore;
       FreeAndNil(LRSTranslator);
     end;
+    FTranslated := False;
   end;
 end;
 

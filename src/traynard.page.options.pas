@@ -240,7 +240,7 @@ end;
 
 procedure TPageOptions.CheckGroupSystemMenuItemClick(Sender: TObject; Index: integer);
 var
-  SystemMenuItems: TSystemMenuItems = [smiSeparator];
+  SystemMenuItems: TSystemMenuItems = [];
 begin
   with CheckGroupSystemMenu do
   begin
@@ -248,7 +248,6 @@ begin
     if Checked[1] then Include(SystemMenuItems, smiTrayMenu);
     if Checked[2] then Include(SystemMenuItems, smiTopmost);
   end;
-  if SystemMenuItems = [smiSeparator] then SystemMenuItems := [];
   Settings.SystemMenuItems := SystemMenuItems;
 end;
 

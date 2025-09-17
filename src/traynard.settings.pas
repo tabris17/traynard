@@ -202,6 +202,7 @@ procedure TSettings.SetSystemMenuItems(AValue: TSystemMenuItems);
 var
   SystemMenuPair: TSystemMenuPair;
 begin
+  if smiSeparator in AValue then Exclude(AValue, smiSeparator);
   if FSystemMenuItems = AValue then Exit;
   FSystemMenuItems := AValue;
   for SystemMenuPair in SYSTEM_MENU_PAIRS do

@@ -533,6 +533,7 @@ procedure TWindowManager.SetWindowSystemMenu(Window: TWindow; Items: TSystemMenu
 var
   ParamUnion: TParamUnion;
 begin
+  if (Items <> []) and not (smiSeparator in Items) then Include(Items, smiSeparator);
   ParamUnion.MenuItems := Items;
   SendMessage(Window.Handle, FSystemMenuMessage, ParamUnion.WParam, LPARAM(FMainForm.Handle));
 end;

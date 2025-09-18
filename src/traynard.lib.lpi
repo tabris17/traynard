@@ -57,9 +57,11 @@
             </Options>
           </Linking>
           <Other>
-            <CustomOptions Value="-dDEBUG"/>
-            <OtherDefines Count="1">
+            <CustomOptions Value="-dDEBUG
+-dLIBRARY"/>
+            <OtherDefines Count="2">
               <Define0 Value="DEBUG"/>
+              <Define1 Value="LIBRARY"/>
             </OtherDefines>
           </Other>
         </CompilerOptions>
@@ -94,8 +96,9 @@
             </Options>
           </Linking>
           <Other>
+            <CustomOptions Value="-dLIBRARY"/>
             <OtherDefines Count="1">
-              <Define0 Value="LCL"/>
+              <Define0 Value="LIBRARY"/>
             </OtherDefines>
           </Other>
         </CompilerOptions>
@@ -149,6 +152,12 @@
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
+    <Other>
+      <CustomOptions Value="-dLIBRARY"/>
+      <OtherDefines Count="1">
+        <Define0 Value="LIBRARY"/>
+      </OtherDefines>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

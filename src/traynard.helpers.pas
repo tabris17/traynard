@@ -86,13 +86,6 @@ var
   InstallHook: TInstallHookFunc = nil;
   UninstallHook: TUninstallHookFunc = nil;
 
-const
-  USER32_DLL = 'user32.dll';
-  TRAYNARD_DLL = 'traynard.dll';
-  IS_TOP_LEVEL_WINDOW = 'IsTopLevelWindow';
-  HOOK_INSTALL = 'Install';
-  HOOK_UNINSTALL = 'Uninstall';
-
 implementation
 
 uses
@@ -216,9 +209,9 @@ procedure InitializeHookFunc; inline;
 var
   HookModule: HINST;
 begin
-  HookModule := LoadLibraryW(TRAYNARD_DLL);
+  HookModule := LoadLibraryW(HOOK_DLL);
   if HookModule = 0 then
-    HookModule := LoadLibraryW(PWideChar(unicodestring(Storage.AppDataDir + TRAYNARD_DLL)));
+    HookModule := LoadLibraryW(PWideChar(unicodestring(Storage.AppDataDir + HOOK_DLL)));
 
   if HookModule = 0 then
   begin

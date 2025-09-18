@@ -5,18 +5,23 @@ unit Traynard.Strings;
 interface
 
 const
-  APP_NAME         = 'Traynard';
-  _URL_BASE        = 'https://github.com/tabris17/traynard';
-  URL_GITHUB       = _URL_BASE;
-  URL_NEW_ISSUE    = _URL_BASE + '/issues/new';
-  URL_USAGE        = _URL_BASE + '/wiki';
-  MAINTAINER       = 'tabris17';
-  LICENSE          = 'MIT';
-  MSG_SYSTEM_MENU  = APP_NAME + '.SystemMenu';
-  ARGUMENT_SILENT = 'silent';
+  APP_NAME             = 'Traynard';
+  _URL_BASE            = 'https://github.com/tabris17/traynard';
+  URL_GITHUB           = _URL_BASE;
+  URL_NEW_ISSUE        = _URL_BASE + '/issues/new';
+  URL_USAGE            = _URL_BASE + '/wiki';
+  MAINTAINER           = 'tabris17';
+  LICENSE              = 'MIT';
+  MSG_SYSTEM_MENU      = APP_NAME + '.SystemMenu';
+  ARGUMENT_SILENT      = 'silent';
   ARGUMENT_SILENT_CHAR = 's';
   NATIVE_LANGUAGE_NAME = 'English';
   NATIVE_LANGUAGE_CODE = 'en_US';
+  USER32_DLL           = 'user32.dll';
+  HOOK_DLL             = 'traynard.dll';
+  IS_TOP_LEVEL_WINDOW  = 'IsTopLevelWindow';
+  HOOK_INSTALL         = 'Install';
+  HOOK_UNINSTALL       = 'Uninstall';
 
 resourcestring
   ERROR_GET_OS_VERSION                = 'Failed to get OS version info';

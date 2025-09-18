@@ -11,6 +11,8 @@ type
 
   TConfig = TTOMLTable;
 
+  TResourceType = (rtLanguage, rtLibrary);
+
   { TConfigHelper }
 
   TConfigHelper = class helper for TConfig
@@ -27,21 +29,32 @@ type
     procedure SetIntegerArrayItem(const AKey: string; const Index: integer; const AValue: integer; const PaddingValue: integer = 0);
   end;
 
+  { TResource }
+
+  TResource = record            
+    ResourceType: TResourceType;
+    ResourceName: string;
+    FileName: string;
+  end;
+
   { TStorage }
 
   TStorage = class
   type
     Exception = class(Sysutils.Exception);
   private
+    FConfigured: boolean;
     FAppDataDir: string;
     FConfigDir: string;
     FLanguagesDir: string;
+    procedure ExtractResource(constref Resource: TResource);
   public
     constructor Create;
     destructor Destroy; override;
     property AppDataDir: string read FAppDataDir;
     property ConfigDir: string read FConfigDir;
     property LanguagesDir: string read FLanguagesDir;
+    property Configured: boolean read FConfigured;
     function LoadConfig(const AFilename: string; out Config: TConfig): boolean;
     function SaveConfig(const AFilename: string; const Config: TConfig): boolean;
     function OpenOrCreate(const AFilename: string; out Stream: TFileStream): boolean;
@@ -53,7 +66,7 @@ var
 implementation
 
 uses
-  TOML, FileUtil, Traynard.Strings;
+  TOML, FileUtil, Windows, Traynard.Strings;
 
 const
   CONFIG_EXT = '.toml';
@@ -61,6 +74,16 @@ const
   LOCAL_APP_DATA_DIR = 'data';
   CONFIG_DIR = 'config';
   LANGUAGES_DIR = 'languages';
+
+{$IFDEF STANDALONE}
+  BUILTIN_LANGUAGES: array of TResource = (
+    (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_CN'; FileName: 'zh_CN.mo'),
+    (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_TW'; FileName: 'zh_TW.mo'),
+    (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_HK'; FileName: 'zh_HK.mo'),
+    (ResourceType: rtLibrary; ResourceName: 'LIB_HOOK'; FileName: HOOK_DLL)
+  );
+  {$R standalone.res}
+{$ENDIF}
 
 { TConfigHelper }
 
@@ -190,9 +213,38 @@ end;
 
 { TStorage }
 
+procedure TStorage.ExtractResource(constref Resource: TResource);
+var
+  ResourceStream: TResourceStream;
+  FileStream: TFileStream;
+  PathDir: string;
+begin
+  case Resource.ResourceType of
+    rtLanguage: PathDir := LanguagesDir;
+    rtLibrary:  PathDir := AppDataDir;
+  else
+    Exit;
+  end;
+  ResourceStream := TResourceStream.Create(HInstance, Resource.ResourceName, RT_RCDATA);
+  try
+    ForceDirectories(PathDir);
+    FileStream := TFileStream.Create(PathDir + Resource.Filename, fmCreate);
+    try
+      FileStream.CopyFrom(ResourceStream, ResourceStream.Size);
+    finally
+      FileStream.Free;
+    end;
+  finally
+    ResourceStream.Free;
+  end;
+end;
+
 constructor TStorage.Create;
 var
   AppDir: string;
+  {$IFDEF STANDALONE}
+  i: integer;
+  {$ENDIF}
 begin
   AppDir := ExtractFilePath(ParamStr(0));
 
@@ -200,11 +252,24 @@ begin
   if not DirectoryExists(FAppDataDir) then
     FAppDataDir := GetAppConfigDir(False);
 
+  FConfigDir := IncludeTrailingPathDelimiter(FAppDataDir + CONFIG_DIR);
+  FConfigured := DirectoryExists(FConfigDir);
+
+  {$IFDEF STANDALONE}
+  FLanguagesDir := IncludeTrailingPathDelimiter(FAppDataDir + LANGUAGES_DIR);
+  if not FConfigured then
+  begin
+    try
+      for i := Low(BUILTIN_LANGUAGES) to High(BUILTIN_LANGUAGES) do
+        ExtractResource(BUILTIN_LANGUAGES[i]);
+    except
+    end;
+  end;
+  {$ELSE}
   FLanguagesDir := IncludeTrailingPathDelimiter(ConcatPaths([AppDir, LANGUAGES_DIR]));
   if not DirectoryExists(FLanguagesDir) then
     FLanguagesDir := IncludeTrailingPathDelimiter(FAppDataDir + LANGUAGES_DIR);
-
-  FConfigDir := IncludeTrailingPathDelimiter(FAppDataDir + CONFIG_DIR);
+  {$ENDIF}
 end;
 
 destructor TStorage.Destroy;
@@ -217,7 +282,10 @@ var
   FullPath: string;
 begin
   Config := nil;
-  ForceDirectories(FConfigDir);
+
+  if not FConfigured then
+    ForceDirectories(FConfigDir);
+
   FullPath := FConfigDir + AFilename + CONFIG_EXT;
   try
     Config := ParseTOMLFromFile(FullPath);

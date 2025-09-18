@@ -54,7 +54,6 @@ type
     FLanguageList: TLanguageList;
     FLocalLanguage: string;
     FTranslated: boolean;
-    procedure ExtractLanguageResource(const ResourceName, Filename: string);
     procedure LanguageChanged(Sender: TObject);
     function GetAvailableLanguages: TLanguageList;
   public
@@ -68,29 +67,13 @@ type
     procedure Translate; overload;
   end;
 
-  { TLanguageResource }
-
-  TLanguageResource = record
-    ResourceName: string;
-    FileName: string;
-  end;
-
-{$IFDEF ALLINONE}
-const
-  BUILTIN_LANGUAGES: array of TLanguageResource = (
-    (ResourceName: 'ZH_CN_MO'; FileName: 'zh_CN.mo'), 
-    (ResourceName: 'ZH_TW_MO'; FileName: 'zh_TW.mo'),
-    (ResourceName: 'ZH_HK_MO'; FileName: 'zh_HK.mo')
-  );
-{$ENDIF}
-
 var
   I18n: TI18n;
 
 implementation
 
 uses
-  Forms, GetText, Windows, LazUTF8, LazFileUtils, LResources, Translations,
+  Forms, GetText, LazUTF8, LazFileUtils, LResources, Translations,
   Traynard.Storage, Traynard.Strings, Traynard.Settings, Traynard.Helpers, Traynard.Types;
 
 function ParseLanguage(Header: string): TLanguage; inline;
@@ -196,40 +179,13 @@ end;
 
 { TI18n }
 
-procedure TI18n.ExtractLanguageResource(const ResourceName, Filename: string);
-var
-  ResourceStream: TResourceStream;
-  FileStream: TFileStream;
-begin
-  ResourceStream := TResourceStream.Create(HInstance, ResourceName, RT_RCDATA);
-  try
-    FileStream := TFileStream.Create(Storage.LanguagesDir + Filename, fmCreate);
-    try
-      FileStream.CopyFrom(ResourceStream, ResourceStream.Size);
-    finally
-      FileStream.Free;
-    end;
-  finally
-    ResourceStream.Free;
-  end;
-end;
-
 procedure TI18n.LanguageChanged(Sender: TObject);
 begin
   Translate((Sender as TSettings).Language);
 end;
 
 constructor TI18n.Create;
-var
-  LangRes: TLanguageResource;
 begin
-  {$IFDEF ALLINONE}
-  if Storage.FirstRun then
-  begin
-    for LangRes in BUILTIN_LANGUAGES do
-      ExtractLanguageResource(LangRes.ResourceName, LangRes.FileName);
-  end;
-  {$ENDIF}
   FLanguageList := nil;
   FTranslated := False;
   FLocalLanguage := GetLanguageID.LanguageID;

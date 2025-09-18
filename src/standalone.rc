@@ -1,0 +1,4 @@
+LANG_ZH_CN RCDATA "..\\out\\languages\\zh_CN.mo"
+LANG_ZH_TW RCDATA "..\\out\\languages\\zh_TW.mo"
+LANG_ZH_HK RCDATA "..\\out\\languages\\zh_HK.mo"
+LIB_HOOK RCDATA "..\\out\\traynard.dll"

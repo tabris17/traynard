@@ -65,6 +65,8 @@ type
   end;
 
   TIsTopLevelWindowFunc = function (hwnd: HWND): BOOL; stdcall;
+  TInstallHookFunc = function: BOOL; stdcall;
+  TUninstallHookFunc = function: BOOL; stdcall;
 
 procedure ShortCutToWinHotkey(const ShortCut: TShortCut; out Key: Word; out Modifiers: Word);
 function KeyAndShiftStateToKeyString(const Key: Word; const Shift: TShiftState): String; inline;
@@ -73,9 +75,6 @@ function WinHotkeyToText(const Modifiers: Word; const Key: Word): string;
 function StrEndsWith(const Str, EndStr: string; CaseSensitive: boolean = True): boolean; inline;
 function StrStartsWith(const Str, StartStr: string; CaseSensitive: boolean = True): boolean; inline;
 function GetPersistentPath(APersistent: TPersistent): string;
-
-function InstallHook: boolean; stdcall; external 'traynard' name 'Install';
-function UninstallHook: boolean; stdcall; external 'traynard' name 'Uninstall';
 function GetLastErrorMsg: string; inline;
 function RegisterShellHookWindow(hwnd: HWND): BOOL; stdcall; external 'user32' name 'RegisterShellHookWindow';
 function DeregisterShellHookWindow(hwnd: HWND): BOOL; stdcall; external 'user32' name 'DeregisterShellHookWindow';
@@ -84,11 +83,20 @@ function RegGetValueW(hkey: HKEY; lpSubKey: LPCWSTR; lpValue: LPCWSTR;
 
 var
   IsTopLevelWindow: TIsTopLevelWindowFunc = nil;
+  InstallHook: TInstallHookFunc = nil;
+  UninstallHook: TUninstallHookFunc = nil;
+
+const
+  USER32_DLL = 'user32.dll';
+  TRAYNARD_DLL = 'traynard.dll';
+  IS_TOP_LEVEL_WINDOW = 'IsTopLevelWindow';
+  HOOK_INSTALL = 'Install';
+  HOOK_UNINSTALL = 'Uninstall';
 
 implementation
 
 uses
-  Forms, Menus, CommCtrl, LCLProc, fpTemplate, JwaWinUser, Traynard.Types, Traynard.Strings;
+  Forms, Menus, CommCtrl, LCLProc, fpTemplate, JwaWinUser, Traynard.Types, Traynard.Strings, Traynard.Storage;
 
 type
   TPersistentAccess = class(TPersistent);
@@ -186,10 +194,42 @@ begin
   Result := False;
 end;
 
-procedure InitializeIsTopLevelWindow;
+function InstallHookError: BOOL; stdcall;
 begin
-  IsTopLevelWindow := TIsTopLevelWindowFunc(GetProcAddress(GetModuleHandleW('user32.dll'), 'IsTopLevelWindow'));
+  Result := False;
+  raise Exception.Create(ERROR_INSTALL_HOOK);
+end;
+
+function UninstallHookError: BOOL; stdcall;
+begin
+  Result := False;
+  raise Exception.Create(ERROR_UNINSTALL_HOOK);
+end;
+
+procedure InitializeIsTopLevelWindowFunc; inline;
+begin
+  IsTopLevelWindow := TIsTopLevelWindowFunc(GetProcAddress(GetModuleHandleW(USER32_DLL), IS_TOP_LEVEL_WINDOW));
   if IsTopLevelWindow = nil then IsTopLevelWindow := @UserDefinedIsTopLevelWindow;
+end;
+
+procedure InitializeHookFunc; inline;
+var
+  HookModule: HINST;
+begin
+  HookModule := LoadLibraryW(TRAYNARD_DLL);
+  if HookModule = 0 then
+    HookModule := LoadLibraryW(PWideChar(unicodestring(Storage.AppDataDir + TRAYNARD_DLL)));
+
+  if HookModule = 0 then
+  begin
+    InstallHook := @InstallHookError;
+    UninstallHook := @UninstallHookError;
+  end
+  else
+  begin
+    InstallHook := TInstallHookFunc(GetProcAddress(HookModule, HOOK_INSTALL));
+    UninstallHook := TUninstallHookFunc(GetProcAddress(HookModule, HOOK_UNINSTALL));
+  end;
 end;
 
 { TWinVer }
@@ -356,8 +396,8 @@ fpTemplate.DefaultParamStartDelimiter:=' ';
 fpTemplate.DefaultParamEndDelimiter:='"';
 fpTemplate.DefaultParamValueSeparator:='="';
 
-InitializeIsTopLevelWindow;
-
+InitializeIsTopLevelWindowFunc;
+InitializeHookFunc;
 TWinVer.Initialize;
 
 end.

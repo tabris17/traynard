@@ -578,7 +578,7 @@ end;
 procedure TWindowManager.InstallHook;
 begin
   if FHookInstalled then Exit;
-  if not Traynard.Helpers.InstallHook then
+  if not Traynard.Helpers.InstallHook() then
     raise Exception.Create(GetLastErrorMsg);
   FHookInstalled := True;
   {$IFDEF DEBUG}
@@ -589,7 +589,7 @@ end;
 procedure TWindowManager.UninstallHook;
 begin
   if not FHookInstalled then Exit;
-  if not Traynard.Helpers.UninstallHook then
+  if not Traynard.Helpers.UninstallHook() then
     raise Exception.Create(GetLastErrorMsg);
   FHookInstalled := False;
   {$IFDEF DEBUG}
@@ -991,8 +991,11 @@ begin
   Settings.AddListener(siSystemMenuItems, @SystemMenuItemsChanged);
   Settings.AddListener(siLanguage, @LanguageChanged);
   EnumWindows(@EnumAndMinimizeWindowsProc, LPARAM(Self));
-  SystemMenuItems := Settings.SystemMenuItems;
-  SetSystemMenuLanguage;
+  try
+    SystemMenuItems := Settings.SystemMenuItems;
+    SetSystemMenuLanguage;
+  except
+  end;
 end;
 
 destructor TWindowManager.Destroy;

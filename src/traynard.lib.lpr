@@ -152,7 +152,7 @@ begin
 end;
 
 
-function Install: boolean; stdcall;
+function Install: BOOL; stdcall;
 var
   Hook: HHOOK;
 begin

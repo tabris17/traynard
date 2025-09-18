@@ -489,6 +489,10 @@ msgstr ""
 msgid "Failed to get OS version info"
 msgstr ""
 
+#: traynard.strings.error_install_hook
+msgid "Failed to install hook"
+msgstr ""
+
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
 msgstr ""
@@ -508,6 +512,10 @@ msgstr ""
 
 #: traynard.strings.error_set_topmost
 msgid "Cannot set window topmost status"
+msgstr ""
+
+#: traynard.strings.error_uninstall_hook
+msgid "Failed to uninstall hook"
 msgstr ""
 
 #: traynard.strings.error_uwp_window

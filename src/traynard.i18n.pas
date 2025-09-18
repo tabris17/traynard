@@ -224,7 +224,7 @@ var
   LangRes: TLanguageResource;
 begin
   {$IFDEF ALLINONE}
-  if Settings.FirstRun then
+  if Storage.FirstRun then
   begin
     for LangRes in BUILTIN_LANGUAGES do
       ExtractLanguageResource(LangRes.ResourceName, LangRes.FileName);

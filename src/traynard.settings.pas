@@ -31,7 +31,6 @@ type
 
   TSettings = class
   private
-    FFirstRun: boolean;
     FAutorun: TSettingAutorun;
     FHotkeys: THotkeys;
     FIconGrouped: boolean;
@@ -59,7 +58,6 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    property FirstRun: boolean read FFirstRun;
     property Autorun: boolean read GetAutorun write SetAutorun;
     property Language: string read FLanguage write SetLanguage;
     property SystemMenuItems: TSystemMenuItems read FSystemMenuItems write SetSystemMenuItems;
@@ -247,7 +245,7 @@ begin
   if Assigned(FConfig) then
     raise Exception.Create('Duplicate settings loading');
 
-  FFirstRun := not Storage.LoadConfig(CONFIG_NAME, FConfig);
+  Storage.LoadConfig(CONFIG_NAME, FConfig);
   FLanguage := FConfig.GetString(KEY_GENERAL_LANGUAGE);
   FIconGrouped := FConfig.GetBoolean(KEY_GENERAL_ICON_GROUPED, True);
   FMenuGrouped := FConfig.GetBoolean(KEY_GENERAL_MENU_GROUPED, True);

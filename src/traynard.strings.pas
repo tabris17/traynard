@@ -29,6 +29,8 @@ resourcestring
   ERROR_RESTORE_WINDOW                = 'Failed to restore window';
   ERROR_UWP_WINDOW                    = 'Unable to minimize the UWP app window';
   ERROR_PARSE_TOML_FILE               = 'Failed to parse TOML file "%s"';
+  ERROR_INSTALL_HOOK                  = 'Failed to install hook';
+  ERROR_UNINSTALL_HOOK                = 'Failed to uninstall hook';
 
   HTML_ABOUT_VERSION     = 'Version:';
   HTML_ABOUT_LICENSE     = 'License:';

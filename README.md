@@ -16,7 +16,18 @@ Traynard is a Windows desktop utility for minimizing any application window to t
 
 ## Installation
 
-Download the archive from the [Releases](https://github.com/tabris17/traynard/releases/tag/v0.1.0) page, extract it locally, and then run **traynard.exe** directly.
+Download the archive from the [Releases](https://github.com/tabris17/traynard/releases/latest) page, extract it locally, and then run **traynard.exe** directly.
+
+There are two release versions:
+
+1. **Standalone**: Only one executable file, with configuration data written to the user’s **AppData**.
+2. **Portable**: Configuration data is stored in the **data** folder within the program directory.
+
+It can also be installed via **[scoop](https://scoop.sh/)** command:
+
+```powershell
+scoop install https://github.com/tabris17/traynard/releases/latest/download/traynard.json
+```
 
 ## Usage
 

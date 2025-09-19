@@ -22,6 +22,12 @@ Traynard 是一款 Windows 桌面工具，可将任意应用窗口最小化到�
 1. **单文件版**：仅一个可执行文件，配置数据将保存在当前用户的 **AppData** 下。
 2. **便携版**：配置数据将保存在程序目录的 **data** 文件夹下。
 
+可以通过 [**scoop**](https://scoop.sh/) 命令进行安装：
+
+```cmd
+scoop install https://github.com/tabris17/traynard/releases/latest/download/traynard.json
+```
+
 ## 用法
 
 你仍然可以使用默认热键 **"Shift + Win + Z"** 将当前窗口最小化到系统托盘，就像原版 Traymond 一样，同时该热键也可以在设置中自定义。

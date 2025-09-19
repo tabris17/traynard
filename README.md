@@ -25,7 +25,7 @@ There are two release versions:
 
 It can also be installed via **[scoop](https://scoop.sh/)** command:
 
-```powershell
+```cmd
 scoop install https://github.com/tabris17/traynard/releases/latest/download/traynard.json
 ```
 

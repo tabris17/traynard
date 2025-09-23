@@ -4,6 +4,8 @@
 
 Traynard is a Windows desktop utility for minimizing any application window to the system tray, A.K.A. "notification area". The project is inspired by [Traymond](https://github.com/fcFn/traymond) and completely rewritten in Lazarus (free pascal). The original project (Traymond 增强版) code can be accessed from the [traymond](https://github.com/tabris17/traynard/tree/traymond) branch.
 
+![Popup Menu](docs/screenshot-popup-menu.png)
+
 ## Features
 
 1. Quick actions via global hotkeys

@@ -2,6 +2,8 @@
 
 Traynard 是一款 Windows 桌面工具，可将任意应用窗口最小化到系统托盘（又称“通知区域”）。该项目受到 [Traymond](https://github.com/fcFn/traymond) 启发，并使用 Lazarus（Free Pascal）完全重写。原项目（Traymond 增强版）的代码可从 [traymond](https://github.com/tabris17/traynard/tree/traymond) 分支访问。
 
+![Popup Menu](screenshot-popup-menu.png)
+
 ## 功能
 
 1. 通过全局热键快速操作

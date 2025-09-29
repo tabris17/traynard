@@ -1063,7 +1063,8 @@ begin
   {$ENDIF}
 
   Window := FindWindowOnDesktop(Handle);
-  EnumWindows(@MinimizeOwnedWindowsProc, Window.Handle);
+  { #todo : Lazarus IDE compatible }
+  //EnumWindows(@MinimizeOwnedWindowsProc, Window.Handle);
   if ShowWindow(Window.Handle, SW_HIDE) then
   begin
     TrayWindow := TTrayWindow.Create(Window.Handle, Position);

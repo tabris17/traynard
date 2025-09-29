@@ -160,7 +160,9 @@ end;
 
 procedure TFormBackground.FormCreate(Sender: TObject);
 begin
-  UniqueInstance.Identifier := APP_NAME;
+  if UniqueInstance.PriorInstanceRunning then
+    Exit;
+
   TrayIcon.Hint := APP_NAME;
   TrayIcon.Icon := Application.Icon;
   PopupMenu := TrayMenu;

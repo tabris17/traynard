@@ -312,6 +312,7 @@ inherited PageOptions: TPageOptions
     Caption = 'Apply rules to existing windows at startup'
     Enabled = False
     TabOrder = 15
+    OnChange = CheckBoxRuleOnStartupChange
   end
   object LabelConfigDir: TLabel[21]
     AnchorSideTop.Control = ButtonEditRules

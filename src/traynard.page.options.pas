@@ -62,6 +62,7 @@ type
     procedure CheckBoxIconGroupedChange(Sender: TObject);
     procedure CheckBoxMenuGroupedChange(Sender: TObject);
     procedure CheckBoxNotificationChange(Sender: TObject);
+    procedure CheckBoxRuleOnStartupChange(Sender: TObject);
     procedure CheckBoxUseRulesChange(Sender: TObject);
     procedure CheckGroupSystemMenuItemClick(Sender: TObject; Index: integer);
     procedure ComboBoxLanguagesChange(Sender: TObject);
@@ -231,6 +232,11 @@ end;
 procedure TPageOptions.CheckBoxNotificationChange(Sender: TObject);
 begin
   Settings.ShowNotification := (Sender as TCheckBox).Checked;
+end;
+
+procedure TPageOptions.CheckBoxRuleOnStartupChange(Sender: TObject);
+begin
+  Settings.RuleOnStartup := (Sender as TCheckBox).Checked;
 end;
 
 procedure TPageOptions.CheckBoxUseRulesChange(Sender: TObject);

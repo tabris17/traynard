@@ -127,6 +127,7 @@ begin
   if FHotkeys[HotkeyID].Value = AValue.Value then Exit;
   FHotkeys[HotkeyID] := AValue;
   FConfig.SetIntegerArrayItem(KEY_HOTKEYS, Ord(HotkeyID), AValue.Value, HOTKEY_DEFAULT);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siHotkey].CallNotifyEvents(Self);
 end;
 
@@ -135,6 +136,7 @@ begin
   if FAutoMinimize = AValue then Exit;
   FAutoMinimize := AValue;
   FConfig.SetBoolean(KEY_ADVANCE_AUTO_MINIMIZE, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siAutoMinimize].CallNotifyEvents(Self);
 end;
 
@@ -153,6 +155,7 @@ begin
   if FIconGrouped = AValue then Exit;
   FIconGrouped := AValue;
   FConfig.SetBoolean(KEY_GENERAL_ICON_GROUPED, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siIconGrouped].CallNotifyEvents(Self);
 end;
 
@@ -161,6 +164,7 @@ begin
   if FMenuGrouped = AValue then Exit;
   FMenuGrouped := AValue;
   FConfig.SetBoolean(KEY_GENERAL_MENU_GROUPED, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siMenuGrouped].CallNotifyEvents(Self);
 end;
 
@@ -169,6 +173,7 @@ begin
   if FLanguage = AValue then Exit;
   FLanguage := AValue;
   FConfig.SetString(KEY_GENERAL_LANGUAGE, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siLanguage].CallNotifyEvents(Self);
 end;
 
@@ -177,6 +182,7 @@ begin
   if FApplyRulesOnStartup = AValue then Exit;
   FApplyRulesOnStartup := AValue;
   FConfig.SetBoolean(KEY_ADVANCE_RULES_ON_STARTUP, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siRuleOnStartup].CallNotifyEvents(Self);
 end;
 
@@ -185,6 +191,7 @@ begin
   if FShowNotification = AValue then Exit;
   FShowNotification := AValue;
   FConfig.SetBoolean(KEY_GENERAL_NOTIFICATION, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siShowNotification].CallNotifyEvents(Self);
 end;
 
@@ -193,6 +200,7 @@ begin
   if FApplyRules = AValue then Exit;
   FApplyRules := AValue;
   FConfig.SetBoolean(KEY_ADVANCE_CUSTOM_RULES, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siUseRules].CallNotifyEvents(Self);
 end;
 
@@ -205,6 +213,7 @@ begin
   FSystemMenuItems := AValue;
   for SystemMenuPair in SYSTEM_MENU_PAIRS do
     FConfig.SetBoolean(KEY_ADVANCE_SYSTEM_MENU + SystemMenuPair.Key, SystemMenuPair.Item in AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siSystemMenuItems].CallNotifyEvents(Self);
 end;
 

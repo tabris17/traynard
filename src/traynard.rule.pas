@@ -251,6 +251,8 @@ begin
   ConfigRule := TOMLTable;
   Rule.Save(ConfigRule);
   FConfigRules.Add(ConfigRule);
+
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
 end;
 
 procedure TRules.Load;
@@ -301,6 +303,8 @@ begin
   ConfigRule := FConfigRules.Items[RuleIndex];
   FConfigRules.Items.Remove(ConfigRule);
   ConfigRule.Free;
+
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
 end;
 
 procedure TRules.UpdateRule(RuleIndex: integer; Rule: TRule);
@@ -317,6 +321,8 @@ begin
   NewConfigRule := TOMLTable;
   Rule.Save(NewConfigRule);
   FConfigRules.Items.Insert(RuleIndex, NewConfigRule);
+
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
 end;
 
 initialization

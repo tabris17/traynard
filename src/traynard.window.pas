@@ -973,7 +973,7 @@ begin
 
   for TheHandle in Session.Handles do
   begin
-    ShowWindow(TheHandle, SW_NORMAL);
+    ShowWindow(TheHandle, SW_SHOW);
   end;
 
   if not RegisterShellHookWindow(FMainForm.Handle) then
@@ -1122,7 +1122,7 @@ begin
   if not FTray.FWindows.TryGetValue(Handle, Window) then
     raise Exception.Create(ERROR_WINDOW_NOT_FOUND);
 
-  if ShowWindow(Handle, SW_NORMAL) then
+  if ShowWindow(Handle, SW_SHOW) then
   begin
     { Failed to restore window }
     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle));

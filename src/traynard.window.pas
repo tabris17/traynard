@@ -58,6 +58,8 @@ type
   TDesktopWindow = class(TWindow)
   private
     FRestored: boolean;
+  protected
+    procedure Init; override;
   public
     property Restored: boolean read FRestored;
     constructor Create(AHandle: HWND; ARestored: boolean);
@@ -203,6 +205,17 @@ uses
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
+
+function ShouldNotify(const RuleNotification: TRuleNotification; const WindowIsRestored: boolean): boolean; inline;
+begin
+  case RuleNotification of
+    rnNever: Exit(False);
+    rnOnce: Exit(not WindowIsRestored);
+    rnAlways: Exit(True);
+    rnGlobal: Exit(Settings.ShowNotification);
+  end;
+  Result := False;
+end;
 
 { TWindow }
 
@@ -385,6 +398,12 @@ begin
 end;
 
 { TDesktopWindow }
+
+procedure TDesktopWindow.Init;
+begin
+  inherited Init;
+  GetText; // Preload window text for rule matching
+end;
 
 constructor TDesktopWindow.Create(AHandle: HWND; ARestored: boolean);
 begin
@@ -739,7 +758,9 @@ begin
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
     if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
     begin
-      TryMinimizeWindow(Handle, Rule.Position);
+      if TryMinimizeWindow(Handle, Rule.Position) and
+         ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
     Exit(False);
   end
@@ -766,7 +787,8 @@ begin
 
     if not IsRestored and Settings.ApplyRules and Rules.Match(Window, Rule, waCreation) then
     begin
-      if TryMinimizeWindow(Handle, Rule.Position) then
+      if TryMinimizeWindow(Handle, Rule.Position) and
+         ShouldNotify(Rule.Notification, IsRestored) then
         NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
 
@@ -818,7 +840,9 @@ begin
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
     if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
     begin
-      TryMinimizeWindow(Handle, Rule.Position);
+      if TryMinimizeWindow(Handle, Rule.Position) and
+         ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
     Exit(True);
   end
@@ -846,7 +870,9 @@ begin
     Self.FDesktop.FWindows.Add(Window.Handle, Window);
     if Settings.ApplyRules and Rules.Match(Window, Rule, waExisting) then
     begin
-      Self.TryMinimizeWindow(Window.Handle, Rule.Position);
+      if Self.TryMinimizeWindow(Window.Handle, Rule.Position) and
+         ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
   end
   else
@@ -910,7 +936,9 @@ begin
       end
       else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and Rules.Match(Window, Rule, waMinimizing) then
       begin
-        FSelf.TryMinimizeWindow(hwnd, Rule.Position);
+        if FSelf.TryMinimizeWindow(hwnd, Rule.Position) and
+           ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+          NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
       end;
     end;
     EVENT_OBJECT_DESTROY:

@@ -21,7 +21,7 @@ begin
   {$ENDIF}
 
   RequireDerivedFormResource := True;
-  Application.Scaled := True;
+  Application.Scaled:=True;
   Application.Title := APP_NAME;
   Application.ShowMainForm := False;
   Application.Initialize;

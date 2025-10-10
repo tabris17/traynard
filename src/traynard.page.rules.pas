@@ -76,6 +76,9 @@ type
   private
     FEditState: TEditState;
     FUnsaved: boolean;
+    FOriginalEditWindowTitleMaxWidth: TConstraintSize;
+    FOriginalEditWindowClassMaxWidth: TConstraintSize;
+    FOriginalEditAppPathMaxWidth: TConstraintSize;
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
     procedure ToggleEditor(AEnabled: boolean);
@@ -175,6 +178,9 @@ begin
     end;
     ComboBox.Width := ComboBoxMaxWidth + VScrollWidth;
   end;
+  EditWindowTitle.Constraints.MaxWidth := FOriginalEditWindowTitleMaxWidth - ComboBoxWindowTitle.Width;
+  EditWindowClass.Constraints.MaxWidth := FOriginalEditWindowClassMaxWidth - ComboBoxWindowClass.Width;
+  EditAppPath.Constraints.MaxWidth := FOriginalEditAppPathMaxWidth - ComboBoxAppPath.Width;
 
   ComboBoxMaxWidth := 0;
   for i := 0 to ComboBoxMinimizeTo.Items.Count - 1 do
@@ -234,6 +240,9 @@ begin
 
   FUnsaved := False;
   FEditState := esNone;
+  FOriginalEditWindowTitleMaxWidth := EditWindowTitle.Constraints.MaxWidth;
+  FOriginalEditWindowClassMaxWidth := EditWindowClass.Constraints.MaxWidth;
+  FOriginalEditAppPathMaxWidth := EditAppPath.Constraints.MaxWidth;
   OnCloseQuery := @PageCloseQuery;
 
   for RuleNotification in RULE_NOTIFICATIONS do
@@ -253,9 +262,9 @@ begin
     ComboBox.Width := ComboBoxMaxWidth + VScrollWidth;
     ComboBox.ItemIndex := 0;
   end;
-  EditWindowTitle.Constraints.MaxWidth := EditWindowTitle.Constraints.MaxWidth - ComboBoxWindowTitle.Width;
-  EditWindowClass.Constraints.MaxWidth := EditWindowClass.Constraints.MaxWidth - ComboBoxWindowClass.Width;
-  EditAppPath.Constraints.MaxWidth := EditAppPath.Constraints.MaxWidth - ComboBoxAppPath.Width;
+  EditWindowTitle.Constraints.MaxWidth := FOriginalEditWindowTitleMaxWidth - ComboBoxWindowTitle.Width;
+  EditWindowClass.Constraints.MaxWidth := FOriginalEditWindowClassMaxWidth - ComboBoxWindowClass.Width;
+  EditAppPath.Constraints.MaxWidth := FOriginalEditAppPathMaxWidth - ComboBoxAppPath.Width;
 
   ComboBoxMaxWidth := 0;
   for ComboBoxItem in RULE_POSITIONS do
@@ -407,7 +416,6 @@ procedure TPageRules.ActionSaveExecute(Sender: TObject);
 var
   Rule: TRule;
   RuleIndex: Integer;
-  RuleTriggerOn: TRuleTriggerOn;
   RuleName: string;
   WindowAction: TWindowAction;
 begin

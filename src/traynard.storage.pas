@@ -76,7 +76,7 @@ const
   LANGUAGES_DIR = 'languages';
 
 {$IFDEF STANDALONE}
-  BUILTIN_LANGUAGES: array of TResource = (
+  BUILTIN_RESOURCES: array of TResource = (
     (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_CN'; FileName: 'zh_CN.mo'),
     (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_TW'; FileName: 'zh_TW.mo'),
     (ResourceType: rtLanguage; ResourceName: 'LANG_ZH_HK'; FileName: 'zh_HK.mo'),
@@ -260,8 +260,8 @@ begin
   if not FConfigured then
   begin
     try
-      for i := Low(BUILTIN_LANGUAGES) to High(BUILTIN_LANGUAGES) do
-        ExtractResource(BUILTIN_LANGUAGES[i]);
+      for i := Low(BUILTIN_RESOURCES) to High(BUILTIN_RESOURCES) do
+        ExtractResource(BUILTIN_RESOURCES[i]);
     except
     end;
   end;

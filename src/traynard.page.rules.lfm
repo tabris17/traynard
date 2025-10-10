@@ -312,7 +312,8 @@ inherited PageRules: TPageRules
           ChildSizing.ShrinkHorizontal = crsScaleChilds
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 1
+          ChildSizing.ControlsPerLine = 4
+          Columns = 4
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
           TabOrder = 7
@@ -388,7 +389,8 @@ inherited PageRules: TPageRules
           ChildSizing.ShrinkHorizontal = crsScaleChilds
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 1
+          ChildSizing.ControlsPerLine = 3
+          Columns = 3
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
           TabOrder = 8

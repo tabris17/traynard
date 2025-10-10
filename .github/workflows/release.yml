@@ -1,0 +1,174 @@
+name: "release"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  get-version:
+    runs-on: windows-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get version from project file
+        id: get_version
+        shell: pwsh
+        run: |
+          [xml]$xml = Get-Content -Path "src\traynard.lpi"
+          function Get-XmlValue($nodePath, $defaultValue = "0") {
+            $node = $xml.SelectSingleNode($nodePath)
+            if ($node -and $node.Value) {
+              return $node.Value
+            } else {
+              return $defaultValue
+            }
+          }
+
+          $major = Get-XmlValue("/CONFIG/ProjectOptions/VersionInfo/MajorVersionNr/@Value")
+          $minor = Get-XmlValue("/CONFIG/ProjectOptions/VersionInfo/MinorVersionNr/@Value")
+          $revision = Get-XmlValue("/CONFIG/ProjectOptions/VersionInfo/RevisionNr/@Value")
+          $version = "$major.$minor.$revision"
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+  
+  build:
+    needs: get-version
+    env:
+      VERSION: ${{ needs.get-version.outputs.VERSION }}
+    outputs:
+      VERSION: ${{ env.VERSION }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lazarus and GetText
+        run: |
+          winget install Lazarus.Lazarus --silent --accept-source-agreements --accept-package-agreements
+          winget install mlocati.GetText --silent --accept-source-agreements --accept-package-agreements
+      - name: Download packages
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://packages.lazarus-ide.org/UniqueInstance.zip" -OutFile "UniqueInstance.zip"
+          7z x UniqueInstance.zip -y
+          git clone --depth 1 https://github.com/ikelaiah/toml-fp
+      - name: Make directories
+        shell: pwsh
+        run: |
+          mkdir out
+          mkdir out\languages
+          mkdir out\traynard
+          mkdir out\traynard\data
+      - name: Translate messages
+        shell: pwsh
+        run: |
+          $msgfmt = 'C:\Program Files\gettext-iconv\bin\msgfmt.exe'
+          $localeDir = "locale"
+          $outDir = 'out\languages'
+          $distDir = 'out\traynard'
+          foreach ($po in Get-ChildItem $localeDir -Filter "*.po") {
+              $name = [IO.Path]::GetFileNameWithoutExtension($po.Name)
+              & $msgfmt $po.FullName -o (Join-Path $outDir "$name.mo")
+          }
+          Copy-Item -Recurse -Force $outDir $distDir
+      - name: Generate readme
+        shell: pwsh
+        run: |
+          @"
+          Traynard is a Windows desktop utility for minimizing any application window to the system tray, A.K.A. "notification area".
+
+          Homepage: https://github.com/tabris17/traynard
+
+          Usage:
+
+          1. Extract the package to any location on your computer.
+          2. Run traynard.exe to start the application.
+          3. If the current directory is not writable, please delete the data folder before running.
+          "@ | Set-Content -Path out\traynard\README.txt -Encoding UTF8
+      - name: Build projects
+        shell: pwsh
+        run: |
+          $env:PATH += ";C:\lazarus"
+          $env:LazarusDir = "C:\lazarus"
+          $env:LazDir = "C:\lazarus"
+          lazbuild --pcp=C:\lazarus\configs uniqueinstance\uniqueinstance_package.lpk
+          lazbuild --pcp=C:\lazarus\configs toml-fp\packages\lazarus\toml_fp.lpk
+          lazbuild --pcp=C:\lazarus\configs --bm=Release src\traynard.lib.lpi
+          lazbuild --pcp=C:\lazarus\configs --bm=Release src\traynard.lpi
+          Move-Item -Path "out\traynard.exe" -Destination "out\traynard\traynard.exe" -Force
+          Copy-Item -Path "out\traynard.dll" -Destination "out\traynard\traynard.dll" -Force
+          lazbuild --pcp=C:\lazarus\configs --bm=Standalone src\traynard.lpi
+      - name: Package release
+        shell: pwsh
+        run: |
+          cd out
+          7z a traynard-portable.zip traynard\
+          7z a traynard-standalone.zip traynard.exe
+      - name: Upload portable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: traynard-portable
+          path: out\traynard-portable.zip
+      - name: Upload standalone artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: traynard-standalone
+          path: out\traynard-standalone.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download portable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: traynard-portable
+          path: dist
+      - name: Download standalone artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: traynard-standalone
+          path: dist
+      - name: Generate manifest json
+        run: |
+          HASH=$(sha256sum dist/traynard-portable.zip | awk '{ print $1 }')
+          cat > dist/traynard.json <<EOF
+          {
+              "version": "${{ needs.build.outputs.VERSION }}",
+              "description": "A Windows desktop utility for minimizing any application window to the system tray",
+              "homepage": "https://github.com/tabris17/traynard",
+              "license": "MIT",
+              "url": "https://github.com/tabris17/traynard/releases/latest/download/traynard-portable.zip",
+              "hash": "${HASH}",
+              "extract_dir": "traynard",
+              "bin": "traynard.exe",
+              "shortcuts": [
+                  ["traynard.exe", "Traynard"]
+              ],
+              "persist": ["data"],
+              "checkver": "github",
+              "autoupdate": {
+                  "url": "https://github.com/tabris17/traynard/releases/download/v\$version/traynard-portable.zip"
+              }
+          }
+          EOF
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: Traynard v${{ needs.build.outputs.VERSION }}
+          body: |
+            ## Downloads
+            
+            1. Download the portable version if you want to run Traynard without installation. Just extract the ZIP file to any location and run traynard.exe. The user data will be saved in the same directory.
+            2. Download the standalone version if you want a single executable file. Just run `traynard.exe`. The user data will be created in your user profile folder.
+            
+            ## Changelog
+          files: |
+            dist/*
+          draft: true
+          prerelease: false

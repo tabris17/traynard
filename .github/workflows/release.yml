@@ -42,10 +42,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Lazarus and GetText
+      - name: Install tools
         run: |
           winget install Lazarus.Lazarus --silent --accept-source-agreements --accept-package-agreements
           winget install mlocati.GetText --silent --accept-source-agreements --accept-package-agreements
+          winget install JRSoftware.InnoSetup --silent --accept-source-agreements --accept-package-agreements
       - name: Download packages
         shell: pwsh
         run: |
@@ -104,6 +105,14 @@ jobs:
           cd out
           7z a traynard-portable.zip traynard\
           7z a traynard-standalone.zip traynard.exe
+      - name: Package installer
+        shell: pwsh
+        run: |
+          $languagesDir = "$env:LOCALAPPDATA\Programs\Inno Setup 6\Languages"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseSimplified.isl" -OutFile "$languagesDir\ChineseSimplified.isl"
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Files/Languages/Unofficial/ChineseTraditional.isl" -OutFile "$languagesDir\ChineseTraditional.isl"
+          $iscc = "$env:LOCALAPPDATA\Programs\Inno Setup 6\iscc.exe"
+          & $iscc setup\traynard.iss /DAppVersion=$env:VERSION /Qp
       - name: Upload portable artifact
         uses: actions/upload-artifact@v4
         with:
@@ -114,6 +123,11 @@ jobs:
         with:
           name: traynard-standalone
           path: out\traynard-standalone.zip
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: traynard-setup
+          path: out\traynard-setup.exe
 
   release:
     needs: build
@@ -130,6 +144,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: traynard-standalone
+          path: dist
+      - name: Download installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: traynard-setup
           path: dist
       - name: Generate manifest json
         run: |

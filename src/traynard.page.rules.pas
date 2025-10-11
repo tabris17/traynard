@@ -53,6 +53,7 @@ type
     procedure ActionSaveExecute(Sender: TObject);
     procedure CheckItemClick(Sender: TObject; Index: integer);
     procedure ComboBoxAppPathChange(Sender: TObject);
+    procedure ComboBoxMinimizeToChange(Sender: TObject);
     procedure ComboBoxWindowClassChange(Sender: TObject);
     procedure ComboBoxWindowTitleChange(Sender: TObject);
     procedure ListBoxRulesSelectionChange(Sender: TObject; User: boolean);
@@ -79,6 +80,10 @@ type
     FOriginalEditWindowTitleMaxWidth: TConstraintSize;
     FOriginalEditWindowClassMaxWidth: TConstraintSize;
     FOriginalEditAppPathMaxWidth: TConstraintSize;
+    FComboBoxWindowTitleItemIndex: longint;
+    FComboBoxWindowClassItemIndex: longint;
+    FComboBoxAppPathItemIndex: longint;
+    FComboBoxMinimizeToItemIndex: longint;
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
     procedure ToggleEditor(AEnabled: boolean);
@@ -181,6 +186,10 @@ begin
   EditWindowTitle.Constraints.MaxWidth := FOriginalEditWindowTitleMaxWidth - ComboBoxWindowTitle.Width;
   EditWindowClass.Constraints.MaxWidth := FOriginalEditWindowClassMaxWidth - ComboBoxWindowClass.Width;
   EditAppPath.Constraints.MaxWidth := FOriginalEditAppPathMaxWidth - ComboBoxAppPath.Width;
+  ComboBoxWindowTitle.ItemIndex := FComboBoxWindowTitleItemIndex;
+  ComboBoxWindowClass.ItemIndex := FComboBoxWindowClassItemIndex;
+  ComboBoxAppPath.ItemIndex := FComboBoxAppPathItemIndex;
+  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
 
   ComboBoxMaxWidth := 0;
   for i := 0 to ComboBoxMinimizeTo.Items.Count - 1 do
@@ -191,6 +200,7 @@ begin
     if ComboBoxItemWidth > ComboBoxMaxWidth then ComboBoxMaxWidth := ComboBoxItemWidth;
   end;
   ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
+  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
 end;
 
 procedure TPageRules.SetEditState(AValue: TEditState);
@@ -308,16 +318,20 @@ begin
   EditRuleName.Clear;
   EditRuleName.Color := clDefault;
   ComboBoxWindowTitle.ItemIndex := 0;
+  FComboBoxWindowTitleItemIndex := 0;
   EditWindowTitle.Clear;
   EditWindowTitle.Color := clDefault;
   ComboBoxWindowClass.ItemIndex := 0;
+  FComboBoxWindowClassItemIndex := 0;
   EditWindowClass.Clear;
   EditWindowClass.Color := clDefault;
   ComboBoxAppPath.ItemIndex := 0;
+  FComboBoxAppPathItemIndex := 0;
   EditAppPath.Clear;
   EditAppPath.Color := clDefault;
   RadioGroupNotification.ItemIndex := 0;
   ComboBoxMinimizeTo.ItemIndex := 0;
+  FComboBoxMinimizeToItemIndex := 0;
   CheckGroupTriggerOn.UncheckAll;
   ToggleEditor(True);
 end;
@@ -350,14 +364,18 @@ begin
 
   ToggleEditor(False);
   EditRuleName.Text := Rule.Name;
-  ComboBoxWindowTitle.ItemIndex := Ord(Rule.WindowTitle.Comparison);
+  FComboBoxWindowTitleItemIndex := Ord(Rule.WindowTitle.Comparison);
+  ComboBoxWindowTitle.ItemIndex := FComboBoxWindowTitleItemIndex;
   EditWindowTitle.Text := Rule.WindowTitle.Text;
-  ComboBoxWindowClass.ItemIndex := Ord(Rule.WindowClass.Comparison);
+  FComboBoxWindowClassItemIndex := Ord(Rule.WindowClass.Comparison);
+  ComboBoxWindowClass.ItemIndex := FComboBoxWindowClassItemIndex;
   EditWindowClass.Text := Rule.WindowClass.Text;
-  ComboBoxAppPath.ItemIndex := Ord(Rule.AppPath.Comparison);
+  FComboBoxAppPathItemIndex := Ord(Rule.AppPath.Comparison);
+  ComboBoxAppPath.ItemIndex := FComboBoxAppPathItemIndex;
   EditAppPath.Text := Rule.AppPath.Text;
   RadioGroupNotification.ItemIndex := Ord(Rule.Notification);
-  ComboBoxMinimizeTo.ItemIndex := Ord(Rule.Position);
+  FComboBoxMinimizeToItemIndex := Ord(Rule.Position);
+  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
   CheckGroupTriggerOn.Checked[Ord(waCreation)] := waCreation in Rule.TriggerOn;
   CheckGroupTriggerOn.Checked[Ord(waChange)] := waChange in Rule.TriggerOn;
   CheckGroupTriggerOn.Checked[Ord(waMinimizing)] := waMinimizing in Rule.TriggerOn;
@@ -490,21 +508,30 @@ end;
 
 procedure TPageRules.ComboBoxAppPathChange(Sender: TObject);
 begin
-  EditAppPath.Enabled := (Sender as TComboBox).ItemIndex <> Ord(rtcAny);
+  FComboBoxAppPathItemIndex := (Sender as TComboBox).ItemIndex;
+  EditAppPath.Enabled := FComboBoxAppPathItemIndex <> Ord(rtcAny);
   if not EditAppPath.Enabled then EditAppPath.Clear;
+  RuleChange(Sender);
+end;
+
+procedure TPageRules.ComboBoxMinimizeToChange(Sender: TObject);
+begin
+  FComboBoxMinimizeToItemIndex := (Sender as TComboBox).ItemIndex;
   RuleChange(Sender);
 end;
 
 procedure TPageRules.ComboBoxWindowClassChange(Sender: TObject);
 begin
-  EditWindowClass.Enabled := (Sender as TComboBox).ItemIndex <> Ord(rtcAny);
+  FComboBoxWindowClassItemIndex := (Sender as TComboBox).ItemIndex;
+  EditWindowClass.Enabled := FComboBoxWindowClassItemIndex <> Ord(rtcAny);
   if not EditWindowClass.Enabled then EditWindowClass.Clear;
   RuleChange(Sender);
 end;
 
 procedure TPageRules.ComboBoxWindowTitleChange(Sender: TObject);
 begin
-  EditWindowTitle.Enabled := (Sender as TComboBox).ItemIndex <> Ord(rtcAny);
+  FComboBoxWindowTitleItemIndex := (Sender as TComboBox).ItemIndex;
+  EditWindowTitle.Enabled := FComboBoxWindowTitleItemIndex <> Ord(rtcAny);
   if not EditWindowTitle.Enabled then EditWindowTitle.Clear;
   RuleChange(Sender);
 end;

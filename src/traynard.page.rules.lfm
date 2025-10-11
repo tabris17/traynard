@@ -421,6 +421,7 @@ inherited PageRules: TPageRules
           ItemHeight = 17
           Style = csDropDownList
           TabOrder = 9
+          OnChange = ComboBoxMinimizeToChange
         end
       end
     end

@@ -269,10 +269,12 @@ msgid "Open Config Directory"
 msgstr ""
 
 #: tpageoptions.actionhotkeybind.caption
+msgctxt "tpageoptions.actionhotkeybind.caption"
 msgid "Bind"
 msgstr ""
 
 #: tpageoptions.actionhotkeyclear.caption
+msgctxt "tpageoptions.actionhotkeyclear.caption"
 msgid "Clear"
 msgstr ""
 
@@ -386,6 +388,16 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: tpagerules.buttonhotkeybind.caption
+msgctxt "tpagerules.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr ""
+
+#: tpagerules.buttonhotkeyclear.caption
+msgctxt "tpagerules.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr ""
+
 #: tpagerules.checkgrouptriggeron.caption
 msgid "Trigger On"
 msgstr ""
@@ -404,6 +416,11 @@ msgstr ""
 
 #: tpagerules.editwindowtitle.texthint
 msgid "Text in the window title bar"
+msgstr ""
+
+#: tpagerules.groupboxhotkey.caption
+msgctxt "tpagerules.groupboxhotkey.caption"
+msgid "Hotkey"
 msgstr ""
 
 #: tpagerules.labelapppath.caption
@@ -716,6 +733,11 @@ msgstr ""
 msgid "Any"
 msgstr ""
 
+#: traynard.strings.text_bracketed_no_set
+msgctxt "traynard.strings.text_bracketed_no_set"
+msgid "(no set)"
+msgstr ""
+
 #: traynard.strings.text_contains
 msgid "Contains"
 msgstr ""
@@ -736,6 +758,11 @@ msgstr ""
 #: traynard.strings.text_follow_global_settings
 msgctxt "traynard.strings.text_follow_global_settings"
 msgid "Follow global settings"
+msgstr ""
+
+#: traynard.strings.text_hotkey
+msgctxt "traynard.strings.text_hotkey"
+msgid "Hotkey"
 msgstr ""
 
 #: traynard.strings.text_icon

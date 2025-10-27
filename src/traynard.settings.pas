@@ -101,7 +101,7 @@ const
   HOTKEY_NONE = 0;
   HOTKEY_DEFAULT = -1;
 
-  DEFAULT_HOTKEY_VALUES: array[THotkeyID] of integer = (
+  DEFAULT_HOTKEY_VALUES: THotkeyValues = (
     5898252, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE
   );
 
@@ -124,9 +124,9 @@ end;
 
 procedure TSettings.SetHotkey(HotkeyID: THotkeyID; AValue: THotkey);
 begin
-  if FHotkeys[HotkeyID].Value = AValue.Value then Exit;
-  FHotkeys[HotkeyID] := AValue;
-  FConfig.SetIntegerArrayItem(KEY_HOTKEYS, Ord(HotkeyID), AValue.Value, HOTKEY_DEFAULT);
+  if FHotkeys[Ord(HotkeyID)].Value = AValue.Value then Exit;
+  FHotkeys[Ord(HotkeyID)] := AValue;
+  FConfig.SetIntegerArrayItem(KEY_HOTKEYS, specialize EnumToIndex<THotkeyID>(HotkeyID), AValue.Value, HOTKEY_DEFAULT);
   Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siHotkey].CallNotifyEvents(Self);
 end;
@@ -142,7 +142,7 @@ end;
 
 function TSettings.GetHotkey(HotkeyID: THotkeyID): THotkey;
 begin
-  Result := FHotkeys[HotkeyID];
+  Result := FHotkeys[Ord(HotkeyID)];
 end;
 
 function TSettings.GetAutorun: boolean;
@@ -261,9 +261,9 @@ begin
   FShowNotification := FConfig.GetBoolean(KEY_GENERAL_NOTIFICATION, True);
   for HotkeyID := Low(THotkeyID) to High(THotkeyID) do
   begin
-    HotkeyDefaultValue := DEFAULT_HOTKEY_VALUES[HotkeyID];
-    HotkeyValue := FConfig.GetIntegerArrayItem(KEY_HOTKEYS, Ord(HotkeyID), HotkeyDefaultValue);
-    FHotkeys[HotkeyID].Value := specialize IfThen<integer>(HotkeyValue = HOTKEY_DEFAULT, HotkeyDefaultValue, HotkeyValue);
+    HotkeyDefaultValue := DEFAULT_HOTKEY_VALUES[Ord(HotkeyID)];
+    HotkeyValue := FConfig.GetIntegerArrayItem(KEY_HOTKEYS, specialize EnumToIndex<THotkeyID>(HotkeyID), HotkeyDefaultValue);
+    FHotkeys[Ord(HotkeyID)].Value := specialize IfThen<integer>(HotkeyValue = HOTKEY_DEFAULT, HotkeyDefaultValue, HotkeyValue);
   end;
   FAutoMinimize := FConfig.GetBoolean(KEY_ADVANCE_AUTO_MINIMIZE, True);
   FApplyRules := FConfig.GetBoolean(KEY_ADVANCE_CUSTOM_RULES, True);

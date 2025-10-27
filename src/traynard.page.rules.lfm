@@ -145,12 +145,12 @@ inherited PageRules: TPageRules
         Height = 561
         Top = 0
         Width = 385
-        HorzScrollBar.Increment = 20
-        HorzScrollBar.Page = 205
+        HorzScrollBar.Increment = 24
+        HorzScrollBar.Page = 249
         HorzScrollBar.Smooth = True
         HorzScrollBar.Tracking = True
-        VertScrollBar.Increment = 42
-        VertScrollBar.Page = 421
+        VertScrollBar.Increment = 50
+        VertScrollBar.Page = 500
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
@@ -389,12 +389,80 @@ inherited PageRules: TPageRules
           ChildSizing.ShrinkHorizontal = crsScaleChilds
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
-          ChildSizing.ControlsPerLine = 3
-          Columns = 3
+          ChildSizing.ControlsPerLine = 4
+          Columns = 4
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
           TabOrder = 8
           OnItemClick = CheckItemClick
+        end
+        object GroupBoxHotkey: TGroupBox
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = CheckGroupTriggerOn
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 69
+          Top = 346
+          Width = 361
+          Anchors = [akTop, akLeft, akRight]
+          AutoSize = True
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Hotkey'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ClientHeight = 47
+          ClientWidth = 357
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
+          Enabled = False
+          TabOrder = 10
+          object LabelHotkey: TLabel
+            AnchorSideTop.Control = ButtonHotkeyBind
+            AnchorSideTop.Side = asrCenter
+            Left = 10
+            Height = 10
+            Top = 18
+            Width = 30
+            Constraints.MinHeight = 10
+            Constraints.MinWidth = 30
+            Font.Height = -13
+            ParentFont = False
+          end
+          object ButtonHotkeyBind: TButton
+            AnchorSideLeft.Control = LabelHotkey
+            AnchorSideLeft.Side = asrBottom
+            Left = 50
+            Height = 27
+            Top = 10
+            Width = 80
+            AutoSize = True
+            BorderSpacing.Left = 10
+            Caption = 'Bind'
+            Constraints.MinWidth = 80
+            TabOrder = 0
+            OnClick = ButtonHotkeyBindClick
+          end
+          object ButtonHotkeyClear: TButton
+            AnchorSideLeft.Control = ButtonHotkeyBind
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = ButtonHotkeyBind
+            Left = 135
+            Height = 27
+            Top = 10
+            Width = 80
+            AutoSize = True
+            BorderSpacing.Left = 5
+            Caption = 'Clear'
+            Constraints.MinWidth = 80
+            Enabled = False
+            TabOrder = 1
+            OnClick = ButtonHotkeyClearClick
+          end
         end
         object LabelMinimizeTo: TLabel
           AnchorSideLeft.Control = ScrollBoxEditor
@@ -402,7 +470,7 @@ inherited PageRules: TPageRules
           AnchorSideTop.Side = asrCenter
           Left = 10
           Height = 17
-          Top = 350
+          Top = 429
           Width = 75
           BorderSpacing.Left = 10
           Caption = 'Minimize to: '
@@ -410,11 +478,11 @@ inherited PageRules: TPageRules
         object ComboBoxMinimizeTo: TComboBox
           AnchorSideLeft.Control = LabelMinimizeTo
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = CheckGroupTriggerOn
+          AnchorSideTop.Control = GroupBoxHotkey
           AnchorSideTop.Side = asrBottom
           Left = 90
           Height = 25
-          Top = 346
+          Top = 425
           Width = 100
           BorderSpacing.Left = 5
           BorderSpacing.Top = 10

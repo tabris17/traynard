@@ -98,6 +98,8 @@ resourcestring
   TEXT_WINDOW_CREATION = 'Window creation';
   TEXT_WINDOW_TITLE_CHANGE = 'Window title change';
   TEXT_WINDOW_MINIMIZING = 'Window minimizing';
+  TEXT_HOTKEY = 'Hotkey';
+  TEXT_BRACKETED_NO_SET = '(no set)';
 
   HOTKEY_MINIMIZE_TO_ICON        = 'Minimize foreground window to tray icon';
   HOTKEY_MINIMIZE_TO_MENU        = 'Minimize foreground window to tray menu';

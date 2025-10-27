@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ActnList, Menus, UniqueInstance,
-  Traynard.Types;
+  Traynard.Types,
+  Traynard.Window,
+  Traynard.Tray,
+  Traynard.Hotkey,
+  Traynard.Notification;
 
 type
 
@@ -49,8 +53,12 @@ type
     procedure TrayIconDblClick(Sender: TObject);
     procedure TrayMenuPopup(Sender: TObject);
     procedure UniqueInstanceOtherInstance(Sender: TObject; ParamCount: Integer; const Parameters: array of String);
-  private
-
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure HotkeyManagerInstalled(const HotkeyManager: THotkeyManager);
+    procedure NotificationManagerInstalled(const NotificationManager: TNotificationManager); 
+    procedure TrayManagerInstalled(const TrayManager: TTrayManager);
+    procedure WindowManagerInstalled(const WindowManager: TWindowManager);
   public
     procedure Notify(const Title, Message: string; const Timeout: Integer = 0);
   end;
@@ -63,7 +71,6 @@ implementation
 uses
   Traynard.Form.Main,
   Traynard.Strings,
-  Traynard.Window,
   Traynard.Settings,
   Traynard.Rule,
   Traynard.I18n,
@@ -200,6 +207,47 @@ end;
 procedure TFormBackground.UniqueInstanceOtherInstance(Sender: TObject; ParamCount: Integer; const Parameters: array of String);
 begin
   ActionOpen.Execute;
+end;
+
+procedure TFormBackground.Notification(AComponent: TComponent; Operation: TOperation);
+var
+  ComponentClassType: TClass;
+begin
+  inherited;
+
+  if Operation = opInsert then
+  begin
+    ComponentClassType := AComponent.ClassType;
+
+    if ComponentClassType = TNotificationManager then
+      NotificationManagerInstalled(AComponent as TNotificationManager)
+    else if ComponentClassType = TWindowManager then
+      WindowManagerInstalled(AComponent as TWindowManager)
+    else if ComponentClassType = TTrayManager then
+      TrayManagerInstalled(AComponent as TTrayManager)
+    else if ComponentClassType = THotkeyManager then
+      HotkeyManagerInstalled(AComponent as THotkeyManager);
+  end;
+end;
+
+procedure TFormBackground.HotkeyManagerInstalled(const HotkeyManager: THotkeyManager);
+begin
+
+end;
+
+procedure TFormBackground.NotificationManagerInstalled(const NotificationManager: TNotificationManager);
+begin
+
+end;
+
+procedure TFormBackground.TrayManagerInstalled(const TrayManager: TTrayManager);
+begin
+
+end;
+
+procedure TFormBackground.WindowManagerInstalled(const WindowManager: TWindowManager);
+begin
+
 end;
 
 procedure TFormBackground.Notify(const Title, Message: string; const Timeout: Integer);

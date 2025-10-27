@@ -12,7 +12,7 @@ type
 
   THookID = (hiCallWndProc, hiGetMessage);
 
-  THotkeyID = (hiMinimizeToIcon, hiMinimizeToMenu, hiRestoreLastWindow, hiRestoreAll,
+  THotkeyID = (hiMinimizeToIcon = 1, hiMinimizeToMenu, hiRestoreLastWindow, hiRestoreAll,
                hiToggleTopmost, hiOpenClose, hiToggleAutoMinimize, hiToggleRules);
 
   THotkeyState = (hsNone, hsSucceeded, hsFailed);
@@ -27,7 +27,11 @@ type
 
   PHotkey = ^THotkey;
 
-  THotkeys = array[THotkeyID] of THotkey;
+  THotkeys = array[Ord(Low(THotkeyID))..Ord(High(THotkeyID))] of THotkey;
+
+  THotkeyValues = array[Ord(Low(THotkeyID))..Ord(High(THotkeyID))] of integer;
+
+  THotkeyDescriptions = array[Ord(Low(THotkeyID))..Ord(High(THotkeyID))] of string;
 
   { THotkeyInfo }
 
@@ -37,8 +41,6 @@ type
   end;
 
   PHotkeyInfo = ^THotkeyInfo;
-
-  THotkeysInfo = array[THotkeyID] of THotkeyInfo;
 
   TTrayPosition = (tpMenu, tpIcon);
 
@@ -114,7 +116,7 @@ type
 
   TPopupType = (ptWarning, ptError, ptInformation, ptConfirmation, ptShield, ptNone);
 
-  TWindowAction = (waCreation, waChange, waMinimizing, waExisting);
+  TWindowAction = (waCreation, waChange, waMinimizing, waHotkey, waExisting);
 
   TRuleTriggerOn = set of TWindowAction;
 
@@ -195,7 +197,7 @@ const
   );
 
 {$IFNDEF LIBRARY}
-  HOTKEY_DESCRIPTIONS: array[THotkeyID] of string = (
+  HOTKEY_DESCRIPTIONS: THotkeyDescriptions = (
     HOTKEY_MINIMIZE_TO_ICON,
     HOTKEY_MINIMIZE_TO_MENU,
     HOTKEY_RESTORE_LAST_WINDOW,
@@ -213,10 +215,11 @@ const
     TEXT_FOLLOW_GLOBAL_SETTINGS
   );
 
-  RULE_TRIGGER_ON: array[waCreation..waMinimizing] of string = (
+  RULE_TRIGGER_ON: array[waCreation..waHotkey] of string = (
     TEXT_WINDOW_CREATION,
     TEXT_WINDOW_TITLE_CHANGE,
-    TEXT_WINDOW_MINIMIZING
+    TEXT_WINDOW_MINIMIZING,
+    TEXT_HOTKEY
   );
 
   RULE_COMPARISONS: array[0..5] of string = (TEXT_EQUALS, TEXT_CONTAINS, TEXT_STARTS_WITH, TEXT_ENDS_WITH, TEXT_REGEX_MATCH, TEXT_ANY);

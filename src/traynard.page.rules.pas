@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, PairSplitter, StdCtrls, ActnList,
-  Traynard.Page, Traynard.Rule;
+  Traynard.Page, Traynard.Rule, Traynard.Types;
 
 type
 
@@ -19,6 +19,8 @@ type
     ActionSave: TAction;
     ActionNew: TAction;
     ActionList: TActionList;
+    ButtonHotkeyBind: TButton;
+    ButtonHotkeyClear: TButton;
     ButtonClose: TButton;
     ButtonNew: TButton;
     ButtonSave: TButton;
@@ -33,6 +35,8 @@ type
     EditRuleName: TEdit;
     EditWindowClass: TEdit;
     EditWindowTitle: TEdit;
+    GroupBoxHotkey: TGroupBox;
+    LabelHotkey: TLabel;
     LabelAppPath: TLabel;
     LabelMinimizeTo: TLabel;
     LabelRuleName: TLabel;
@@ -51,6 +55,8 @@ type
     procedure ActionNewExecute(Sender: TObject);
     procedure ActionOpenExecute(Sender: TObject);
     procedure ActionSaveExecute(Sender: TObject);
+    procedure ButtonHotkeyBindClick(Sender: TObject);
+    procedure ButtonHotkeyClearClick(Sender: TObject);
     procedure CheckItemClick(Sender: TObject; Index: integer);
     procedure ComboBoxAppPathChange(Sender: TObject);
     procedure ComboBoxMinimizeToChange(Sender: TObject);
@@ -84,6 +90,7 @@ type
     FComboBoxWindowClassItemIndex: longint;
     FComboBoxAppPathItemIndex: longint;
     FComboBoxMinimizeToItemIndex: longint;
+    FHotkey: THotkey;
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
     procedure ToggleEditor(AEnabled: boolean);
@@ -105,7 +112,7 @@ var
 implementation
 
 uses
-  Windows, Traynard.Strings, Traynard.Form.Main, Traynard.Types, Traynard.Helpers, Traynard.Settings;
+  Windows, Traynard.Strings, Traynard.Form.Main, Traynard.Helpers, Traynard.Settings, Traynard.Form.Hotkey;
 
 {$R *.lfm}
 
@@ -333,6 +340,9 @@ begin
   ComboBoxMinimizeTo.ItemIndex := 0;
   FComboBoxMinimizeToItemIndex := 0;
   CheckGroupTriggerOn.UncheckAll;
+  GroupBoxHotkey.Enabled := False;
+  LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
+  FHotkey.Value := 0;
   ToggleEditor(True);
 end;
 
@@ -379,6 +389,19 @@ begin
   CheckGroupTriggerOn.Checked[Ord(waCreation)] := waCreation in Rule.TriggerOn;
   CheckGroupTriggerOn.Checked[Ord(waChange)] := waChange in Rule.TriggerOn;
   CheckGroupTriggerOn.Checked[Ord(waMinimizing)] := waMinimizing in Rule.TriggerOn;
+  CheckGroupTriggerOn.Checked[Ord(waHotkey)] := waHotkey in Rule.TriggerOn;
+  GroupBoxHotkey.Enabled := waHotkey in Rule.TriggerOn;
+  FHotkey := Rule.Hotkey;
+  if Rule.Hotkey.Value = 0 then
+  begin
+    ButtonHotkeyClear.Enabled := False;
+    LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
+  end
+  else
+  begin
+    ButtonHotkeyClear.Enabled := True;
+    LabelHotkey.Caption := WinHotkeyToText(Rule.Hotkey.Modifiers, Rule.Hotkey.Key);
+  end;
   ToggleEditor(True);
 
   EditWindowTitle.Enabled := Rule.WindowTitle.Comparison <> rtcAny;
@@ -433,19 +456,14 @@ end;
 procedure TPageRules.ActionSaveExecute(Sender: TObject);
 var
   Rule: TRule;
-  RuleIndex: Integer;
-  RuleName: string;
+  RuleIndex: SizeInt;
   WindowAction: TWindowAction;
 begin
   try
     if EditRuleName.Text = '' then
       raise EFieldInvalid.Create(LabelRuleName.Caption, MSG_RULE_NAME_REQUIRED, EditRuleName);
-    for RuleIndex := 0 to ListBoxRules.Count - 1 do
-    begin
-      RuleName := ListBoxRules.Items[RuleIndex];
-      if (RuleName = EditRuleName.Text) and (ListBoxRules.ItemIndex <> RuleIndex) then
-        raise EFieldInvalid.Create(LabelRuleName.Caption, MSG_RULE_NAME_DUPLICATE, EditRuleName);
-    end;
+    if Rules.HasRule(EditRuleName.Text, RuleIndex) and (RuleIndex <> ListBoxRules.ItemIndex) then
+      raise EFieldInvalid.Create(LabelRuleName.Caption, MSG_RULE_NAME_DUPLICATE, EditRuleName);
     if (EditWindowTitle.Text = '') and (ComboBoxWindowTitle.ItemIndex <> Ord(rtcAny)) then
       raise EFieldInvalid.Create(LabelWindowTitle.Caption, MSG_RULE_WINDOW_TITLE_REQUIRED, EditWindowTitle);
     if (EditWindowClass.Text = '') and (ComboBoxWindowClass.ItemIndex <> Ord(rtcAny)) then
@@ -474,12 +492,13 @@ begin
   Rule.AppPath.Comparison := TRuleTextComparison(ComboBoxAppPath.ItemIndex);
   Rule.Notification := TRuleNotification(RadioGroupNotification.ItemIndex);
   Rule.TriggerOn := [];
-  for WindowAction := Low(TWindowAction) to waMinimizing do
+  for WindowAction := Low(TWindowAction) to waHotkey do
   begin
     if CheckGroupTriggerOn.Checked[Ord(WindowAction)] then
       Include(Rule.TriggerOn, WindowAction);
   end;
   Rule.Position := TTrayPosition(ComboBoxMinimizeTo.ItemIndex);
+  Rule.Hotkey := FHotkey;
 
   case EditState of
     esNew:
@@ -501,8 +520,37 @@ begin
   Unsaved := False;
 end;
 
+procedure TPageRules.ButtonHotkeyBindClick(Sender: TObject);
+var
+  FormHotkey: TFormHotkey;
+begin
+  FormHotkey := TFormHotkey.Create(Self.Owner);
+  try
+    if (FormHotkey.ShowModal = mrOK) and (FormHotkey.ShortCut <> 0) then
+    begin
+      FHotkey := FormHotkey.Hotkey;
+      LabelHotkey.Caption := WinHotkeyToText(FHotkey.Modifiers, FHotkey.Key);
+      ButtonHotkeyClear.Enabled := True;
+      RuleChange(Sender);
+    end;
+  finally
+    FormHotkey.Free;
+  end;
+end;
+
+procedure TPageRules.ButtonHotkeyClearClick(Sender: TObject);
+begin
+  if FHotkey.Value = 0 then Exit;
+  LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
+  FHotkey.Value := 0;
+  ButtonHotkeyClear.Enabled := False;
+  RuleChange(Sender);
+end;
+
 procedure TPageRules.CheckItemClick(Sender: TObject; Index: integer);
 begin
+  if (Sender = CheckGroupTriggerOn) and (Index = Ord(waHotkey)) then
+    GroupBoxHotkey.Enabled := CheckGroupTriggerOn.Checked[Ord(waHotkey)];
   RuleChange(Sender);
 end;
 

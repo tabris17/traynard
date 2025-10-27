@@ -4,6 +4,7 @@ object FormBackground: TFormBackground
   Top = 0
   Width = 320
   BorderStyle = bsNone
+  LCLVersion = '4.2.0.0'
   OnClick = FormClick
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate

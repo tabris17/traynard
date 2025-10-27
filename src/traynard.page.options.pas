@@ -113,13 +113,11 @@ begin
   FormHotkey := TFormHotkey.Create(Self.Owner);
   try
     FormHotkey.LabelTitle.Caption := HotkeyItem.Caption;
-    FormHotkey.PopupMode:=pmAuto;
-    FormHotkey.PopupParent:=Self.Owner as TForm;
     if FormHotkey.ShowModal = mrOK then
     begin
       if FormHotkey.ShortCut <> 0 then
       begin
-        Settings.Hotkey[THotkeyID(HotkeyItem.Index)] := FormHotkey.Hotkey;
+        Settings.Hotkey[specialize IndexToEnum<THotkeyID>(HotkeyItem.Index)] := FormHotkey.Hotkey;
       end;
     end;
   finally
@@ -135,7 +133,7 @@ var
 begin
   HotkeyItem := ListViewHotkeys.Selected;
   if not Assigned(HotkeyItem) then Exit;
-  HotkeyID := THotkeyID(HotkeyItem.Index);
+  HotkeyID := specialize IndexToEnum<THotkeyID>(HotkeyItem.Index);
   Hotkey.Value := 0;
   Settings.Hotkey[HotkeyID] := Hotkey;
 end;
@@ -148,8 +146,8 @@ var
 begin
   HotkeyItem := ListViewHotkeys.Selected;
   if not Assigned(HotkeyItem) then Exit;
-  HotkeyID := THotkeyID(HotkeyItem.Index);
-  Hotkey.Value := DEFAULT_HOTKEY_VALUES[HotkeyID];
+  HotkeyID := specialize IndexToEnum<THotkeyID>(HotkeyItem.Index);
+  Hotkey.Value := DEFAULT_HOTKEY_VALUES[Ord(HotkeyID)];
   Settings.Hotkey[HotkeyID] := Hotkey;
 end;
 
@@ -385,9 +383,9 @@ begin
 
   for HotkeyID := Low(THotkeyID) to High(THotkeyID) do
   begin
-    HotkeyInfo := HotkeyManager.Hotkey[HotkeyID];
-    ListItem := ListViewHotkeys.Items[Ord(HotkeyID)];
-    ListItem.Caption := HOTKEY_DESCRIPTIONS[HotkeyID];
+    HotkeyInfo := HotkeyManager.Hotkey[Ord(HotkeyID)];
+    ListItem := ListViewHotkeys.Items[specialize EnumToIndex<THotkeyID>(HotkeyID)];
+    ListItem.Caption := HOTKEY_DESCRIPTIONS[Ord(HotkeyID)];
     ListItem.SubItems[0] := WinHotkeyToText(HotkeyInfo.Hotkey.Modifiers, HotkeyInfo.Hotkey.Key);
     ListItem.SubItems[1] := specialize IfThen<string>(HotkeyInfo.State = hsFailed, TEXT_YES, '');
   end;
@@ -402,7 +400,7 @@ begin
     CheckGroupSystemMenu.Items[i] := OPTION_SYSTEM_MENUS[i];
 
   for HotkeyID := Low(THotkeyID) to High(THotkeyID) do
-    ListViewHotkeys.Items[Ord(HotkeyID)].Caption := HOTKEY_DESCRIPTIONS[HotkeyID];
+    ListViewHotkeys.Items[specialize EnumToIndex<THotkeyID>(HotkeyID)].Caption := HOTKEY_DESCRIPTIONS[Ord(HotkeyID)];
 
   ComboBoxLanguages.Items[0] := TEXT_ANGLE_BRACKETED_AUTO;
 end;

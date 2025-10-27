@@ -9,6 +9,7 @@ object FormHotkey: TFormHotkey
   ClientWidth = 300
   Color = clWindow
   KeyPreview = True
+  PopupMode = pmAuto
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown

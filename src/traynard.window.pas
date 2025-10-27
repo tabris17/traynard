@@ -756,7 +756,7 @@ begin
     OriginalWindowText := Window.Text;
     Window.Renew;
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
-    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
+    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Find(Window, Rule, waChange) then
     begin
       if TryMinimizeWindow(Handle, Rule.Position) and
          ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
@@ -785,7 +785,7 @@ begin
     FDesktop.FWindows.Add(Handle, Window);
     FDesktop.FPONotifyObservers(Self, ooAddItem, Pointer(Handle));
 
-    if not IsRestored and Settings.ApplyRules and Rules.Match(Window, Rule, waCreation) then
+    if not IsRestored and Settings.ApplyRules and Rules.Find(Window, Rule, waCreation) then
     begin
       if TryMinimizeWindow(Handle, Rule.Position) and
          ShouldNotify(Rule.Notification, IsRestored) then
@@ -838,7 +838,7 @@ begin
     OriginalWindowText := Window.Text;
     Window.Renew;
     FDesktop.FPONotifyObservers(Self, ooChange, Pointer(Handle));
-    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Match(Window, Rule, waChange) then
+    if Settings.ApplyRules and (OriginalWindowText <> Window.Text) and Rules.Find(Window, Rule, waChange) then
     begin
       if TryMinimizeWindow(Handle, Rule.Position) and
          ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
@@ -868,7 +868,7 @@ begin
   if Window.ShowInTaskBar and (Self.FCurrentPID <> Window.PID) then
   begin
     Self.FDesktop.FWindows.Add(Window.Handle, Window);
-    if Settings.ApplyRules and Rules.Match(Window, Rule, waExisting) then
+    if Settings.ApplyRules and Rules.Find(Window, Rule, waExisting) then
     begin
       if Self.TryMinimizeWindow(Window.Handle, Rule.Position) and
          ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
@@ -934,7 +934,7 @@ begin
           NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
         end;
       end
-      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and Rules.Match(Window, Rule, waMinimizing) then
+      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and Rules.Find(Window, Rule, waMinimizing) then
       begin
         if FSelf.TryMinimizeWindow(hwnd, Rule.Position) and
            ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then

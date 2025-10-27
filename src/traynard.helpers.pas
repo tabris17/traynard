@@ -81,6 +81,9 @@ function DeregisterShellHookWindow(hwnd: HWND): BOOL; stdcall; external 'user32'
 function RegGetValueW(hkey: HKEY; lpSubKey: LPCWSTR; lpValue: LPCWSTR;
   dwFlags: DWORD; pdwType: LPDWORD; pvData: PVOID; pcbData: LPDWORD): LONG; stdcall; external 'advapi32' name 'RegGetValueW';
 
+generic function EnumToIndex<T>(const Enum: T): integer; inline;
+generic function IndexToEnum<T>(const Index: Integer): T; inline;
+
 var
   IsTopLevelWindow: TIsTopLevelWindowFunc = nil;
   InstallHook: TInstallHookFunc = nil;
@@ -157,6 +160,16 @@ var
 begin
   ErrCode := GetLastError;
   Result := Format('[%d] %s', [ErrCode, SysErrorMessage(ErrCode)])
+end;
+
+generic function EnumToIndex<T>(const Enum: T): integer; inline;
+begin
+  Result := Integer(Enum) - Ord(Low(T));
+end;
+
+generic function IndexToEnum<T>(const Index: Integer): T; inline;
+begin
+  Result := T(Index + Ord(Low(T)));
 end;
 
 procedure ShortCutToWinHotkey(const ShortCut: TShortCut; out Key: Word; out Modifiers: Word);

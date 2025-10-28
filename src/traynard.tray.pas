@@ -25,7 +25,7 @@ type
   private
     FName: string;
     FPopUpMenu: TPopUpMenu;
-    FRestoreGroupMenuItem: Menus.TMenuItem;
+    FRestoreGroupMenuItem: TMenuItem;
     procedure TrayIconClick(Sender: TObject);
     procedure RestoreWindowMenuItemClick(Sender: TObject);
     procedure RestoreGroupMenuItemClick(Sender: TObject);
@@ -39,9 +39,9 @@ type
     function IsEmpty: boolean;
   end;
 
-  { TMenuItem }
+  { TTrayMenuItem }
 
-  TMenuItem = class(Menus.TMenuItem)
+  TTrayMenuItem = class(TMenuItem)
   private
     procedure MenuItemClick(Sender: TObject);
   public
@@ -50,10 +50,10 @@ type
 
   { TGroupedMenuItem }
 
-  TGroupedMenuItem = class(Menus.TMenuItem)
+  TGroupedMenuItem = class(TMenuItem)
   private
     FName: string;
-    FRestoreGroupMenuItem: Menus.TMenuItem;
+    FRestoreGroupMenuItem: TMenuItem;
     procedure MenuItemClick(Sender: TObject);
     procedure RestoreWindowMenuItemClick(Sender: TObject);
     procedure RestoreGroupMenuItemClick(Sender: TObject);
@@ -72,7 +72,7 @@ type
   TTrayManager = class(TComponent, IFPObserver)
   type
     TTrayIconDictionary = specialize TObjectDictionary<HWND, TTrayIcon>;
-    TMenuItemDictionary = specialize TObjectDictionary<HWND, TMenuItem>;
+    TMenuItemDictionary = specialize TObjectDictionary<HWND, TTrayMenuItem>;
     TGroupedTrayIconDictionary = specialize TObjectDictionary<string, TGroupedTrayIcon>;
     TGroupedMenuItemDictionary = specialize TObjectDictionary<string, TGroupedMenuItem>;
   private
@@ -148,7 +148,7 @@ end;
 procedure TGroupedTrayIcon.RestoreWindowMenuItemClick(Sender: TObject);
 begin
   with Owner as TTrayManager do
-    Application.QueueAsyncCall(@DoRestoreWindow, (Sender as Menus.TMenuItem).Tag);
+    Application.QueueAsyncCall(@DoRestoreWindow, (Sender as TMenuItem).Tag);
 end;
 
 procedure TGroupedTrayIcon.RestoreGroupMenuItemClick(Sender: TObject);
@@ -174,7 +174,7 @@ begin
 
   OnClick := @TrayIconClick;
   FPopUpMenu := TPopUpMenu.Create(Self);
-  FRestoreGroupMenuItem := Menus.TMenuItem.Create(FPopUpMenu);
+  FRestoreGroupMenuItem := TMenuItem.Create(FPopUpMenu);
   FRestoreGroupMenuItem.Caption := MENU_ITEM_RESTORE_GROUP;
   FRestoreGroupMenuItem.OnClick := @RestoreGroupMenuItemClick;
   FPopUpMenu.Items.Add(FRestoreGroupMenuItem);
@@ -183,9 +183,9 @@ end;
 
 procedure TGroupedTrayIcon.AddWindow(const Window: TWindow);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
 begin
-  MenuItem := Menus.TMenuItem.Create(FPopUpMenu);
+  MenuItem := TMenuItem.Create(FPopUpMenu);
   MenuItem.Caption := Window.Text;
   MenuItem.Hint := Window.Text;
   MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
@@ -214,7 +214,7 @@ end;
 
 procedure TGroupedTrayIcon.RemoveWindow(const AHandle: HWND);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
   Window: TWindow;
   MenuItemBeforeCount, MenuItemAfterCount: integer;
 begin
@@ -242,7 +242,7 @@ end;
 
 procedure TGroupedTrayIcon.UpdateWindow(const Window: TWindow);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
 begin
   for MenuItem in FPopUpMenu.Items do
   begin
@@ -266,15 +266,15 @@ begin
   Exit(FPopUpMenu.Items.Count = 2);
 end;
 
-{ TMenuItem }
+{ TTrayMenuItem }
 
-procedure TMenuItem.MenuItemClick(Sender: TObject);
+procedure TTrayMenuItem.MenuItemClick(Sender: TObject);
 begin
   with Owner as TTrayManager do
     Application.QueueAsyncCall(@DoRestoreWindow, Self.Tag);
 end;
 
-constructor TMenuItem.Create(TheOwner: TComponent);
+constructor TTrayMenuItem.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
 
@@ -295,7 +295,7 @@ end;
 procedure TGroupedMenuItem.RestoreWindowMenuItemClick(Sender: TObject);
 begin
   with Owner as TTrayManager do
-    Application.QueueAsyncCall(@DoRestoreWindow, (Sender as Menus.TMenuItem).Tag);
+    Application.QueueAsyncCall(@DoRestoreWindow, (Sender as TMenuItem).Tag);
 end;
 
 procedure TGroupedMenuItem.RestoreGroupMenuItemClick(Sender: TObject);
@@ -320,14 +320,14 @@ begin
   inherited Create(TheOwner);
 
   OnClick := @MenuItemClick;
-  FRestoreGroupMenuItem := Menus.TMenuItem.Create(Self);
+  FRestoreGroupMenuItem := TMenuItem.Create(Self);
   FRestoreGroupMenuItem.Caption := MENU_ITEM_RESTORE_GROUP;
   FRestoreGroupMenuItem.OnClick := @RestoreGroupMenuItemClick;
 end;
 
 procedure TGroupedMenuItem.AddWindow(const Window: TWindow);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
 begin
   if Count = 0 then
   begin
@@ -341,7 +341,7 @@ begin
     end
     else
     begin
-      MenuItem := Menus.TMenuItem.Create(Self);
+      MenuItem := TMenuItem.Create(Self);
       MenuItem.Caption := Caption;
       MenuItem.Hint := Hint;
       MenuItem.Bitmap := Bitmap;
@@ -356,7 +356,7 @@ begin
       Tag := 0;
     end;
   end;
-  MenuItem := Menus.TMenuItem.Create(Self);
+  MenuItem := TMenuItem.Create(Self);
   MenuItem.Caption := Window.Text;
   MenuItem.Hint := Window.Text;
   MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
@@ -372,7 +372,7 @@ end;
 
 procedure TGroupedMenuItem.RemoveWindow(const AHandle: HWND);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
   Window: TWindow;
 begin
   if (Count = 0) and (Tag = AHandle) then
@@ -406,7 +406,7 @@ end;
 
 procedure TGroupedMenuItem.UpdateWindow(const Window: TWindow);
 var
-  MenuItem: Menus.TMenuItem;
+  MenuItem: TMenuItem;
 begin
   if (Count = 0) and (Tag = Window.Handle) then
   begin
@@ -453,7 +453,7 @@ end;
 procedure TTrayManager.SetMenuGrouped(AValue: boolean);
 var
   GroupedMenuItem: TGroupedMenuItem;
-  MenuItem: TMenuItem;
+  MenuItem: TTrayMenuItem;
 begin
   if FMenuGrouped = AValue then Exit;
   FMenuGrouped := AValue;
@@ -505,7 +505,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
   procedure AddMenu;
   var
     GroupedMenuItem: TGroupedMenuItem;
-    MenuItem: TMenuItem;
+    MenuItem: TTrayMenuItem;
   begin
     if not FGroupedMenuItems.TryGetValue(Window.AppPath, GroupedMenuItem) then
     begin
@@ -516,7 +516,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
     end;
     GroupedMenuItem.AddWindow(Window);
 
-    MenuItem := TMenuItem.Create(Self);
+    MenuItem := TTrayMenuItem.Create(Self);
     MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
     MenuItem.Caption := Window.Text;
     MenuItem.Hint := Window.Text;
@@ -558,7 +558,7 @@ procedure TTrayManager.UpdateWindow(const Window: TTrayWindow);
 
   procedure UpdateMenu;
   var
-    MenuItem: TMenuItem;
+    MenuItem: TTrayMenuItem;
     GroupedMenuItem: TGroupedMenuItem;
   begin
     if FGroupedMenuItems.TryGetValue(Window.AppPath, GroupedMenuItem) then

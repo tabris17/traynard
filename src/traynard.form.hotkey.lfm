@@ -1,53 +1,238 @@
 object FormHotkey: TFormHotkey
   Left = 0
-  Height = 120
+  Height = 155
   Top = 0
   Width = 300
+  AutoSize = True
   BorderStyle = bsDialog
-  Caption = 'Hotkey'
-  ClientHeight = 120
+  Caption = 'Hotkey Settings'
+  ClientHeight = 155
   ClientWidth = 300
-  Color = clWindow
+  Constraints.MinWidth = 300
   KeyPreview = True
   PopupMode = pmAuto
   Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
-  object ButtonOK: TButton
-    Left = 65
-    Height = 25
-    Top = 85
-    Width = 80
-    Caption = 'OK'
-    Default = True
+  object PanelTabs: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = ToolBarSwitch
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 83
+    Top = 22
+    Width = 280
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 12
+    BorderSpacing.Right = 10
+    BevelInner = bvRaised
+    BevelOuter = bvLowered
+    ClientHeight = 83
+    ClientWidth = 280
+    TabOrder = 2
+    object PanelManual: TPanel
+      Left = 2
+      Height = 79
+      Top = 2
+      Width = 276
+      Align = alClient
+      Anchors = []
+      BevelOuter = bvNone
+      ClientHeight = 79
+      ClientWidth = 276
+      TabOrder = 0
+      Visible = False
+      object CheckBoxShift: TCheckBox
+        AnchorSideTop.Control = ComboBoxKey
+        AnchorSideTop.Side = asrCenter
+        Left = 0
+        Height = 21
+        Top = 29
+        Width = 43
+        Anchors = [akTop]
+        Caption = 'Shift'
+        TabOrder = 0
+      end
+      object CheckBoxCtrl: TCheckBox
+        AnchorSideLeft.Control = CheckBoxShift
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ComboBoxKey
+        AnchorSideTop.Side = asrCenter
+        Left = 47
+        Height = 21
+        Top = 29
+        Width = 38
+        BorderSpacing.Left = 4
+        Caption = 'Ctrl'
+        TabOrder = 1
+      end
+      object CheckBoxAlt: TCheckBox
+        AnchorSideLeft.Control = CheckBoxCtrl
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ComboBoxKey
+        AnchorSideTop.Side = asrCenter
+        Left = 89
+        Height = 21
+        Top = 29
+        Width = 33
+        BorderSpacing.Left = 4
+        Caption = 'Alt'
+        TabOrder = 2
+      end
+      object CheckBoxWin: TCheckBox
+        AnchorSideLeft.Control = CheckBoxAlt
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = ComboBoxKey
+        AnchorSideTop.Side = asrCenter
+        Left = 126
+        Height = 21
+        Top = 29
+        Width = 40
+        BorderSpacing.Left = 4
+        Caption = 'Win'
+        TabOrder = 3
+      end
+      object ComboBoxKey: TComboBox
+        AnchorSideLeft.Control = CheckBoxWin
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = PanelManual
+        AnchorSideTop.Side = asrCenter
+        Left = 170
+        Height = 25
+        Top = 27
+        Width = 60
+        BorderSpacing.Left = 4
+        ItemHeight = 17
+        TabOrder = 4
+        Text = 'None'
+      end
+    end
+    object PanelCapture: TPanel
+      Left = 2
+      Height = 79
+      Top = 2
+      Width = 276
+      Align = alClient
+      Anchors = []
+      BevelOuter = bvNone
+      ClientHeight = 79
+      ClientWidth = 276
+      TabOrder = 1
+      object LabelHotkey: TLabel
+        AnchorSideLeft.Control = PanelCapture
+        AnchorSideLeft.Side = asrCenter
+        AnchorSideTop.Control = PanelCapture
+        AnchorSideTop.Side = asrCenter
+        Left = 53
+        Height = 21
+        Top = 29
+        Width = 170
+        BorderSpacing.Top = 20
+        Caption = 'Press any shortcut key'
+        Font.Height = -16
+        ParentFont = False
+        OnResize = LabelHotkeyResize
+      end
+    end
+  end
+  object PanelLabel: TPanel
+    AnchorSideLeft.Control = Owner
+    Left = 1
+    Height = 0
+    Top = 0
+    Width = 299
+    Align = alTop
+    Anchors = [akLeft, akRight]
+    BorderSpacing.Left = 1
+    BevelInner = bvRaised
+    BevelOuter = bvLowered
+    Color = clWindow
+    ParentBackground = False
+    ParentColor = False
     TabOrder = 0
-    OnClick = ButtonOKClick
+    Visible = False
   end
-  object ButtonCancel: TButton
-    Left = 155
-    Height = 25
-    Top = 85
-    Width = 80
-    Cancel = True
-    Caption = 'Cancel'
-    TabOrder = 1
-    OnClick = ButtonCancelClick
+  object PanelButtons: TPanel
+    AnchorSideTop.Control = PanelTabs
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Side = asrBottom
+    Left = 10
+    Height = 35
+    Top = 115
+    Width = 280
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    BorderSpacing.Right = 10
+    BevelOuter = bvNone
+    ClientHeight = 35
+    ClientWidth = 280
+    ParentBackground = False
+    TabOrder = 3
+    object ButtonOK: TButton
+      AnchorSideTop.Control = PanelButtons
+      Left = 0
+      Height = 25
+      Top = 0
+      Width = 80
+      Anchors = [akTop]
+      BorderSpacing.Left = 60
+      Caption = 'OK'
+      Default = True
+      TabOrder = 0
+      OnClick = ButtonOKClick
+    end
+    object ButtonCancel: TButton
+      AnchorSideLeft.Control = ButtonOK
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = PanelButtons
+      Left = 90
+      Height = 25
+      Top = 0
+      Width = 80
+      BorderSpacing.Left = 10
+      Cancel = True
+      Caption = 'Cancel'
+      TabOrder = 1
+      OnClick = ButtonCancelClick
+    end
   end
-  object LabelTitle: TLabel
-    Left = 8
-    Height = 1
+  object ToolBarSwitch: TToolBar
+    AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = PanelLabel
+    AnchorSideTop.Side = asrBottom
+    Left = 68
+    Height = 24
     Top = 10
-    Width = 1
-  end
-  object LabelHotkey: TLabel
-    Left = 64
-    Height = 21
-    Top = 40
-    Width = 170
-    Caption = 'Press any shortcut key'
-    Font.Height = -16
-    ParentFont = False
-    OnResize = LabelHotkeyResize
+    Width = 165
+    Align = alNone
+    AutoSize = True
+    BorderSpacing.Top = 10
+    ButtonHeight = 20
+    ButtonWidth = 80
+    EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
+    ShowCaptions = True
+    TabOrder = 1
+    object ToolButtonCapture: TToolButton
+      Left = 3
+      Top = 2
+      Caption = 'Capture'
+      Down = True
+      Grouped = True
+      Style = tbsCheck
+      OnClick = ToolButtonCaptureClick
+    end
+    object ToolButtonManual: TToolButton
+      Left = 83
+      Top = 2
+      Caption = 'Manual'
+      Grouped = True
+      Style = tbsCheck
+      OnClick = ToolButtonManualClick
+    end
   end
 end

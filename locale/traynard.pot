@@ -55,11 +55,45 @@ msgstr ""
 
 #: tformhotkey.caption
 msgctxt "tformhotkey.caption"
-msgid "Hotkey"
+msgid "Hotkey Settings"
+msgstr ""
+
+#: tformhotkey.checkboxalt.caption
+msgctxt "tformhotkey.checkboxalt.caption"
+msgid "Alt"
+msgstr ""
+
+#: tformhotkey.checkboxctrl.caption
+msgctxt "tformhotkey.checkboxctrl.caption"
+msgid "Ctrl"
+msgstr ""
+
+#: tformhotkey.checkboxshift.caption
+msgctxt "tformhotkey.checkboxshift.caption"
+msgid "Shift"
+msgstr ""
+
+#: tformhotkey.checkboxwin.caption
+msgctxt "tformhotkey.checkboxwin.caption"
+msgid "Win"
+msgstr ""
+
+#: tformhotkey.comboboxkey.text
+msgid "None"
 msgstr ""
 
 #: tformhotkey.labelhotkey.caption
 msgid "Press any shortcut key"
+msgstr ""
+
+#: tformhotkey.toolbuttoncapture.caption
+msgctxt "tformhotkey.toolbuttoncapture.caption"
+msgid "Capture"
+msgstr ""
+
+#: tformhotkey.toolbuttonmanual.caption
+msgctxt "tformhotkey.toolbuttonmanual.caption"
+msgid "Manual"
 msgstr ""
 
 #: tformmain.actionabout.caption

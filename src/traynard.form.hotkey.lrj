@@ -1,6 +1,13 @@
 {"version":1,"strings":[
-{"hash":83276233,"name":"tformhotkey.caption","sourcebytes":[72,111,116,107,101,121],"value":"Hotkey"},
+{"hash":128327187,"name":"tformhotkey.caption","sourcebytes":[72,111,116,107,101,121,32,83,101,116,116,105,110,103,115],"value":"Hotkey Settings"},
+{"hash":5894100,"name":"tformhotkey.checkboxshift.caption","sourcebytes":[83,104,105,102,116],"value":"Shift"},
+{"hash":306060,"name":"tformhotkey.checkboxctrl.caption","sourcebytes":[67,116,114,108],"value":"Ctrl"},
+{"hash":18484,"name":"tformhotkey.checkboxalt.caption","sourcebytes":[65,108,116],"value":"Alt"},
+{"hash":24062,"name":"tformhotkey.checkboxwin.caption","sourcebytes":[87,105,110],"value":"Win"},
+{"hash":349765,"name":"tformhotkey.comboboxkey.text","sourcebytes":[78,111,110,101],"value":"None"},
+{"hash":117974297,"name":"tformhotkey.labelhotkey.caption","sourcebytes":[80,114,101,115,115,32,97,110,121,32,115,104,111,114,116,99,117,116,32,107,101,121],"value":"Press any shortcut key"},
 {"hash":1339,"name":"tformhotkey.buttonok.caption","sourcebytes":[79,75],"value":"OK"},
 {"hash":77089212,"name":"tformhotkey.buttoncancel.caption","sourcebytes":[67,97,110,99,101,108],"value":"Cancel"},
-{"hash":117974297,"name":"tformhotkey.labelhotkey.caption","sourcebytes":[80,114,101,115,115,32,97,110,121,32,115,104,111,114,116,99,117,116,32,107,101,121],"value":"Press any shortcut key"}
+{"hash":159890629,"name":"tformhotkey.toolbuttoncapture.caption","sourcebytes":[67,97,112,116,117,114,101],"value":"Capture"},
+{"hash":87579516,"name":"tformhotkey.toolbuttonmanual.caption","sourcebytes":[77,97,110,117,97,108],"value":"Manual"}
 ]}

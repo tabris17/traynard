@@ -112,8 +112,7 @@ begin
   HotkeyItem := ListViewHotkeys.Selected;
   FormHotkey := TFormHotkey.Create(Self.Owner);
   try
-    FormHotkey.LabelTitle.Caption := HotkeyItem.Caption;
-    if FormHotkey.ShowModal = mrOK then
+    if FormHotkey.ShowModal(HotkeyItem.Caption) = mrOK then
     begin
       if FormHotkey.ShortCut <> 0 then
       begin

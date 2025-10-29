@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language-Name: 简体中文\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #: tformbackground.actionapplyrules.caption
 msgid "Apply Rules"
@@ -56,12 +56,46 @@ msgstr "确定"
 
 #: tformhotkey.caption
 msgctxt "tformhotkey.caption"
-msgid "Hotkey"
-msgstr "热键"
+msgid "Hotkey Settings"
+msgstr "热键设置"
+
+#: tformhotkey.checkboxalt.caption
+msgctxt "tformhotkey.checkboxalt.caption"
+msgid "Alt"
+msgstr ""
+
+#: tformhotkey.checkboxctrl.caption
+msgctxt "tformhotkey.checkboxctrl.caption"
+msgid "Ctrl"
+msgstr ""
+
+#: tformhotkey.checkboxshift.caption
+msgctxt "tformhotkey.checkboxshift.caption"
+msgid "Shift"
+msgstr ""
+
+#: tformhotkey.checkboxwin.caption
+msgctxt "tformhotkey.checkboxwin.caption"
+msgid "Win"
+msgstr ""
+
+#: tformhotkey.comboboxkey.text
+msgid "None"
+msgstr "无"
 
 #: tformhotkey.labelhotkey.caption
 msgid "Press any shortcut key"
 msgstr "按下快捷键组合"
+
+#: tformhotkey.toolbuttoncapture.caption
+msgctxt "tformhotkey.toolbuttoncapture.caption"
+msgid "Capture"
+msgstr "捕获"
+
+#: tformhotkey.toolbuttonmanual.caption
+msgctxt "tformhotkey.toolbuttonmanual.caption"
+msgid "Manual"
+msgstr "手动"
 
 #: tformmain.actionabout.caption
 msgctxt "tformmain.actionabout.caption"
@@ -270,10 +304,12 @@ msgid "Open Config Directory"
 msgstr "打开配置文件所在位置"
 
 #: tpageoptions.actionhotkeybind.caption
+msgctxt "tpageoptions.actionhotkeybind.caption"
 msgid "Bind"
 msgstr "绑定"
 
 #: tpageoptions.actionhotkeyclear.caption
+msgctxt "tpageoptions.actionhotkeyclear.caption"
 msgid "Clear"
 msgstr "清除"
 
@@ -387,6 +423,16 @@ msgstr "打开"
 msgid "Save"
 msgstr "保存"
 
+#: tpagerules.buttonhotkeybind.caption
+msgctxt "tpagerules.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr "绑定"
+
+#: tpagerules.buttonhotkeyclear.caption
+msgctxt "tpagerules.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr "清除"
+
 #: tpagerules.checkgrouptriggeron.caption
 msgid "Trigger On"
 msgstr "触发条件"
@@ -406,6 +452,11 @@ msgstr "窗口的不可变属性"
 #: tpagerules.editwindowtitle.texthint
 msgid "Text in the window title bar"
 msgstr "窗口标题栏中的文本"
+
+#: tpagerules.groupboxhotkey.caption
+msgctxt "tpagerules.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr "热键"
 
 #: tpagerules.labelapppath.caption
 msgid "Application Path:"
@@ -490,6 +541,10 @@ msgstr "无法访问文件属性"
 msgid "Failed to get OS version info"
 msgstr "无法获取操作系统版本信息"
 
+#: traynard.strings.error_install_hook
+msgid "Failed to install hook"
+msgstr "无法安装钩子"
+
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
 msgstr "未选中窗口"
@@ -510,6 +565,10 @@ msgstr "无法还原窗口"
 #: traynard.strings.error_set_topmost
 msgid "Cannot set window topmost status"
 msgstr "无法设置窗口置顶状态"
+
+#: traynard.strings.error_uninstall_hook
+msgid "Failed to uninstall hook"
+msgstr "无法卸载钩子"
 
 #: traynard.strings.error_uwp_window
 msgid "Unable to minimize the UWP app window"
@@ -716,6 +775,11 @@ msgstr "<自动>"
 msgid "Any"
 msgstr "任意"
 
+#: traynard.strings.text_bracketed_no_set
+msgctxt "traynard.strings.text_bracketed_no_set"
+msgid "(no set)"
+msgstr "(未设置)"
+
 #: traynard.strings.text_contains
 msgid "Contains"
 msgstr "包含"
@@ -737,6 +801,11 @@ msgstr "仅首次"
 msgctxt "traynard.strings.text_follow_global_settings"
 msgid "Follow global settings"
 msgstr "跟随全局设置"
+
+#: traynard.strings.text_hotkey
+msgctxt "traynard.strings.text_hotkey"
+msgid "Hotkey"
+msgstr "热键"
 
 #: traynard.strings.text_icon
 msgid "Icon"

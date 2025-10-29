@@ -10,9 +10,9 @@ uses
 
 type
 
-  { TTrayIcon }
+  { TTrayIconEx }
 
-  TTrayIcon = class(ExtCtrls.TTrayIcon)
+  TTrayIconEx = class(TTrayIcon)
   private
     procedure TrayIconClick(Sender: TObject);
   public
@@ -21,7 +21,7 @@ type
 
   { TGroupedTrayIcon }
 
-  TGroupedTrayIcon = class(TTrayIcon)
+  TGroupedTrayIcon = class(TTrayIconEx)
   private
     FName: string;
     FPopUpMenu: TPopUpMenu;
@@ -39,9 +39,9 @@ type
     function IsEmpty: boolean;
   end;
 
-  { TTrayMenuItem }
+  { TMenuItemEx }
 
-  TTrayMenuItem = class(TMenuItem)
+  TMenuItemEx = class(TMenuItem)
   private
     procedure MenuItemClick(Sender: TObject);
   public
@@ -50,7 +50,7 @@ type
 
   { TGroupedMenuItem }
 
-  TGroupedMenuItem = class(TMenuItem)
+  TGroupedMenuItem = class(TMenuItemEx)
   private
     FName: string;
     FRestoreGroupMenuItem: TMenuItem;
@@ -71,8 +71,8 @@ type
 
   TTrayManager = class(TComponent, IFPObserver)
   type
-    TTrayIconDictionary = specialize TObjectDictionary<HWND, TTrayIcon>;
-    TMenuItemDictionary = specialize TObjectDictionary<HWND, TTrayMenuItem>;
+    TTrayIconDictionary = specialize TObjectDictionary<HWND, TTrayIconEx>;
+    TMenuItemDictionary = specialize TObjectDictionary<HWND, TMenuItemEx>;
     TGroupedTrayIconDictionary = specialize TObjectDictionary<string, TGroupedTrayIcon>;
     TGroupedMenuItemDictionary = specialize TObjectDictionary<string, TGroupedMenuItem>;
   private
@@ -116,15 +116,15 @@ begin
   Result := Icon;
 end;
 
-{ TTrayIcon }
+{ TTrayIconEx }
 
-procedure TTrayIcon.TrayIconClick(Sender: TObject);
+procedure TTrayIconEx.TrayIconClick(Sender: TObject);
 begin
   with Owner as TTrayManager do
     Application.QueueAsyncCall(@DoRestoreWindow, Self.Tag);
 end;
 
-constructor TTrayIcon.Create(TheOwner: TComponent);
+constructor TTrayIconEx.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
 
@@ -266,15 +266,15 @@ begin
   Exit(FPopUpMenu.Items.Count = 2);
 end;
 
-{ TTrayMenuItem }
+{ TMenuItemEx }
 
-procedure TTrayMenuItem.MenuItemClick(Sender: TObject);
+procedure TMenuItemEx.MenuItemClick(Sender: TObject);
 begin
   with Owner as TTrayManager do
     Application.QueueAsyncCall(@DoRestoreWindow, Self.Tag);
 end;
 
-constructor TTrayMenuItem.Create(TheOwner: TComponent);
+constructor TMenuItemEx.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
 
@@ -438,7 +438,7 @@ end;
 procedure TTrayManager.SetIconGrouped(AValue: boolean);
 var
   GroupedTrayIcon: TGroupedTrayIcon;
-  TrayIcon: TTrayIcon;
+  TrayIcon: TTrayIconEx;
 begin
   if FIconGrouped = AValue then Exit;
   FIconGrouped := AValue;
@@ -453,7 +453,7 @@ end;
 procedure TTrayManager.SetMenuGrouped(AValue: boolean);
 var
   GroupedMenuItem: TGroupedMenuItem;
-  MenuItem: TTrayMenuItem;
+  MenuItem: TMenuItemEx;
 begin
   if FMenuGrouped = AValue then Exit;
   FMenuGrouped := AValue;
@@ -480,7 +480,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
   procedure AddIcon;
   var
     GroupedTrayIcon: TGroupedTrayIcon;
-    TrayIcon: TTrayIcon;
+    TrayIcon: TTrayIconEx;
   begin
     if not FGroupedTrayIcons.TryGetValue(Window.AppPath, GroupedTrayIcon) then
     begin
@@ -490,7 +490,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
     end;
     GroupedTrayIcon.AddWindow(Window);
 
-    TrayIcon := TTrayIcon.Create(Self);
+    TrayIcon := TTrayIconEx.Create(Self);
     TrayIcon.Icon.Handle := GetIcon(Window.Icon);
     TrayIcon.Hint := Window.Text;
     TrayIcon.Tag := Window.Handle;
@@ -505,7 +505,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
   procedure AddMenu;
   var
     GroupedMenuItem: TGroupedMenuItem;
-    MenuItem: TTrayMenuItem;
+    MenuItem: TMenuItemEx;
   begin
     if not FGroupedMenuItems.TryGetValue(Window.AppPath, GroupedMenuItem) then
     begin
@@ -516,7 +516,7 @@ procedure TTrayManager.AddWindow(const Window: TTrayWindow);
     end;
     GroupedMenuItem.AddWindow(Window);
 
-    MenuItem := TTrayMenuItem.Create(Self);
+    MenuItem := TMenuItemEx.Create(Self);
     MenuItem.Bitmap.LoadFromHIcon(GetIcon(Window.Icon), MenuIconWidth, MenuIconHeight);
     MenuItem.Caption := Window.Text;
     MenuItem.Hint := Window.Text;
@@ -541,7 +541,7 @@ procedure TTrayManager.UpdateWindow(const Window: TTrayWindow);
 
   procedure UpdateIcon;
   var
-    TrayIcon: TTrayIcon;
+    TrayIcon: TTrayIconEx;
     GroupedTrayIcon: TGroupedTrayIcon;
   begin
     if FGroupedTrayIcons.TryGetValue(Window.AppPath, GroupedTrayIcon) then
@@ -558,7 +558,7 @@ procedure TTrayManager.UpdateWindow(const Window: TTrayWindow);
 
   procedure UpdateMenu;
   var
-    MenuItem: TTrayMenuItem;
+    MenuItem: TMenuItemEx;
     GroupedMenuItem: TGroupedMenuItem;
   begin
     if FGroupedMenuItems.TryGetValue(Window.AppPath, GroupedMenuItem) then

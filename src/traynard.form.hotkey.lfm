@@ -104,6 +104,8 @@ object FormHotkey: TFormHotkey
         Height = 25
         Top = 27
         Width = 60
+        AutoComplete = True
+        AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
         BorderSpacing.Left = 4
         ItemHeight = 17
         TabOrder = 4

@@ -486,6 +486,7 @@ end;
 
 constructor TRules.THotkeyRuleList.Create(AHotkeyID: longint);
 begin
+  inherited Create;
   FHotkeyID := AHotkeyID;
 end;
 

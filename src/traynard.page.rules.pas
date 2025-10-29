@@ -94,7 +94,7 @@ type
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
     procedure ToggleEditor(AEnabled: boolean);
-    procedure ToggleList(AEnabled: boolean);
+    procedure ToggleList(const AEnabled, Unselected: boolean);
     procedure LanguageChanged(Sender: TObject);
   public
     property Unsaved: boolean read FUnsaved write SetUnsaved;
@@ -139,6 +139,7 @@ begin
   if FUnsaved = AValue then Exit;
   FUnsaved := AValue;
   ActionSave.Enabled := AValue;
+  ToggleList(not AValue, False);
 end;
 
 procedure TPageRules.ToggleEditor(AEnabled: boolean);
@@ -155,16 +156,16 @@ begin
   CheckGroupTriggerOn.Enabled := AEnabled;
 end;
 
-procedure TPageRules.ToggleList(AEnabled: boolean);
+procedure TPageRules.ToggleList(const AEnabled, Unselected: boolean);
 begin
   ListBoxRules.Enabled := AEnabled;
   if AEnabled then
     ListBoxRules.Color := clDefault
   else
-  begin
     ListBoxRules.Color := clForm;
+
+  if Unselected then
     ListBoxRules.ItemIndex := -1;
-  end;
 end;
 
 procedure TPageRules.LanguageChanged(Sender: TObject);
@@ -224,7 +225,7 @@ begin
       ScrollBoxEditor.Visible := False;
       ActionDelete.Enabled := False;
       ActionClose.Enabled := False;
-      ToggleList(True);
+      ToggleList(True, False);
     end;
     esNew:
     begin
@@ -233,7 +234,7 @@ begin
       ScrollBoxEditor.Visible := True;
       ActionDelete.Enabled := False;
       ActionClose.Enabled := True;
-      ToggleList(False);
+      ToggleList(False, True);
     end;
     esOpen:
     begin
@@ -241,7 +242,6 @@ begin
       ScrollBoxEditor.Visible := True;
       ActionDelete.Enabled := True;
       ActionClose.Enabled := True;
-      ToggleList(True);
     end;
   end;
 end;
@@ -354,7 +354,6 @@ begin
     if Unsaved then Exit;
   end;
 
-  ToggleList(False);
   ClearEditor;
   EditState := esNew;
 end;
@@ -586,7 +585,7 @@ end;
 
 procedure TPageRules.ListBoxRulesSelectionChange(Sender: TObject; User: boolean);
 begin
-  if (not User) or (EditState = esNew) then Exit;
+  if (not User) or (EditState = esNew) or (EditState = esOpen) and Unsaved then Exit;
   ActionOpenExecute(Sender);
 end;
 

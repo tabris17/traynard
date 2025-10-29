@@ -46,7 +46,7 @@ jobs:
         run: |
           winget install Lazarus.Lazarus --silent --accept-source-agreements --accept-package-agreements
           winget install mlocati.GetText --silent --accept-source-agreements --accept-package-agreements
-          winget install JRSoftware.InnoSetup --silent --accept-source-agreements --accept-package-agreements
+          # winget install JRSoftware.InnoSetup --silent --accept-source-agreements --accept-package-agreements
       - name: Download packages
         shell: pwsh
         run: |

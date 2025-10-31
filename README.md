@@ -59,4 +59,4 @@ Traynard provides the following methods for minimizing windows:
 2. Unable to operate the windows of applications running as administrator, unless traynard is also run as administrator.
 3. When "**Extended system menu**" is enabled, the following applications have compatibility issues:
    - Microsoft Edge
-
+4. Extended system menu does not support 32-bit applications.

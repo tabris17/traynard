@@ -152,7 +152,7 @@ type
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetSystemMenuItems(AValue: TSystemMenuItems);
     procedure SetWindowSystemMenu(Window: TWindow; Items: TSystemMenuItems = []);
-    procedure SetSystemMenuLanguage;
+    procedure SetSystemMenuLanguage(WindowHandle: HWND = 0);
     procedure InstallHook;
     procedure UninstallHook;
     procedure WindowProc(var TheMessage: TLMessage);
@@ -559,7 +559,7 @@ begin
   SendMessage(Window.Handle, FSystemMenuMessage, ParamUnion.WParam, LPARAM(FMainForm.Handle));
 end;
 
-procedure TWindowManager.SetSystemMenuLanguage;
+procedure TWindowManager.SetSystemMenuLanguage(WindowHandle: HWND);
 var
   CopyData: COPYDATASTRUCT;
   Window: TWindow;
@@ -590,8 +590,13 @@ begin
   CopyData.dwData := SYSTEM_MENU_LANG_DATA_TYPE;
   CopyData.cbData := DataSize;
   CopyData.lpData := @LangData[0];
-  for Window in FDesktop.FWindows.Values do
-    SendMessage(Window.Handle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
+  if WindowHandle = 0 then
+  begin
+    for Window in FDesktop.FWindows.Values do
+      SendMessage(Window.Handle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
+  end
+  else
+    SendMessage(WindowHandle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
 end;
 
 procedure TWindowManager.InstallHook;
@@ -782,6 +787,7 @@ begin
   if Window.CanAddToTaskBar and (FCurrentPID <> Window.PID) then
   begin
     SetWindowSystemMenu(Window, FSystemMenuItems);
+    SetSystemMenuLanguage(Window.Handle);
     FDesktop.FWindows.Add(Handle, Window);
     FDesktop.FPONotifyObservers(Self, ooAddItem, Pointer(Handle));
 

@@ -52,7 +52,7 @@ var
   Rule: TRule;
   Window: TWindow;
 begin
-  if HotkeyID >= Length(FHotkeys) then Exit;
+  if not Settings.ApplyRules or (HotkeyID >= Length(FHotkeys)) then Exit;
 
   for Rule in Rules.Filter(FHotkeys[HotkeyID].Hotkey) do
   begin

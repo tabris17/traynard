@@ -26,6 +26,10 @@ msgctxt "tformbackground.actionclose.caption"
 msgid "Close"
 msgstr "关闭"
 
+#: tformbackground.actionenablelauncher.caption
+msgid "Enable"
+msgstr "启用"
+
 #: tformbackground.actionexit.caption
 msgctxt "tformbackground.actionexit.caption"
 msgid "Exit"
@@ -46,11 +50,23 @@ msgctxt "tformbackground.actionrestorelast.caption"
 msgid "Restore Last Window"
 msgstr "还原上一个窗口"
 
+#: tformbackground.menuitemempty.caption
+msgctxt "tformbackground.menuitemempty.caption"
+msgid "(empty)"
+msgstr "(空)"
+
+#: tformbackground.menuitemlaunch.caption
+msgctxt "tformbackground.menuitemlaunch.caption"
+msgid "Launcher"
+msgstr "启动器"
+
 #: tformhotkey.buttoncancel.caption
+msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
 msgstr "取消"
 
 #: tformhotkey.buttonok.caption
+msgctxt "tformhotkey.buttonok.caption"
 msgid "OK"
 msgstr "确定"
 
@@ -112,6 +128,7 @@ msgid "Desktop"
 msgstr "桌面"
 
 #: tformmain.actiondesktop.hint
+msgctxt "tformmain.actiondesktop.hint"
 msgid "Ordinary windows on desktop"
 msgstr "桌面上的窗口"
 
@@ -119,6 +136,15 @@ msgstr "桌面上的窗口"
 msgctxt "tformmain.actionexit.caption"
 msgid "Exit"
 msgstr "退出"
+
+#: tformmain.actionlauncher.caption
+msgctxt "tformmain.actionlauncher.caption"
+msgid "Launcher"
+msgstr "启动器"
+
+#: tformmain.actionlauncher.hint
+msgid "Launch apps to tray"
+msgstr "启动应用到托盘"
 
 #: tformmain.actionlicense.caption
 msgctxt "tformmain.actionlicense.caption"
@@ -162,6 +188,11 @@ msgstr "报告问题"
 #: tformmain.menuitemusage.caption
 msgid "Usage"
 msgstr "使用说明"
+
+#: tformmain.toolbuttonlauncher.hint
+msgctxt "tformmain.toolbuttonlauncher.hint"
+msgid "Launcher"
+msgstr "启动器"
 
 #: tformmain.toolbuttonmenu.hint
 msgid "Main menu"
@@ -290,6 +321,154 @@ msgctxt "tpagedesktop.menuitemminimize.caption"
 msgid "Minimize"
 msgstr "最小化"
 
+#: tpagelauncher.actionedit.caption
+msgctxt "tpagelauncher.actionedit.caption"
+msgid "Edit Launch Entries"
+msgstr "编辑启动项"
+
+#: tpagelauncher.buttonlaunch.caption
+msgctxt "tpagelauncher.buttonlaunch.caption"
+msgid "Launch"
+msgstr "启动"
+
+#: tpagelauncher.listview.columns[0].caption
+msgctxt "tpagelauncher.listview.columns[0].caption"
+msgid "Name"
+msgstr "名称"
+
+#: tpagelauncher.listview.columns[1].caption
+msgctxt "tpagelauncher.listview.columns[1].caption"
+msgid "PID"
+msgstr "进程ID"
+
+#: tpagelauncher.listview.columns[2].caption
+msgctxt "tpagelauncher.listview.columns[2].caption"
+msgid "Creation Time"
+msgstr "创建时间"
+
+#: tpagelauncher.listview.columns[3].caption
+msgctxt "tpagelauncher.listview.columns[3].caption"
+msgid "Command"
+msgstr "命令行"
+
+#: tpagelauncher.menuitemempty.caption
+msgctxt "tpagelauncher.menuitemempty.caption"
+msgid "(empty)"
+msgstr "(空)"
+
+#: tpagelauncherentries.actionclose.caption
+msgctxt "tpagelauncherentries.actionclose.caption"
+msgid "Close"
+msgstr "关闭"
+
+#: tpagelauncherentries.actiondelete.caption
+msgctxt "tpagelauncherentries.actiondelete.caption"
+msgid "Delete"
+msgstr "删除"
+
+#: tpagelauncherentries.actionlaunch.caption
+msgctxt "tpagelauncherentries.actionlaunch.caption"
+msgid "Launch"
+msgstr "启动"
+
+#: tpagelauncherentries.actionnew.caption
+msgctxt "tpagelauncherentries.actionnew.caption"
+msgid "New"
+msgstr "新建"
+
+#: tpagelauncherentries.actionopen.caption
+msgctxt "tpagelauncherentries.actionopen.caption"
+msgid "Open"
+msgstr "打开"
+
+#: tpagelauncherentries.actionrunning.caption
+msgid "Running"
+msgstr "正在运行"
+
+#: tpagelauncherentries.actionsave.caption
+msgctxt "tpagelauncherentries.actionsave.caption"
+msgid "Save"
+msgstr "保存"
+
+#: tpagelauncherentries.buttonhotkeybind.caption
+msgctxt "tpagelauncherentries.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr "绑定"
+
+#: tpagelauncherentries.buttonhotkeyclear.caption
+msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr "清除"
+
+#: tpagelauncherentries.checkboxshowwindow.caption
+msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
+msgid "Show window on launch"
+msgstr "启动时显示窗口"
+
+#: tpagelauncherentries.checkgroupmethods.caption
+msgctxt "tpagelauncherentries.checkgroupmethods.caption"
+msgid "Launch Methods"
+msgstr "启动方法"
+
+#: tpagelauncherentries.editentryname.texthint
+msgctxt "tpagelauncherentries.editentryname.texthint"
+msgid "Unique name"
+msgstr "唯一名称"
+
+#: tpagelauncherentries.executablefilenameedit.texthint
+msgctxt "tpagelauncherentries.executablefilenameedit.texthint"
+msgid "Path of the executable file"
+msgstr "可以执行文件路径"
+
+#: tpagelauncherentries.groupboxhotkey.caption
+msgctxt "tpagelauncherentries.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr "热键"
+
+#: tpagelauncherentries.headertitle.caption
+msgctxt "tpagelauncherentries.headertitle.caption"
+msgid "Edit Launch Entries"
+msgstr "编辑启动项"
+
+#: tpagelauncherentries.labelarguments.caption
+msgctxt "tpagelauncherentries.labelarguments.caption"
+msgid "Arguments:"
+msgstr "参数:"
+
+#: tpagelauncherentries.labelentryname.caption
+msgctxt "tpagelauncherentries.labelentryname.caption"
+msgid "Name:"
+msgstr "名称:"
+
+#: tpagelauncherentries.labelexecutablepath.caption
+msgctxt "tpagelauncherentries.labelexecutablepath.caption"
+msgid "Executable Path:"
+msgstr "可执行文件路径:"
+
+#: tpagelauncherentries.labelminimizeto.caption
+msgctxt "tpagelauncherentries.labelminimizeto.caption"
+msgid "Minimize to: "
+msgstr "最小化到:"
+
+#: tpagelauncherentries.labelworkingdirectory.caption
+msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
+msgid "Working Directory:"
+msgstr "工作路径:"
+
+#: tpagelauncherentries.panelwelcome.caption
+msgctxt "tpagelauncherentries.panelwelcome.caption"
+msgid ""
+"Add commands here to run when Traynard starts or runs manually. The windows "
+"created by these processes will be minimized to system tray automatically."
+msgstr ""
+"在此添加要随 Traynard 启动或手动运行的命令。这些命令进程创建的窗口将会自动最"
+"小化到系统托盘。"
+
+#: tpagelauncherentries.radiogroupnotification.caption
+msgctxt "tpagelauncherentries.radiogroupnotification.caption"
+msgid "Notification"
+msgstr "通知"
+
 #: tpagelicense.headertitle.caption
 msgctxt "tpagelicense.headertitle.caption"
 msgid "License"
@@ -332,6 +511,11 @@ msgctxt "tpageoptions.actionlanguagereset.caption"
 msgid "Reset"
 msgstr "重置"
 
+#: tpageoptions.buttoneditlaunchentries.caption
+msgctxt "tpageoptions.buttoneditlaunchentries.caption"
+msgid "Edit Launch Entries"
+msgstr "编辑启动项"
+
 #: tpageoptions.buttoneditrules.caption
 msgid "Edit Rules"
 msgstr "编辑规则"
@@ -347,6 +531,10 @@ msgstr "随系统启动自动运行"
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
 msgstr "托盘图标按应用程序分组"
+
+#: tpageoptions.checkboxlauncher.caption
+msgid "Enable launcher"
+msgstr "启用启动器"
 
 #: tpageoptions.checkboxmenugrouped.caption
 msgid "Group tray menu items by application"
@@ -407,10 +595,12 @@ msgid "Close"
 msgstr "关闭"
 
 #: tpagerules.actiondelete.caption
+msgctxt "tpagerules.actiondelete.caption"
 msgid "Delete"
 msgstr "删除"
 
 #: tpagerules.actionnew.caption
+msgctxt "tpagerules.actionnew.caption"
 msgid "New"
 msgstr "新建"
 
@@ -420,6 +610,7 @@ msgid "Open"
 msgstr "打开"
 
 #: tpagerules.actionsave.caption
+msgctxt "tpagerules.actionsave.caption"
 msgid "Save"
 msgstr "保存"
 
@@ -442,6 +633,7 @@ msgid "Window owner process file path"
 msgstr "窗口所属进程的文件路径"
 
 #: tpagerules.editrulename.texthint
+msgctxt "tpagerules.editrulename.texthint"
 msgid "Unique name"
 msgstr "唯一名称"
 
@@ -462,7 +654,12 @@ msgstr "热键"
 msgid "Application Path:"
 msgstr "应用程序路径:"
 
+#: tpagerules.labelhotkey.hint
+msgid "Hotkey already in use"
+msgstr "热键已占用"
+
 #: tpagerules.labelminimizeto.caption
+msgctxt "tpagerules.labelminimizeto.caption"
 msgid "Minimize to: "
 msgstr "最小化到:"
 
@@ -483,6 +680,7 @@ msgid "Select a rule from the left list to edit or create a new"
 msgstr "创建新规则, 或者从左侧列表中选择一条规则进行编辑"
 
 #: tpagerules.radiogroupnotification.caption
+msgctxt "tpagerules.radiogroupnotification.caption"
 msgid "Notification"
 msgstr "通知"
 
@@ -544,6 +742,10 @@ msgstr "无法获取操作系统版本信息"
 #: traynard.strings.error_install_hook
 msgid "Failed to install hook"
 msgstr "无法安装钩子"
+
+#: traynard.strings.error_max_launches
+msgid "Exceeded the maximum number of launches"
+msgstr "超出允许的最大启动数"
 
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
@@ -705,10 +907,36 @@ msgstr "最小化到托盘菜单"
 msgid "Restore Group"
 msgstr "还原全组"
 
+#: traynard.strings.msg_launcher_entry_application_required
+msgid "Executable path is required"
+msgstr "需要填写可执行文件路径"
+
+#: traynard.strings.msg_launcher_entry_launch_methods_required
+msgid "Launch methods is required"
+msgstr "需要填写启动方式"
+
+#: traynard.strings.msg_launcher_entry_name_duplicate
+msgid "Launcher entry name is duplicate"
+msgstr "同名启动项已存在"
+
+#: traynard.strings.msg_launcher_entry_name_required
+msgid "Launcher entry name is required"
+msgstr "需要填写启动项名称"
+
+#: traynard.strings.msg_question_delete_launcher_entry
+#, object-pascal-format
+msgid "Delete entry \"%s\"?"
+msgstr "是否删除启动项 \"%s\"?"
+
 #: traynard.strings.msg_question_delete_rule
 #, object-pascal-format
 msgid "Delete rule \"%s\"?"
 msgstr "是否删除规则 \"%s\"?"
+
+#: traynard.strings.msg_question_save_launcher_entry
+#, object-pascal-format
+msgid "Save entry to \"%s\"?"
+msgstr "是否保存启动项 \"%s\"?"
 
 #: traynard.strings.msg_question_save_rule
 #, object-pascal-format
@@ -775,6 +1003,10 @@ msgstr "<自动>"
 msgid "Any"
 msgstr "任意"
 
+#: traynard.strings.text_automatic
+msgid "Automatic"
+msgstr "自动"
+
 #: traynard.strings.text_bracketed_no_set
 msgctxt "traynard.strings.text_bracketed_no_set"
 msgid "(no set)"
@@ -810,6 +1042,11 @@ msgstr "热键"
 #: traynard.strings.text_icon
 msgid "Icon"
 msgstr "图标"
+
+#: traynard.strings.text_manual
+msgctxt "traynard.strings.text_manual"
+msgid "Manual"
+msgstr "手动"
 
 #: traynard.strings.text_menu
 msgid "Menu"
@@ -869,3 +1106,7 @@ msgstr "窗口标题改变"
 #: traynard.strings.text_yes
 msgid "Yes"
 msgstr "是"
+
+#~ msgctxt "tpagelauncherentries.actionlauncher.caption"
+#~ msgid "Launcher"
+#~ msgstr "启动器"

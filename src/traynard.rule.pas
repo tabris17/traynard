@@ -35,9 +35,9 @@ type
     TRuleList = specialize TList<string>;
     TRuleMap = specialize TDictionary<string, TRule>;
 
-    { THotkeyRuleList }
+    { THotkeyRules }
 
-    THotkeyRuleList = class(TRuleList)
+    THotkeyRules = class(TRuleList)
     private
       FHotkeyID: longint;
     public
@@ -45,8 +45,8 @@ type
       property HotkeyID: longint read FHotkeyID write FHotkeyID;
     end;
 
-    THotkeyMap = specialize TObjectDictionary<THotkey, THotkeyRuleList>;
-    THotkeyPair = specialize TPair<THotkey, THotkeyRuleList>;
+    THotkeyMap = specialize TObjectDictionary<THotkey, THotkeyRules>;
+    THotkeyPair = specialize TPair<THotkey, THotkeyRules>;
 
     { TEnumerator }
 
@@ -65,9 +65,6 @@ type
       property Current: TRule read GetCurrent;
       function MoveNext: boolean;
     end;
-
-    THotkeyAddedNotify = procedure(const Hotkey: THotkey; out HotkeyID: longint) of object;
-    THotkeyRemovedNotify = procedure(const HotkeyID: longint) of object;
   private
     FRuleList: TRuleList;
     FRuleMap: TRuleMap;
@@ -120,8 +117,6 @@ const
   KEY_NOTIFICATION = 'notification';
   KEY_POSITION = 'position';
   KEY_HOTKEY = 'hotkey';
-
-  HOTKEY_NONE = 0;
 
 implementation
 
@@ -256,14 +251,14 @@ end;
 
 procedure TRules.RuleAdded(constref Rule: TRule);
 var
-  RuleList: THotkeyRuleList;
+  RuleList: THotkeyRules;
   HotkeyID: longint = HOTKEY_NONE;
 begin
-  if not (waHotkey in Rule.TriggerOn) or (Rule.Hotkey.Value = 0) then Exit;
+  if not (waHotkey in Rule.TriggerOn) or (Rule.Hotkey.Value = HOTKEY_NONE) then Exit;
   if not FHotkeyMap.TryGetValue(Rule.Hotkey, RuleList) then
   begin
     if Assigned(FOnHotkeyAddedNotify) then FOnHotkeyAddedNotify(Rule.Hotkey, HotkeyID);
-    RuleList := THotkeyRuleList.Create(HotkeyID);
+    RuleList := THotkeyRules.Create(HotkeyID);
     FHotkeyMap.Add(Rule.Hotkey, RuleList);
   end;
   RuleList.Add(Rule.Name);
@@ -271,9 +266,9 @@ end;
 
 procedure TRules.RuleRemoved(constref Rule: TRule);
 var
-  RuleList: THotkeyRuleList;
+  RuleList: THotkeyRules;
 begin
-  if not (waHotkey in Rule.TriggerOn) or (Rule.Hotkey.Value = 0) or
+  if not (waHotkey in Rule.TriggerOn) or (Rule.Hotkey.Value = HOTKEY_NONE) or
      not FHotkeyMap.TryGetValue(Rule.Hotkey, RuleList) then Exit;
   if (RuleList.Remove(Rule.Name) >= 0) and (RuleList.Count = 0) then
   begin
@@ -295,7 +290,7 @@ end;
 
 function TRules.GetEnumerator: TEnumerator;
 var
-  RuleList: THotkeyRuleList;
+  RuleList: THotkeyRules;
 begin
   if FHotkeyFilter.Value = HOTKEY_NONE then
     Result := TEnumerator.Create(FRuleList, FRuleMap)
@@ -482,9 +477,9 @@ begin
   Storage.SaveConfig(CONFIG_NAME, FConfig);
 end;
 
-{ TRules.THotkeyRuleList }
+{ TRules.THotkeyRules }
 
-constructor TRules.THotkeyRuleList.Create(AHotkeyID: longint);
+constructor TRules.THotkeyRules.Create(AHotkeyID: longint);
 begin
   inherited Create;
   FHotkeyID := AHotkeyID;

@@ -14,6 +14,7 @@ type
   { TFormMain }
 
   TFormMain = class(TForm)
+    ActionLauncher: TAction;
     ActionRules: TAction;
     ActionExit: TAction;
     ActionLicense: TAction;
@@ -23,6 +24,7 @@ type
     ActionAbout: TAction;
     ActionList: TActionList;
     MenuItem1: TMenuItem;
+    MenuItemLauncher: TMenuItem;
     MenuItemLicense: TMenuItem;
     MenuItemTray: TMenuItem;
     MenuItemDesktop: TMenuItem;
@@ -45,6 +47,7 @@ type
     MainGreyIcons: TImageList;
     StatusBar: TStatusBar;
     ToolBar: TToolBar;
+    ToolButtonLauncher: TToolButton;
     ToolButtonRules: TToolButton;
     ToolButtonTray: TToolButton;
     ToolButtonOptions: TToolButton;
@@ -54,6 +57,7 @@ type
     procedure ActionAboutExecute(Sender: TObject);
     procedure ActionExitExecute(Sender: TObject);
     procedure ActionDesktopExecute(Sender: TObject);
+    procedure ActionLauncherExecute(Sender: TObject);
     procedure ActionLicenseExecute(Sender: TObject);
     procedure ActionOptionsExecute(Sender: TObject);
     procedure ActionRulesExecute(Sender: TObject);
@@ -71,7 +75,7 @@ type
     procedure MenuItemUsageClick(Sender: TObject);
     procedure ToolBarResize(Sender: TObject);
   type
-    TPageIndex = (piNone, piDesktop, piTray, piOptions, piAbout, piLicense, piRules, piLogs);
+    TPageIndex = (piNone, piDesktop, piTray, piOptions, piAbout, piLicense, piRules, piLogs, piLauncher, piLaunchEntries);
     THistory = specialize TList<TPageIndex>;
     TPopupList = specialize TList<TFormPopup>;
   private
@@ -98,11 +102,14 @@ type
 
 var
   FormMain: TFormMain;
+  VScrollWidth: longint;
 
 implementation
 
-uses LCLIntf, JwaWinUser, LazLogger, Traynard.Page.Desktop, Traynard.Page.Tray, Traynard.Page.Options, Traynard.Page.About,
-     Traynard.Page.License, Traynard.Page.Rules, Traynard.Page.Logs, Traynard.Helpers, Traynard.Window, Traynard.Form.Background;
+uses LCLIntf, JwaWinUser, LazLogger,
+     Traynard.Page.Desktop, Traynard.Page.Tray, Traynard.Page.Options, Traynard.Page.About,
+     Traynard.Page.License, Traynard.Page.Rules, Traynard.Page.Logs, Traynard.Page.Launcher,
+     Traynard.Page.Launcher.Entries, Traynard.Helpers, Traynard.Window, Traynard.Form.Background;
 
 {$R *.lfm}
 
@@ -142,11 +149,17 @@ begin
   FPageButtons[piTray] := ToolButtonTray;
   FPageButtons[piOptions] := ToolButtonOptions;
   FPageButtons[piRules] := ToolButtonRules;
+  FPageButtons[piLauncher] := ToolButtonLauncher;
 end;
 
 procedure TFormMain.ActionDesktopExecute(Sender: TObject);
 begin
   Navigate(piDesktop);
+end;
+
+procedure TFormMain.ActionLauncherExecute(Sender: TObject);
+begin
+  Navigate(piLauncher);
 end;
 
 procedure TFormMain.ActionLicenseExecute(Sender: TObject);
@@ -356,6 +369,10 @@ TFormMain.RegisterPage(piAbout, TPageAbout);
 TFormMain.RegisterPage(piLicense, TPageLicense);
 TFormMain.RegisterPage(piRules, TPageRules);
 TFormMain.RegisterPage(piLogs, TPageLogs);
+TFormMain.RegisterPage(piLauncher, TPageLauncher);
+TFormMain.RegisterPage(piLaunchEntries, TPageLauncherEntries);
+
+VScrollWidth := GetSystemMetrics(SM_CXVSCROLL) + 10;
 
 end.
 

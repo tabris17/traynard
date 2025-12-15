@@ -9,11 +9,11 @@ inherited PageOptions: TPageOptions
   VertScrollBar.Smooth = True
   VertScrollBar.Tracking = True
   AutoScroll = True
-  ChildSizing.TopBottomSpacing = 50
+  ChildSizing.TopBottomSpacing = 20
   ClientHeight = 900
   inherited Header: TToolBar
     Height = 0
-    Top = 50
+    Top = 20
     Visible = False
   end
   object DividerBevelGeneral: TDividerBevel[1]
@@ -106,7 +106,7 @@ inherited PageOptions: TPageOptions
         AutoSize = True
         Caption = 'Action'
         MinWidth = 100
-        Width = 100
+        Width = 53
       end    
       item
         Caption = 'Key'
@@ -286,7 +286,34 @@ inherited PageOptions: TPageOptions
     TabOrder = 13
     OnChange = CheckBoxUseRulesChange
   end
-  object ButtonEditRules: TButton[19]
+  object CheckBoxLauncher: TCheckBox[19]
+    AnchorSideTop.Control = ButtonEditRules
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 679
+    Width = 110
+    BorderSpacing.Top = 5
+    Caption = 'Enable launcher'
+    TabOrder = 18
+    OnChange = CheckBoxLauncherChange
+  end
+  object ButtonEditLaunchEntries: TButton[20]
+    AnchorSideTop.Control = CheckBoxLauncher
+    AnchorSideTop.Side = asrBottom
+    Left = 26
+    Height = 27
+    Top = 705
+    Width = 135
+    AutoSize = True
+    BorderSpacing.Top = 5
+    Caption = 'Edit Launch Entries'
+    Constraints.MinWidth = 80
+    Enabled = False
+    TabOrder = 19
+    OnClick = ButtonEditLaunchEntriesClick
+  end
+  object ButtonEditRules: TButton[21]
     AnchorSideTop.Control = CheckBoxRuleOnStartup
     AnchorSideTop.Side = asrBottom
     Left = 26
@@ -301,7 +328,7 @@ inherited PageOptions: TPageOptions
     TabOrder = 14
     OnClick = ButtonEditRulesClick
   end
-  object CheckBoxRuleOnStartup: TCheckBox[20]
+  object CheckBoxRuleOnStartup: TCheckBox[22]
     AnchorSideTop.Control = CheckBoxUseRules
     AnchorSideTop.Side = asrBottom
     Left = 26
@@ -314,22 +341,22 @@ inherited PageOptions: TPageOptions
     TabOrder = 15
     OnChange = CheckBoxRuleOnStartupChange
   end
-  object LabelConfigDir: TLabel[21]
-    AnchorSideTop.Control = ButtonEditRules
+  object LabelConfigDir: TLabel[23]
+    AnchorSideTop.Control = ButtonEditLaunchEntries
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 17
-    Top = 684
+    Top = 742
     Width = 94
     BorderSpacing.Top = 10
     Caption = 'Config directory'
   end
-  object PanelConfigDir: TPanel[22]
+  object PanelConfigDir: TPanel[24]
     AnchorSideTop.Control = LabelConfigDir
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 27
-    Top = 703
+    Top = 761
     Width = 480
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
@@ -365,7 +392,7 @@ inherited PageOptions: TPageOptions
       TabOrder = 1
     end
   end
-  object HotkeyMenu: TPopupMenu[23]
+  object HotkeyMenu: TPopupMenu[25]
     Left = 424
     Top = 88
     object MenuItemModify: TMenuItem
@@ -379,7 +406,7 @@ inherited PageOptions: TPageOptions
       Action = ActionHotkeyReset
     end
   end
-  object ActionList: TActionList[24]
+  object ActionList: TActionList[26]
     Left = 424
     Top = 32
     object ActionHotkeyBind: TAction

@@ -21,6 +21,7 @@ type
     ActionHotkeyClear: TAction;
     ActionHotkeyBind: TAction;
     ActionList: TActionList;
+    ButtonEditLaunchEntries: TButton;
     ButtonConfigDir: TButton;
     ButtonEditRules: TButton;
     ButtonHotkeyBind: TButton;
@@ -28,6 +29,7 @@ type
     ButtonHotkeyReset: TButton;
     ButtonApplyLanguage: TButton;
     ButtonRefreshLanguage: TButton;
+    CheckBoxLauncher: TCheckBox;
     CheckBoxRuleOnStartup: TCheckBox;
     CheckBoxUseRules: TCheckBox;
     CheckBoxAutoMinimize: TCheckBox;
@@ -56,10 +58,12 @@ type
     procedure ActionLanguageApplyExecute(Sender: TObject);
     procedure ActionLanguageRefreshExecute(Sender: TObject);
     procedure ActionLanguageResetExecute(Sender: TObject);
+    procedure ButtonEditLaunchEntriesClick(Sender: TObject);
     procedure ButtonEditRulesClick(Sender: TObject);
     procedure CheckBoxAutoMinimizeChange(Sender: TObject);
     procedure CheckBoxAutorunChange(Sender: TObject);
     procedure CheckBoxIconGroupedChange(Sender: TObject);
+    procedure CheckBoxLauncherChange(Sender: TObject);
     procedure CheckBoxMenuGroupedChange(Sender: TObject);
     procedure CheckBoxNotificationChange(Sender: TObject);
     procedure CheckBoxRuleOnStartupChange(Sender: TObject);
@@ -79,7 +83,8 @@ type
     procedure IconGroupedChanged(Sender: TObject);
     procedure MenuGroupedChanged(Sender: TObject);
     procedure AutoMinimizeChanged(Sender: TObject);
-    procedure UseRulesChanged(Sender: TObject); 
+    procedure UseRulesChanged(Sender: TObject);
+    procedure UseLauncherChanged(Sender: TObject);
     procedure ShowNotificationChanged(Sender: TObject);
     procedure RuleOnStartupChanged(Sender: TObject);
     procedure HotkeyChanged(Sender: TObject);
@@ -201,6 +206,11 @@ begin
   ComboBoxLanguages.ItemIndex := SelectedIndex;
 end;
 
+procedure TPageOptions.ButtonEditLaunchEntriesClick(Sender: TObject);
+begin
+  FormMain.Navigate(piLaunchEntries);
+end;
+
 procedure TPageOptions.ButtonEditRulesClick(Sender: TObject);
 begin
   FormMain.Navigate(piRules);
@@ -234,6 +244,11 @@ end;
 procedure TPageOptions.CheckBoxRuleOnStartupChange(Sender: TObject);
 begin
   Settings.RuleOnStartup := (Sender as TCheckBox).Checked;
+end;
+
+procedure TPageOptions.CheckBoxLauncherChange(Sender: TObject);
+begin
+  Settings.EnableLauncher := (Sender as TCheckBox).Checked;
 end;
 
 procedure TPageOptions.CheckBoxUseRulesChange(Sender: TObject);
@@ -288,6 +303,7 @@ begin
   AddListener(siShowNotification, @ShowNotificationChanged);
   AddListener(siRuleOnStartup, @RuleOnStartupChanged);
   AddListener(siHotkey, @HotkeyChanged);
+  AddListener(siUseLauncher, @UseLauncherChanged);
 
   EditConfigDir.Text := Storage.ConfigDir;
 
@@ -352,6 +368,15 @@ begin
   CheckBoxUseRules.Checked := AValue;
   CheckBoxRuleOnStartup.Enabled := AValue;
   ButtonEditRules.Enabled := AValue;
+end;
+
+procedure TPageOptions.UseLauncherChanged(Sender: TObject);
+var
+  AValue: boolean;
+begin
+  AValue := (Sender as TSettings).EnableLauncher;
+  CheckBoxLauncher.Checked := AValue;
+  ButtonEditLaunchEntries.Enabled := AValue;
 end;
 
 procedure TPageOptions.ShowNotificationChanged(Sender: TObject);

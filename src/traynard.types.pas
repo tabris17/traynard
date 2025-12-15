@@ -6,7 +6,7 @@ unit Traynard.Types;
 interface
 
 uses
-  Classes, SysUtils, Windows, Traynard.Strings;
+  Classes, SysUtils, Controls, Windows, JwaWinternl, Traynard.Strings;
 
 type
 
@@ -49,7 +49,7 @@ type
   TSystemMenuItems = set of TSystemMenuItem;
 
   TSettingsItem = (siAutorun, siIconGrouped, siMenuGrouped, siLanguage, siSystemMenuItems,
-                   siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey);
+                   siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey, siUseLauncher);
 
   { TShellHookInfo }
 
@@ -116,6 +116,10 @@ type
 
   TPopupType = (ptWarning, ptError, ptInformation, ptConfirmation, ptShield, ptNone);
 
+  THotkeyAddedNotify = procedure(const Hotkey: THotkey; out HotkeyID: longint) of object;
+
+  THotkeyRemovedNotify = procedure(const HotkeyID: longint) of object;
+
   TWindowAction = (waCreation, waChange, waMinimizing, waHotkey, waExisting);
 
   TRuleTriggerOn = set of TWindowAction;
@@ -131,7 +135,36 @@ type
     Comparison: TRuleTextComparison;
   end;
 
+  TLaunchMethod = (lmAutomatic, lmManual, lmHotkey);
+
+  TLaunchMethods = set of TLaunchMethod;
+
   THandleArray = specialize TArray<HWND>;
+
+  TEditState = (esNone, esOpen, esNew);
+
+  { EFieldInvalid }
+
+  EFieldInvalid = class(Exception)
+  private
+    FTitle: string;
+    FControl: TControl;
+  public
+    constructor Create(const ATitle, AMessage: string; AControl: TControl);
+    property Title: string read FTitle;
+    property Control: TControl read FControl;
+  end;
+
+  { TProcessBasicInformation }
+
+  TProcessBasicInformation = record
+    ExitStatus: NTSTATUS;
+    PebBaseAddress: PPEB;
+    AffinityMask: ULONG_PTR;
+    BasePriority: LONG;
+    UniqueProcessId: ULONG_PTR;
+    InheritedFromUniqueProcessId: ULONG_PTR;
+  end;
 
 const
   MOD_NOREPEAT = $4000;
@@ -196,6 +229,8 @@ const
     (ID: IDM_SYSTEM_TOPMOST; Flag: MF_STRING; Text: MENU_ITEM_ALWAYS_ON_TOP)
   );
 
+  HOTKEY_NONE = 0;
+
 {$IFNDEF LIBRARY}
   HOTKEY_DESCRIPTIONS: THotkeyDescriptions = (
     HOTKEY_MINIMIZE_TO_ICON,
@@ -230,6 +265,12 @@ const
     TEXT_SYSTEM_MENU_TRAY_ICON,
     TEXT_SYSTEM_MENU_TRAY_MENU,
     TEXT_SYSTEM_MENU_TOPMOST
+  );
+
+  LAUNCH_METHODS: array[TLaunchMethod] of string = (
+    TEXT_AUTOMATIC,
+    TEXT_MANUAL,
+    TEXT_HOTKEY
   );
 {$ENDIF}
 
@@ -272,6 +313,15 @@ constructor ERuntimeException.Create(const Title, Msg: string);
 begin
   inherited Create(Msg);
   FTitle := Title;
+end;
+
+{ EFieldInvalid }
+
+constructor EFieldInvalid.Create(const ATitle, AMessage: string; AControl: TControl);
+begin
+  inherited Create(AMessage);
+  FTitle := ATitle;
+  FControl := AControl;
 end;
 
 end.

@@ -25,6 +25,10 @@ msgctxt "tformbackground.actionclose.caption"
 msgid "Close"
 msgstr ""
 
+#: tformbackground.actionenablelauncher.caption
+msgid "Enable"
+msgstr ""
+
 #: tformbackground.actionexit.caption
 msgctxt "tformbackground.actionexit.caption"
 msgid "Exit"
@@ -45,11 +49,23 @@ msgctxt "tformbackground.actionrestorelast.caption"
 msgid "Restore Last Window"
 msgstr ""
 
+#: tformbackground.menuitemempty.caption
+msgctxt "tformbackground.menuitemempty.caption"
+msgid "(empty)"
+msgstr ""
+
+#: tformbackground.menuitemlaunch.caption
+msgctxt "tformbackground.menuitemlaunch.caption"
+msgid "Launcher"
+msgstr ""
+
 #: tformhotkey.buttoncancel.caption
+msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
 msgstr ""
 
 #: tformhotkey.buttonok.caption
+msgctxt "tformhotkey.buttonok.caption"
 msgid "OK"
 msgstr ""
 
@@ -111,12 +127,22 @@ msgid "Desktop"
 msgstr ""
 
 #: tformmain.actiondesktop.hint
+msgctxt "tformmain.actiondesktop.hint"
 msgid "Ordinary windows on desktop"
 msgstr ""
 
 #: tformmain.actionexit.caption
 msgctxt "tformmain.actionexit.caption"
 msgid "Exit"
+msgstr ""
+
+#: tformmain.actionlauncher.caption
+msgctxt "tformmain.actionlauncher.caption"
+msgid "Launcher"
+msgstr ""
+
+#: tformmain.actionlauncher.hint
+msgid "Launch apps to tray"
 msgstr ""
 
 #: tformmain.actionlicense.caption
@@ -160,6 +186,11 @@ msgstr ""
 
 #: tformmain.menuitemusage.caption
 msgid "Usage"
+msgstr ""
+
+#: tformmain.toolbuttonlauncher.hint
+msgctxt "tformmain.toolbuttonlauncher.hint"
+msgid "Launcher"
 msgstr ""
 
 #: tformmain.toolbuttonmenu.hint
@@ -289,6 +320,150 @@ msgctxt "tpagedesktop.menuitemminimize.caption"
 msgid "Minimize"
 msgstr ""
 
+#: tpagelauncher.actionedit.caption
+msgctxt "tpagelauncher.actionedit.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
+#: tpagelauncher.buttonlaunch.caption
+msgctxt "tpagelauncher.buttonlaunch.caption"
+msgid "Launch"
+msgstr ""
+
+#: tpagelauncher.listview.columns[0].caption
+msgctxt "tpagelauncher.listview.columns[0].caption"
+msgid "Name"
+msgstr ""
+
+#: tpagelauncher.listview.columns[1].caption
+msgctxt "tpagelauncher.listview.columns[1].caption"
+msgid "PID"
+msgstr ""
+
+#: tpagelauncher.listview.columns[2].caption
+msgctxt "tpagelauncher.listview.columns[2].caption"
+msgid "Creation Time"
+msgstr ""
+
+#: tpagelauncher.listview.columns[3].caption
+msgctxt "tpagelauncher.listview.columns[3].caption"
+msgid "Command"
+msgstr ""
+
+#: tpagelauncher.menuitemempty.caption
+msgctxt "tpagelauncher.menuitemempty.caption"
+msgid "(empty)"
+msgstr ""
+
+#: tpagelauncherentries.actionclose.caption
+msgctxt "tpagelauncherentries.actionclose.caption"
+msgid "Close"
+msgstr ""
+
+#: tpagelauncherentries.actiondelete.caption
+msgctxt "tpagelauncherentries.actiondelete.caption"
+msgid "Delete"
+msgstr ""
+
+#: tpagelauncherentries.actionlaunch.caption
+msgctxt "tpagelauncherentries.actionlaunch.caption"
+msgid "Launch"
+msgstr ""
+
+#: tpagelauncherentries.actionnew.caption
+msgctxt "tpagelauncherentries.actionnew.caption"
+msgid "New"
+msgstr ""
+
+#: tpagelauncherentries.actionopen.caption
+msgctxt "tpagelauncherentries.actionopen.caption"
+msgid "Open"
+msgstr ""
+
+#: tpagelauncherentries.actionrunning.caption
+msgid "Running"
+msgstr ""
+
+#: tpagelauncherentries.actionsave.caption
+msgctxt "tpagelauncherentries.actionsave.caption"
+msgid "Save"
+msgstr ""
+
+#: tpagelauncherentries.buttonhotkeybind.caption
+msgctxt "tpagelauncherentries.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr ""
+
+#: tpagelauncherentries.buttonhotkeyclear.caption
+msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr ""
+
+#: tpagelauncherentries.checkboxshowwindow.caption
+msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
+msgid "Show window on launch"
+msgstr ""
+
+#: tpagelauncherentries.checkgroupmethods.caption
+msgctxt "tpagelauncherentries.checkgroupmethods.caption"
+msgid "Launch Methods"
+msgstr ""
+
+#: tpagelauncherentries.editentryname.texthint
+msgctxt "tpagelauncherentries.editentryname.texthint"
+msgid "Unique name"
+msgstr ""
+
+#: tpagelauncherentries.executablefilenameedit.texthint
+msgctxt "tpagelauncherentries.executablefilenameedit.texthint"
+msgid "Path of the executable file"
+msgstr ""
+
+#: tpagelauncherentries.groupboxhotkey.caption
+msgctxt "tpagelauncherentries.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr ""
+
+#: tpagelauncherentries.headertitle.caption
+msgctxt "tpagelauncherentries.headertitle.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
+#: tpagelauncherentries.labelarguments.caption
+msgctxt "tpagelauncherentries.labelarguments.caption"
+msgid "Arguments:"
+msgstr ""
+
+#: tpagelauncherentries.labelentryname.caption
+msgctxt "tpagelauncherentries.labelentryname.caption"
+msgid "Name:"
+msgstr ""
+
+#: tpagelauncherentries.labelexecutablepath.caption
+msgctxt "tpagelauncherentries.labelexecutablepath.caption"
+msgid "Executable Path:"
+msgstr ""
+
+#: tpagelauncherentries.labelminimizeto.caption
+msgctxt "tpagelauncherentries.labelminimizeto.caption"
+msgid "Minimize to: "
+msgstr ""
+
+#: tpagelauncherentries.labelworkingdirectory.caption
+msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
+msgid "Working Directory:"
+msgstr ""
+
+#: tpagelauncherentries.panelwelcome.caption
+msgctxt "tpagelauncherentries.panelwelcome.caption"
+msgid "Add commands here to run when Traynard starts or runs manually. The windows created by these processes will be minimized to system tray automatically."
+msgstr ""
+
+#: tpagelauncherentries.radiogroupnotification.caption
+msgctxt "tpagelauncherentries.radiogroupnotification.caption"
+msgid "Notification"
+msgstr ""
+
 #: tpagelicense.headertitle.caption
 msgctxt "tpagelicense.headertitle.caption"
 msgid "License"
@@ -331,6 +506,11 @@ msgctxt "tpageoptions.actionlanguagereset.caption"
 msgid "Reset"
 msgstr ""
 
+#: tpageoptions.buttoneditlaunchentries.caption
+msgctxt "tpageoptions.buttoneditlaunchentries.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
 #: tpageoptions.buttoneditrules.caption
 msgid "Edit Rules"
 msgstr ""
@@ -345,6 +525,10 @@ msgstr ""
 
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
+msgstr ""
+
+#: tpageoptions.checkboxlauncher.caption
+msgid "Enable launcher"
 msgstr ""
 
 #: tpageoptions.checkboxmenugrouped.caption
@@ -406,10 +590,12 @@ msgid "Close"
 msgstr ""
 
 #: tpagerules.actiondelete.caption
+msgctxt "tpagerules.actiondelete.caption"
 msgid "Delete"
 msgstr ""
 
 #: tpagerules.actionnew.caption
+msgctxt "tpagerules.actionnew.caption"
 msgid "New"
 msgstr ""
 
@@ -419,6 +605,7 @@ msgid "Open"
 msgstr ""
 
 #: tpagerules.actionsave.caption
+msgctxt "tpagerules.actionsave.caption"
 msgid "Save"
 msgstr ""
 
@@ -441,6 +628,7 @@ msgid "Window owner process file path"
 msgstr ""
 
 #: tpagerules.editrulename.texthint
+msgctxt "tpagerules.editrulename.texthint"
 msgid "Unique name"
 msgstr ""
 
@@ -461,7 +649,12 @@ msgstr ""
 msgid "Application Path:"
 msgstr ""
 
+#: tpagerules.labelhotkey.hint
+msgid "Hotkey already in use"
+msgstr ""
+
 #: tpagerules.labelminimizeto.caption
+msgctxt "tpagerules.labelminimizeto.caption"
 msgid "Minimize to: "
 msgstr ""
 
@@ -482,6 +675,7 @@ msgid "Select a rule from the left list to edit or create a new"
 msgstr ""
 
 #: tpagerules.radiogroupnotification.caption
+msgctxt "tpagerules.radiogroupnotification.caption"
 msgid "Notification"
 msgstr ""
 
@@ -542,6 +736,10 @@ msgstr ""
 
 #: traynard.strings.error_install_hook
 msgid "Failed to install hook"
+msgstr ""
+
+#: traynard.strings.error_max_launches
+msgid "Exceeded the maximum number of launches"
 msgstr ""
 
 #: traynard.strings.error_no_selected_window
@@ -697,9 +895,35 @@ msgstr ""
 msgid "Restore Group"
 msgstr ""
 
+#: traynard.strings.msg_launcher_entry_application_required
+msgid "Executable path is required"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_launch_methods_required
+msgid "Launch methods is required"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_name_duplicate
+msgid "Launcher entry name is duplicate"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_name_required
+msgid "Launcher entry name is required"
+msgstr ""
+
+#: traynard.strings.msg_question_delete_launcher_entry
+#, object-pascal-format
+msgid "Delete entry \"%s\"?"
+msgstr ""
+
 #: traynard.strings.msg_question_delete_rule
 #, object-pascal-format
 msgid "Delete rule \"%s\"?"
+msgstr ""
+
+#: traynard.strings.msg_question_save_launcher_entry
+#, object-pascal-format
+msgid "Save entry to \"%s\"?"
 msgstr ""
 
 #: traynard.strings.msg_question_save_rule
@@ -767,6 +991,10 @@ msgstr ""
 msgid "Any"
 msgstr ""
 
+#: traynard.strings.text_automatic
+msgid "Automatic"
+msgstr ""
+
 #: traynard.strings.text_bracketed_no_set
 msgctxt "traynard.strings.text_bracketed_no_set"
 msgid "(no set)"
@@ -801,6 +1029,11 @@ msgstr ""
 
 #: traynard.strings.text_icon
 msgid "Icon"
+msgstr ""
+
+#: traynard.strings.text_manual
+msgctxt "traynard.strings.text_manual"
+msgid "Manual"
 msgstr ""
 
 #: traynard.strings.text_menu

@@ -36,6 +36,7 @@ resourcestring
   ERROR_PARSE_TOML_FILE               = 'Failed to parse TOML file "%s"';
   ERROR_INSTALL_HOOK                  = 'Failed to install hook';
   ERROR_UNINSTALL_HOOK                = 'Failed to uninstall hook';
+  ERROR_MAX_LAUNCHES                  = 'Exceeded the maximum number of launches';
 
   HTML_ABOUT_VERSION     = 'Version:';
   HTML_ABOUT_LICENSE     = 'License:';
@@ -71,6 +72,13 @@ resourcestring
   MSG_RULE_TRIGGER_ON_REQUIRED = 'Trigger condition is required';
   MSG_RULE_NOTIFICATION_REQUIRED = 'Notification condition is required';
 
+  MSG_LAUNCHER_ENTRY_NAME_REQUIRED = 'Launcher entry name is required';
+  MSG_LAUNCHER_ENTRY_NAME_DUPLICATE = 'Launcher entry name is duplicate';
+  MSG_LAUNCHER_ENTRY_APPLICATION_REQUIRED = 'Executable path is required';
+  MSG_LAUNCHER_ENTRY_LAUNCH_METHODS_REQUIRED = 'Launch methods is required';
+  MSG_QUESTION_SAVE_LAUNCHER_ENTRY = 'Save entry to "%s"?';
+  MSG_QUESTION_DELETE_LAUNCHER_ENTRY = 'Delete entry "%s"?';
+
   TEXT_MENU = 'Menu';
   TEXT_ICON = 'Icon';
   TEXT_YES  = 'Yes';
@@ -94,6 +102,9 @@ resourcestring
   TEXT_FIRST_TIME_ONLY = 'First-time only';
   TEXT_ALWAYS = 'Always';
   TEXT_FOLLOW_GLOBAL_SETTINGS = 'Follow global settings';
+
+  TEXT_AUTOMATIC = 'Automatic';
+  TEXT_MANUAL = 'Manual';
 
   TEXT_WINDOW_CREATION = 'Window creation';
   TEXT_WINDOW_TITLE_CHANGE = 'Window title change';

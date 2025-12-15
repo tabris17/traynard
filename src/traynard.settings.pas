@@ -41,10 +41,12 @@ type
     FApplyRules: boolean;
     FShowNotification: boolean;
     FApplyRulesOnStartup: boolean;
+    FEnableLauncher: boolean;
     FListeners: array[TSettingsItem] of TMethodList;
     FConfig: TConfig;
     function GetAutorun: boolean;
     function GetHotkey(HotkeyID: THotkeyID): THotkey;
+    procedure SetEnableLauncher(AValue: boolean);
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetAutorun(AValue: boolean);
     procedure SetHotkey(HotkeyID: THotkeyID; AValue: THotkey);
@@ -67,6 +69,7 @@ type
     property ApplyRules: boolean read FApplyRules write SetApplyRules;
     property ShowNotification: boolean read FShowNotification write SetShowNotification;
     property RuleOnStartup: boolean read FApplyRulesOnStartup write SetRuleOnStartup;
+    property EnableLauncher: boolean read FEnableLauncher write SetEnableLauncher;
     property Hotkey[HotkeyID: THotkeyID]: THotkey read GetHotkey write SetHotkey;
     procedure Load;
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
@@ -86,6 +89,7 @@ const
   KEY_ADVANCE_CUSTOM_RULES = 'advance.enable_custom_rules';
   KEY_ADVANCE_RULES_ON_STARTUP = 'advance.enable_rule_on_startup';
   KEY_ADVANCE_SYSTEM_MENU = 'advance.system_menu.';
+  KEY_ADVANCE_LAUNCHER = 'advance.enable_launcher';
   KEY_TRAY_ICON = 'enable_tray_icon';
   KEY_TRAY_MENU = 'enable_tray_menu';
   KEY_ALWAYS_ON_TOP = 'enable_always_on_top';
@@ -204,6 +208,15 @@ begin
   FListeners[siUseRules].CallNotifyEvents(Self);
 end;
 
+procedure TSettings.SetEnableLauncher(AValue: boolean);
+begin
+  if FEnableLauncher = AValue then Exit;
+  FEnableLauncher := AValue;
+  FConfig.SetBoolean(KEY_ADVANCE_LAUNCHER, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siUseLauncher].CallNotifyEvents(Self);
+end;
+
 procedure TSettings.SetSystemMenuItems(AValue: TSystemMenuItems);
 var
   SystemMenuPair: TSystemMenuPair;
@@ -268,6 +281,7 @@ begin
   FAutoMinimize := FConfig.GetBoolean(KEY_ADVANCE_AUTO_MINIMIZE, True);
   FApplyRules := FConfig.GetBoolean(KEY_ADVANCE_CUSTOM_RULES, True);
   FApplyRulesOnStartup := FConfig.GetBoolean(KEY_ADVANCE_RULES_ON_STARTUP, True);
+  FEnableLauncher := FConfig.GetBoolean(KEY_ADVANCE_LAUNCHER, False);
   FSystemMenuItems := [];
   for SystemMenuPair in SYSTEM_MENU_PAIRS do
   begin

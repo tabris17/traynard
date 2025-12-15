@@ -1,0 +1,103 @@
+inherited PageLauncher: TPageLauncher
+  Width = 600
+  ClientWidth = 600
+  inherited Header: TToolBar
+    Height = 0
+    Width = 600
+    Visible = False
+  end
+  object ButtonPanel: TPanel[1]
+    Left = 6
+    Height = 27
+    Top = 467
+    Width = 588
+    Align = alBottom
+    BorderSpacing.Around = 6
+    BevelOuter = bvNone
+    ClientHeight = 27
+    ClientWidth = 588
+    TabOrder = 2
+    object ButtonEdit: TButton
+      AnchorSideRight.Control = ButtonPanel
+      AnchorSideRight.Side = asrBottom
+      Left = 453
+      Height = 27
+      Top = 0
+      Width = 135
+      Action = ActionEdit
+      Anchors = [akTop, akRight]
+      AutoSize = True
+      Constraints.MinWidth = 80
+      TabOrder = 0
+    end
+    object ButtonLaunch: TButton
+      AnchorSideLeft.Control = ButtonPanel
+      Left = 0
+      Height = 27
+      Top = 0
+      Width = 80
+      AutoSize = True
+      Caption = 'Launch'
+      Constraints.MinWidth = 80
+      TabOrder = 1
+      OnClick = ButtonLaunchClick
+    end
+  end
+  object ListView: TListView[2]
+    Left = 0
+    Height = 461
+    Top = 0
+    Width = 600
+    Align = alClient
+    AutoSortIndicator = True
+    AutoWidthLastColumn = True
+    BorderStyle = bsNone
+    Columns = <    
+      item
+        Caption = 'Name'
+        Width = 150
+      end    
+      item
+        Alignment = taRightJustify
+        Caption = 'PID'
+        Width = 60
+      end    
+      item
+        Caption = 'Creation Time'
+        Width = 150
+      end    
+      item
+        Caption = 'Command'
+        Width = 270
+      end>
+    HideSelection = False
+    ReadOnly = True
+    RowSelect = True
+    SmallImages = IconList
+    SortType = stText
+    TabOrder = 1
+    ViewStyle = vsReport
+  end
+  object IconList: TImageList[3]
+    Height = 32
+    Width = 32
+    Left = 102
+    Top = 181
+  end
+  object ActionList: TActionList[4]
+    Left = 102
+    Top = 240
+    object ActionEdit: TAction
+      Caption = 'Edit Launch Entries'
+      OnExecute = ActionEditExecute
+    end
+  end
+  object LaunchMenu: TPopupMenu[5]
+    Left = 102
+    Top = 304
+    object MenuItemEmpty: TMenuItem
+      Caption = '(empty)'
+      Enabled = False
+    end
+  end
+end

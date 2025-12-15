@@ -148,6 +148,7 @@ type
     FOriginalWindowProc: TWndMethod;
     FAutoMinimizeWindows: specialize TDictionary<HWND, TTrayPosition>;
     FRestoredWindows: specialize TList<HWND>;
+    FActiveWindow: HWND;
     function GetAutoMinimize: boolean;
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetSystemMenuItems(AValue: TSystemMenuItems);
@@ -169,6 +170,7 @@ type
     class function EnumAndMinimizeWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     class function EnumWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     class function MinimizeOwnedWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
+    procedure SetActiveWindow(AValue: HWND);
     class procedure WinEventProc(hEventHook: HWINEVENTHOOK; event: DWORD; hwnd: HWND; idObject: LONG; idChild: LONG;
       idEventThread: DWORD; dwmsEventTime: DWORD); stdcall; static;
   public
@@ -179,6 +181,7 @@ type
     property Desktop: TDesktopWindowCollection read FDesktop;
     property Tray: TTrayWindowCollection read FTray;
     property AutoMinimize: boolean read GetAutoMinimize write SetAutoMinimize;
+    property ActiveWindow: HWND read FActiveWindow write SetActiveWindow;
     procedure RefreshDesktop;
     procedure EnableWindowAutoMinimize(const Handle: HWND; const Position: TTrayPosition);
     procedure DisableWindowAutoMinimize(const Handle: HWND);
@@ -201,7 +204,7 @@ implementation
 
 uses
   LazLogger, LazFileUtils, JwaPsApi, DwmApi, Graphics,
-  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification, Traynard.Session;
+  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification, Traynard.Session, Traynard.Launcher;
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
@@ -707,6 +710,11 @@ begin
     begin
       HandleParam := PShellHookInfo(TheMessage.lParam)^.hwnd;
     end;
+
+    HSHELL_WINDOWACTIVATED, HSHELL_RUDEAPPACTIVATED:
+    begin
+      ActiveWindow := HandleParam;
+    end;
   end;
 end;
 
@@ -750,6 +758,7 @@ var
   IsRestored: boolean;
   OriginalWindowText: string;
   Rule: TRule;
+  LaunchEntry: TLaunchEntry;
 begin
   {$IFDEF DEBUG}
   DebugLn('[AddWindow]: ', IntToStr(Handle));
@@ -786,15 +795,26 @@ begin
   Window := TDesktopWindow.Create(Handle, IsRestored);
   if Window.CanAddToTaskBar and (FCurrentPID <> Window.PID) then
   begin
-    SetWindowSystemMenu(Window, FSystemMenuItems);
-    SetSystemMenuLanguage(Window.Handle);
+    if FSystemMenuItems <> [] then
+    begin
+      SetWindowSystemMenu(Window, FSystemMenuItems);
+      SetSystemMenuLanguage(Window.Handle);
+    end;
     FDesktop.FWindows.Add(Handle, Window);
     FDesktop.FPONotifyObservers(Self, ooAddItem, Pointer(Handle));
 
-    if not IsRestored and Settings.ApplyRules and Rules.Find(Window, Rule, waCreation) then
+    if IsRestored then Exit(True);
+
+    if Settings.ApplyRules and Rules.Find(Window, Rule, waCreation) then
     begin
       if TryMinimizeWindow(Handle, Rule.Position) and
-         ShouldNotify(Rule.Notification, IsRestored) then
+         ShouldNotify(Rule.Notification, False) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+    end
+    else if Settings.EnableLauncher and Launcher.Find(Window, LaunchEntry) and not LaunchEntry.ShowWindow then
+    begin
+      if TryMinimizeWindow(Handle, LaunchEntry.Position) and
+         ShouldNotify(LaunchEntry.Notification, False) then
         NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
 
@@ -906,11 +926,21 @@ begin
   Result := True;
 end;
 
+procedure TWindowManager.SetActiveWindow(AValue: HWND);
+begin
+  if FActiveWindow = AValue then Exit;
+  {$IFDEF DEBUG}
+  DebugLn('[SetActiveWindow]: from ', IntToStr(FActiveWindow), ' to ', IntToStr(AValue));
+  {$ENDIF}
+  FActiveWindow := AValue;
+end;
+
 class procedure TWindowManager.WinEventProc(hEventHook: HWINEVENTHOOK; event: DWORD; hwnd: HWND; idObject: LONG; idChild: LONG;
   idEventThread: DWORD; dwmsEventTime: DWORD); stdcall;
 var
   TrayPosition: TTrayPosition;
   Rule: TRule;
+  LaunchEntry: TLaunchEntry;
   Window: TWindow;
 begin
   if (hwnd = 0) or (idObject <> OBJID_WINDOW) or (idChild <> CHILDID_SELF) then Exit;
@@ -940,11 +970,20 @@ begin
           NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
         end;
       end
-      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) and Rules.Find(Window, Rule, waMinimizing) then
+      else if FSelf.FDesktop.FWindows.TryGetValue(hwnd, Window) then
       begin
-        if FSelf.TryMinimizeWindow(hwnd, Rule.Position) and
-           ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
-          NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+        if Settings.ApplyRules and Rules.Find(Window, Rule, waMinimizing) then
+        begin
+          if FSelf.TryMinimizeWindow(hwnd, Rule.Position) and
+             ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+            NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+        end
+        else if Settings.EnableLauncher and Launcher.Find(Window, LaunchEntry) then
+        begin
+          if FSelf.TryMinimizeWindow(hwnd, LaunchEntry.Position) and
+             ShouldNotify(LaunchEntry.Notification, (Window as TDesktopWindow).Restored) then
+            NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+        end;
       end;
     end;
     EVENT_OBJECT_DESTROY:
@@ -963,7 +1002,7 @@ begin
   inherited Create(AOwner);
   FSelf := Self;           
   FMainForm := AOwner as TForm;
-  FCurrentPID := GetCurrentProcessId;
+  FCurrentPID := DWORD(GetProcessID);
   FAutoMinimizeWindows := specialize TDictionary<HWND, TTrayPosition>.Create;
   FRestoredWindows := specialize TList<HWND>.Create;
   FDesktop := TDesktopWindowCollection.Create;
@@ -1030,6 +1069,8 @@ begin
     SetSystemMenuLanguage;
   except
   end;
+
+  FActiveWindow := 0;
 end;
 
 destructor TWindowManager.Destroy;

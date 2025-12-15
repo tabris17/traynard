@@ -4,6 +4,7 @@ object FormBackground: TFormBackground
   Top = 0
   Width = 320
   BorderStyle = bsNone
+  LCLVersion = '4.4.0.0'
   OnClick = FormClick
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -58,6 +59,10 @@ object FormBackground: TFormBackground
       Caption = 'Apply Rules'
       OnExecute = ActionApplyRulesExecute
     end
+    object ActionEnableLauncher: TAction
+      Caption = 'Enable'
+      OnExecute = ActionEnableLauncherExecute
+    end
   end
   object TrayMenu: TPopupMenu
     OnPopup = TrayMenuPopup
@@ -87,6 +92,19 @@ object FormBackground: TFormBackground
     end
     object MenuItemUseRules: TMenuItem
       Action = ActionApplyRules
+    end
+    object MenuItemLaunch: TMenuItem
+      Caption = 'Launcher'
+      object MenuItemEnableLauncher: TMenuItem
+        Action = ActionEnableLauncher
+      end
+      object Separator5: TMenuItem
+        Caption = '-'
+      end
+      object MenuItemEmpty: TMenuItem
+        Caption = '(empty)'
+        Enabled = False
+      end
     end
     object Separator4: TMenuItem
       Caption = '-'

@@ -337,6 +337,27 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Traynard.Session"/>
       </Unit>
+      <Unit>
+        <Filename Value="traynard.page.launcher.entries.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PageLauncherEntries"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="Traynard.Page.Launcher.Entries"/>
+      </Unit>
+      <Unit>
+        <Filename Value="traynard.launcher.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Traynard.Launcher"/>
+      </Unit>
+      <Unit>
+        <Filename Value="traynard.page.launcher.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PageLauncher"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="Traynard.Page.Launcher"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -359,6 +380,15 @@
     <Exceptions>
       <Item>
         <Name Value="ETOMLException"/>
+      </Item>
+      <Item>
+        <Name Value="EFieldInvalid"/>
+      </Item>
+      <Item>
+        <Name Value="TLauncher.Exception"/>
+      </Item>
+      <Item>
+        <Name Value="ERuntimeWarning"/>
       </Item>
     </Exceptions>
   </Debugging>

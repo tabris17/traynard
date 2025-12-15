@@ -11,6 +11,7 @@
 {"hash":181272990,"name":"tpagerules.radiogroupnotification.caption","sourcebytes":[78,111,116,105,102,105,99,97,116,105,111,110],"value":"Notification"},
 {"hash":232390062,"name":"tpagerules.checkgrouptriggeron.caption","sourcebytes":[84,114,105,103,103,101,114,32,79,110],"value":"Trigger On"},
 {"hash":83276233,"name":"tpagerules.groupboxhotkey.caption","sourcebytes":[72,111,116,107,101,121],"value":"Hotkey"},
+{"hash":242744837,"name":"tpagerules.labelhotkey.hint","sourcebytes":[72,111,116,107,101,121,32,97,108,114,101,97,100,121,32,105,110,32,117,115,101],"value":"Hotkey already in use"},
 {"hash":299076,"name":"tpagerules.buttonhotkeybind.caption","sourcebytes":[66,105,110,100],"value":"Bind"},
 {"hash":4860802,"name":"tpagerules.buttonhotkeyclear.caption","sourcebytes":[67,108,101,97,114],"value":"Clear"},
 {"hash":74626720,"name":"tpagerules.labelminimizeto.caption","sourcebytes":[77,105,110,105,109,105,122,101,32,116,111,58,32],"value":"Minimize to: "},

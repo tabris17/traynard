@@ -17,6 +17,7 @@ type
   { TFormBackground }
 
   TFormBackground = class(TForm)
+    ActionEnableLauncher: TAction;
     ActionClose: TAction;
     ActionApplyRules: TAction;
     ActionAutoMinimize: TAction;
@@ -26,6 +27,9 @@ type
     ActionOpen: TAction;
     ActionList: TActionList;
     ApplicationProperties: TApplicationProperties;
+    MenuItemEmpty: TMenuItem;
+    MenuItemLaunch: TMenuItem;
+    MenuItemEnableLauncher: TMenuItem;
     MenuItemUseRules: TMenuItem;
     MenuItemAutoMinimize: TMenuItem;
     MenuItemRestoreAll: TMenuItem;
@@ -36,12 +40,14 @@ type
     Separator2: TMenuItem;
     Separator3: TMenuItem;
     Separator4: TMenuItem;
+    Separator5: TMenuItem;
     TrayMenu: TPopupMenu;
     TrayIcon: TTrayIcon;
     UniqueInstance: TUniqueInstance;
     procedure ActionAutoMinimizeExecute(Sender: TObject);
     procedure ActionCloseExecute(Sender: TObject);
     procedure ActionExitExecute(Sender: TObject);
+    procedure ActionEnableLauncherExecute(Sender: TObject);
     procedure ActionOpenExecute(Sender: TObject);
     procedure ActionRestoreAllExecute(Sender: TObject);
     procedure ActionRestoreLastExecute(Sender: TObject);
@@ -59,6 +65,9 @@ type
     procedure NotificationManagerInstalled(const NotificationManager: TNotificationManager); 
     procedure TrayManagerInstalled(const TrayManager: TTrayManager);
     procedure WindowManagerInstalled(const WindowManager: TWindowManager);
+  private
+    procedure SetLaunchMenuItems;
+    procedure LaunchMenuItemClick(Sender: TObject);
   public
     procedure Notify(const Title, Message: string; const Timeout: Integer = 0);
   end;
@@ -72,7 +81,8 @@ uses
   Traynard.Form.Main,
   Traynard.Strings,
   Traynard.Settings,
-  Traynard.Rule,
+  Traynard.Rule, 
+  Traynard.Launcher,
   Traynard.I18n,
   Traynard.Session;
 
@@ -139,6 +149,11 @@ begin
   Close;
 end;
 
+procedure TFormBackground.ActionEnableLauncherExecute(Sender: TObject);
+begin
+  Settings.EnableLauncher := not ActionEnableLauncher.Checked;
+end;
+
 procedure TFormBackground.ActionAutoMinimizeExecute(Sender: TObject);
 begin
   Settings.AutoMinimize := not ActionAutoMinimize.Checked;
@@ -176,6 +191,7 @@ begin
   try
     Settings.Load;
     Rules.Load;
+    Launcher.Load;
     I18n.Translate;
     Session.Start;
   except
@@ -202,6 +218,8 @@ begin
   ActionRestoreLast.Enabled := HasTrayWindow;
   ActionAutoMinimize.Checked := Settings.AutoMinimize; 
   ActionApplyRules.Checked := Settings.ApplyRules;
+  ActionEnableLauncher.Checked := Settings.EnableLauncher;
+  SetLaunchMenuItems;
 end;
 
 procedure TFormBackground.UniqueInstanceOtherInstance(Sender: TObject; ParamCount: Integer; const Parameters: array of String);
@@ -248,6 +266,40 @@ end;
 procedure TFormBackground.WindowManagerInstalled(const WindowManager: TWindowManager);
 begin
 
+end;
+
+procedure TFormBackground.SetLaunchMenuItems;
+var
+  ItemIndex: integer;
+  Entry: TLaunchEntry;
+  MenuItem: TMenuItem;
+begin
+  if MenuItemLaunch.Count > 3 then
+  begin
+    for ItemIndex := MenuItemLaunch.Count - 1 downto 3 do
+      MenuItemLaunch.Delete(ItemIndex);
+  end;
+  for ItemIndex := 0 to Launcher.Count - 1 do
+  begin
+    Entry := Launcher.Entries[ItemIndex];
+    if not (lmManual in Entry.LaunchMethods) then Continue;
+    MenuItem := TMenuItem.Create(Self);
+    MenuItem.Caption := Entry.Name;
+    MenuItem.Enabled := Settings.EnableLauncher;
+    MenuItem.OnClick := @LaunchMenuItemClick;
+    MenuItemLaunch.Add(MenuItem);
+  end;
+  MenuItemEmpty.Visible := MenuItemLaunch.Count <= 3;
+end;
+
+procedure TFormBackground.LaunchMenuItemClick(Sender: TObject);
+begin
+  if not Settings.EnableLauncher then Exit;
+  try
+    Launcher.Launch((Sender as TMenuItem).Caption);
+  except
+    on Exc: Exception do raise ERuntimeWarning.Create(Exc.Message);
+  end;
 end;
 
 procedure TFormBackground.Notify(const Title, Message: string; const Timeout: Integer);

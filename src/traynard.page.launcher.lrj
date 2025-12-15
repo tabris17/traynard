@@ -1,0 +1,9 @@
+{"version":1,"strings":[
+{"hash":86557848,"name":"tpagelauncher.buttonlaunch.caption","sourcebytes":[76,97,117,110,99,104],"value":"Launch"},
+{"hash":346165,"name":"tpagelauncher.listview.columns[0].caption","sourcebytes":[78,97,109,101],"value":"Name"},
+{"hash":21716,"name":"tpagelauncher.listview.columns[1].caption","sourcebytes":[80,73,68],"value":"PID"},
+{"hash":9316069,"name":"tpagelauncher.listview.columns[2].caption","sourcebytes":[67,114,101,97,116,105,111,110,32,84,105,109,101],"value":"Creation Time"},
+{"hash":174340100,"name":"tpagelauncher.listview.columns[3].caption","sourcebytes":[67,111,109,109,97,110,100],"value":"Command"},
+{"hash":156201187,"name":"tpagelauncher.actionedit.caption","sourcebytes":[69,100,105,116,32,76,97,117,110,99,104,32,69,110,116,114,105,101,115],"value":"Edit Launch Entries"},
+{"hash":247757721,"name":"tpagelauncher.menuitemempty.caption","sourcebytes":[40,101,109,112,116,121,41],"value":"(empty)"}
+]}

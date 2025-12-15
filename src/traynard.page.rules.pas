@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, PairSplitter, StdCtrls, ActnList,
-  Traynard.Page, Traynard.Rule, Traynard.Types;
+  Traynard.Page, Traynard.Types;
 
 type
 
@@ -66,20 +66,6 @@ type
     procedure RuleChange(Sender: TObject);
     procedure PairSplitterResize(Sender: TObject);
     procedure PageCloseQuery(Sender: TObject; var CanClose: boolean);
-  type
-    TEditState = (esNone, esOpen, esNew);
-
-    { EFieldInvalid }
-
-    EFieldInvalid = class(Exception)
-    private
-      FTitle: string;
-      FControl: TControl;
-    public
-      constructor Create(const ATitle, AMessage: string; AControl: TControl);
-      property Title: string read FTitle;
-      property Control: TControl read FControl;
-    end;
   private
     FEditState: TEditState;
     FUnsaved: boolean;
@@ -96,6 +82,8 @@ type
     procedure ToggleEditor(AEnabled: boolean);
     procedure ToggleList(const AEnabled, Unselected: boolean);
     procedure LanguageChanged(Sender: TObject);
+    procedure RestoreLabelHotkey;
+    procedure TestHotkey(constref Hotkey: THotkey);
   public
     property Unsaved: boolean read FUnsaved write SetUnsaved;
     property EditState: TEditState read FEditState write SetEditState;
@@ -106,13 +94,10 @@ type
     procedure ClearEditor;
   end;
 
-var
-  VScrollWidth: longint;
-
 implementation
 
 uses
-  Windows, Traynard.Strings, Traynard.Form.Main, Traynard.Helpers, Traynard.Settings, Traynard.Form.Hotkey;
+  Windows, Traynard.Strings, Traynard.Rule, Traynard.Form.Main, Traynard.Helpers, Traynard.Settings, Traynard.Form.Hotkey;
 
 {$R *.lfm}
 
@@ -209,6 +194,28 @@ begin
   end;
   ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
   ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
+end;
+
+procedure TPageRules.RestoreLabelHotkey;
+begin
+  with LabelHotkey do
+  begin
+    Caption := TEXT_BRACKETED_NO_SET;
+    Font.Color := clDefault;
+    ShowHint := False;
+  end;
+end;
+
+procedure TPageRules.TestHotkey(constref Hotkey: THotkey);
+var
+  RuleList: TRules.THotkeyRules;
+begin
+  LabelHotkey.Caption := WinHotkeyToText(Hotkey.Modifiers, Hotkey.Key);
+  if not Rules.Hotkeys.TryGetValue(Hotkey, RuleList) or (RuleList.HotkeyID = HOTKEY_NONE) then
+  begin
+    LabelHotkey.Font.Color := clRed;
+    LabelHotkey.ShowHint := True;
+  end;
 end;
 
 procedure TPageRules.SetEditState(AValue: TEditState);
@@ -341,7 +348,7 @@ begin
   FComboBoxMinimizeToItemIndex := 0;
   CheckGroupTriggerOn.UncheckAll;
   GroupBoxHotkey.Enabled := False;
-  LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
+  RestoreLabelHotkey;
   FHotkey.Value := 0;
   ToggleEditor(True);
 end;
@@ -399,7 +406,7 @@ begin
   else
   begin
     ButtonHotkeyClear.Enabled := True;
-    LabelHotkey.Caption := WinHotkeyToText(Rule.Hotkey.Modifiers, Rule.Hotkey.Key);
+    TestHotkey(Rule.Hotkey);
   end;
   ToggleEditor(True);
 
@@ -516,6 +523,7 @@ begin
 
   ListBoxRules.Items[RuleIndex] := Rule.Name;
   ListBoxRules.ItemIndex := RuleIndex;
+  TestHotkey(Rule.Hotkey);
   Unsaved := False;
 end;
 
@@ -527,6 +535,7 @@ begin
   try
     if (FormHotkey.ShowModal = mrOK) and (FormHotkey.ShortCut <> 0) then
     begin
+      RestoreLabelHotkey;
       FHotkey := FormHotkey.Hotkey;
       LabelHotkey.Caption := WinHotkeyToText(FHotkey.Modifiers, FHotkey.Key);
       ButtonHotkeyClear.Enabled := True;
@@ -540,10 +549,10 @@ end;
 procedure TPageRules.ButtonHotkeyClearClick(Sender: TObject);
 begin
   if FHotkey.Value = 0 then Exit;
-  LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
+  RestoreLabelHotkey;
   FHotkey.Value := 0;
-  ButtonHotkeyClear.Enabled := False;
   RuleChange(Sender);
+  ButtonHotkeyClear.Enabled := False;
 end;
 
 procedure TPageRules.CheckItemClick(Sender: TObject; Index: integer);
@@ -598,19 +607,6 @@ begin
   end;
   Unsaved := True;
 end;
-
-{ TPageRules.EFieldInvalid }
-
-constructor TPageRules.EFieldInvalid.Create(const ATitle, AMessage: string; AControl: TControl);
-begin
-  inherited Create(AMessage);
-  FTitle := ATitle;
-  FControl := AControl;
-end;
-
-initialization
-
-VScrollWidth := GetSystemMetrics(SM_CXVSCROLL) + 10;
 
 end.
 

@@ -21,14 +21,15 @@ type
     FOriginalWindowProc: TWndMethod;
     FHotkeys: array of THotkeyInfo;
     function GetHotkey(HotkeyID: longint): THotkeyInfo;
-    procedure HandleRuleHotkey(const HotkeyID: longint);
+    procedure DispatchHotkey(const HotkeyID: longint);
     procedure WindowProc(var TheMessage: TLMessage);
     procedure RegisterSettingsHotkeys;
     procedure SettingsHotkeyChanged(Sender: TObject);
     procedure RegisterRuleHotkeys;
+    procedure RegisterLauncherHotkeys;
   protected
-    procedure RuleHotkeyAdded(const AHotkey: THotkey; out HotkeyID: longint);
-    procedure RuleHotkeyRemoved(const HotkeyID: longint);
+    procedure HotkeyAdded(const AHotkey: THotkey; out HotkeyID: longint);
+    procedure HotkeyRemoved(const HotkeyID: longint);
   public
     constructor Create(AOwner: TComponent); override;
     property Hotkey[HotkeyID: longint]: THotkeyInfo read GetHotkey;
@@ -43,26 +44,9 @@ var
 implementation
 
 uses
-  Windows, Traynard.Window, Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Form.Main;
+  Windows, Traynard.Window, Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Launcher, Traynard.Form.Main;
 
 { THotkeyManager }
-
-procedure THotkeyManager.HandleRuleHotkey(const HotkeyID: longint);
-var
-  Rule: TRule;
-  Window: TWindow;
-begin
-  if not Settings.ApplyRules or (HotkeyID >= Length(FHotkeys)) then Exit;
-
-  for Rule in Rules.Filter(FHotkeys[HotkeyID].Hotkey) do
-  begin
-    for Window in WindowManager.Desktop do
-    begin
-      if Rules.Match(Window, Rule) then
-        WindowManager.TryMinimizeWindow(Window.Handle, Rule.Position);
-    end;
-  end;
-end;
 
 procedure THotkeyManager.WindowProc(var TheMessage: TLMessage);
 var
@@ -115,7 +99,7 @@ begin
       Ord(hiToggleRules):
         Settings.ApplyRules := not Settings.ApplyRules;
     else
-      HandleRuleHotkey(HotkeyID);
+      DispatchHotkey(HotkeyID);
     end;
   end
   else
@@ -125,6 +109,34 @@ end;
 function THotkeyManager.GetHotkey(HotkeyID: longint): THotkeyInfo;
 begin
   Result := FHotkeys[HotkeyID];
+end;
+
+procedure THotkeyManager.DispatchHotkey(const HotkeyID: longint);
+var
+  TheHotkey: THotkey;
+  Window: TWindow;
+  Rule: TRule;
+  HotkeyLauncherEntry: TLauncher.THotkeyEntry;
+begin
+  if HotkeyID >= Length(FHotkeys) then Exit;
+
+  TheHotkey := FHotkeys[HotkeyID].Hotkey;
+  if Launcher.Hotkeys.TryGetValue(TheHotkey, HotkeyLauncherEntry) then
+  begin
+    if Settings.EnableLauncher then
+      Launcher.TryLaunch(HotkeyLauncherEntry.Name);
+  end
+  else if Settings.ApplyRules then
+  begin
+    for Rule in Rules.Filter(TheHotkey) do
+    begin
+      for Window in WindowManager.Desktop do
+      begin
+        if Rules.Match(Window, Rule) then
+          WindowManager.TryMinimizeWindow(Window.Handle, Rule.Position);
+      end;
+    end;
+  end;
 end;
 
 procedure THotkeyManager.RegisterSettingsHotkeys;
@@ -173,12 +185,24 @@ begin
   end;
 end;
 
-procedure THotkeyManager.RuleHotkeyAdded(const AHotkey: THotkey; out HotkeyID: longint);
+procedure THotkeyManager.RegisterLauncherHotkeys;
+var
+  HotkeyPair: TLauncher.THotkeyPair;
+  HotkeyID: longint;
 begin
-  Register(AHotkey, HotkeyID);
+  for HotkeyPair in Launcher.Hotkeys do
+  begin
+    if Register(HotkeyPair.Key, HotkeyID) then
+      HotkeyPair.Value.HotkeyID := HotkeyID;
+  end;
 end;
 
-procedure THotkeyManager.RuleHotkeyRemoved(const HotkeyID: longint);
+procedure THotkeyManager.HotkeyAdded(const AHotkey: THotkey; out HotkeyID: longint);
+begin
+  if not Register(AHotkey, HotkeyID) then HotkeyID := HOTKEY_NONE;
+end;
+
+procedure THotkeyManager.HotkeyRemoved(const HotkeyID: longint);
 begin
   Unregister(HotkeyID);
 end;
@@ -203,8 +227,11 @@ begin
   RegisterSettingsHotkeys;
   Settings.AddListener(siHotkey, @SettingsHotkeyChanged);
   RegisterRuleHotkeys;
-  Rules.OnHotkeyAddedNotify := @RuleHotkeyAdded;
-  Rules.OnHotkeyRemovedNotify := @RuleHotkeyRemoved;
+  Rules.OnHotkeyAddedNotify := @HotkeyAdded;
+  Rules.OnHotkeyRemovedNotify := @HotkeyRemoved;
+  RegisterLauncherHotkeys;
+  Launcher.OnHotkeyAddedNotify := @HotkeyAdded; 
+  Launcher.OnHotkeyRemovedNotify := @HotkeyRemoved;
 end;
 
 function THotkeyManager.TestHotkey(const AHotkey: THotkey): boolean;
@@ -216,11 +243,15 @@ end;
 function THotkeyManager.Register(const AHotkey: THotkey; out HotkeyID: longint): boolean;
 var
   HotkeyInfo: PHotkeyInfo;
+  NewHotkeyID: longint;
 begin
-  HotkeyID := Length(FHotkeys);
+  NewHotkeyID := Length(FHotkeys);
+
   if (AHotkey.Value = 0) or
-     not RegisterHotkey(FMainForm.Handle, HotkeyID, AHotkey.Modifiers or MOD_NOREPEAT, AHotkey.Key) then
+     not RegisterHotkey(FMainForm.Handle, NewHotkeyID, AHotkey.Modifiers or MOD_NOREPEAT, AHotkey.Key) then
     Exit(False);
+
+  HotkeyID := NewHotkeyID;
   SetLength(FHotkeys, HotkeyID + 1);
   HotkeyInfo := @FHotkeys[HotkeyID];
   HotkeyInfo^.Hotkey := AHotkey;

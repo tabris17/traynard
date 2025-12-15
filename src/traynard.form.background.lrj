@@ -5,5 +5,8 @@
 {"hash":115314332,"name":"tformbackground.actionrestoreall.caption","sourcebytes":[82,101,115,116,111,114,101,32,65,108,108],"value":"Restore All"},
 {"hash":172521431,"name":"tformbackground.actionrestorelast.caption","sourcebytes":[82,101,115,116,111,114,101,32,76,97,115,116,32,87,105,110,100,111,119],"value":"Restore Last Window"},
 {"hash":142943605,"name":"tformbackground.actionautominimize.caption","sourcebytes":[65,117,116,111,45,109,105,110,105,109,105,122,101],"value":"Auto-minimize"},
-{"hash":185718259,"name":"tformbackground.actionapplyrules.caption","sourcebytes":[65,112,112,108,121,32,82,117,108,101,115],"value":"Apply Rules"}
+{"hash":185718259,"name":"tformbackground.actionapplyrules.caption","sourcebytes":[65,112,112,108,121,32,82,117,108,101,115],"value":"Apply Rules"},
+{"hash":79984933,"name":"tformbackground.actionenablelauncher.caption","sourcebytes":[69,110,97,98,108,101],"value":"Enable"},
+{"hash":147102690,"name":"tformbackground.menuitemlaunch.caption","sourcebytes":[76,97,117,110,99,104,101,114],"value":"Launcher"},
+{"hash":247757721,"name":"tformbackground.menuitemempty.caption","sourcebytes":[40,101,109,112,116,121,41],"value":"(empty)"}
 ]}

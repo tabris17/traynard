@@ -117,6 +117,10 @@ const
   KEY_NOTIFICATION = 'notification';
   KEY_POSITION = 'position';
   KEY_HOTKEY = 'hotkey';
+  KEY_SCHEME = 'scheme';
+
+  RULE_SCHEME_DEFAULT = 0;
+  RULE_SCHEME_1 = 1;
 
 implementation
 
@@ -148,9 +152,7 @@ var
   WindowActions: TRuleTriggerOn;
 begin
   WindowActions := [waCreation, waChange];
-  if TriggerOn * WindowActions = [] then
-    Exclude(TriggerOn, waExisting)
-  else
+  if TriggerOn * WindowActions <> [] then
     Include(TriggerOn, waExisting);
 
   if (Name = '') or
@@ -165,6 +167,7 @@ end;
 procedure TRule.Load(const Config: TConfig);
 var
   Value: TTOMLValue;
+  Scheme: integer = RULE_SCHEME_DEFAULT;
 begin
   Name := Config.Items[KEY_NAME].AsString;
 
@@ -204,6 +207,14 @@ begin
   Notification := TRuleNotification(Config.Items[KEY_NOTIFICATION].AsInteger);
   Position := TTrayPosition(Config.Items[KEY_POSITION].AsInteger);
   Hotkey.Value := Config.GetInteger(KEY_HOTKEY, 0);
+
+  if Config.TryGetValue(KEY_SCHEME, Value) then Scheme := Value.AsInteger;
+  if Scheme < RULE_SCHEME_1 then
+  begin
+    { fix `waExisting` issue }
+    Exclude(TriggerOn, TWindowAction(4));
+  end;
+
   Validate;
 end;
 
@@ -230,7 +241,7 @@ begin
   Config.Add(KEY_APP_PATH, Value);
 
   Value := TOMLArray;
-  for WindowAction := Low(TWindowAction) to High(TWindowAction) do
+  for WindowAction := RULE_TRIGGER_ON_BEGIN to RULE_TRIGGER_ON_END do
   begin
     if WindowAction in TriggerOn then
       Value.Add(TOMLInteger(Ord(WindowAction)));
@@ -240,6 +251,7 @@ begin
   Config.Add(KEY_NOTIFICATION, TOMLInteger(Ord(Notification)));
   Config.Add(KEY_POSITION, TOMLInteger(Ord(Position)));
   Config.Add(KEY_HOTKEY, TOMLInteger(Hotkey.Value));
+  Config.Add(KEY_SCHEME, TOMLInteger(RULE_SCHEME_1));
 end;
 
 { TRules }

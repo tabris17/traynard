@@ -120,7 +120,7 @@ type
 
   THotkeyRemovedNotify = procedure(const HotkeyID: longint) of object;
 
-  TWindowAction = (waCreation, waChange, waMinimizing, waHotkey, waExisting);
+  TWindowAction = (waCreation, waChange, waMinimizing, waHotkey, waDeactivated, waExisting);
 
   TRuleTriggerOn = set of TWindowAction;
 
@@ -250,11 +250,15 @@ const
     TEXT_FOLLOW_GLOBAL_SETTINGS
   );
 
-  RULE_TRIGGER_ON: array[waCreation..waHotkey] of string = (
+  RULE_TRIGGER_ON_BEGIN = waCreation;
+  RULE_TRIGGER_ON_END = waDeactivated;
+
+  RULE_TRIGGER_ON: array[RULE_TRIGGER_ON_BEGIN..RULE_TRIGGER_ON_END] of string = (
     TEXT_WINDOW_CREATION,
     TEXT_WINDOW_TITLE_CHANGE,
     TEXT_WINDOW_MINIMIZING,
-    TEXT_HOTKEY
+    TEXT_HOTKEY,
+    TEXT_WINDOW_DEACTIVATED
   );
 
   RULE_COMPARISONS: array[0..5] of string = (TEXT_EQUALS, TEXT_CONTAINS, TEXT_STARTS_WITH, TEXT_ENDS_WITH, TEXT_REGEX_MATCH, TEXT_ANY);

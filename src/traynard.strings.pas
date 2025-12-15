@@ -110,6 +110,7 @@ resourcestring
   TEXT_WINDOW_TITLE_CHANGE = 'Window title change';
   TEXT_WINDOW_MINIMIZING = 'Window minimizing';
   TEXT_HOTKEY = 'Hotkey';
+  TEXT_WINDOW_DEACTIVATED = 'Window deactivated';
   TEXT_BRACKETED_NO_SET = '(no set)';
 
   HOTKEY_MINIMIZE_TO_ICON        = 'Minimize foreground window to tray icon';

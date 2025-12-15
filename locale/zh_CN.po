@@ -1093,6 +1093,10 @@ msgctxt "traynard.strings.text_window_creation"
 msgid "Window creation"
 msgstr "窗口创建"
 
+#: traynard.strings.text_window_deactivated
+msgid "Window deactivated"
+msgstr "窗口失去焦点"
+
 #: traynard.strings.text_window_minimizing
 msgctxt "traynard.strings.text_window_minimizing"
 msgid "Window minimizing"

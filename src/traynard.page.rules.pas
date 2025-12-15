@@ -369,6 +369,7 @@ procedure TPageRules.ActionOpenExecute(Sender: TObject);
 var
   RuleIndex: integer;
   Rule: TRule;
+  WindowAction: TWindowAction;
 begin
   RuleIndex := ListBoxRules.ItemIndex;
   if RuleIndex = -1 then
@@ -392,10 +393,8 @@ begin
   RadioGroupNotification.ItemIndex := Ord(Rule.Notification);
   FComboBoxMinimizeToItemIndex := Ord(Rule.Position);
   ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
-  CheckGroupTriggerOn.Checked[Ord(waCreation)] := waCreation in Rule.TriggerOn;
-  CheckGroupTriggerOn.Checked[Ord(waChange)] := waChange in Rule.TriggerOn;
-  CheckGroupTriggerOn.Checked[Ord(waMinimizing)] := waMinimizing in Rule.TriggerOn;
-  CheckGroupTriggerOn.Checked[Ord(waHotkey)] := waHotkey in Rule.TriggerOn;
+  for WindowAction := RULE_TRIGGER_ON_BEGIN to RULE_TRIGGER_ON_END do
+    CheckGroupTriggerOn.Checked[Ord(WindowAction)] := WindowAction in Rule.TriggerOn;
   GroupBoxHotkey.Enabled := waHotkey in Rule.TriggerOn;
   FHotkey := Rule.Hotkey;
   if Rule.Hotkey.Value = 0 then
@@ -498,7 +497,7 @@ begin
   Rule.AppPath.Comparison := TRuleTextComparison(ComboBoxAppPath.ItemIndex);
   Rule.Notification := TRuleNotification(RadioGroupNotification.ItemIndex);
   Rule.TriggerOn := [];
-  for WindowAction := Low(TWindowAction) to waHotkey do
+  for WindowAction := RULE_TRIGGER_ON_BEGIN to RULE_TRIGGER_ON_END do
   begin
     if CheckGroupTriggerOn.Checked[Ord(WindowAction)] then
       Include(Rule.TriggerOn, WindowAction);

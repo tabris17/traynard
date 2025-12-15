@@ -927,11 +927,26 @@ begin
 end;
 
 procedure TWindowManager.SetActiveWindow(AValue: HWND);
+var
+  Window: TWindow;
+  Rule: TRule;
 begin
   if FActiveWindow = AValue then Exit;
   {$IFDEF DEBUG}
   DebugLn('[SetActiveWindow]: from ', IntToStr(FActiveWindow), ' to ', IntToStr(AValue));
   {$ENDIF}
+
+  if FDesktop.FWindows.TryGetValue(FActiveWindow, Window) then
+  begin
+    // Window.Renew;
+    if Settings.ApplyRules and Rules.Find(Window, Rule, waDeactivated) then
+    begin
+      if TryMinimizeWindow(FActiveWindow, Rule.Position) and
+         ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+    end;
+  end;
+
   FActiveWindow := AValue;
 end;
 

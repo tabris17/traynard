@@ -137,6 +137,10 @@ type
 
   TLaunchMethod = (lmAutomatic, lmManual, lmHotkey);
 
+  TLaunchWindowAction = (lwaCreation, lwaMinimizing, lwaDeactivated);
+
+  TLaunchTriggerOn = set of TLaunchWindowAction;
+
   TLaunchMethods = set of TLaunchMethod;
 
   THandleArray = specialize TArray<HWND>;
@@ -275,6 +279,12 @@ const
     TEXT_AUTOMATIC,
     TEXT_MANUAL,
     TEXT_HOTKEY
+  );
+
+  LAUNCH_TRIGGER_ON: array[lwaCreation..lwaDeactivated] of string = (
+    TEXT_WINDOW_CREATION,
+    TEXT_WINDOW_MINIMIZING,
+    TEXT_WINDOW_DEACTIVATED
   );
 {$ENDIF}
 

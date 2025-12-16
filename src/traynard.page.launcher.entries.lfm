@@ -1,7 +1,7 @@
 inherited PageLauncherEntries: TPageLauncherEntries
-  Height = 600
+  Height = 700
   Width = 600
-  ClientHeight = 600
+  ClientHeight = 700
   ClientWidth = 600
   inherited Header: TToolBar
     Width = 600
@@ -17,7 +17,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
     AnchorSideRight.Control = Owner
     Cursor = crDefault
     Left = 6
-    Height = 521
+    Height = 621
     Top = 40
     Width = 588
     Align = alClient
@@ -29,24 +29,24 @@ inherited PageLauncherEntries: TPageLauncherEntries
     object PairSplitterSideLeft: TPairSplitterSide
       Cursor = crArrow
       Left = 0
-      Height = 521
+      Height = 621
       Top = 0
       Width = 200
       ClientWidth = 200
-      ClientHeight = 521
+      ClientHeight = 621
       object PanelLeft: TPanel
         Left = 0
-        Height = 521
+        Height = 621
         Top = 0
         Width = 200
         Align = alClient
         BevelColor = clActiveBorder
-        ClientHeight = 521
+        ClientHeight = 621
         ClientWidth = 200
         TabOrder = 0
         object ListBoxEntries: TListBox
           Left = 1
-          Height = 519
+          Height = 619
           Top = 1
           Width = 198
           Align = alClient
@@ -60,16 +60,16 @@ inherited PageLauncherEntries: TPageLauncherEntries
     object PairSplitterSideRight: TPairSplitterSide
       Cursor = crArrow
       Left = 205
-      Height = 521
+      Height = 621
       Top = 0
       Width = 383
       ClientWidth = 383
-      ClientHeight = 521
+      ClientHeight = 621
       object PanelWelcome: TPanel
         AnchorSideLeft.Control = PairSplitterSideRight
         AnchorSideRight.Control = PairSplitterSideRight
         Left = 20
-        Height = 521
+        Height = 621
         Top = 0
         Width = 343
         Align = alClient
@@ -82,21 +82,21 @@ inherited PageLauncherEntries: TPageLauncherEntries
       end
       object ScrollBoxEditor: TScrollBox
         Left = 0
-        Height = 521
+        Height = 621
         Top = 0
         Width = 383
         HorzScrollBar.Increment = 24
         HorzScrollBar.Page = 249
         HorzScrollBar.Smooth = True
         HorzScrollBar.Tracking = True
-        VertScrollBar.Increment = 51
-        VertScrollBar.Page = 517
+        VertScrollBar.Increment = 56
+        VertScrollBar.Page = 565
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
         ChildSizing.TopBottomSpacing = 20
-        ClientHeight = 517
-        ClientWidth = 362
+        ClientHeight = 617
+        ClientWidth = 379
         TabOrder = 1
         Visible = False
         object LabelEntryName: TLabel
@@ -119,7 +119,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
           Left = 10
           Height = 25
           Top = 29
-          Width = 342
+          Width = 359
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 10
           BorderSpacing.Top = 2
@@ -151,7 +151,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
           Left = 10
           Height = 25
           Top = 83
-          Width = 342
+          Width = 359
           DialogTitle = 'Select an executable file'
           Filter = 'Executable file|*.exe|All files|*.*'
           FilterIndex = 0
@@ -188,9 +188,9 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideRight.Control = ScrollBoxEditor
           AnchorSideRight.Side = asrBottom
           Left = 10
-          Height = 50
+          Height = 60
           Top = 137
-          Width = 342
+          Width = 359
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 10
           BorderSpacing.Top = 2
@@ -206,7 +206,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideTop.Side = asrBottom
           Left = 10
           Height = 17
-          Top = 197
+          Top = 207
           Width = 110
           BorderSpacing.Left = 10
           BorderSpacing.Top = 10
@@ -220,8 +220,8 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideRight.Side = asrBottom
           Left = 10
           Height = 25
-          Top = 216
-          Width = 342
+          Top = 226
+          Width = 359
           ShowHidden = False
           ButtonOnlyWhenFocused = True
           ButtonWidth = 32
@@ -243,8 +243,8 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideRight.Side = asrBottom
           Left = 10
           Height = 50
-          Top = 251
-          Width = 342
+          Top = 261
+          Width = 359
           Anchors = [akTop, akLeft, akRight]
           AutoFill = True
           AutoSize = True
@@ -267,7 +267,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
           TabOrder = 4
           OnSelectionChanged = EntryChange
         end
-        object CheckGroupMethods: TCheckGroup
+        object CheckGroupTriggerOn: TCheckGroup
           AnchorSideLeft.Control = ScrollBoxEditor
           AnchorSideTop.Control = RadioGroupNotification
           AnchorSideTop.Side = asrBottom
@@ -275,8 +275,40 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideRight.Side = asrBottom
           Left = 10
           Height = 50
-          Top = 311
-          Width = 342
+          Top = 321
+          Width = 359
+          Anchors = [akTop, akLeft, akRight]
+          AutoFill = True
+          AutoSize = True
+          BorderSpacing.Left = 10
+          BorderSpacing.Top = 10
+          BorderSpacing.Right = 10
+          Caption = 'Trigger On'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 3
+          Columns = 3
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
+          TabOrder = 5
+          OnItemClick = CheckItemClick
+        end
+        object CheckGroupMethods: TCheckGroup
+          AnchorSideLeft.Control = ScrollBoxEditor
+          AnchorSideTop.Control = CheckGroupTriggerOn
+          AnchorSideTop.Side = asrBottom
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 50
+          Top = 381
+          Width = 359
           Anchors = [akTop, akLeft, akRight]
           AutoFill = True
           AutoSize = True
@@ -296,7 +328,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
           Columns = 3
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
-          TabOrder = 5
+          TabOrder = 6
           OnItemClick = CheckItemClick
         end
         object GroupBoxHotkey: TGroupBox
@@ -307,8 +339,8 @@ inherited PageLauncherEntries: TPageLauncherEntries
           AnchorSideRight.Side = asrBottom
           Left = 10
           Height = 69
-          Top = 371
-          Width = 342
+          Top = 441
+          Width = 359
           Anchors = [akTop, akLeft, akRight]
           AutoSize = True
           BorderSpacing.Left = 10
@@ -319,11 +351,11 @@ inherited PageLauncherEntries: TPageLauncherEntries
           ChildSizing.TopBottomSpacing = 10
           ChildSizing.VerticalSpacing = 5
           ClientHeight = 47
-          ClientWidth = 338
+          ClientWidth = 355
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
           Enabled = False
-          TabOrder = 6
+          TabOrder = 7
           object LabelHotkey: TLabel
             AnchorSideTop.Control = ButtonHotkeyBind
             AnchorSideTop.Side = asrCenter
@@ -367,27 +399,13 @@ inherited PageLauncherEntries: TPageLauncherEntries
             OnClick = ButtonHotkeyClearClick
           end
         end
-        object CheckBoxShowWindow: TCheckBox
-          AnchorSideLeft.Control = ScrollBoxEditor
-          AnchorSideTop.Control = GroupBoxHotkey
-          AnchorSideTop.Side = asrBottom
-          Left = 10
-          Height = 21
-          Top = 450
-          Width = 157
-          BorderSpacing.Left = 10
-          BorderSpacing.Top = 10
-          Caption = 'Show window on launch'
-          TabOrder = 7
-          OnChange = EntryChange
-        end
         object LabelMinimizeTo: TLabel
           AnchorSideLeft.Control = ScrollBoxEditor
           AnchorSideTop.Control = ComboBoxMinimizeTo
           AnchorSideTop.Side = asrCenter
           Left = 10
           Height = 17
-          Top = 485
+          Top = 524
           Width = 75
           BorderSpacing.Left = 10
           Caption = 'Minimize to: '
@@ -395,11 +413,11 @@ inherited PageLauncherEntries: TPageLauncherEntries
         object ComboBoxMinimizeTo: TComboBox
           AnchorSideLeft.Control = LabelMinimizeTo
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = CheckBoxShowWindow
+          AnchorSideTop.Control = GroupBoxHotkey
           AnchorSideTop.Side = asrBottom
           Left = 90
           Height = 25
-          Top = 481
+          Top = 520
           Width = 100
           BorderSpacing.Left = 5
           BorderSpacing.Top = 10
@@ -414,7 +432,7 @@ inherited PageLauncherEntries: TPageLauncherEntries
   object ButtonPanel: TPanel[2]
     Left = 6
     Height = 27
-    Top = 567
+    Top = 667
     Width = 588
     Align = alBottom
     BorderSpacing.Around = 6

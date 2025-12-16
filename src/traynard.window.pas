@@ -811,7 +811,9 @@ begin
          ShouldNotify(Rule.Notification, False) then
         NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end
-    else if Settings.EnableLauncher and Launcher.Find(Window, LaunchEntry) and not LaunchEntry.ShowWindow then
+    else if Settings.EnableLauncher and
+            Launcher.Find(Window, LaunchEntry) and
+            (lwaCreation in LaunchEntry.TriggerOn) then
     begin
       if TryMinimizeWindow(Handle, LaunchEntry.Position) and
          ShouldNotify(LaunchEntry.Notification, False) then
@@ -930,6 +932,7 @@ procedure TWindowManager.SetActiveWindow(AValue: HWND);
 var
   Window: TWindow;
   Rule: TRule;
+  LaunchEntry: TLaunchEntry;
 begin
   if FActiveWindow = AValue then Exit;
   {$IFDEF DEBUG}
@@ -943,6 +946,14 @@ begin
     begin
       if TryMinimizeWindow(FActiveWindow, Rule.Position) and
          ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
+        NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
+    end
+    else if Settings.EnableLauncher and
+            Launcher.Find(Window, LaunchEntry) and
+            (lwaDeactivated in LaunchEntry.TriggerOn) then
+    begin
+      if TryMinimizeWindow(FActiveWindow, LaunchEntry.Position) and
+         ShouldNotify(LaunchEntry.Notification, (Window as TDesktopWindow).Restored) then
         NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
     end;
   end;
@@ -993,7 +1004,9 @@ begin
              ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then
             NotificationManager.Notify(MSG_WINDOW_MINIMIZED, Window.Text);
         end
-        else if Settings.EnableLauncher and Launcher.Find(Window, LaunchEntry) then
+        else if Settings.EnableLauncher and
+                Launcher.Find(Window, LaunchEntry) and
+                (lwaMinimizing in LaunchEntry.TriggerOn) then
         begin
           if FSelf.TryMinimizeWindow(hwnd, LaunchEntry.Position) and
              ShouldNotify(LaunchEntry.Notification, (Window as TDesktopWindow).Restored) then

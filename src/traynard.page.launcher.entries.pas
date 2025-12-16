@@ -29,7 +29,7 @@ type
     ButtonPanel: TPanel;
     ButtonDelete: TButton;
     ButtonClose: TButton;
-    CheckBoxShowWindow: TCheckBox;
+    CheckGroupTriggerOn: TCheckGroup;
     CheckGroupMethods: TCheckGroup;
     ComboBoxMinimizeTo: TComboBox;
     EditEntryName: TEdit;
@@ -172,8 +172,8 @@ begin
   WorkingDirectoryEdit.Enabled := AEnabled;
   RadioGroupNotification.Enabled := AEnabled;
   CheckGroupMethods.Enabled := AEnabled;
-  CheckBoxShowWindow.Enabled := AEnabled;
   ComboBoxMinimizeTo.Enabled := AEnabled;
+  CheckGroupTriggerOn.Enabled := AEnabled;
 end;
 
 procedure TPageLauncherEntries.ToggleList(const AEnabled, Unselected: boolean);
@@ -197,6 +197,8 @@ begin
     RadioGroupNotification.Items[i] := RULE_NOTIFICATIONS[TRuleNotification(i)];
   for i := 0 to CheckGroupMethods.Items.Count - 1 do
     CheckGroupMethods.Items[i] := LAUNCH_METHODS[TLaunchMethod(i)];
+  for i := 0 to CheckGroupTriggerOn.Items.Count - 1 do
+    CheckGroupTriggerOn.Items[i] := LAUNCH_TRIGGER_ON[TLaunchWindowAction(i)];
 
   ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
 
@@ -254,12 +256,13 @@ begin
   FHotkey.Value := 0;
   ComboBoxMinimizeTo.ItemIndex := 0;
   FComboBoxMinimizeToItemIndex := 0;
+  CheckGroupTriggerOn.UncheckAll;
   ToggleEditor(True);
 end;
 
 procedure TPageLauncherEntries.Initialize;
 var
-  EntryNotification, LaunchMethod, ComboBoxItem: string;
+  EntryNotification, LaunchMethod, WindowAction, ComboBoxItem: string;
   ComboBoxMaxWidth, ComboBoxItemWidth: Integer;
   Entry: TLaunchEntry;
 begin
@@ -270,6 +273,8 @@ begin
 
   for EntryNotification in RULE_NOTIFICATIONS do
     RadioGroupNotification.Items.Add(EntryNotification);
+  for WindowAction in LAUNCH_TRIGGER_ON do
+    CheckGroupTriggerOn.Items.Add(WindowAction);
   for LaunchMethod in LAUNCH_METHODS do
     CheckGroupMethods.Items.Add(LaunchMethod);
 
@@ -340,6 +345,7 @@ var
   Entry: TLaunchEntry;
   EntryIndex: SizeInt;
   LaunchMethod: TLaunchMethod;
+  WindowAction: TLaunchWindowAction;
 begin
   try
     if EditEntryName.Text = '' then
@@ -352,6 +358,8 @@ begin
       raise EFieldInvalid.Create(CheckGroupMethods.Caption, MSG_LAUNCHER_ENTRY_LAUNCH_METHODS_REQUIRED, CheckGroupMethods);
     if RadioGroupNotification.ItemIndex = -1 then
       raise EFieldInvalid.Create(RadioGroupNotification.Caption, MSG_RULE_NOTIFICATION_REQUIRED, RadioGroupNotification);
+    if CheckGroupTriggerOn.IsAllUnchecked then
+      raise EFieldInvalid.Create(CheckGroupTriggerOn.Caption, MSG_RULE_TRIGGER_ON_REQUIRED, CheckGroupTriggerOn);
   except
     on Exc: EFieldInvalid do
     begin
@@ -372,13 +380,18 @@ begin
   Entry.Arguments := MemoArguments.Text;
   Entry.WorkingDirectory := WorkingDirectoryEdit.Text;
   Entry.Notification := TRuleNotification(RadioGroupNotification.ItemIndex);
+  Entry.TriggerOn := [];
+  for WindowAction := Low(TLaunchWindowAction) to High(TLaunchWindowAction) do
+  begin
+    if CheckGroupTriggerOn.Checked[Ord(WindowAction)] then
+      Include(Entry.TriggerOn, WindowAction);
+  end;
   Entry.LaunchMethods := [];
   for LaunchMethod := Low(TLaunchMethod) to High(TLaunchMethod) do
   begin
     if CheckGroupMethods.Checked[Ord(LaunchMethod)] then
       Include(Entry.LaunchMethods, LaunchMethod);
   end;
-  Entry.ShowWindow := CheckBoxShowWindow.Checked;
   Entry.Position := TTrayPosition(ComboBoxMinimizeTo.ItemIndex);
   Entry.Hotkey := FHotkey;
 
@@ -445,6 +458,8 @@ procedure TPageLauncherEntries.ActionOpenExecute(Sender: TObject);
 var
   EntryIndex: integer;
   Entry: TLaunchEntry;
+  WindowAction: TLaunchWindowAction;
+  LaunchMethod: TLaunchMethod;
 begin
   EntryIndex := ListBoxEntries.ItemIndex;
   if EntryIndex = -1 then
@@ -462,9 +477,10 @@ begin
   RadioGroupNotification.ItemIndex := Ord(Entry.Notification);
   FComboBoxMinimizeToItemIndex := Ord(Entry.Position);
   ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
-  CheckGroupMethods.Checked[Ord(lmAutomatic)] := lmAutomatic in Entry.LaunchMethods;
-  CheckGroupMethods.Checked[Ord(lmManual)] := lmManual in Entry.LaunchMethods;
-  CheckGroupMethods.Checked[Ord(lmHotkey)] := lmHotkey in Entry.LaunchMethods;
+  for LaunchMethod in TLaunchMethods do
+    CheckGroupMethods.Checked[Ord(LaunchMethod)] := LaunchMethod in Entry.LaunchMethods;
+  for WindowAction in TLaunchWindowAction do
+    CheckGroupTriggerOn.Checked[Ord(WindowAction)] := WindowAction in Entry.TriggerOn;
   GroupBoxHotkey.Enabled := lmHotkey in Entry.LaunchMethods;
   FHotkey := Entry.Hotkey;
   if Entry.Hotkey.Value = 0 then
@@ -477,7 +493,6 @@ begin
     ButtonHotkeyClear.Enabled := True;
     TestHotkey(Entry.Hotkey);
   end;
-  CheckBoxShowWindow.Checked := Entry.ShowWindow;
   ToggleEditor(True);
 
   if EditState = esNone then

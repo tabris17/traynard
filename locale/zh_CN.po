@@ -400,15 +400,15 @@ msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
 msgid "Clear"
 msgstr "清除"
 
-#: tpagelauncherentries.checkboxshowwindow.caption
-msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
-msgid "Show window on launch"
-msgstr "启动时显示窗口"
-
 #: tpagelauncherentries.checkgroupmethods.caption
 msgctxt "tpagelauncherentries.checkgroupmethods.caption"
 msgid "Launch Methods"
 msgstr "启动方法"
+
+#: tpagelauncherentries.checkgrouptriggeron.caption
+msgctxt "tpagelauncherentries.checkgrouptriggeron.caption"
+msgid "Trigger On"
+msgstr "触发条件"
 
 #: tpagelauncherentries.editentryname.texthint
 msgctxt "tpagelauncherentries.editentryname.texthint"
@@ -625,6 +625,7 @@ msgid "Clear"
 msgstr "清除"
 
 #: tpagerules.checkgrouptriggeron.caption
+msgctxt "tpagerules.checkgrouptriggeron.caption"
 msgid "Trigger On"
 msgstr "触发条件"
 
@@ -1110,6 +1111,10 @@ msgstr "窗口标题改变"
 #: traynard.strings.text_yes
 msgid "Yes"
 msgstr "是"
+
+#~ msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
+#~ msgid "Show window on launch"
+#~ msgstr "启动时显示窗口"
 
 #~ msgctxt "tpagelauncherentries.actionlauncher.caption"
 #~ msgid "Launcher"

@@ -19,9 +19,9 @@ type
     Arguments: string;
     WorkingDirectory: string;
     Notification: TRuleNotification;
+    TriggerOn: TLaunchTriggerOn;
     LaunchMethods: TLaunchMethods;
     Hotkey: THotkey;
-    ShowWindow: boolean;
     Position: TTrayPosition;
 
     procedure Validate;
@@ -151,9 +151,9 @@ const
   KEY_ARGUMENTS = 'arguments';
   KEY_WORKING_DIRECTORY = 'working_directory';
   KEY_LAUNCH_METHODS = 'launch_methods';
-  KEY_NOTIFICATION = 'notification'; 
+  KEY_NOTIFICATION = 'notification';
+  KEY_TRIGGER_ON = 'trigger_on';
   KEY_HOTKEY = 'hotkey';
-  KEY_SHOW_WINDOW = 'show_window';
   KEY_POSITION = 'position';
 
   MAX_WAIT_PROCESSES = 100;
@@ -195,8 +195,13 @@ begin
     Include(LaunchMethods, TLaunchMethod(Value.AsInteger));
   end;
 
+  TriggerOn := [];
+  for Value in Config.Items[KEY_TRIGGER_ON].AsArray.Items do
+  begin
+    Include(TriggerOn, TLaunchWindowAction(Value.AsInteger));
+  end;
+
   Hotkey.Value := Config.GetInteger(KEY_HOTKEY, 0);
-  ShowWindow := Config.GetBoolean(KEY_SHOW_WINDOW, False);
   Position := TTrayPosition(Config.Items[KEY_POSITION].AsInteger);
   Validate;
 end;
@@ -205,6 +210,7 @@ procedure TLaunchEntry.Save(const Config: TConfig);
 var
   Value: TTOMLArray;
   LaunchMethod: TLaunchMethod;
+  WindowAction: TLaunchWindowAction;
 begin
   Config.Add(KEY_NAME, TOMLString(Name));
   Config.Add(KEY_APPLICATION, TOMLString(Application));
@@ -220,8 +226,15 @@ begin
   end;
   Config.Add(KEY_LAUNCH_METHODS, Value);
 
+  Value := TOMLArray;
+  for WindowAction := Low(TLaunchWindowAction) to High(TLaunchWindowAction) do
+  begin
+    if WindowAction in TriggerOn then
+      Value.Add(TOMLInteger(Ord(WindowAction)));
+  end;
+  Config.Add(KEY_TRIGGER_ON, Value);
+
   Config.Add(KEY_HOTKEY, TOMLInteger(Hotkey.Value));
-  Config.Add(KEY_SHOW_WINDOW, TOMLBoolean(ShowWindow));
   Config.Add(KEY_POSITION, TOMLInteger(Ord(Position)));
 end;
 

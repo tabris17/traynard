@@ -399,14 +399,14 @@ msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
 msgid "Clear"
 msgstr ""
 
-#: tpagelauncherentries.checkboxshowwindow.caption
-msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
-msgid "Show window on launch"
-msgstr ""
-
 #: tpagelauncherentries.checkgroupmethods.caption
 msgctxt "tpagelauncherentries.checkgroupmethods.caption"
 msgid "Launch Methods"
+msgstr ""
+
+#: tpagelauncherentries.checkgrouptriggeron.caption
+msgctxt "tpagelauncherentries.checkgrouptriggeron.caption"
+msgid "Trigger On"
 msgstr ""
 
 #: tpagelauncherentries.editentryname.texthint
@@ -620,6 +620,7 @@ msgid "Clear"
 msgstr ""
 
 #: tpagerules.checkgrouptriggeron.caption
+msgctxt "tpagerules.checkgrouptriggeron.caption"
 msgid "Trigger On"
 msgstr ""
 

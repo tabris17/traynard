@@ -117,10 +117,10 @@ const
   KEY_NOTIFICATION = 'notification';
   KEY_POSITION = 'position';
   KEY_HOTKEY = 'hotkey';
-  KEY_SCHEME = 'scheme';
+  KEY_SCHEMA = 'schema';
 
-  RULE_SCHEME_DEFAULT = 0;
-  RULE_SCHEME_1 = 1;
+  RULE_SCHEMA_DEFAULT = 0;
+  RULE_SCHEMA_V1 = 1;
 
 implementation
 
@@ -167,7 +167,7 @@ end;
 procedure TRule.Load(const Config: TConfig);
 var
   Value: TTOMLValue;
-  Scheme: integer = RULE_SCHEME_DEFAULT;
+  Schema: integer = RULE_SCHEMA_DEFAULT;
 begin
   Name := Config.Items[KEY_NAME].AsString;
 
@@ -208,8 +208,8 @@ begin
   Position := TTrayPosition(Config.Items[KEY_POSITION].AsInteger);
   Hotkey.Value := Config.GetInteger(KEY_HOTKEY, 0);
 
-  if Config.TryGetValue(KEY_SCHEME, Value) then Scheme := Value.AsInteger;
-  if Scheme < RULE_SCHEME_1 then
+  if Config.TryGetValue(KEY_SCHEMA, Value) then Schema := Value.AsInteger;
+  if Schema < RULE_SCHEMA_V1 then
   begin
     { fix `waExisting` issue }
     Exclude(TriggerOn, TWindowAction(4));
@@ -251,7 +251,7 @@ begin
   Config.Add(KEY_NOTIFICATION, TOMLInteger(Ord(Notification)));
   Config.Add(KEY_POSITION, TOMLInteger(Ord(Position)));
   Config.Add(KEY_HOTKEY, TOMLInteger(Hotkey.Value));
-  Config.Add(KEY_SCHEME, TOMLInteger(RULE_SCHEME_1));
+  Config.Add(KEY_SCHEMA, TOMLInteger(RULE_SCHEMA_V1));
 end;
 
 { TRules }

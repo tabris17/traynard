@@ -1,0 +1,16 @@
+object FormHighlight: TFormHighlight
+  Left = 0
+  Height = 400
+  Top = 0
+  Width = 600
+  BorderStyle = bsNone
+  Enabled = False
+  Position = poDefault
+  OnShow = Track
+  object Timer: TTimer
+    Interval = 100
+    OnTimer = Track
+    Left = 148
+    Top = 62
+  end
+end

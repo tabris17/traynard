@@ -148,6 +148,7 @@ type
     FOriginalWindowProc: TWndMethod;
     FAutoMinimizeWindows: specialize TDictionary<HWND, TTrayPosition>;
     FRestoredWindows: specialize TList<HWND>;
+    FTopmostWindows: specialize TObjectDictionary<HWND, TForm>;
     FActiveWindow: HWND;
     function GetAutoMinimize: boolean;
     procedure SetAutoMinimize(AValue: boolean);
@@ -161,6 +162,7 @@ type
     procedure AutoMinimizeChanged(Sender: TObject);
     procedure SystemMenuItemsChanged(Sender: TObject);
     procedure LanguageChanged(Sender: TObject);
+    procedure HighlightTopmostChanged(Sender: TObject);
     procedure TrayChanged;
     function FindWindowOnDesktop(Handle: HWND): TWindow;
     function AddWindow(const Handle: HWND): boolean;
@@ -188,6 +190,7 @@ type
     procedure MinimizeWindow(const Handle: HWND; const Position: TTrayPosition; out Window: TWindow);
     procedure MinimizeWindow(const Handle: HWND; const Position: TTrayPosition); overload;
     procedure RestoreWindow(const Handle: HWND);
+    procedure SetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean);
     function TryRestoreAllWindows: integer;
     function IsAutoMinimizeWindow(const Handle: HWND; out TrayPosition: TTrayPosition): boolean;
     function IsAutoMinimizeWindow(const Handle: HWND): boolean; overload;
@@ -204,7 +207,8 @@ implementation
 
 uses
   LazLogger, LazFileUtils, JwaPsApi, DwmApi, Graphics,
-  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification, Traynard.Session, Traynard.Launcher;
+  Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification,
+  Traynard.Session, Traynard.Launcher, Traynard.Form.Highlight;
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
@@ -737,6 +741,22 @@ begin
   SetSystemMenuLanguage;
 end;
 
+procedure TWindowManager.HighlightTopmostChanged(Sender: TObject);
+var
+  Window: HWND;
+begin
+  if (Sender as TSettings).HighlightTopmost then
+  begin
+    for Window in FTopmostWindows.Keys do
+      FTopmostWindows[Window] := TFormHighlight.Create(Window);
+  end
+  else
+  begin
+    for Window in FTopmostWindows.Keys do
+      FTopmostWindows[Window] := nil;
+  end;
+end;
+
 procedure TWindowManager.TrayChanged;
 begin
   Session.Handles := specialize IfThen<THandleArray>(Assigned(FTray), FTray.FWindows.Keys.ToArray, []);
@@ -1018,6 +1038,7 @@ begin
     begin
       FSelf.FAutoMinimizeWindows.Remove(hwnd);
       FSelf.FRestoredWindows.Remove(hwnd);
+      FSelf.FTopmostWindows.Remove(hwnd);
     end;
   end;
 end;
@@ -1033,6 +1054,7 @@ begin
   FCurrentPID := DWORD(GetProcessID);
   FAutoMinimizeWindows := specialize TDictionary<HWND, TTrayPosition>.Create;
   FRestoredWindows := specialize TList<HWND>.Create;
+  FTopmostWindows := specialize TObjectDictionary<HWND, TForm>.Create([doOwnsValues]);
   FDesktop := TDesktopWindowCollection.Create;
   FTray := TTrayWindowCollection.Create;
   FSystemMenuItems := [];
@@ -1099,6 +1121,8 @@ begin
   end;
 
   FActiveWindow := 0;
+                                                                               
+  Settings.AddListener(siHighlightTopmost, @HighlightTopmostChanged);
 end;
 
 destructor TWindowManager.Destroy;
@@ -1120,6 +1144,7 @@ begin
   FreeAndNil(FTray);
   FreeAndNil(FAutoMinimizeWindows);
   FreeAndNil(FRestoredWindows);
+  FreeAndNil(FTopmostWindows);
   inherited Destroy;
 end;
 
@@ -1207,6 +1232,19 @@ begin
   end;
 
   if not FRestoredWindows.Contains(Handle) then FRestoredWindows.Add(Handle);
+end;
+
+procedure TWindowManager.SetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean);
+begin
+  if not SetWindowPos(Handle,
+                      specialize IfThen<HWND>(IsTopmost, HWND_TOPMOST, HWND_NOTOPMOST),
+                      0, 0, 0, 0,
+                      SWP_NOMOVE or SWP_NOSIZE) then
+    raise Exception.Create(GetLastErrorMsg);
+  if IsTopmost then
+    FTopmostWindows.TryAdd(Handle, specialize IfThen<TForm>(IsTopmost, TFormHighlight.Create(Handle), nil))
+  else
+    FTopmostWindows.Remove(Handle);
 end;
 
 function TWindowManager.TryRestoreAllWindows: integer;

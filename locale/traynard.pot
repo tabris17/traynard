@@ -59,6 +59,10 @@ msgctxt "tformbackground.menuitemlaunch.caption"
 msgid "Launcher"
 msgstr ""
 
+#: tformhighlight.caption
+msgid "FormHighlight"
+msgstr ""
+
 #: tformhotkey.buttoncancel.caption
 msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
@@ -523,6 +527,11 @@ msgstr ""
 msgid "Autorun at system startup"
 msgstr ""
 
+#: tpageoptions.checkboxhighlight.caption
+msgctxt "tpageoptions.checkboxhighlight.caption"
+msgid "Show a border around the window marked as \"Always on Top\""
+msgstr ""
+
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
 msgstr ""
@@ -551,6 +560,10 @@ msgstr ""
 msgid "Window System Menu"
 msgstr ""
 
+#: tpageoptions.colordialog.title
+msgid "Select Border Color"
+msgstr ""
+
 #: tpageoptions.dividerbeveladvanced.caption
 msgid "Advanced"
 msgstr ""
@@ -566,6 +579,15 @@ msgstr ""
 
 #: tpageoptions.labelconfigdir.caption
 msgid "Config directory"
+msgstr ""
+
+#: tpageoptions.labelhighlightcolor.caption
+msgctxt "tpageoptions.labelhighlightcolor.caption"
+msgid "Color:"
+msgstr ""
+
+#: tpageoptions.labelhighlightthickness.caption
+msgid "Thickness:"
 msgstr ""
 
 #: tpageoptions.labellanguage.caption

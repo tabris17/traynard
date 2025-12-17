@@ -10,7 +10,6 @@ object FormMain: TFormMain
   Constraints.MinWidth = 640
   Position = poDesktopCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '4.4.0.0'
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate

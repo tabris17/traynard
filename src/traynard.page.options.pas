@@ -5,7 +5,7 @@ unit Traynard.Page.Options;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls, StdCtrls, Menus, ActnList, DividerBevel,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, ComCtrls, StdCtrls, Menus, ActnList, Spin, DividerBevel,
   Traynard.Page, Traynard.Types;
 
 type
@@ -29,6 +29,7 @@ type
     ButtonHotkeyReset: TButton;
     ButtonApplyLanguage: TButton;
     ButtonRefreshLanguage: TButton;
+    CheckBoxHighlight: TCheckBox;
     CheckBoxLauncher: TCheckBox;
     CheckBoxRuleOnStartup: TCheckBox;
     CheckBoxUseRules: TCheckBox;
@@ -38,11 +39,15 @@ type
     CheckBoxNotification: TCheckBox;
     CheckBoxAutorun: TCheckBox;
     CheckGroupSystemMenu: TCheckGroup;
+    ColorButtonHighlight: TColorButton;
+    ColorDialog: TColorDialog;
     ComboBoxLanguages: TComboBox;
     DividerBevelGeneral: TDividerBevel;
     DividerBevelHotkey: TDividerBevel;
     DividerBevelAdvanced: TDividerBevel;
     EditConfigDir: TEdit;
+    LabelHighlightColor: TLabel;
+    LabelHighlightThickness: TLabel;
     LabelConfigDir: TLabel;
     LabelLanguage: TLabel;
     ListViewHotkeys: TListView;
@@ -50,7 +55,9 @@ type
     MenuItemModify: TMenuItem;
     MenuItemClear: TMenuItem;
     HotkeyMenu: TPopupMenu;
+    PanelHighlight: TPanel;
     PanelConfigDir: TPanel;
+    SpinEditHighlightThickness: TSpinEdit;
     procedure ActionConfigDirExecute(Sender: TObject);
     procedure ActionHotkeyClearExecute(Sender: TObject);
     procedure ActionHotkeyBindExecute(Sender: TObject);
@@ -62,6 +69,7 @@ type
     procedure ButtonEditRulesClick(Sender: TObject);
     procedure CheckBoxAutoMinimizeChange(Sender: TObject);
     procedure CheckBoxAutorunChange(Sender: TObject);
+    procedure CheckBoxHighlightChange(Sender: TObject);
     procedure CheckBoxIconGroupedChange(Sender: TObject);
     procedure CheckBoxLauncherChange(Sender: TObject);
     procedure CheckBoxMenuGroupedChange(Sender: TObject);
@@ -69,9 +77,11 @@ type
     procedure CheckBoxRuleOnStartupChange(Sender: TObject);
     procedure CheckBoxUseRulesChange(Sender: TObject);
     procedure CheckGroupSystemMenuItemClick(Sender: TObject; Index: integer);
+    procedure ColorButtonHighlightColorChanged(Sender: TObject);
     procedure ComboBoxLanguagesChange(Sender: TObject);
     procedure ListViewHotkeysDblClick(Sender: TObject);
     procedure ListViewHotkeysSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+    procedure SpinEditHighlightThicknessChange(Sender: TObject);
   public
     procedure Initialize; override;
     procedure Finalize; override;
@@ -89,6 +99,9 @@ type
     procedure RuleOnStartupChanged(Sender: TObject);
     procedure HotkeyChanged(Sender: TObject);
     procedure LanguageChanged(Sender: TObject);
+    procedure HighlightTopmostChanged(Sender: TObject);
+    procedure HighlightTopmostColorChanged(Sender: TObject);
+    procedure HighlightTopmostThicknessChanged(Sender: TObject);
   end;
 
 implementation
@@ -107,6 +120,11 @@ begin
   ActionHotkeyBind.Enabled := Selected;
   ActionHotkeyClear.Enabled := Selected;
   ActionHotkeyReset.Enabled := Selected;
+end;
+
+procedure TPageOptions.SpinEditHighlightThicknessChange(Sender: TObject);
+begin
+  Settings.HighlightTopmostThickness := Byte((Sender as TSpinEdit).Value);
 end;
 
 procedure TPageOptions.ActionHotkeyBindExecute(Sender: TObject);
@@ -226,6 +244,15 @@ begin
   Settings.Autorun := (Sender as TCheckBox).Checked;
 end;
 
+procedure TPageOptions.CheckBoxHighlightChange(Sender: TObject);
+var
+  BoolVal: boolean;
+begin
+  BoolVal := (Sender as TCheckBox).Checked;
+  Settings.HighlightTopmost := BoolVal;
+  PanelHighlight.Enabled := BoolVal;
+end;
+
 procedure TPageOptions.CheckBoxIconGroupedChange(Sender: TObject);
 begin
   Settings.IconGrouped := (Sender as TCheckBox).Checked;
@@ -269,6 +296,11 @@ begin
   Settings.SystemMenuItems := SystemMenuItems;
 end;
 
+procedure TPageOptions.ColorButtonHighlightColorChanged(Sender: TObject);
+begin
+  Settings.HighlightTopmostColor := (Sender as TColorButton).ButtonColor;
+end;
+
 procedure TPageOptions.ComboBoxLanguagesChange(Sender: TObject);
 begin
   ActionLanguageApply.Enabled := True;
@@ -303,7 +335,11 @@ begin
   AddListener(siShowNotification, @ShowNotificationChanged);
   AddListener(siRuleOnStartup, @RuleOnStartupChanged);
   AddListener(siHotkey, @HotkeyChanged);
-  AddListener(siUseLauncher, @UseLauncherChanged);
+  AddListener(siUseLauncher, @UseLauncherChanged); 
+  //AddListener(siMultiProcessLaunch, @MultiProcessLaunchChanged);
+  AddListener(siHighlightTopmost, @HighlightTopmostChanged);
+  AddListener(siHighlightTopmostColor, @HighlightTopmostColorChanged);
+  AddListener(siHighlightTopmostThickness, @HighlightTopmostThicknessChanged);
 
   EditConfigDir.Text := Storage.ConfigDir;
 
@@ -427,6 +463,25 @@ begin
     ListViewHotkeys.Items[specialize EnumToIndex<THotkeyID>(HotkeyID)].Caption := HOTKEY_DESCRIPTIONS[Ord(HotkeyID)];
 
   ComboBoxLanguages.Items[0] := TEXT_ANGLE_BRACKETED_AUTO;
+end;
+
+procedure TPageOptions.HighlightTopmostChanged(Sender: TObject);
+var
+  AValue: boolean;
+begin
+  AValue := (Sender as TSettings).HighlightTopmost;
+  CheckBoxHighlight.Checked := AValue;
+  PanelHighlight.Enabled := AValue;
+end;
+
+procedure TPageOptions.HighlightTopmostColorChanged(Sender: TObject);
+begin
+  ColorButtonHighlight.ButtonColor := (Sender as TSettings).HighlightTopmostColor;
+end;
+
+procedure TPageOptions.HighlightTopmostThicknessChanged(Sender: TObject);
+begin
+  SpinEditHighlightThickness.Value := (Sender as TSettings).HighlightTopmostThickness;
 end;
 
 end.

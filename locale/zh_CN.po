@@ -528,6 +528,11 @@ msgstr "启用自动最小化到托盘"
 msgid "Autorun at system startup"
 msgstr "随系统启动自动运行"
 
+#: tpageoptions.checkboxhighlight.caption
+msgctxt "tpageoptions.checkboxhighlight.caption"
+msgid "Show a border around the window marked as \"Always on Top\""
+msgstr "在设为置顶的窗口周围显示边框"
+
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
 msgstr "托盘图标按应用程序分组"
@@ -556,6 +561,10 @@ msgstr "启用自定义规则"
 msgid "Window System Menu"
 msgstr "窗口系统菜单"
 
+#: tpageoptions.colordialog.title
+msgid "Select Border Color"
+msgstr "选择边框颜色"
+
 #: tpageoptions.dividerbeveladvanced.caption
 msgid "Advanced"
 msgstr "高级"
@@ -572,6 +581,15 @@ msgstr "热键"
 #: tpageoptions.labelconfigdir.caption
 msgid "Config directory"
 msgstr "配置保存路径"
+
+#: tpageoptions.labelhighlightcolor.caption
+msgctxt "tpageoptions.labelhighlightcolor.caption"
+msgid "Color:"
+msgstr "颜色:"
+
+#: tpageoptions.labelhighlightthickness.caption
+msgid "Thickness:"
+msgstr "粗细:"
 
 #: tpageoptions.labellanguage.caption
 msgid "Select language"

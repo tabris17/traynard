@@ -5,7 +5,7 @@ unit Traynard.Settings;
 interface
 
 uses
-  Classes, SysUtils, LazMethodList, Traynard.Types, Traynard.Storage;
+  Classes, SysUtils, Graphics, LazMethodList, Traynard.Types, Traynard.Storage;
 
 type
 
@@ -42,6 +42,9 @@ type
     FShowNotification: boolean;
     FApplyRulesOnStartup: boolean;
     FEnableLauncher: boolean;
+    FHighlightTopmost: boolean;
+    FHighlightTopmostColor: TColor;
+    FHighlightTopmostThickness: byte;
     FListeners: array[TSettingsItem] of TMethodList;
     FConfig: TConfig;
     function GetAutorun: boolean;
@@ -49,6 +52,9 @@ type
     procedure SetEnableLauncher(AValue: boolean);
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetAutorun(AValue: boolean);
+    procedure SetHighlightTopmost(AValue: boolean);
+    procedure SetHighlightTopmostColor(AValue: TColor);
+    procedure SetHighlightTopmostThickness(AValue: byte);
     procedure SetHotkey(HotkeyID: THotkeyID; AValue: THotkey);
     procedure SetIconGrouped(AValue: boolean);
     procedure SetLanguage(AValue: string);
@@ -71,6 +77,9 @@ type
     property RuleOnStartup: boolean read FApplyRulesOnStartup write SetRuleOnStartup;
     property EnableLauncher: boolean read FEnableLauncher write SetEnableLauncher;
     property Hotkey[HotkeyID: THotkeyID]: THotkey read GetHotkey write SetHotkey;
+    property HighlightTopmost: boolean read FHighlightTopmost write SetHighlightTopmost;
+    property HighlightTopmostColor: TColor read FHighlightTopmostColor write SetHighlightTopmostColor;
+    property HighlightTopmostThickness: byte read FHighlightTopmostThickness write SetHighlightTopmostThickness;
     procedure Load;
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure RemoveListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
@@ -84,6 +93,10 @@ const
   KEY_GENERAL_ICON_GROUPED = 'general.enable_icon_grouped';
   KEY_GENERAL_MENU_GROUPED = 'general.enable_menu_grouped';
   KEY_GENERAL_NOTIFICATION = 'general.enable_notification';
+  KEY_GENERAL_HIGHLIGHT_TOPMOST = 'general.highlight_topmost';
+  KEY_GENERAL_HIGHLIGHT_TOPMOST_ENABLED = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.enabled';
+  KEY_GENERAL_HIGHLIGHT_TOPMOST_COLOR = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.color'; 
+  KEY_GENERAL_HIGHLIGHT_TOPMOST_THICKNESS = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.thickness';
   KEY_HOTKEYS = 'hotkeys';
   KEY_ADVANCE_AUTO_MINIMIZE = 'advance.enable_auto_minimize';
   KEY_ADVANCE_CUSTOM_RULES = 'advance.enable_custom_rules';
@@ -109,6 +122,8 @@ const
     5898252, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE, HOTKEY_NONE
   );
 
+  DEFAULT_HIGHLIGHT_TOPMOST_THICKNESS = 10;
+
 var
   Settings: TSettings = nil;
 
@@ -124,6 +139,33 @@ begin
   if FAutorun.Value = AValue then Exit;
   FAutorun.Value := AValue;
   FListeners[siAutorun].CallNotifyEvents(Self);
+end;
+
+procedure TSettings.SetHighlightTopmost(AValue: boolean);
+begin
+  if FHighlightTopmost = AValue then Exit;
+  FHighlightTopmost := AValue;
+  FConfig.SetBoolean(KEY_GENERAL_HIGHLIGHT_TOPMOST_ENABLED, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siHighlightTopmost].CallNotifyEvents(Self);
+end;
+
+procedure TSettings.SetHighlightTopmostColor(AValue: TColor);
+begin
+  if FHighlightTopmostColor = AValue then Exit;
+  FHighlightTopmostColor := AValue;
+  FConfig.SetInteger(KEY_GENERAL_HIGHLIGHT_TOPMOST_COLOR, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siHighlightTopmostColor].CallNotifyEvents(Self);
+end;
+
+procedure TSettings.SetHighlightTopmostThickness(AValue: byte);
+begin
+  if FHighlightTopmostThickness = AValue then Exit;
+  FHighlightTopmostThickness := AValue;
+  FConfig.SetInteger(KEY_GENERAL_HIGHLIGHT_TOPMOST_THICKNESS, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siHighlightTopmostThickness].CallNotifyEvents(Self);
 end;
 
 procedure TSettings.SetHotkey(HotkeyID: THotkeyID; AValue: THotkey);
@@ -272,6 +314,9 @@ begin
   FIconGrouped := FConfig.GetBoolean(KEY_GENERAL_ICON_GROUPED, True);
   FMenuGrouped := FConfig.GetBoolean(KEY_GENERAL_MENU_GROUPED, True);
   FShowNotification := FConfig.GetBoolean(KEY_GENERAL_NOTIFICATION, True);
+  FHighlightTopmost := FConfig.GetBoolean(KEY_GENERAL_HIGHLIGHT_TOPMOST_ENABLED, False);
+  FHighlightTopmostColor := TColor(FConfig.GetInteger(KEY_GENERAL_HIGHLIGHT_TOPMOST_COLOR, clHighlight));
+  FHighlightTopmostThickness := Byte(FConfig.GetInteger(KEY_GENERAL_HIGHLIGHT_TOPMOST_THICKNESS, DEFAULT_HIGHLIGHT_TOPMOST_THICKNESS));
   for HotkeyID := Low(THotkeyID) to High(THotkeyID) do
   begin
     HotkeyDefaultValue := DEFAULT_HOTKEY_VALUES[Ord(HotkeyID)];

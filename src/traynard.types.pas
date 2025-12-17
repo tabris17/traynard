@@ -49,7 +49,9 @@ type
   TSystemMenuItems = set of TSystemMenuItem;
 
   TSettingsItem = (siAutorun, siIconGrouped, siMenuGrouped, siLanguage, siSystemMenuItems,
-                   siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey, siUseLauncher);
+                   siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey,
+                   siUseLauncher, siMultiProcessLaunch, siHighlightTopmost, siHighlightTopmostColor,
+                   siHighlightTopmostThickness);
 
   { TShellHookInfo }
 

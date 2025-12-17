@@ -4,6 +4,9 @@
 {"hash":245374398,"name":"tpageoptions.checkboxmenugrouped.caption","sourcebytes":[71,114,111,117,112,32,116,114,97,121,32,109,101,110,117,32,105,116,101,109,115,32,98,121,32,97,112,112,108,105,99,97,116,105,111,110],"value":"Group tray menu items by application"},
 {"hash":162265902,"name":"tpageoptions.checkboxicongrouped.caption","sourcebytes":[71,114,111,117,112,32,116,114,97,121,32,105,99,111,110,115,32,98,121,32,97,112,112,108,105,99,97,116,105,111,110],"value":"Group tray icons by application"},
 {"hash":249322916,"name":"tpageoptions.checkboxnotification.caption","sourcebytes":[83,104,111,119,32,110,111,116,105,102,105,99,97,116,105,111,110,32,119,104,101,110,32,119,105,110,100,111,119,32,105,115,32,97,117,116,111,45,109,105,110,105,109,105,122,101,100],"value":"Show notification when window is auto-minimized"},
+{"hash":60014386,"name":"tpageoptions.checkboxhighlight.caption","sourcebytes":[83,104,111,119,32,97,32,98,111,114,100,101,114,32,97,114,111,117,110,100,32,116,104,101,32,119,105,110,100,111,119,32,109,97,114,107,101,100,32,97,115,32,34,65,108,119,97,121,115,32,111,110,32,84,111,112,34],"value":"Show a border around the window marked as \"Always on Top\""},
+{"hash":78001754,"name":"tpageoptions.labelhighlightcolor.caption","sourcebytes":[67,111,108,111,114,58],"value":"Color:"},
+{"hash":169960602,"name":"tpageoptions.labelhighlightthickness.caption","sourcebytes":[84,104,105,99,107,110,101,115,115,58],"value":"Thickness:"},
 {"hash":83276233,"name":"tpageoptions.dividerbevelhotkey.caption","sourcebytes":[72,111,116,107,101,121],"value":"Hotkey"},
 {"hash":75149406,"name":"tpageoptions.listviewhotkeys.columns[0].caption","sourcebytes":[65,99,116,105,111,110],"value":"Action"},
 {"hash":20937,"name":"tpageoptions.listviewhotkeys.columns[1].caption","sourcebytes":[75,101,121],"value":"Key"},
@@ -25,5 +28,6 @@
 {"hash":138889657,"name":"tpageoptions.actionconfigdir.hint","sourcebytes":[79,112,101,110,32,67,111,110,102,105,103,32,68,105,114,101,99,116,111,114,121],"value":"Open Config Directory"},
 {"hash":146640072,"name":"tpageoptions.actionlanguagerefresh.caption","sourcebytes":[82,101,102,114,101,115,104],"value":"Refresh"},
 {"hash":4749113,"name":"tpageoptions.actionlanguageapply.caption","sourcebytes":[65,112,112,108,121],"value":"Apply"},
-{"hash":5818820,"name":"tpageoptions.actionlanguagereset.caption","sourcebytes":[82,101,115,101,116],"value":"Reset"}
+{"hash":5818820,"name":"tpageoptions.actionlanguagereset.caption","sourcebytes":[82,101,115,101,116],"value":"Reset"},
+{"hash":152990610,"name":"tpageoptions.colordialog.title","sourcebytes":[83,101,108,101,99,116,32,66,111,114,100,101,114,32,67,111,108,111,114],"value":"Select Border Color"}
 ]}

@@ -362,15 +362,13 @@ var
 begin
   Window := ListView.GetSelectedWindow(WindowManager.Desktop);
   IsTopmostChecked := ActionTopMost.Checked;
-  if SetWindowPos(
-    Window.Handle,
-    specialize IfThen<HWND>(IsTopmostChecked, HWND_NOTOPMOST, HWND_TOPMOST),
-    0, 0, 0, 0,
-    SWP_NOMOVE or SWP_NOSIZE
-  ) then
-    ActionTopMost.Checked:=not IsTopmostChecked
-  else
-    raise ERuntimeWarning.Create(ERROR_SET_TOPMOST, GetLastErrorMsg);
+  try
+    WindowManager.SetWindowAlwaysOnTop(Window.Handle, not IsTopmostChecked);
+    ActionTopMost.Checked := not IsTopmostChecked;
+  except
+    on Exc: TWindowManager.Exception do
+      raise ERuntimeWarning.Create(ERROR_SET_TOPMOST, Exc.Message);
+  end;
 end;
 
 procedure TPageDesktop.PageDeactivate(Sender: TObject);

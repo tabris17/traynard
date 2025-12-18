@@ -31,8 +31,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="1"/>
-      <RevisionNr Value="2"/>
+      <MinorVersionNr Value="2"/>
       <StringTable FileDescription="Minimize any window to system tray"/>
     </VersionInfo>
     <BuildModes>

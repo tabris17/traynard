@@ -14,7 +14,9 @@ Traynard is a Windows desktop utility for minimizing any application window to t
 
 3. Auto-minimize windows by user rules
 
-4. Multi-language support
+4. Manage windows from launched processes
+
+5. Multi-language support
 
 ## Installation
 
@@ -44,12 +46,15 @@ Traynard provides the following methods for minimizing windows:
 3. Extended system menu of the target window
 4. Mark the window as "**Auto-minimize**"
 5. Custom rules
+6. Launcher
 
 ## Screenshot
 
 ![Main](docs/screenshot-main.png)
 
 ![Rules](docs/screenshot-rules.png)
+
+![Launcher](docs/screenshot-launcher.png)
 
 ![Options](docs/screenshot-options.png)
 

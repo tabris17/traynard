@@ -12,7 +12,9 @@ Traynard 是一款 Windows 桌面工具，可将任意应用窗口最小化到�
 
 3. 根据用户规则自动最小化窗口
 
-4. 多语言支持
+4. 通过启动器管理进程窗口
+
+5. 多语言支持
 
 
 ## 安装
@@ -43,12 +45,15 @@ Traynard 提供以下几种最小化窗口的方法：
 3. 目标窗口的扩展系统菜单
 4. 将窗口标记为“**自动最小化**”
 5. 自定义规则
+6. 启动器
 
 ## 软件截图
 
 ![Main](screenshot-main.png)
 
 ![Rules](screenshot-rules.png)
+
+![Launcher](screenshot-launcher.png)
 
 ![Options](screenshot-options.png)
 

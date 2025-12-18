@@ -6,7 +6,7 @@ unit Traynard.Types;
 interface
 
 uses
-  Classes, SysUtils, Controls, Windows, JwaWinternl, Traynard.Strings;
+  Classes, SysUtils, Windows, {$IFNDEF LIBRARY}Controls, JwaWinternl,{$ENDIF} Traynard.Strings;
 
 type
 
@@ -149,6 +149,8 @@ type
 
   TEditState = (esNone, esOpen, esNew);
 
+  {$IFNDEF LIBRARY}
+
   { EFieldInvalid }
 
   EFieldInvalid = class(Exception)
@@ -171,6 +173,8 @@ type
     UniqueProcessId: ULONG_PTR;
     InheritedFromUniqueProcessId: ULONG_PTR;
   end;
+
+  {$ENDIF}
 
 const
   MOD_NOREPEAT = $4000;
@@ -331,6 +335,8 @@ begin
   FTitle := Title;
 end;
 
+{$IFNDEF LIBRARY}
+
 { EFieldInvalid }
 
 constructor EFieldInvalid.Create(const ATitle, AMessage: string; AControl: TControl);
@@ -339,6 +345,8 @@ begin
   FTitle := ATitle;
   FControl := AControl;
 end;
+
+{$ENDIF}
 
 end.
 

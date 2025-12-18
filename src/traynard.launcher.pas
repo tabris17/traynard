@@ -164,7 +164,7 @@ var
 implementation
 
 uses
-  Forms, JwaWinternl, Traynard.Helpers, Traynard.Strings;
+  Forms, JwaWinternl, Traynard.Helpers, Traynard.Strings, Traynard.Settings;
 
 { TLaunchEntry }
 
@@ -383,7 +383,7 @@ begin
   begin
     Result := FEntryMap.TryGetValue(Process.Name, Entry);
   end
-  else
+  else if Settings.LauncherMultiprocess then
   begin
     repeat
       if ProcessID = FCurrentPID then Exit(False);
@@ -411,7 +411,8 @@ begin
       Exit(False);
 
     Result := FEntryMap.TryGetValue(Process.Name, Entry);
-  end;
+  end
+  else Result := False;
 end;
 
 procedure TLauncher.Launch(constref Entry: TEntry);

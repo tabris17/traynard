@@ -50,7 +50,7 @@ type
 
   TSettingsItem = (siAutorun, siIconGrouped, siMenuGrouped, siLanguage, siSystemMenuItems,
                    siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey,
-                   siUseLauncher, siMultiProcessLaunch, siHighlightTopmost, siHighlightTopmostColor,
+                   siUseLauncher, siMultiprocessLaunch, siHighlightTopmost, siHighlightTopmostColor,
                    siHighlightTopmostThickness);
 
   { TShellHookInfo }

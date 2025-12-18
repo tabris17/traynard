@@ -29,6 +29,7 @@ type
     ButtonHotkeyReset: TButton;
     ButtonApplyLanguage: TButton;
     ButtonRefreshLanguage: TButton;
+    CheckBoxMultiprocessLaunch: TCheckBox;
     CheckBoxHighlight: TCheckBox;
     CheckBoxLauncher: TCheckBox;
     CheckBoxRuleOnStartup: TCheckBox;
@@ -73,6 +74,7 @@ type
     procedure CheckBoxIconGroupedChange(Sender: TObject);
     procedure CheckBoxLauncherChange(Sender: TObject);
     procedure CheckBoxMenuGroupedChange(Sender: TObject);
+    procedure CheckBoxMultiprocessLaunchChange(Sender: TObject);
     procedure CheckBoxNotificationChange(Sender: TObject);
     procedure CheckBoxRuleOnStartupChange(Sender: TObject);
     procedure CheckBoxUseRulesChange(Sender: TObject);
@@ -95,6 +97,7 @@ type
     procedure AutoMinimizeChanged(Sender: TObject);
     procedure UseRulesChanged(Sender: TObject);
     procedure UseLauncherChanged(Sender: TObject);
+    procedure MultiprocessLaunchChanged(Sender: TObject);
     procedure ShowNotificationChanged(Sender: TObject);
     procedure RuleOnStartupChanged(Sender: TObject);
     procedure HotkeyChanged(Sender: TObject);
@@ -263,6 +266,11 @@ begin
   Settings.MenuGrouped := (Sender as TCheckBox).Checked;
 end;
 
+procedure TPageOptions.CheckBoxMultiprocessLaunchChange(Sender: TObject);
+begin
+  Settings.LauncherMultiprocess := (Sender as TCheckBox).Checked;
+end;
+
 procedure TPageOptions.CheckBoxNotificationChange(Sender: TObject);
 begin
   Settings.ShowNotification := (Sender as TCheckBox).Checked;
@@ -336,7 +344,7 @@ begin
   AddListener(siRuleOnStartup, @RuleOnStartupChanged);
   AddListener(siHotkey, @HotkeyChanged);
   AddListener(siUseLauncher, @UseLauncherChanged); 
-  //AddListener(siMultiProcessLaunch, @MultiProcessLaunchChanged);
+  AddListener(siMultiProcessLaunch, @MultiProcessLaunchChanged);
   AddListener(siHighlightTopmost, @HighlightTopmostChanged);
   AddListener(siHighlightTopmostColor, @HighlightTopmostColorChanged);
   AddListener(siHighlightTopmostThickness, @HighlightTopmostThicknessChanged);
@@ -413,6 +421,11 @@ begin
   AValue := (Sender as TSettings).EnableLauncher;
   CheckBoxLauncher.Checked := AValue;
   ButtonEditLaunchEntries.Enabled := AValue;
+end;
+
+procedure TPageOptions.MultiprocessLaunchChanged(Sender: TObject);
+begin
+  CheckBoxMultiprocessLaunch.Checked := (Sender as TSettings).LauncherMultiprocess;
 end;
 
 procedure TPageOptions.ShowNotificationChanged(Sender: TObject);

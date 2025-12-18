@@ -545,6 +545,10 @@ msgstr "启用启动器"
 msgid "Group tray menu items by application"
 msgstr "托盘菜单按应用程序分组"
 
+#: tpageoptions.checkboxmultiprocesslaunch.caption
+msgid "Support for multi-process applications"
+msgstr "支持多进程应用"
+
 #: tpageoptions.checkboxnotification.caption
 msgid "Show notification when window is auto-minimized"
 msgstr "当窗口自动最小化到托盘时显示通知"

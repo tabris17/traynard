@@ -59,10 +59,6 @@ msgctxt "tformbackground.menuitemlaunch.caption"
 msgid "Launcher"
 msgstr ""
 
-#: tformhighlight.caption
-msgid "FormHighlight"
-msgstr ""
-
 #: tformhotkey.buttoncancel.caption
 msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
@@ -542,6 +538,10 @@ msgstr ""
 
 #: tpageoptions.checkboxmenugrouped.caption
 msgid "Group tray menu items by application"
+msgstr ""
+
+#: tpageoptions.checkboxmultiprocesslaunch.caption
+msgid "Support for multi-process applications"
 msgstr ""
 
 #: tpageoptions.checkboxnotification.caption

@@ -197,7 +197,7 @@ inherited PageOptions: TPageOptions
     PopupMenu = HotkeyMenu
     ReadOnly = True
     RowSelect = True
-    TabOrder = 9
+    TabOrder = 10
     ViewStyle = vsReport
     OnDblClick = ListViewHotkeysDblClick
     OnSelectItem = ListViewHotkeysSelectItem
@@ -240,7 +240,7 @@ inherited PageOptions: TPageOptions
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
     Constraints.MinWidth = 80
-    TabOrder = 11
+    TabOrder = 12
   end
   object ButtonRefreshLanguage: TButton[13]
     AnchorSideLeft.Control = ButtonApplyLanguage
@@ -254,7 +254,7 @@ inherited PageOptions: TPageOptions
     Action = ActionLanguageRefresh
     BorderSpacing.Left = 5
     Constraints.MinWidth = 80
-    TabOrder = 19
+    TabOrder = 9
   end
   object ButtonHotkeyReset: TButton[14]
     AnchorSideLeft.Control = ButtonHotkeyClear
@@ -270,7 +270,7 @@ inherited PageOptions: TPageOptions
     BorderSpacing.Left = 5
     BorderSpacing.Top = 5
     Constraints.MinWidth = 80
-    TabOrder = 12
+    TabOrder = 13
     Visible = False
   end
   object ButtonApplyLanguage: TButton[15]
@@ -298,7 +298,7 @@ inherited PageOptions: TPageOptions
     AutoSize = True
     BorderSpacing.Top = 5
     Constraints.MinWidth = 80
-    TabOrder = 10
+    TabOrder = 11
   end
   object DividerBevelAdvanced: TDividerBevel[17]
     AnchorSideTop.Control = ButtonHotkeyBind
@@ -335,7 +335,7 @@ inherited PageOptions: TPageOptions
     ChildSizing.ControlsPerLine = 1
     Constraints.MaxWidth = 600
     Constraints.MinHeight = 60
-    TabOrder = 13
+    TabOrder = 14
     OnItemClick = CheckGroupSystemMenuItemClick
   end
   object CheckBoxAutoMinimize: TCheckBox[19]
@@ -347,7 +347,7 @@ inherited PageOptions: TPageOptions
     Width = 185
     BorderSpacing.Top = 5
     Caption = 'Enable auto-minimize to tray'
-    TabOrder = 14
+    TabOrder = 15
     OnChange = CheckBoxAutoMinimizeChange
   end
   object CheckBoxUseRules: TCheckBox[20]
@@ -359,35 +359,33 @@ inherited PageOptions: TPageOptions
     Width = 135
     BorderSpacing.Top = 5
     Caption = 'Enable custom rules'
-    TabOrder = 15
+    TabOrder = 16
     OnChange = CheckBoxUseRulesChange
   end
-  object CheckBoxLauncher: TCheckBox[21]
-    AnchorSideTop.Control = ButtonEditRules
-    AnchorSideTop.Side = asrBottom
-    Left = 10
-    Height = 21
-    Top = 732
-    Width = 110
-    BorderSpacing.Top = 5
-    Caption = 'Enable launcher'
-    TabOrder = 20
-    OnChange = CheckBoxLauncherChange
-  end
-  object ButtonEditLaunchEntries: TButton[22]
+  object CheckBoxMultiprocessLaunch: TCheckBox[21]
     AnchorSideTop.Control = CheckBoxLauncher
     AnchorSideTop.Side = asrBottom
     Left = 26
-    Height = 27
+    Height = 21
     Top = 758
-    Width = 135
-    AutoSize = True
+    Width = 243
     BorderSpacing.Top = 5
-    Caption = 'Edit Launch Entries'
-    Constraints.MinWidth = 80
+    Caption = 'Support for multi-process applications'
+    TabOrder = 20
+    OnChange = CheckBoxMultiprocessLaunchChange
+  end
+  object CheckBoxRuleOnStartup: TCheckBox[22]
+    AnchorSideTop.Control = CheckBoxUseRules
+    AnchorSideTop.Side = asrBottom
+    Left = 26
+    Height = 21
+    Top = 674
+    Width = 261
+    BorderSpacing.Top = 5
+    Caption = 'Apply rules to existing windows at startup'
     Enabled = False
-    TabOrder = 21
-    OnClick = ButtonEditLaunchEntriesClick
+    TabOrder = 17
+    OnChange = CheckBoxRuleOnStartupChange
   end
   object ButtonEditRules: TButton[23]
     AnchorSideTop.Control = CheckBoxRuleOnStartup
@@ -401,38 +399,52 @@ inherited PageOptions: TPageOptions
     Caption = 'Edit Rules'
     Constraints.MinWidth = 80
     Enabled = False
-    TabOrder = 16
+    TabOrder = 18
     OnClick = ButtonEditRulesClick
   end
-  object CheckBoxRuleOnStartup: TCheckBox[24]
-    AnchorSideTop.Control = CheckBoxUseRules
+  object CheckBoxLauncher: TCheckBox[24]
+    AnchorSideTop.Control = ButtonEditRules
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 21
+    Top = 732
+    Width = 110
+    BorderSpacing.Top = 5
+    Caption = 'Enable launcher'
+    TabOrder = 19
+    OnChange = CheckBoxLauncherChange
+  end
+  object ButtonEditLaunchEntries: TButton[25]
+    AnchorSideTop.Control = CheckBoxMultiprocessLaunch
     AnchorSideTop.Side = asrBottom
     Left = 26
-    Height = 21
-    Top = 674
-    Width = 261
+    Height = 27
+    Top = 784
+    Width = 135
+    AutoSize = True
     BorderSpacing.Top = 5
-    Caption = 'Apply rules to existing windows at startup'
+    Caption = 'Edit Launch Entries'
+    Constraints.MinWidth = 80
     Enabled = False
-    TabOrder = 17
-    OnChange = CheckBoxRuleOnStartupChange
+    TabOrder = 21
+    OnClick = ButtonEditLaunchEntriesClick
   end
-  object LabelConfigDir: TLabel[25]
+  object LabelConfigDir: TLabel[26]
     AnchorSideTop.Control = ButtonEditLaunchEntries
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 17
-    Top = 795
+    Top = 821
     Width = 94
     BorderSpacing.Top = 10
     Caption = 'Config directory'
   end
-  object PanelConfigDir: TPanel[26]
+  object PanelConfigDir: TPanel[27]
     AnchorSideTop.Control = LabelConfigDir
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 27
-    Top = 814
+    Top = 840
     Width = 480
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
@@ -441,7 +453,7 @@ inherited PageOptions: TPageOptions
     ClientHeight = 27
     ClientWidth = 480
     Constraints.MaxWidth = 600
-    TabOrder = 18
+    TabOrder = 22
     object EditConfigDir: TEdit
       AnchorSideRight.Control = ButtonConfigDir
       Left = 0
@@ -468,7 +480,7 @@ inherited PageOptions: TPageOptions
       TabOrder = 1
     end
   end
-  object HotkeyMenu: TPopupMenu[27]
+  object HotkeyMenu: TPopupMenu[28]
     Left = 352
     Top = 32
     object MenuItemModify: TMenuItem
@@ -482,7 +494,7 @@ inherited PageOptions: TPageOptions
       Action = ActionHotkeyReset
     end
   end
-  object ActionList: TActionList[28]
+  object ActionList: TActionList[29]
     Left = 280
     Top = 32
     object ActionHotkeyBind: TAction
@@ -519,7 +531,7 @@ inherited PageOptions: TPageOptions
       OnExecute = ActionLanguageResetExecute
     end
   end
-  object ColorDialog: TColorDialog[29]
+  object ColorDialog: TColorDialog[30]
     Title = 'Select Border Color'
     Color = clHighlight
     CustomColors.Strings = (

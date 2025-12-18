@@ -42,6 +42,7 @@ type
     FShowNotification: boolean;
     FApplyRulesOnStartup: boolean;
     FEnableLauncher: boolean;
+    FLauncherMultiprocess: boolean;
     FHighlightTopmost: boolean;
     FHighlightTopmostColor: TColor;
     FHighlightTopmostThickness: byte;
@@ -58,6 +59,7 @@ type
     procedure SetHotkey(HotkeyID: THotkeyID; AValue: THotkey);
     procedure SetIconGrouped(AValue: boolean);
     procedure SetLanguage(AValue: string);
+    procedure SetLauncherMultiprocess(AValue: boolean);
     procedure SetMenuGrouped(AValue: boolean);
     procedure SetRuleOnStartup(AValue: boolean);
     procedure SetShowNotification(AValue: boolean);
@@ -76,6 +78,7 @@ type
     property ShowNotification: boolean read FShowNotification write SetShowNotification;
     property RuleOnStartup: boolean read FApplyRulesOnStartup write SetRuleOnStartup;
     property EnableLauncher: boolean read FEnableLauncher write SetEnableLauncher;
+    property LauncherMultiprocess: boolean read FLauncherMultiprocess write SetLauncherMultiprocess;
     property Hotkey[HotkeyID: THotkeyID]: THotkey read GetHotkey write SetHotkey;
     property HighlightTopmost: boolean read FHighlightTopmost write SetHighlightTopmost;
     property HighlightTopmostColor: TColor read FHighlightTopmostColor write SetHighlightTopmostColor;
@@ -102,10 +105,12 @@ const
   KEY_ADVANCE_CUSTOM_RULES = 'advance.enable_custom_rules';
   KEY_ADVANCE_RULES_ON_STARTUP = 'advance.enable_rule_on_startup';
   KEY_ADVANCE_SYSTEM_MENU = 'advance.system_menu.';
-  KEY_ADVANCE_LAUNCHER = 'advance.enable_launcher';
   KEY_TRAY_ICON = 'enable_tray_icon';
   KEY_TRAY_MENU = 'enable_tray_menu';
   KEY_ALWAYS_ON_TOP = 'enable_always_on_top';
+  KEY_ADVANCE_LAUNCHER = 'advance.launcher';
+  KEY_ADVANCE_LAUNCHER_ENABLED = KEY_ADVANCE_LAUNCHER + '.enabled';
+  KEY_ADVANCE_LAUNCHER_MULTIPROCESS = KEY_ADVANCE_LAUNCHER + '.multiprocess';
 
   REG_AUTORUN = 'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run';
 
@@ -223,6 +228,15 @@ begin
   FListeners[siLanguage].CallNotifyEvents(Self);
 end;
 
+procedure TSettings.SetLauncherMultiprocess(AValue: boolean);
+begin
+  if FLauncherMultiprocess = AValue then Exit;
+  FLauncherMultiprocess := AValue;
+  FConfig.SetBoolean(KEY_ADVANCE_LAUNCHER_MULTIPROCESS, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siMultiprocessLaunch].CallNotifyEvents(Self);
+end;
+
 procedure TSettings.SetRuleOnStartup(AValue: boolean);
 begin
   if FApplyRulesOnStartup = AValue then Exit;
@@ -254,7 +268,7 @@ procedure TSettings.SetEnableLauncher(AValue: boolean);
 begin
   if FEnableLauncher = AValue then Exit;
   FEnableLauncher := AValue;
-  FConfig.SetBoolean(KEY_ADVANCE_LAUNCHER, AValue);
+  FConfig.SetBoolean(KEY_ADVANCE_LAUNCHER_ENABLED, AValue);
   Storage.SaveConfig(CONFIG_NAME, FConfig);
   FListeners[siUseLauncher].CallNotifyEvents(Self);
 end;
@@ -326,7 +340,8 @@ begin
   FAutoMinimize := FConfig.GetBoolean(KEY_ADVANCE_AUTO_MINIMIZE, True);
   FApplyRules := FConfig.GetBoolean(KEY_ADVANCE_CUSTOM_RULES, True);
   FApplyRulesOnStartup := FConfig.GetBoolean(KEY_ADVANCE_RULES_ON_STARTUP, True);
-  FEnableLauncher := FConfig.GetBoolean(KEY_ADVANCE_LAUNCHER, False);
+  FEnableLauncher := FConfig.GetBoolean(KEY_ADVANCE_LAUNCHER_ENABLED, False);
+  FLauncherMultiprocess := FConfig.GetBoolean(KEY_ADVANCE_LAUNCHER_MULTIPROCESS, False);
   FSystemMenuItems := [];
   for SystemMenuPair in SYSTEM_MENU_PAIRS do
   begin

@@ -916,7 +916,7 @@ begin
   if Window.ShowInTaskBar and (Self.FCurrentPID <> Window.PID) then
   begin
     Self.FDesktop.FWindows.Add(Window.Handle, Window);
-    if Settings.ApplyRules and Rules.Find(Window, Rule, waExisting) then
+    if Settings.ApplyRules and Settings.RuleOnStartup and Rules.Find(Window, Rule, waExisting) then
     begin
       if Self.TryMinimizeWindow(Window.Handle, Rule.Position) and
          ShouldNotify(Rule.Notification, (Window as TDesktopWindow).Restored) then

@@ -170,7 +170,6 @@ type
     function UpdateWindow(const Handle: HWND): boolean;
   private
     class function EnumAndMinimizeWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
-    class function EnumWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     class function MinimizeOwnedWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     procedure SetActiveWindow(AValue: HWND);
     class procedure WinEventProc(hEventHook: HWINEVENTHOOK; event: DWORD; hwnd: HWND; idObject: LONG; idChild: LONG;
@@ -927,20 +926,6 @@ begin
     Window.Free;
 end;
 
-class function TWindowManager.EnumWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall;
-var
-  Self: TWindowManager;
-  Window: TWindow;
-begin
-  Result := True;
-  Self := TWindowManager(Param);
-  Window := TDesktopWindow.Create(Handle, False);
-  if Window.ShowInTaskBar and (Self.FCurrentPID <> Window.PID) then
-    Self.FDesktop.FWindows.Add(Window.Handle, Window)
-  else
-    Window.Free;
-end;
-
 class function TWindowManager.MinimizeOwnedWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall;
 begin
   if (Handle <> HWND(Param)) and IsWindowVisible(Handle) and (HWND(Param) = GetWindow(Handle, GW_OWNER)) then
@@ -1048,7 +1033,6 @@ var
   EventHookType: TEventHookType;
   TheHandle: HWND;
 begin
-  inherited Create(AOwner);
   FSelf := Self;           
   FMainForm := AOwner as TForm;
   FCurrentPID := DWORD(GetProcessID);
@@ -1123,6 +1107,8 @@ begin
   FActiveWindow := 0;
                                                                                
   Settings.AddListener(siHighlightTopmost, @HighlightTopmostChanged);
+
+  inherited Create(AOwner);
 end;
 
 destructor TWindowManager.Destroy;
@@ -1151,7 +1137,7 @@ end;
 procedure TWindowManager.RefreshDesktop;
 begin
   FDesktop.FWindows.Clear;
-  EnumWindows(@EnumWindowsProc, LPARAM(Self));
+  EnumWindows(@EnumAndMinimizeWindowsProc, LPARAM(Self));
 end;
 
 procedure TWindowManager.EnableWindowAutoMinimize(const Handle: HWND; const Position: TTrayPosition);

@@ -265,7 +265,7 @@ end;
 
 procedure TFormBackground.WindowManagerInstalled(const WindowManager: TWindowManager);
 begin
-
+  Launcher.AutoLaunch;
 end;
 
 procedure TFormBackground.SetLaunchMenuItems;

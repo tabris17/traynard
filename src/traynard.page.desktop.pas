@@ -112,7 +112,6 @@ uses
 
 procedure TPageDesktop.PageActivate(Sender: TObject);
 begin
-  WindowManager.RefreshDesktop;
   ListView.UpdateWindowList(WindowManager.Desktop, IconList);
   WindowManager.Desktop.FPOAttachObserver(Self);
   with ListView do if CanFocus then SetFocus;

@@ -115,7 +115,6 @@ type
     procedure EntryRemoved(constref Entry: TEntry); inline;
     procedure EntryUpdated(constref OldEntry, NewEntry: TEntry); inline;
     procedure ProcessExitEvent(Data: PtrInt);
-    procedure AutoLaunch;
   public
     constructor Create;
     destructor Destroy; override;
@@ -136,6 +135,7 @@ type
     procedure Launch(const Name: string); overload;
     procedure Launch(const Index: SizeInt); overload;
     procedure Load;
+    procedure AutoLaunch;
     procedure RemoveEntry(const EntryIndex: SizeInt);
     procedure UpdateEntry(const EntryIndex: SizeInt; constref Entry: TEntry);
     class procedure WaitProcess(Param: PVOID; Fired: ByteBool); stdcall; static;
@@ -532,8 +532,6 @@ begin
     FConfigEntries := TOMLArray;
     FConfig.Add(KEY_ENTRIES, FConfigEntries);
   end;
-
-  AutoLaunch;
 end;
 
 procedure TLauncher.RemoveEntry(const EntryIndex: SizeInt);

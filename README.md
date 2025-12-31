@@ -9,13 +9,9 @@ Traynard is a Windows desktop utility for minimizing any application window to t
 ## Features
 
 1. Quick actions via global hotkeys
-
 2. Extended system menu for any window
-
 3. Auto-minimize windows by user rules
-
 4. Manage windows from launched processes
-
 5. Multi-language support
 
 ## Installation

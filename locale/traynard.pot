@@ -552,6 +552,10 @@ msgstr ""
 msgid "Apply rules to existing windows at startup"
 msgstr ""
 
+#: tpageoptions.checkboxrunasadmin.caption
+msgid "Run as administrator"
+msgstr ""
+
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
 msgstr ""
@@ -932,6 +936,10 @@ msgstr ""
 
 #: traynard.strings.msg_launcher_entry_name_required
 msgid "Launcher entry name is required"
+msgstr ""
+
+#: traynard.strings.msg_must_run_as_administrator
+msgid "Must run as administrator"
 msgstr ""
 
 #: traynard.strings.msg_question_delete_launcher_entry

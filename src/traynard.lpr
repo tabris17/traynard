@@ -10,7 +10,7 @@ uses
   Traynard.Window,
   Traynard.Hotkey,
   Traynard.Notification,
-  Traynard.Tray;
+  Traynard.Tray, Traynard.Task;
 
 {$R *.res}
 
@@ -25,6 +25,23 @@ begin
   Application.Title := APP_NAME;
   Application.ShowMainForm := False;
   Application.Initialize;
+
+  if Application.HasOption(ARGUMENT_CREATE_TASK) then
+  begin
+    CreateRunAsAdministratorTask;
+    Exit;
+  end
+  else if Application.HasOption(ARGUMENT_REMOVE_TASK) then
+  begin
+    RemoveRunAsAdministratorTask;
+    Exit;
+  end
+  else if Application.HasOption(ARGUMENT_RUN_TASK) then
+  begin
+    CallRunAsAdministratorTask;
+    Exit;
+  end;
+
   Application.CreateForm(TFormBackground, FormBackground);
   NotificationManager := TNotificationManager.Create(Application.MainForm);
   WindowManager := TWindowManager.Create(Application.MainForm);

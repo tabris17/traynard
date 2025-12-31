@@ -29,6 +29,7 @@ type
     ButtonHotkeyReset: TButton;
     ButtonApplyLanguage: TButton;
     ButtonRefreshLanguage: TButton;
+    CheckBoxRunAsAdmin: TCheckBox;
     CheckBoxMultiprocessLaunch: TCheckBox;
     CheckBoxHighlight: TCheckBox;
     CheckBoxLauncher: TCheckBox;
@@ -77,6 +78,7 @@ type
     procedure CheckBoxMultiprocessLaunchChange(Sender: TObject);
     procedure CheckBoxNotificationChange(Sender: TObject);
     procedure CheckBoxRuleOnStartupChange(Sender: TObject);
+    procedure CheckBoxRunAsAdminChange(Sender: TObject);
     procedure CheckBoxUseRulesChange(Sender: TObject);
     procedure CheckGroupSystemMenuItemClick(Sender: TObject; Index: integer);
     procedure ColorButtonHighlightColorChanged(Sender: TObject);
@@ -91,6 +93,7 @@ type
     procedure PageActivate(Sender: TObject);
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure AutorunChanged(Sender: TObject);
+    procedure RunAsAdministratorChanged(Sender: TObject);
     procedure SystemMenuItemsChanged(Sender: TObject); 
     procedure IconGroupedChanged(Sender: TObject);
     procedure MenuGroupedChanged(Sender: TObject);
@@ -245,6 +248,7 @@ end;
 procedure TPageOptions.CheckBoxAutorunChange(Sender: TObject);
 begin
   Settings.Autorun := (Sender as TCheckBox).Checked;
+  CheckBoxRunAsAdmin.Enabled := Settings.Autorun;
 end;
 
 procedure TPageOptions.CheckBoxHighlightChange(Sender: TObject);
@@ -279,6 +283,11 @@ end;
 procedure TPageOptions.CheckBoxRuleOnStartupChange(Sender: TObject);
 begin
   Settings.RuleOnStartup := (Sender as TCheckBox).Checked;
+end;
+
+procedure TPageOptions.CheckBoxRunAsAdminChange(Sender: TObject);
+begin
+  Settings.RunAsAdministrator := (Sender as TCheckBox).Checked;
 end;
 
 procedure TPageOptions.CheckBoxLauncherChange(Sender: TObject);
@@ -338,6 +347,7 @@ begin
   AddListener(siMenuGrouped, @MenuGroupedChanged);
   AddListener(siSystemMenuItems, @SystemMenuItemsChanged);
   AddListener(siAutorun, @AutorunChanged);
+  AddListener(siRunAsAdministrator, @RunAsAdministratorChanged);
   AddListener(siAutoMinimize, @AutoMinimizeChanged);
   AddListener(siUseRules, @UseRulesChanged);
   AddListener(siShowNotification, @ShowNotificationChanged);
@@ -374,6 +384,11 @@ end;
 procedure TPageOptions.AutorunChanged(Sender: TObject);
 begin
   CheckBoxAutorun.Checked := (Sender as TSettings).Autorun;
+end;
+
+procedure TPageOptions.RunAsAdministratorChanged(Sender: TObject);
+begin
+  CheckBoxRunAsAdmin.Checked := (Sender as TSettings).RunAsAdministrator;
 end;
 
 procedure TPageOptions.SystemMenuItemsChanged(Sender: TObject);

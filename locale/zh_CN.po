@@ -557,6 +557,10 @@ msgstr "当窗口自动最小化到托盘时显示通知"
 msgid "Apply rules to existing windows at startup"
 msgstr "程序启动时将规则应用于现有窗口"
 
+#: tpageoptions.checkboxrunasadmin.caption
+msgid "Run as administrator"
+msgstr "以管理员身份运行"
+
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
 msgstr "启用自定义规则"
@@ -945,6 +949,10 @@ msgstr "同名启动项已存在"
 #: traynard.strings.msg_launcher_entry_name_required
 msgid "Launcher entry name is required"
 msgstr "需要填写启动项名称"
+
+#: traynard.strings.msg_must_run_as_administrator
+msgid "Must run as administrator"
+msgstr "必须以管理员身份运行"
 
 #: traynard.strings.msg_question_delete_launcher_entry
 #, object-pascal-format

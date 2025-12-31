@@ -17,10 +17,11 @@
         <TextDesc Value=""/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="3">
+      <Resources Count="4">
         <Resource_0 FileName="..\assets\about.html" Type="RCDATA" ResourceName="ABOUT_HTML"/>
         <Resource_1 FileName="..\assets\logo.png" Type="RCDATA" ResourceName="LOGO_PNG"/>
         <Resource_2 FileName="..\LICENSE" Type="RCDATA" ResourceName="LICENSE_TXT"/>
+        <Resource_3 FileName="..\assets\task.xml" Type="RCDATA" ResourceName="TASK_XML"/>
       </Resources>
     </General>
     <i18n>
@@ -366,6 +367,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Traynard.Form.Highlight"/>
       </Unit>
+      <Unit>
+        <Filename Value="traynard.task.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Traynard.Task"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -397,6 +403,9 @@
       </Item>
       <Item>
         <Name Value="ERuntimeWarning"/>
+      </Item>
+      <Item>
+        <Name Value="ERuntimeError"/>
       </Item>
     </Exceptions>
   </Debugging>

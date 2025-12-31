@@ -51,7 +51,7 @@ type
   TSettingsItem = (siAutorun, siIconGrouped, siMenuGrouped, siLanguage, siSystemMenuItems,
                    siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey,
                    siUseLauncher, siMultiprocessLaunch, siHighlightTopmost, siHighlightTopmostColor,
-                   siHighlightTopmostThickness);
+                   siHighlightTopmostThickness, siRunAsAdministrator);
 
   { TShellHookInfo }
 
@@ -183,6 +183,7 @@ const
   LOGO_PNG = 'LOGO_PNG';
   ABOUT_HTML = 'ABOUT_HTML';
   LICENSE_TXT = 'LICENSE_TXT';
+  TASK_XML = 'TASK_XML';
 
   EVENT_OBJECT_CREATE = $8000;
   EVENT_OBJECT_DESTROY = $8001;

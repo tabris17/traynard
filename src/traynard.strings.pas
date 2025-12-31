@@ -15,6 +15,9 @@ const
   MSG_SYSTEM_MENU      = APP_NAME + '.SystemMenu';
   ARGUMENT_SILENT      = 'silent';
   ARGUMENT_SILENT_CHAR = 's';
+  ARGUMENT_CREATE_TASK = 'create-task';
+  ARGUMENT_REMOVE_TASK = 'remove-task'; 
+  ARGUMENT_RUN_TASK    = 'run-task';
   NATIVE_LANGUAGE_NAME = 'English';
   NATIVE_LANGUAGE_CODE = 'en_US';
   USER32_DLL           = 'user32.dll';
@@ -78,6 +81,8 @@ resourcestring
   MSG_LAUNCHER_ENTRY_LAUNCH_METHODS_REQUIRED = 'Launch methods is required';
   MSG_QUESTION_SAVE_LAUNCHER_ENTRY = 'Save entry to "%s"?';
   MSG_QUESTION_DELETE_LAUNCHER_ENTRY = 'Delete entry "%s"?';
+
+  MSG_MUST_RUN_AS_ADMINISTRATOR = 'Must run as administrator';
 
   TEXT_MENU = 'Menu';
   TEXT_ICON = 'Icon';

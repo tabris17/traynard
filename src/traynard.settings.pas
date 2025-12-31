@@ -21,10 +21,13 @@ type
   TSettingAutorun = class
   private
     FValue: boolean;
+    FRunAsAdministrator: boolean;
+    procedure SetRunAsAdministrator(AValue: boolean);
     procedure SetValue(AValue: boolean);
   public
     constructor Create;
     property Value: boolean read FValue write SetValue;
+    property RunAsAdministrator: boolean read FRunAsAdministrator write SetRunAsAdministrator;
   end;
 
   { TSettings }
@@ -50,9 +53,11 @@ type
     FConfig: TConfig;
     function GetAutorun: boolean;
     function GetHotkey(HotkeyID: THotkeyID): THotkey;
+    function GetRunAsAdministrator: boolean;
     procedure SetEnableLauncher(AValue: boolean);
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetAutorun(AValue: boolean);
+    procedure SetRunAsAdministrator(AValue: boolean);
     procedure SetHighlightTopmost(AValue: boolean);
     procedure SetHighlightTopmostColor(AValue: TColor);
     procedure SetHighlightTopmostThickness(AValue: byte);
@@ -69,6 +74,7 @@ type
     constructor Create;
     destructor Destroy; override;
     property Autorun: boolean read GetAutorun write SetAutorun;
+    property RunAsAdministrator: boolean read GetRunAsAdministrator write SetRunAsAdministrator;
     property Language: string read FLanguage write SetLanguage;
     property SystemMenuItems: TSystemMenuItems read FSystemMenuItems write SetSystemMenuItems;
     property IconGrouped: boolean read FIconGrouped write SetIconGrouped;
@@ -135,7 +141,7 @@ var
 implementation
 
 uses
-  Windows, JwaWinReg, Traynard.Helpers, Traynard.Strings;
+  Windows, JwaWinReg, ShellApi, StrUtils, Traynard.Helpers, Traynard.Strings;
 
 { TSettings }
 
@@ -144,6 +150,13 @@ begin
   if FAutorun.Value = AValue then Exit;
   FAutorun.Value := AValue;
   FListeners[siAutorun].CallNotifyEvents(Self);
+end;
+
+procedure TSettings.SetRunAsAdministrator(AValue: boolean);
+begin
+  if FAutorun.RunAsAdministrator = AValue then Exit;
+  FAutorun.RunAsAdministrator := AValue;
+  FListeners[siRunAsAdministrator].CallNotifyEvents(Self);
 end;
 
 procedure TSettings.SetHighlightTopmost(AValue: boolean);
@@ -194,6 +207,11 @@ end;
 function TSettings.GetHotkey(HotkeyID: THotkeyID): THotkey;
 begin
   Result := FHotkeys[Ord(HotkeyID)];
+end;
+
+function TSettings.GetRunAsAdministrator: boolean;
+begin
+  Result := FAutorun.RunAsAdministrator;
 end;
 
 function TSettings.GetAutorun: boolean;
@@ -376,14 +394,27 @@ end;
 { TSettingAutorun }
 
 constructor TSettingAutorun.Create;
+var
+  AutorunKey, AppName: unicodestring;
+  DataSize: DWORD = 0;
+  CommandLine: unicodestring = '';
 begin
-  FValue := ERROR_SUCCESS = RegGetValueW(
-    HKEY_CURRENT_USER,
-    unicodestring(REG_AUTORUN),
-    unicodestring(APP_NAME),
-    RRF_RT_REG_SZ,
-    nil, nil, nil
-  );
+  AutorunKey := unicodestring(REG_AUTORUN);
+  AppName := unicodestring(APP_NAME);
+  FValue := ERROR_SUCCESS = RegGetValueW(HKEY_CURRENT_USER,
+                                         PWideChar(AutorunKey), PWideChar(AppName),
+                                         RRF_RT_REG_SZ, nil, nil, @DataSize);
+  SetLength(CommandLine, DataSize div SizeOf(WideChar));
+  if ERROR_SUCCESS = RegGetValueW(HKEY_CURRENT_USER,
+                                  PWideChar(AutorunKey), PWideChar(AppName),
+                                  RRF_RT_REG_SZ, nil,
+                                  PWideChar(CommandLine), @DataSize) then
+  begin
+    SetLength(CommandLine, DataSize div SizeOf(WideChar) - 1);
+    FRunAsAdministrator := EndsStr('--' + ARGUMENT_RUN_TASK, string(CommandLine));
+  end
+  else
+    FRunAsAdministrator := False;
 end;
 
 procedure TSettingAutorun.SetValue(AValue: boolean);
@@ -394,13 +425,31 @@ begin
   if ERROR_SUCCESS <> RegOpenKeyW(HKEY_CURRENT_USER, unicodestring(REG_AUTORUN), RegKey) then Exit;
   if AValue then
   begin
-    CommandLine := unicodestring(Format('"%s" -%s', [ParamStr(0), ARGUMENT_SILENT_CHAR]));
+    CommandLine := unicodestring(specialize IfThen<string>(
+      FRunAsAdministrator,
+      Format('"%s" --%s', [ParamStr(0), ARGUMENT_RUN_TASK]),
+      Format('"%s" -%s', [ParamStr(0), ARGUMENT_SILENT_CHAR])
+    ));
     RegSetValueExW(RegKey, unicodestring(APP_NAME), 0, REG_SZ, PByte(CommandLine), Length(CommandLine) * SizeOf(WideChar));
   end
   else
     RegDeleteValueW(RegKey, unicodestring(APP_NAME));
   RegCloseKey(RegKey);
   FValue := AValue;
+end;
+
+procedure TSettingAutorun.SetRunAsAdministrator(AValue: boolean);
+var
+  FilePath, Parameters, Directory: unicodestring;
+begin
+  FilePath := unicodestring(ParamStr(0));
+  Parameters := unicodestring('--' + specialize IfThen<string>(AValue, ARGUMENT_CREATE_TASK, ARGUMENT_REMOVE_TASK));
+  Directory := unicodestring(GetCurrentDir);
+  if ShellExecuteW(0, 'runas', PWideChar(FilePath), PWideChar(Parameters), PWideChar(Directory), SW_NORMAL) > 32 then
+  begin
+    FRunAsAdministrator := AValue;
+    SetValue(True);
+  end;
 end;
 
 initialization

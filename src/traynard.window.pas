@@ -190,6 +190,7 @@ type
     procedure MinimizeWindow(const Handle: HWND; const Position: TTrayPosition); overload;
     procedure RestoreWindow(const Handle: HWND);
     procedure SetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean);
+    procedure ToggleWindowAlwaysOnTop(const Handle: HWND);
     function TryRestoreAllWindows: integer;
     function IsAutoMinimizeWindow(const Handle: HWND; out TrayPosition: TTrayPosition): boolean;
     function IsAutoMinimizeWindow(const Handle: HWND): boolean; overload;
@@ -197,6 +198,8 @@ type
     function TryMinimizeWindow(const Handle: HWND; const Position: TTrayPosition): boolean;
     function TryRestoreWindow(const Handle: HWND): boolean;
     function TryRestoreLastWindow: boolean;
+    function TrySetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean): boolean;
+    function TryToggleWindowAlwaysOnTop(const Handle: HWND): boolean;
   end;
 
 var
@@ -643,9 +646,9 @@ begin
         );
       end;
       IDM_SYSTEM_TOPMOST:
-        SetWindowPos(HWND(TheMessage.lParam), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE);
+        TrySetWindowAlwaysOnTop(HWND(TheMessage.lParam), True);
       IDM_SYSTEM_TOPMOST_CHECKED:
-        SetWindowPos(HWND(TheMessage.lParam), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE);
+        TrySetWindowAlwaysOnTop(HWND(TheMessage.lParam), False);
     end;
   end
   else
@@ -1148,6 +1151,7 @@ end;
 destructor TWindowManager.Destroy;
 var
   WinEventHook: HWINEVENTHOOK;
+  TopmostWindow: HWND;
 begin
   TryRestoreAllWindows;
   Settings.RemoveListeners(Self);
@@ -1164,6 +1168,8 @@ begin
   FreeAndNil(FTray);
   FreeAndNil(FAutoMinimizeWindows);
   FreeAndNil(FRestoredWindows);
+  for TopmostWindow in FTopmostWindows.Keys do
+    SetWindowPos(TopmostWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE);
   FreeAndNil(FTopmostWindows);
   inherited Destroy;
 end;
@@ -1255,16 +1261,30 @@ begin
 end;
 
 procedure TWindowManager.SetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean);
+var
+  Window: TWindow;
+  HighlightForm: TForm;
 begin
+  if not FDesktop.FWindows.TryGetValue(Handle, Window) then
+    raise Exception.Create(ERROR_WINDOW_NOT_FOUND);
   if not SetWindowPos(Handle,
                       specialize IfThen<HWND>(IsTopmost, HWND_TOPMOST, HWND_NOTOPMOST),
                       0, 0, 0, 0,
                       SWP_NOMOVE or SWP_NOSIZE) then
     raise Exception.Create(GetLastErrorMsg);
   if IsTopmost then
-    FTopmostWindows.TryAdd(Handle, specialize IfThen<TForm>(IsTopmost, TFormHighlight.Create(Handle), nil))
+  begin
+    HighlightForm := TFormHighlight.Create(Handle);
+    if not FTopmostWindows.TryAdd(Handle, HighlightForm) then
+      HighlightForm.Free;
+  end
   else
     FTopmostWindows.Remove(Handle);
+end;
+
+procedure TWindowManager.ToggleWindowAlwaysOnTop(const Handle: HWND);
+begin
+  SetWindowAlwaysOnTop(Handle, GetWindowLong(Handle, GWL_EXSTYLE) and WS_EX_TOPMOST = 0);
 end;
 
 function TWindowManager.TryRestoreAllWindows: integer;
@@ -1318,6 +1338,26 @@ function TWindowManager.TryRestoreLastWindow: boolean;
 begin
   try
     RestoreWindow(FTray.LastWindow.Handle);
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+function TWindowManager.TrySetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean): boolean;
+begin
+  try
+    SetWindowAlwaysOnTop(Handle, IsTopmost);
+    Result := True;
+  except
+    Result := False;
+  end;
+end;
+
+function TWindowManager.TryToggleWindowAlwaysOnTop(const Handle: HWND): boolean;
+begin
+  try
+    ToggleWindowAlwaysOnTop(Handle);
     Result := True;
   except
     Result := False;

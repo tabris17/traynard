@@ -50,8 +50,6 @@ uses
 
 procedure THotkeyManager.WindowProc(var TheMessage: TLMessage);
 var
-  TheWnd: HWND;
-  ExStyle: LONG;
   HotkeyID: longint;
 begin
   if TheMessage.msg = WM_HOTKEY then
@@ -73,16 +71,8 @@ begin
       Ord(hiRestoreAll):
         WindowManager.TryRestoreAllWindows;
       Ord(hiToggleTopmost):
-      begin
-        TheWnd := GetForegroundWindow;
-        ExStyle := GetWindowLong(TheWnd, GWL_EXSTYLE);
-        if not SetWindowPos(
-          GetForegroundWindow,
-          specialize IfThen<HWND>(ExStyle and WS_EX_TOPMOST = 0, HWND_TOPMOST, HWND_NOTOPMOST),
-          0, 0, 0, 0,
-          SWP_NOMOVE or SWP_NOSIZE
-        ) then MessageBeep(MB_ICONWARNING);
-      end;
+        if not WindowManager.TryToggleWindowAlwaysOnTop(GetForegroundWindow) then
+          MessageBeep(MB_ICONWARNING);
       Ord(hiOpenClose):
       begin
         if Assigned(FormMain) then

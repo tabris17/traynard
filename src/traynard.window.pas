@@ -134,7 +134,7 @@ type
 
     Exception = class(SysUtils.Exception);
 
-    TEventHookType = (ehtCloaked, ehtMinimize, ehtDestroy);
+    TEventHookType = (ehtCloaked, ehtMinimize, ehtDestroy, ehtLocationChange);
   private
     FSelf: TWindowManager; static;
     FMainForm: TForm;
@@ -520,21 +520,22 @@ begin
   MinimizeEventHook := FEventHooks[ehtMinimize];
   if AValue then
   begin
-    if MinimizeEventHook <> 0 then Exit;
-    FEventHooks[ehtMinimize] := SetWinEventHook(
-      EVENT_SYSTEM_MINIMIZESTART,
-      EVENT_SYSTEM_MINIMIZESTART,
-      0,
-      @WinEventProc,
-      0,
-      0,
-      WINEVENT_OUTOFCONTEXT or WINEVENT_SKIPOWNPROCESS
-    );
+    if MinimizeEventHook = 0 then
+      FEventHooks[ehtMinimize] := SetWinEventHook(
+        EVENT_SYSTEM_MINIMIZESTART,
+        EVENT_SYSTEM_MINIMIZESTART,
+        0,
+        @WinEventProc,
+        0,
+        0,
+        WINEVENT_OUTOFCONTEXT or WINEVENT_SKIPOWNPROCESS
+      );
   end
   else
   begin
-    if MinimizeEventHook = 0 then Exit;
-    if UnhookWinEvent(MinimizeEventHook) then FEventHooks[ehtMinimize] := 0;
+    if MinimizeEventHook <> 0 then
+      UnhookWinEvent(MinimizeEventHook);
+    FEventHooks[ehtMinimize] := 0;
   end;
 end;
 
@@ -743,16 +744,31 @@ end;
 procedure TWindowManager.HighlightTopmostChanged(Sender: TObject);
 var
   Window: HWND;
+  LocationChangeHook: HWINEVENTHOOK;
 begin
+  LocationChangeHook := FEventHooks[ehtLocationChange];
   if (Sender as TSettings).HighlightTopmost then
   begin
     for Window in FTopmostWindows.Keys do
       FTopmostWindows[Window] := TFormHighlight.Create(Window);
+    if LocationChangeHook = 0 then
+      FEventHooks[ehtLocationChange] := SetWinEventHook(
+        EVENT_OBJECT_LOCATIONCHANGE,
+        EVENT_OBJECT_LOCATIONCHANGE,
+        0,
+        @WinEventProc,
+        0,
+        0,
+        WINEVENT_OUTOFCONTEXT or WINEVENT_SKIPOWNPROCESS
+      );
   end
   else
   begin
     for Window in FTopmostWindows.Keys do
       FTopmostWindows[Window] := nil;
+    if LocationChangeHook <> 0 then
+      UnhookWinEvent(LocationChangeHook);
+    FEventHooks[ehtLocationChange] := 0;
   end;
 end;
 
@@ -973,6 +989,7 @@ var
   Rule: TRule;
   LaunchEntry: TLaunchEntry;
   Window: TWindow;
+  HighlightForm: TForm;
 begin
   if (hwnd = 0) or (idObject <> OBJID_WINDOW) or (idChild <> CHILDID_SELF) then Exit;
 
@@ -1024,6 +1041,11 @@ begin
       FSelf.FAutoMinimizeWindows.Remove(hwnd);
       FSelf.FRestoredWindows.Remove(hwnd);
       FSelf.FTopmostWindows.Remove(hwnd);
+    end;
+    EVENT_OBJECT_LOCATIONCHANGE:
+    begin
+      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
+        (HighlightForm as TFormHighlight).UpdatePosition;
     end;
   end;
 end;
@@ -1105,7 +1127,19 @@ begin
   end;
 
   FActiveWindow := 0;
-                                                                               
+
+  if Settings.HighlightTopmost then
+  begin
+    FEventHooks[ehtLocationChange] := SetWinEventHook(
+      EVENT_OBJECT_LOCATIONCHANGE,
+      EVENT_OBJECT_LOCATIONCHANGE,
+      0,
+      @WinEventProc,
+      0,
+      0,
+      WINEVENT_OUTOFCONTEXT or WINEVENT_SKIPOWNPROCESS
+    );
+  end;
   Settings.AddListener(siHighlightTopmost, @HighlightTopmostChanged);
 
   inherited Create(AOwner);

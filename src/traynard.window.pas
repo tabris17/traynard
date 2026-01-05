@@ -1257,6 +1257,9 @@ begin
     raise Exception.Create(ERROR_RESTORE_WINDOW);
   end;
 
+  ShowWindow(Handle, SW_RESTORE);
+  SetForegroundWindow(Handle);
+
   if not FRestoredWindows.Contains(Handle) then FRestoredWindows.Add(Handle);
 end;
 

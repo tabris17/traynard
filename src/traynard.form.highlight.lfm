@@ -6,10 +6,10 @@ object FormHighlight: TFormHighlight
   BorderStyle = bsNone
   Enabled = False
   Position = poDefault
-  OnShow = Track
+  OnShow = FormShow
   object Timer: TTimer
     Interval = 100
-    OnTimer = Track
+    OnTimer = TimerTimer
     Left = 148
     Top = 62
   end

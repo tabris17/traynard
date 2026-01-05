@@ -13,12 +13,13 @@ type
 
   TFormHighlight = class(TForm)
     Timer: TTimer;
-    procedure Track(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   private
     FAttachedWindow: HWND;
-    FThickness: byte;
   public
     constructor Create(AttachedWindow: HWND); overload;
+    procedure UpdatePosition;
   end;
 
 implementation
@@ -30,29 +31,34 @@ uses
 
 { TFormHighlight }
 
-procedure TFormHighlight.Track(Sender: TObject);
+procedure TFormHighlight.UpdatePosition;
 var
   Rect: TRect;
   Thickness, DblThickness: longint;
 begin
-  Timer.Enabled := False;
   Color := Settings.HighlightTopmostColor;        
   Thickness := Settings.HighlightTopmostThickness;
   DblThickness := Thickness shl 1;
-  try
-    if DwmGetWindowAttribute(FAttachedWindow,
-                             DWMWA_EXTENDED_FRAME_BOUNDS,
-                             @Rect,
-                             SizeOf(Rect)) <> S_OK then Exit;
-    SetWindowPos(Handle, FAttachedWindow,
-                 Rect.Left - Thickness,
-                 Rect.Top - Thickness,
-                 Rect.Width + DblThickness,
-                 Rect.Height + DblThickness,
-                 SWP_NOREDRAW or SWP_NOACTIVATE);
-  finally
-    Timer.Enabled := True;
-  end;
+  if DwmGetWindowAttribute(FAttachedWindow,
+                           DWMWA_EXTENDED_FRAME_BOUNDS,
+                           @Rect,
+                           SizeOf(Rect)) <> S_OK then Exit;
+  SetWindowPos(Handle, FAttachedWindow,
+               Rect.Left - Thickness,
+               Rect.Top - Thickness,
+               Rect.Width + DblThickness,
+               Rect.Height + DblThickness,
+               SWP_NOREDRAW or SWP_NOACTIVATE);
+end;
+
+procedure TFormHighlight.TimerTimer(Sender: TObject);
+begin
+  UpdatePosition;
+end;
+
+procedure TFormHighlight.FormShow(Sender: TObject);
+begin
+  UpdatePosition;
 end;
 
 constructor TFormHighlight.Create(AttachedWindow: HWND);

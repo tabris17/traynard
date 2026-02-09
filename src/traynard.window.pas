@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Menus, Controls, ExtCtrls, Windows, JwaWinAble, LMessages, Generics.Collections,
-  Traynard.Types, Traynard.Strings;
+  Traynard.Types, Traynard.Strings, Traynard.Form.Highlight;
 
 type
 
@@ -168,6 +168,7 @@ type
     function AddWindow(const Handle: HWND): boolean;
     function RemoveWindow(const Handle: HWND): boolean;
     function UpdateWindow(const Handle: HWND): boolean;
+    function FindHighlightForm(const Handle: HWND; out Form: TFormHighlight): boolean;
   private
     class function EnumAndMinimizeWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     class function MinimizeOwnedWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
@@ -210,7 +211,7 @@ implementation
 uses
   LazLogger, LazFileUtils, JwaPsApi, DwmApi, Graphics,
   Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification,
-  Traynard.Session, Traynard.Launcher, Traynard.Form.Highlight;
+  Traynard.Session, Traynard.Launcher;
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
@@ -922,6 +923,18 @@ begin
   Result := False;
 end;
 
+function TWindowManager.FindHighlightForm(const Handle: HWND; out Form: TFormHighlight): boolean;
+var
+  AForm: TForm;
+begin
+  if Settings.HighlightTopmost and Self.FTopmostWindows.TryGetValue(Handle, AForm) then
+  begin                             
+    Form := AForm as TFormHighlight;
+    Exit(True);
+  end;
+  Result := False;
+end;
+
 class function TWindowManager.EnumAndMinimizeWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall;
 var
   Self: TWindowManager;
@@ -992,7 +1005,7 @@ var
   Rule: TRule;
   LaunchEntry: TLaunchEntry;
   Window: TWindow;
-  HighlightForm: TForm;
+  HighlightForm: TFormHighlight;
 begin
   if (hwnd = 0) or (idObject <> OBJID_WINDOW) or (idChild <> CHILDID_SELF) then Exit;
 
@@ -1010,14 +1023,14 @@ begin
     EVENT_OBJECT_CLOAKED:
     begin
       FSelf.UpdateWindow(hwnd);
-      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
-        (HighlightForm as TFormHighlight).Visible := False;
+      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
+        HighlightForm.Visible := False;
     end;
     EVENT_OBJECT_UNCLOAKED:
     begin
       FSelf.UpdateWindow(hwnd);
-      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
-        (HighlightForm as TFormHighlight).Visible := True;
+      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
+        HighlightForm.Visible := True;
     end;
     EVENT_SYSTEM_MINIMIZESTART:
     begin
@@ -1054,8 +1067,8 @@ begin
     end;
     EVENT_OBJECT_LOCATIONCHANGE:
     begin
-      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
-        (HighlightForm as TFormHighlight).UpdatePosition;
+      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
+        HighlightForm.UpdatePosition;
     end;
   end;
 end;

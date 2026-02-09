@@ -1007,10 +1007,17 @@ begin
   {$ENDIF}
 
   case event of
-    EVENT_OBJECT_CLOAKED,
+    EVENT_OBJECT_CLOAKED:
+    begin
+      FSelf.UpdateWindow(hwnd);
+      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
+        (HighlightForm as TFormHighlight).Visible := False;
+    end;
     EVENT_OBJECT_UNCLOAKED:
     begin
       FSelf.UpdateWindow(hwnd);
+      if Settings.HighlightTopmost and FSelf.FTopmostWindows.TryGetValue(hwnd, HighlightForm) then
+        (HighlightForm as TFormHighlight).Visible := True;
     end;
     EVENT_SYSTEM_MINIMIZESTART:
     begin

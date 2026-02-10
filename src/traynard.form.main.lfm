@@ -1,9 +1,9 @@
 object FormMain: TFormMain
   Left = 0
-  Height = 600
+  Height = 640
   Top = 0
   Width = 800
-  ClientHeight = 600
+  ClientHeight = 640
   ClientWidth = 800
   Color = clWindow
   Constraints.MinHeight = 480

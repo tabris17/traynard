@@ -585,6 +585,10 @@ msgstr ""
 msgid "Config directory"
 msgstr ""
 
+#: tpageoptions.labeldefaultminimizeto.caption
+msgid "Default minimize to:"
+msgstr ""
+
 #: tpageoptions.labelhighlightcolor.caption
 msgctxt "tpageoptions.labelhighlightcolor.caption"
 msgid "Color:"
@@ -608,6 +612,16 @@ msgstr ""
 
 #: tpageoptions.listviewhotkeys.columns[2].caption
 msgid "Conflict"
+msgstr ""
+
+#: tpageoptions.radiobuttontrayicon.caption
+msgctxt "tpageoptions.radiobuttontrayicon.caption"
+msgid "Tray Icon"
+msgstr ""
+
+#: tpageoptions.radiobuttontraymenu.caption
+msgctxt "tpageoptions.radiobuttontraymenu.caption"
+msgid "Tray Menu"
 msgstr ""
 
 #: tpagerules.actionclose.caption
@@ -1100,10 +1114,12 @@ msgid "Add \"Minimize to Tray Menu\" to every window menu"
 msgstr ""
 
 #: traynard.strings.text_tray_icon
+msgctxt "traynard.strings.text_tray_icon"
 msgid "Tray Icon"
 msgstr ""
 
 #: traynard.strings.text_tray_menu
+msgctxt "traynard.strings.text_tray_menu"
 msgid "Tray Menu"
 msgstr ""
 

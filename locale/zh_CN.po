@@ -590,6 +590,10 @@ msgstr "热键"
 msgid "Config directory"
 msgstr "配置保存路径"
 
+#: tpageoptions.labeldefaultminimizeto.caption
+msgid "Default minimize to:"
+msgstr "默认最小化至:"
+
 #: tpageoptions.labelhighlightcolor.caption
 msgctxt "tpageoptions.labelhighlightcolor.caption"
 msgid "Color:"
@@ -614,6 +618,16 @@ msgstr "按键"
 #: tpageoptions.listviewhotkeys.columns[2].caption
 msgid "Conflict"
 msgstr "冲突"
+
+#: tpageoptions.radiobuttontrayicon.caption
+msgctxt "tpageoptions.radiobuttontrayicon.caption"
+msgid "Tray Icon"
+msgstr "托盘图标"
+
+#: tpageoptions.radiobuttontraymenu.caption
+msgctxt "tpageoptions.radiobuttontraymenu.caption"
+msgid "Tray Menu"
+msgstr "托盘菜单"
 
 #: tpagerules.actionclose.caption
 msgctxt "tpagerules.actionclose.caption"
@@ -1112,10 +1126,12 @@ msgid "Add \"Minimize to Tray Menu\" to every window menu"
 msgstr "添加 \"最小化到托盘菜单\" 项到所有窗口菜单"
 
 #: traynard.strings.text_tray_icon
+msgctxt "traynard.strings.text_tray_icon"
 msgid "Tray Icon"
 msgstr "托盘图标"
 
 #: traynard.strings.text_tray_menu
+msgctxt "traynard.strings.text_tray_menu"
 msgid "Tray Menu"
 msgstr "托盘菜单"
 

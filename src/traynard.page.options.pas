@@ -48,6 +48,7 @@ type
     DividerBevelHotkey: TDividerBevel;
     DividerBevelAdvanced: TDividerBevel;
     EditConfigDir: TEdit;
+    LabelDefaultMinimizeTo: TLabel;
     LabelHighlightColor: TLabel;
     LabelHighlightThickness: TLabel;
     LabelConfigDir: TLabel;
@@ -57,8 +58,11 @@ type
     MenuItemModify: TMenuItem;
     MenuItemClear: TMenuItem;
     HotkeyMenu: TPopupMenu;
+    PanelDefaultTrayPosition: TPanel;
     PanelHighlight: TPanel;
     PanelConfigDir: TPanel;
+    RadioButtonTrayMenu: TRadioButton;
+    RadioButtonTrayIcon: TRadioButton;
     SpinEditHighlightThickness: TSpinEdit;
     procedure ActionConfigDirExecute(Sender: TObject);
     procedure ActionHotkeyClearExecute(Sender: TObject);
@@ -85,6 +89,7 @@ type
     procedure ComboBoxLanguagesChange(Sender: TObject);
     procedure ListViewHotkeysDblClick(Sender: TObject);
     procedure ListViewHotkeysSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+    procedure DefaultTrayPositionChange(Sender: TObject);
     procedure SpinEditHighlightThicknessChange(Sender: TObject);
   public
     procedure Initialize; override;
@@ -108,6 +113,7 @@ type
     procedure HighlightTopmostChanged(Sender: TObject);
     procedure HighlightTopmostColorChanged(Sender: TObject);
     procedure HighlightTopmostThicknessChanged(Sender: TObject);
+    procedure DefaultTrayPositionChanged(Sender: TObject);
   end;
 
 implementation
@@ -126,6 +132,11 @@ begin
   ActionHotkeyBind.Enabled := Selected;
   ActionHotkeyClear.Enabled := Selected;
   ActionHotkeyReset.Enabled := Selected;
+end;
+
+procedure TPageOptions.DefaultTrayPositionChange(Sender: TObject);
+begin
+  Settings.DefaultTrayPosition := TTrayPosition((Sender as TControl).Tag);
 end;
 
 procedure TPageOptions.SpinEditHighlightThicknessChange(Sender: TObject);
@@ -358,6 +369,10 @@ begin
   AddListener(siHighlightTopmost, @HighlightTopmostChanged);
   AddListener(siHighlightTopmostColor, @HighlightTopmostColorChanged);
   AddListener(siHighlightTopmostThickness, @HighlightTopmostThicknessChanged);
+  AddListener(siDefaultTrayPosition, @DefaultTrayPositionChanged);
+
+  RadioButtonTrayMenu.Tag := Ord(tpMenu); 
+  RadioButtonTrayIcon.Tag := Ord(tpIcon);
 
   EditConfigDir.Text := Storage.ConfigDir;
 
@@ -510,6 +525,16 @@ end;
 procedure TPageOptions.HighlightTopmostThicknessChanged(Sender: TObject);
 begin
   SpinEditHighlightThickness.Value := (Sender as TSettings).HighlightTopmostThickness;
+end;
+
+procedure TPageOptions.DefaultTrayPositionChanged(Sender: TObject);
+begin
+  case (Sender as TSettings).DefaultTrayPosition of
+    tpMenu: RadioButtonTrayMenu.Checked := True;
+    tpIcon: RadioButtonTrayIcon.Checked := True;
+    else
+      raise ERuntimeError.Create('Invalid tray position');
+  end;
 end;
 
 end.

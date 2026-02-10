@@ -166,12 +166,122 @@ inherited PageOptions: TPageOptions
       OnChange = SpinEditHighlightThicknessChange
     end
   end
-  object DividerBevelHotkey: TDividerBevel[9]
+  object PanelDefaultTrayPosition: TPanel[9]
     AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 22
+    Top = 269
+    Width = 480
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    BorderSpacing.Right = 10
+    BevelOuter = bvNone
+    ClientHeight = 22
+    ClientWidth = 480
+    Constraints.MaxWidth = 600
+    TabOrder = 24
+    object LabelDefaultMinimizeTo: TLabel
+      AnchorSideLeft.Control = PanelDefaultTrayPosition
+      AnchorSideTop.Control = PanelDefaultTrayPosition
+      AnchorSideTop.Side = asrCenter
+      Left = 0
+      Height = 17
+      Top = 3
+      Width = 115
+      Caption = 'Default minimize to:'
+    end
+    object RadioButtonTrayMenu: TRadioButton
+      AnchorSideLeft.Control = LabelDefaultMinimizeTo
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = PanelDefaultTrayPosition
+      AnchorSideTop.Side = asrCenter
+      Left = 135
+      Height = 21
+      Top = 1
+      Width = 80
+      BorderSpacing.Left = 20
+      Caption = 'Tray Menu'
+      TabOrder = 0
+      OnChange = DefaultTrayPositionChange
+    end
+    object RadioButtonTrayIcon: TRadioButton
+      AnchorSideLeft.Control = RadioButtonTrayMenu
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = PanelDefaultTrayPosition
+      AnchorSideTop.Side = asrCenter
+      Left = 225
+      Height = 21
+      Top = 1
+      Width = 72
+      BorderSpacing.Left = 10
+      Caption = 'Tray Icon'
+      TabOrder = 1
+      OnChange = DefaultTrayPositionChange
+    end
+  end
+  object LabelLanguage: TLabel[10]
+    AnchorSideTop.Control = PanelHighlight
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 17
-    Top = 279
+    Top = 215
+    Width = 92
+    BorderSpacing.Top = 10
+    Caption = 'Select language'
+    FocusControl = ComboBoxLanguages
+  end
+  object ComboBoxLanguages: TComboBox[11]
+    AnchorSideTop.Control = LabelLanguage
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 25
+    Top = 234
+    Width = 200
+    BorderSpacing.Top = 2
+    ItemHeight = 17
+    Style = csDropDownList
+    TabOrder = 8
+    OnChange = ComboBoxLanguagesChange
+  end
+  object ButtonApplyLanguage: TButton[12]
+    AnchorSideLeft.Control = ComboBoxLanguages
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrCenter
+    Left = 215
+    Height = 27
+    Top = 233
+    Width = 80
+    Action = ActionLanguageApply
+    BorderSpacing.Left = 5
+    Constraints.MinWidth = 80
+    TabOrder = 9
+  end
+  object ButtonRefreshLanguage: TButton[13]
+    AnchorSideLeft.Control = ButtonApplyLanguage
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ComboBoxLanguages
+    AnchorSideTop.Side = asrCenter
+    Left = 300
+    Height = 27
+    Top = 233
+    Width = 80
+    Action = ActionLanguageRefresh
+    BorderSpacing.Left = 5
+    Constraints.MinWidth = 80
+    TabOrder = 10
+  end
+  object DividerBevelHotkey: TDividerBevel[14]
+    AnchorSideTop.Control = PanelDefaultTrayPosition
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 17
+    Top = 311
     Width = 480
     Caption = 'Hotkey'
     Anchors = [akTop, akLeft, akRight]
@@ -181,12 +291,12 @@ inherited PageOptions: TPageOptions
     ParentFont = False
     Style = gsHorLines
   end
-  object ListViewHotkeys: TListView[10]
+  object ListViewHotkeys: TListView[15]
     AnchorSideTop.Control = DividerBevelHotkey
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 200
-    Top = 306
+    Top = 338
     Width = 480
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 10
@@ -215,38 +325,27 @@ inherited PageOptions: TPageOptions
     OnDblClick = ListViewHotkeysDblClick
     OnSelectItem = ListViewHotkeysSelectItem
   end
-  object LabelLanguage: TLabel[11]
-    AnchorSideTop.Control = PanelHighlight
+  object ButtonHotkeyBind: TButton[16]
+    AnchorSideTop.Control = ListViewHotkeys
     AnchorSideTop.Side = asrBottom
     Left = 10
-    Height = 17
-    Top = 215
-    Width = 92
-    BorderSpacing.Top = 10
-    Caption = 'Select language'
-    FocusControl = ComboBoxLanguages
+    Height = 27
+    Top = 543
+    Width = 80
+    Action = ActionHotkeyBind
+    AutoSize = True
+    BorderSpacing.Top = 5
+    Constraints.MinWidth = 80
+    TabOrder = 12
   end
-  object ComboBoxLanguages: TComboBox[12]
-    AnchorSideTop.Control = LabelLanguage
-    AnchorSideTop.Side = asrBottom
-    Left = 10
-    Height = 25
-    Top = 234
-    Width = 200
-    BorderSpacing.Top = 2
-    ItemHeight = 17
-    Style = csDropDownList
-    TabOrder = 8
-    OnChange = ComboBoxLanguagesChange
-  end
-  object ButtonHotkeyClear: TButton[13]
+  object ButtonHotkeyClear: TButton[17]
     AnchorSideLeft.Control = ButtonHotkeyBind
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = ListViewHotkeys
     AnchorSideTop.Side = asrBottom
     Left = 95
     Height = 27
-    Top = 511
+    Top = 543
     Width = 80
     Action = ActionHotkeyClear
     AutoSize = True
@@ -255,28 +354,14 @@ inherited PageOptions: TPageOptions
     Constraints.MinWidth = 80
     TabOrder = 13
   end
-  object ButtonRefreshLanguage: TButton[14]
-    AnchorSideLeft.Control = ButtonApplyLanguage
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ComboBoxLanguages
-    AnchorSideTop.Side = asrCenter
-    Left = 300
-    Height = 27
-    Top = 233
-    Width = 80
-    Action = ActionLanguageRefresh
-    BorderSpacing.Left = 5
-    Constraints.MinWidth = 80
-    TabOrder = 10
-  end
-  object ButtonHotkeyReset: TButton[15]
+  object ButtonHotkeyReset: TButton[18]
     AnchorSideLeft.Control = ButtonHotkeyClear
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = ListViewHotkeys
     AnchorSideTop.Side = asrBottom
     Left = 180
     Height = 27
-    Top = 511
+    Top = 543
     Width = 80
     Action = ActionHotkeyReset
     AutoSize = True
@@ -286,39 +371,12 @@ inherited PageOptions: TPageOptions
     TabOrder = 14
     Visible = False
   end
-  object ButtonApplyLanguage: TButton[16]
-    AnchorSideLeft.Control = ComboBoxLanguages
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = ComboBoxLanguages
-    AnchorSideTop.Side = asrCenter
-    Left = 215
-    Height = 27
-    Top = 233
-    Width = 80
-    Action = ActionLanguageApply
-    BorderSpacing.Left = 5
-    Constraints.MinWidth = 80
-    TabOrder = 9
-  end
-  object ButtonHotkeyBind: TButton[17]
-    AnchorSideTop.Control = ListViewHotkeys
-    AnchorSideTop.Side = asrBottom
-    Left = 10
-    Height = 27
-    Top = 511
-    Width = 80
-    Action = ActionHotkeyBind
-    AutoSize = True
-    BorderSpacing.Top = 5
-    Constraints.MinWidth = 80
-    TabOrder = 12
-  end
-  object DividerBevelAdvanced: TDividerBevel[18]
+  object DividerBevelAdvanced: TDividerBevel[19]
     AnchorSideTop.Control = ButtonHotkeyBind
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 17
-    Top = 558
+    Top = 590
     Width = 480
     Caption = 'Advanced'
     Anchors = [akTop, akLeft, akRight]
@@ -328,11 +386,11 @@ inherited PageOptions: TPageOptions
     ParentFont = False
     Style = gsHorLines
   end
-  object CheckGroupSystemMenu: TCheckGroup[19]
+  object CheckGroupSystemMenu: TCheckGroup[20]
     AnchorSideTop.Control = DividerBevelAdvanced
     Left = 10
     Height = 60
-    Top = 583
+    Top = 615
     Width = 480
     Anchors = [akTop, akLeft, akRight]
     AutoFill = False
@@ -351,48 +409,48 @@ inherited PageOptions: TPageOptions
     TabOrder = 15
     OnItemClick = CheckGroupSystemMenuItemClick
   end
-  object CheckBoxAutoMinimize: TCheckBox[20]
+  object CheckBoxAutoMinimize: TCheckBox[21]
     AnchorSideTop.Control = CheckGroupSystemMenu
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 21
-    Top = 648
+    Top = 680
     Width = 185
     BorderSpacing.Top = 5
     Caption = 'Enable auto-minimize to tray'
     TabOrder = 16
     OnChange = CheckBoxAutoMinimizeChange
   end
-  object CheckBoxUseRules: TCheckBox[21]
+  object CheckBoxUseRules: TCheckBox[22]
     AnchorSideTop.Control = CheckBoxAutoMinimize
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 21
-    Top = 674
+    Top = 706
     Width = 135
     BorderSpacing.Top = 5
     Caption = 'Enable custom rules'
     TabOrder = 17
     OnChange = CheckBoxUseRulesChange
   end
-  object CheckBoxMultiprocessLaunch: TCheckBox[22]
+  object CheckBoxMultiprocessLaunch: TCheckBox[23]
     AnchorSideTop.Control = CheckBoxLauncher
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 21
-    Top = 784
+    Top = 816
     Width = 243
     BorderSpacing.Top = 5
     Caption = 'Support for multi-process applications'
     TabOrder = 21
     OnChange = CheckBoxMultiprocessLaunchChange
   end
-  object CheckBoxRuleOnStartup: TCheckBox[23]
+  object CheckBoxRuleOnStartup: TCheckBox[24]
     AnchorSideTop.Control = CheckBoxUseRules
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 21
-    Top = 700
+    Top = 732
     Width = 261
     BorderSpacing.Top = 5
     Caption = 'Apply rules to existing windows at startup'
@@ -400,12 +458,12 @@ inherited PageOptions: TPageOptions
     TabOrder = 18
     OnChange = CheckBoxRuleOnStartupChange
   end
-  object ButtonEditRules: TButton[24]
+  object ButtonEditRules: TButton[25]
     AnchorSideTop.Control = CheckBoxRuleOnStartup
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 27
-    Top = 726
+    Top = 758
     Width = 83
     AutoSize = True
     BorderSpacing.Top = 5
@@ -415,24 +473,24 @@ inherited PageOptions: TPageOptions
     TabOrder = 19
     OnClick = ButtonEditRulesClick
   end
-  object CheckBoxLauncher: TCheckBox[25]
+  object CheckBoxLauncher: TCheckBox[26]
     AnchorSideTop.Control = ButtonEditRules
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 21
-    Top = 758
+    Top = 790
     Width = 110
     BorderSpacing.Top = 5
     Caption = 'Enable launcher'
     TabOrder = 20
     OnChange = CheckBoxLauncherChange
   end
-  object ButtonEditLaunchEntries: TButton[26]
+  object ButtonEditLaunchEntries: TButton[27]
     AnchorSideTop.Control = CheckBoxMultiprocessLaunch
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 27
-    Top = 810
+    Top = 842
     Width = 135
     AutoSize = True
     BorderSpacing.Top = 5
@@ -442,22 +500,22 @@ inherited PageOptions: TPageOptions
     TabOrder = 22
     OnClick = ButtonEditLaunchEntriesClick
   end
-  object LabelConfigDir: TLabel[27]
+  object LabelConfigDir: TLabel[28]
     AnchorSideTop.Control = ButtonEditLaunchEntries
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 17
-    Top = 847
+    Top = 879
     Width = 94
     BorderSpacing.Top = 10
     Caption = 'Config directory'
   end
-  object PanelConfigDir: TPanel[28]
+  object PanelConfigDir: TPanel[29]
     AnchorSideTop.Control = LabelConfigDir
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 27
-    Top = 866
+    Top = 898
     Width = 480
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
@@ -493,7 +551,7 @@ inherited PageOptions: TPageOptions
       TabOrder = 1
     end
   end
-  object HotkeyMenu: TPopupMenu[29]
+  object HotkeyMenu: TPopupMenu[30]
     Left = 352
     Top = 32
     object MenuItemModify: TMenuItem
@@ -507,7 +565,7 @@ inherited PageOptions: TPageOptions
       Action = ActionHotkeyReset
     end
   end
-  object ActionList: TActionList[30]
+  object ActionList: TActionList[31]
     Left = 280
     Top = 32
     object ActionHotkeyBind: TAction
@@ -544,7 +602,7 @@ inherited PageOptions: TPageOptions
       OnExecute = ActionLanguageResetExecute
     end
   end
-  object ColorDialog: TColorDialog[31]
+  object ColorDialog: TColorDialog[32]
     Title = 'Select Border Color'
     Color = clHighlight
     CustomColors.Strings = (

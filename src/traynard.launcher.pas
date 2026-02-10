@@ -22,7 +22,7 @@ type
     TriggerOn: TLaunchTriggerOn;
     LaunchMethods: TLaunchMethods;
     Hotkey: THotkey;
-    Position: TTrayPosition;
+    Position: TRuleMinimizePosition;
 
     procedure Validate;
     procedure Load(const Config: TConfig);
@@ -202,7 +202,7 @@ begin
   end;
 
   Hotkey.Value := Config.GetInteger(KEY_HOTKEY, 0);
-  Position := TTrayPosition(Config.Items[KEY_POSITION].AsInteger);
+  Position := TRuleMinimizePosition(Config.Items[KEY_POSITION].AsInteger);
   Validate;
 end;
 

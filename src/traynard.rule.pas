@@ -20,7 +20,7 @@ type
     AppPath: TRuleText;
     TriggerOn: TRuleTriggerOn;
     Notification: TRuleNotification;
-    Position: TTrayPosition;
+    Position: TRuleMinimizePosition;
     Hotkey: THotkey;
 
     procedure Validate;
@@ -205,7 +205,7 @@ begin
   end;
 
   Notification := TRuleNotification(Config.Items[KEY_NOTIFICATION].AsInteger);
-  Position := TTrayPosition(Config.Items[KEY_POSITION].AsInteger);
+  Position := TRuleMinimizePosition(Config.Items[KEY_POSITION].AsInteger);
   Hotkey.Value := Config.GetInteger(KEY_HOTKEY, 0);
 
   if Config.TryGetValue(KEY_SCHEMA, Value) then Schema := Value.AsInteger;

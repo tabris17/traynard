@@ -161,7 +161,7 @@ begin
   for i := 0 to CheckGroupTriggerOn.Items.Count - 1 do
     CheckGroupTriggerOn.Items[i] := RULE_TRIGGER_ON[TWindowAction(i)];
   for i := 0 to RadioGroupMinimizeTo.Items.Count - 1 do
-    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TTrayPosition(i)];
+    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TRuleMinimizePosition(i)];
 
   for ComboBox in [ComboBoxWindowTitle, ComboBoxWindowClass, ComboBoxAppPath] do
   begin
@@ -479,7 +479,7 @@ begin
     if CheckGroupTriggerOn.Checked[Ord(WindowAction)] then
       Include(Rule.TriggerOn, WindowAction);
   end;
-  Rule.Position := TTrayPosition(RadioGroupMinimizeTo.ItemIndex);
+  Rule.Position := TRuleMinimizePosition(RadioGroupMinimizeTo.ItemIndex);
   Rule.Hotkey := FHotkey;
 
   case EditState of

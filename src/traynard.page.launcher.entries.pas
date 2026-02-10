@@ -198,7 +198,7 @@ begin
   for i := 0 to CheckGroupTriggerOn.Items.Count - 1 do
     CheckGroupTriggerOn.Items[i] := LAUNCH_TRIGGER_ON[TLaunchWindowAction(i)];
   for i := 0 to RadioGroupMinimizeTo.Items.Count - 1 do
-    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TTrayPosition(i)];
+    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TRuleMinimizePosition(i)];
 end;
 
 procedure TPageLauncherEntries.RestoreLabelHotkey;
@@ -370,7 +370,7 @@ begin
     if CheckGroupMethods.Checked[Ord(LaunchMethod)] then
       Include(Entry.LaunchMethods, LaunchMethod);
   end;
-  Entry.Position := TTrayPosition(RadioGroupMinimizeTo.ItemIndex);
+  Entry.Position := TRuleMinimizePosition(RadioGroupMinimizeTo.ItemIndex);
   Entry.Hotkey := FHotkey;
 
   case EditState of

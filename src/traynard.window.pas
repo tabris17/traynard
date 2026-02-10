@@ -197,6 +197,7 @@ type
     function IsAutoMinimizeWindow(const Handle: HWND): boolean; overload;
     function TryMinimizeWindow(const Handle: HWND; const Position: TTrayPosition; out Window: TWindow): boolean;
     function TryMinimizeWindow(const Handle: HWND; const Position: TTrayPosition): boolean;
+    function TryMinimizeWindow(const Handle: HWND; const Position: TRuleMinimizePosition): boolean;
     function TryRestoreWindow(const Handle: HWND): boolean;
     function TryRestoreLastWindow: boolean;
     function TrySetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean): boolean;
@@ -1345,6 +1346,19 @@ begin
   except
     Result := False;
   end;
+end;
+
+function TWindowManager.TryMinimizeWindow(const Handle: HWND; const Position: TRuleMinimizePosition): boolean;
+var
+  TrayPosition: TTrayPosition;
+begin
+  case Position of
+    rmpMenu: TrayPosition := tpMenu;
+    rmpIcon: TrayPosition := tpIcon;
+    rmpGlobal: TrayPosition := Settings.DefaultTrayPosition;
+    else Exit(False);
+  end;
+  Result := TryMinimizeWindow(Handle, TrayPosition);
 end;
 
 function TWindowManager.TryRestoreWindow(const Handle: HWND): boolean;

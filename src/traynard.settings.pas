@@ -49,11 +49,13 @@ type
     FHighlightTopmost: boolean;
     FHighlightTopmostColor: TColor;
     FHighlightTopmostThickness: byte;
+    FDefaultTrayPosition: TTrayPosition;
     FListeners: array[TSettingsItem] of TMethodList;
     FConfig: TConfig;
     function GetAutorun: boolean;
     function GetHotkey(HotkeyID: THotkeyID): THotkey;
     function GetRunAsAdministrator: boolean;
+    procedure SetDefaultTrayPosition(AValue: TTrayPosition);
     procedure SetEnableLauncher(AValue: boolean);
     procedure SetAutoMinimize(AValue: boolean);
     procedure SetAutorun(AValue: boolean);
@@ -89,6 +91,7 @@ type
     property HighlightTopmost: boolean read FHighlightTopmost write SetHighlightTopmost;
     property HighlightTopmostColor: TColor read FHighlightTopmostColor write SetHighlightTopmostColor;
     property HighlightTopmostThickness: byte read FHighlightTopmostThickness write SetHighlightTopmostThickness;
+    property DefaultTrayPosition: TTrayPosition read FDefaultTrayPosition write SetDefaultTrayPosition;
     procedure Load;
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure RemoveListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
@@ -106,6 +109,7 @@ const
   KEY_GENERAL_HIGHLIGHT_TOPMOST_ENABLED = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.enabled';
   KEY_GENERAL_HIGHLIGHT_TOPMOST_COLOR = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.color'; 
   KEY_GENERAL_HIGHLIGHT_TOPMOST_THICKNESS = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.thickness';
+  KEY_GENERAL_DEFAULT_TRAY_POSITION = 'general.default_tray_position';
   KEY_HOTKEYS = 'hotkeys';
   KEY_ADVANCE_AUTO_MINIMIZE = 'advance.enable_auto_minimize';
   KEY_ADVANCE_CUSTOM_RULES = 'advance.enable_custom_rules';
@@ -134,6 +138,8 @@ const
   );
 
   DEFAULT_HIGHLIGHT_TOPMOST_THICKNESS = 10;
+
+  DEFAULT_TRAY_POSITION_VALUE = Ord(tpMenu);
 
 var
   Settings: TSettings = nil;
@@ -212,6 +218,15 @@ end;
 function TSettings.GetRunAsAdministrator: boolean;
 begin
   Result := FAutorun.RunAsAdministrator;
+end;
+
+procedure TSettings.SetDefaultTrayPosition(AValue: TTrayPosition);
+begin
+  if FDefaultTrayPosition = AValue then Exit;
+  FDefaultTrayPosition := AValue;
+  FConfig.SetInteger(KEY_GENERAL_DEFAULT_TRAY_POSITION, Ord(AValue));
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siDefaultTrayPosition].CallNotifyEvents(Self);
 end;
 
 function TSettings.GetAutorun: boolean;
@@ -366,6 +381,7 @@ begin
     if FConfig.GetBoolean(KEY_ADVANCE_SYSTEM_MENU + SystemMenuPair.Key, False) then
       Include(FSystemMenuItems, SystemMenuPair.Item);
   end;
+  FDefaultTrayPosition := TTrayPosition(FConfig.GetInteger(KEY_GENERAL_DEFAULT_TRAY_POSITION, DEFAULT_TRAY_POSITION_VALUE));
 end;
 
 procedure TSettings.AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);

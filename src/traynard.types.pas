@@ -42,7 +42,7 @@ type
 
   PHotkeyInfo = ^THotkeyInfo;
 
-  TTrayPosition = (tpMenu, tpIcon, tpGlobal);
+  TTrayPosition = (tpMenu, tpIcon);
 
   TSystemMenuItem = (smiSeparator, smiTrayIcon, smiTrayMenu, smiTopmost);
 
@@ -51,7 +51,7 @@ type
   TSettingsItem = (siAutorun, siIconGrouped, siMenuGrouped, siLanguage, siSystemMenuItems,
                    siAutoMinimize, siUseRules, siShowNotification, siRuleOnStartup, siHotkey,
                    siUseLauncher, siMultiprocessLaunch, siHighlightTopmost, siHighlightTopmostColor,
-                   siHighlightTopmostThickness, siRunAsAdministrator);
+                   siHighlightTopmostThickness, siRunAsAdministrator, siDefaultTrayPosition);
 
   { TShellHookInfo }
 
@@ -129,6 +129,8 @@ type
   TRuleTextComparison = (rtcEquals, rtcContains, rtcStartsWith, rtcEndsWith, rtcRegexMatch, rtcAny);
 
   TRuleNotification = (rnNever, rnOnce, rnAlways, rnGlobal);
+
+  TRuleMinimizePosition = (rmpMenu, rmpIcon, rmpGlobal);
 
   { TRuleText }
 
@@ -277,7 +279,7 @@ const
     TEXT_ENDS_WITH, TEXT_REGEX_MATCH, TEXT_ANY
   );
 
-  RULE_MINIMIZE_POSITIONS: array[TTrayPosition] of string = (
+  RULE_MINIMIZE_POSITIONS: array[TRuleMinimizePosition] of string = (
     TEXT_TRAY_MENU,
     TEXT_TRAY_ICON,
     TEXT_FOLLOW_GLOBAL_SETTINGS

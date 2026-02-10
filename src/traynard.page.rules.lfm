@@ -153,8 +153,8 @@ inherited PageRules: TPageRules
         HorzScrollBar.Page = 249
         HorzScrollBar.Smooth = True
         HorzScrollBar.Tracking = True
-        VertScrollBar.Increment = 47
-        VertScrollBar.Page = 470
+        VertScrollBar.Increment = 49
+        VertScrollBar.Page = 495
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
@@ -384,7 +384,7 @@ inherited PageRules: TPageRules
           BorderSpacing.Left = 10
           BorderSpacing.Top = 10
           BorderSpacing.Right = 10
-          Caption = 'Trigger On'
+          Caption = 'Trigger on'
           ChildSizing.LeftRightSpacing = 10
           ChildSizing.TopBottomSpacing = 10
           ChildSizing.VerticalSpacing = 5
@@ -424,7 +424,7 @@ inherited PageRules: TPageRules
           Constraints.MaxWidth = 600
           Constraints.MinHeight = 50
           Enabled = False
-          TabOrder = 10
+          TabOrder = 9
           object LabelHotkey: TLabel
             AnchorSideTop.Control = ButtonHotkeyBind
             AnchorSideTop.Side = asrCenter
@@ -469,32 +469,37 @@ inherited PageRules: TPageRules
             OnClick = ButtonHotkeyClearClick
           end
         end
-        object LabelMinimizeTo: TLabel
+        object RadioGroupMinimizeTo: TRadioGroup
           AnchorSideLeft.Control = ScrollBoxEditor
-          AnchorSideTop.Control = ComboBoxMinimizeTo
-          AnchorSideTop.Side = asrCenter
-          Left = 10
-          Height = 17
-          Top = 429
-          Width = 75
-          BorderSpacing.Left = 10
-          Caption = 'Minimize to: '
-        end
-        object ComboBoxMinimizeTo: TComboBox
-          AnchorSideLeft.Control = LabelMinimizeTo
-          AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GroupBoxHotkey
           AnchorSideTop.Side = asrBottom
-          Left = 90
-          Height = 25
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 50
           Top = 425
-          Width = 100
-          BorderSpacing.Left = 5
+          Width = 359
+          Anchors = [akTop, akLeft, akRight]
+          AutoFill = True
+          AutoSize = True
+          BorderSpacing.Left = 10
           BorderSpacing.Top = 10
-          ItemHeight = 17
-          Style = csDropDownList
-          TabOrder = 9
-          OnChange = ComboBoxMinimizeToChange
+          BorderSpacing.Right = 10
+          Caption = 'Minimize to'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 3
+          Columns = 3
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
+          TabOrder = 10
+          OnSelectionChanged = RuleChange
         end
       end
     end

@@ -28,7 +28,6 @@ type
     ButtonPanel: TPanel;
     CheckGroupTriggerOn: TCheckGroup;
     ComboBoxAppPath: TComboBox;
-    ComboBoxMinimizeTo: TComboBox;
     ComboBoxWindowClass: TComboBox;
     ComboBoxWindowTitle: TComboBox;
     EditAppPath: TEdit;
@@ -38,7 +37,6 @@ type
     GroupBoxHotkey: TGroupBox;
     LabelHotkey: TLabel;
     LabelAppPath: TLabel;
-    LabelMinimizeTo: TLabel;
     LabelRuleName: TLabel;
     LabelWindowClass: TLabel;
     LabelWindowTitle: TLabel;
@@ -48,6 +46,7 @@ type
     PairSplitterSideRight: TPairSplitterSide;
     PanelLeft: TPanel;
     PanelWelcome: TPanel;
+    RadioGroupMinimizeTo: TRadioGroup;
     RadioGroupNotification: TRadioGroup;
     ScrollBoxEditor: TScrollBox;
     procedure ActionCloseExecute(Sender: TObject);
@@ -59,7 +58,6 @@ type
     procedure ButtonHotkeyClearClick(Sender: TObject);
     procedure CheckItemClick(Sender: TObject; Index: integer);
     procedure ComboBoxAppPathChange(Sender: TObject);
-    procedure ComboBoxMinimizeToChange(Sender: TObject);
     procedure ComboBoxWindowClassChange(Sender: TObject);
     procedure ComboBoxWindowTitleChange(Sender: TObject);
     procedure ListBoxRulesSelectionChange(Sender: TObject; User: boolean);
@@ -75,7 +73,6 @@ type
     FComboBoxWindowTitleItemIndex: longint;
     FComboBoxWindowClassItemIndex: longint;
     FComboBoxAppPathItemIndex: longint;
-    FComboBoxMinimizeToItemIndex: longint;
     FHotkey: THotkey;
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
@@ -137,7 +134,7 @@ begin
   ComboBoxAppPath.Enabled := AEnabled;
   EditAppPath.Enabled := AEnabled;
   RadioGroupNotification.Enabled := AEnabled;
-  ComboBoxMinimizeTo.Enabled := AEnabled;
+  RadioGroupMinimizeTo.Enabled := AEnabled;
   CheckGroupTriggerOn.Enabled := AEnabled;
 end;
 
@@ -163,6 +160,8 @@ begin
     RadioGroupNotification.Items[i] := RULE_NOTIFICATIONS[TRuleNotification(i)];
   for i := 0 to CheckGroupTriggerOn.Items.Count - 1 do
     CheckGroupTriggerOn.Items[i] := RULE_TRIGGER_ON[TWindowAction(i)];
+  for i := 0 to RadioGroupMinimizeTo.Items.Count - 1 do
+    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TTrayPosition(i)];
 
   for ComboBox in [ComboBoxWindowTitle, ComboBoxWindowClass, ComboBoxAppPath] do
   begin
@@ -182,18 +181,6 @@ begin
   ComboBoxWindowTitle.ItemIndex := FComboBoxWindowTitleItemIndex;
   ComboBoxWindowClass.ItemIndex := FComboBoxWindowClassItemIndex;
   ComboBoxAppPath.ItemIndex := FComboBoxAppPathItemIndex;
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
-
-  ComboBoxMaxWidth := 0;
-  for i := 0 to ComboBoxMinimizeTo.Items.Count - 1 do
-  begin
-    ComboBoxItem := RULE_POSITIONS[i];
-    ComboBoxMinimizeTo.Items[i] := ComboBoxItem;
-    ComboBoxItemWidth := ComboBoxMinimizeTo.Canvas.TextWidth(ComboBoxItem);
-    if ComboBoxItemWidth > ComboBoxMaxWidth then ComboBoxMaxWidth := ComboBoxItemWidth;
-  end;
-  ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
 end;
 
 procedure TPageRules.RestoreLabelHotkey;
@@ -256,7 +243,7 @@ end;
 procedure TPageRules.Initialize;
 var
   ComboBox: TComboBox;
-  ComboBoxItem, RuleNotification, RuleWindowAction: string;
+  ComboBoxItem, RuleNotification, RuleWindowAction, RuleMinimizePosition: string;
   ComboBoxItemWidth, ComboBoxMaxWidth: integer;
   Rule: TRule;
 begin
@@ -273,6 +260,8 @@ begin
     RadioGroupNotification.Items.Add(RuleNotification);
   for RuleWindowAction in RULE_TRIGGER_ON do
     CheckGroupTriggerOn.Items.Add(RuleWindowAction);
+  for RuleMinimizePosition in RULE_MINIMIZE_POSITIONS do
+    RadioGroupMinimizeTo.Items.Add(RuleMinimizePosition);
 
   for ComboBox in [ComboBoxWindowTitle, ComboBoxWindowClass, ComboBoxAppPath] do
   begin
@@ -289,16 +278,6 @@ begin
   EditWindowTitle.Constraints.MaxWidth := FOriginalEditWindowTitleMaxWidth - ComboBoxWindowTitle.Width;
   EditWindowClass.Constraints.MaxWidth := FOriginalEditWindowClassMaxWidth - ComboBoxWindowClass.Width;
   EditAppPath.Constraints.MaxWidth := FOriginalEditAppPathMaxWidth - ComboBoxAppPath.Width;
-
-  ComboBoxMaxWidth := 0;
-  for ComboBoxItem in RULE_POSITIONS do
-  begin
-    ComboBoxMinimizeTo.Items.Add(ComboBoxItem);
-    ComboBoxItemWidth := ComboBoxMinimizeTo.Canvas.TextWidth(ComboBoxItem);
-    if ComboBoxItemWidth > ComboBoxMaxWidth then ComboBoxMaxWidth := ComboBoxItemWidth;
-  end;
-  ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
-  ComboBoxMinimizeTo.ItemIndex := 0;
 
   for Rule in Rules do
   begin
@@ -344,8 +323,7 @@ begin
   EditAppPath.Clear;
   EditAppPath.Color := clDefault;
   RadioGroupNotification.ItemIndex := 0;
-  ComboBoxMinimizeTo.ItemIndex := 0;
-  FComboBoxMinimizeToItemIndex := 0;
+  RadioGroupMinimizeTo.ItemIndex := 0;
   CheckGroupTriggerOn.UncheckAll;
   GroupBoxHotkey.Enabled := False;
   RestoreLabelHotkey;
@@ -391,8 +369,7 @@ begin
   ComboBoxAppPath.ItemIndex := FComboBoxAppPathItemIndex;
   EditAppPath.Text := Rule.AppPath.Text;
   RadioGroupNotification.ItemIndex := Ord(Rule.Notification);
-  FComboBoxMinimizeToItemIndex := Ord(Rule.Position);
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
+  RadioGroupMinimizeTo.ItemIndex := Ord(Rule.Position);
   for WindowAction := RULE_TRIGGER_ON_BEGIN to RULE_TRIGGER_ON_END do
     CheckGroupTriggerOn.Checked[Ord(WindowAction)] := WindowAction in Rule.TriggerOn;
   GroupBoxHotkey.Enabled := waHotkey in Rule.TriggerOn;
@@ -502,7 +479,7 @@ begin
     if CheckGroupTriggerOn.Checked[Ord(WindowAction)] then
       Include(Rule.TriggerOn, WindowAction);
   end;
-  Rule.Position := TTrayPosition(ComboBoxMinimizeTo.ItemIndex);
+  Rule.Position := TTrayPosition(RadioGroupMinimizeTo.ItemIndex);
   Rule.Hotkey := FHotkey;
 
   case EditState of
@@ -566,12 +543,6 @@ begin
   FComboBoxAppPathItemIndex := (Sender as TComboBox).ItemIndex;
   EditAppPath.Enabled := FComboBoxAppPathItemIndex <> Ord(rtcAny);
   if not EditAppPath.Enabled then EditAppPath.Clear;
-  RuleChange(Sender);
-end;
-
-procedure TPageRules.ComboBoxMinimizeToChange(Sender: TObject);
-begin
-  FComboBoxMinimizeToItemIndex := (Sender as TComboBox).ItemIndex;
   RuleChange(Sender);
 end;
 

@@ -444,11 +444,6 @@ msgctxt "tpagelauncherentries.labelexecutablepath.caption"
 msgid "Executable Path:"
 msgstr ""
 
-#: tpagelauncherentries.labelminimizeto.caption
-msgctxt "tpagelauncherentries.labelminimizeto.caption"
-msgid "Minimize to: "
-msgstr ""
-
 #: tpagelauncherentries.labelworkingdirectory.caption
 msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
 msgid "Working Directory:"
@@ -457,6 +452,11 @@ msgstr ""
 #: tpagelauncherentries.panelwelcome.caption
 msgctxt "tpagelauncherentries.panelwelcome.caption"
 msgid "Add commands here to run when Traynard starts or runs manually. The windows created by these processes will be minimized to system tray automatically."
+msgstr ""
+
+#: tpagelauncherentries.radiogroupminimizeto.caption
+msgctxt "tpagelauncherentries.radiogroupminimizeto.caption"
+msgid "Minimize to"
 msgstr ""
 
 #: tpagelauncherentries.radiogroupnotification.caption
@@ -647,7 +647,7 @@ msgstr ""
 
 #: tpagerules.checkgrouptriggeron.caption
 msgctxt "tpagerules.checkgrouptriggeron.caption"
-msgid "Trigger On"
+msgid "Trigger on"
 msgstr ""
 
 #: tpagerules.editapppath.texthint
@@ -680,11 +680,6 @@ msgstr ""
 msgid "Hotkey already in use"
 msgstr ""
 
-#: tpagerules.labelminimizeto.caption
-msgctxt "tpagerules.labelminimizeto.caption"
-msgid "Minimize to: "
-msgstr ""
-
 #: tpagerules.labelrulename.caption
 msgid "Rule Name:"
 msgstr ""
@@ -699,6 +694,11 @@ msgstr ""
 
 #: tpagerules.panelwelcome.caption
 msgid "Select a rule from the left list to edit or create a new"
+msgstr ""
+
+#: tpagerules.radiogroupminimizeto.caption
+msgctxt "tpagerules.radiogroupminimizeto.caption"
+msgid "Minimize to"
 msgstr ""
 
 #: tpagerules.radiogroupnotification.caption

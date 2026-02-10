@@ -42,7 +42,7 @@ type
 
   PHotkeyInfo = ^THotkeyInfo;
 
-  TTrayPosition = (tpMenu, tpIcon);
+  TTrayPosition = (tpMenu, tpIcon, tpGlobal);
 
   TSystemMenuItem = (smiSeparator, smiTrayIcon, smiTrayMenu, smiTopmost);
 
@@ -272,9 +272,16 @@ const
     TEXT_WINDOW_DEACTIVATED
   );
 
-  RULE_COMPARISONS: array[0..5] of string = (TEXT_EQUALS, TEXT_CONTAINS, TEXT_STARTS_WITH, TEXT_ENDS_WITH, TEXT_REGEX_MATCH, TEXT_ANY);
+  RULE_COMPARISONS: array[0..5] of string = (
+    TEXT_EQUALS, TEXT_CONTAINS, TEXT_STARTS_WITH,
+    TEXT_ENDS_WITH, TEXT_REGEX_MATCH, TEXT_ANY
+  );
 
-  RULE_POSITIONS: array[0..1] of string = (TEXT_TRAY_MENU, TEXT_TRAY_ICON);
+  RULE_MINIMIZE_POSITIONS: array[TTrayPosition] of string = (
+    TEXT_TRAY_MENU,
+    TEXT_TRAY_ICON,
+    TEXT_FOLLOW_GLOBAL_SETTINGS
+  );
 
   OPTION_SYSTEM_MENUS: array[0..2] of string = (
     TEXT_SYSTEM_MENU_TRAY_ICON,

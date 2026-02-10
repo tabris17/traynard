@@ -31,12 +31,10 @@ type
     ButtonClose: TButton;
     CheckGroupTriggerOn: TCheckGroup;
     CheckGroupMethods: TCheckGroup;
-    ComboBoxMinimizeTo: TComboBox;
     EditEntryName: TEdit;
     GroupBoxHotkey: TGroupBox;
     LabelHotkey: TLabel;
     LabelEntryName: TLabel;
-    LabelMinimizeTo: TLabel;
     MenuItemDelete: TMenuItem;
     MenuItemLaunch: TMenuItem;
     MenuItemClose: TMenuItem;
@@ -44,6 +42,7 @@ type
     MenuItemNew: TMenuItem;
     MenuItemLauncher: TMenuItem;
     NavMenu: TPopupMenu;
+    RadioGroupMinimizeTo: TRadioGroup;
     RadioGroupNotification: TRadioGroup;
     Separator1: TMenuItem;
     Separator2: TMenuItem;
@@ -79,7 +78,6 @@ type
     FEditState: TEditState;
     FUnsaved: boolean;
     FHotkey: THotkey;
-    FComboBoxMinimizeToItemIndex: longint;
     procedure SetEditState(AValue: TEditState);
     procedure SetUnsaved(AValue: boolean);
     procedure ToggleEditor(AEnabled: boolean);
@@ -172,7 +170,7 @@ begin
   WorkingDirectoryEdit.Enabled := AEnabled;
   RadioGroupNotification.Enabled := AEnabled;
   CheckGroupMethods.Enabled := AEnabled;
-  ComboBoxMinimizeTo.Enabled := AEnabled;
+  RadioGroupMinimizeTo.Enabled := AEnabled;
   CheckGroupTriggerOn.Enabled := AEnabled;
 end;
 
@@ -199,19 +197,8 @@ begin
     CheckGroupMethods.Items[i] := LAUNCH_METHODS[TLaunchMethod(i)];
   for i := 0 to CheckGroupTriggerOn.Items.Count - 1 do
     CheckGroupTriggerOn.Items[i] := LAUNCH_TRIGGER_ON[TLaunchWindowAction(i)];
-
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
-
-  ComboBoxMaxWidth := 0;
-  for i := 0 to ComboBoxMinimizeTo.Items.Count - 1 do
-  begin
-    ComboBoxItem := RULE_POSITIONS[i];
-    ComboBoxMinimizeTo.Items[i] := ComboBoxItem;
-    ComboBoxItemWidth := ComboBoxMinimizeTo.Canvas.TextWidth(ComboBoxItem);
-    if ComboBoxItemWidth > ComboBoxMaxWidth then ComboBoxMaxWidth := ComboBoxItemWidth;
-  end;
-  ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
+  for i := 0 to RadioGroupMinimizeTo.Items.Count - 1 do
+    RadioGroupMinimizeTo.Items[i] := RULE_MINIMIZE_POSITIONS[TTrayPosition(i)];
 end;
 
 procedure TPageLauncherEntries.RestoreLabelHotkey;
@@ -254,15 +241,14 @@ begin
   LabelHotkey.Caption := TEXT_BRACKETED_NO_SET;
   RestoreLabelHotkey;
   FHotkey.Value := 0;
-  ComboBoxMinimizeTo.ItemIndex := 0;
-  FComboBoxMinimizeToItemIndex := 0;
+  RadioGroupMinimizeTo.ItemIndex := 0;
   CheckGroupTriggerOn.UncheckAll;
   ToggleEditor(True);
 end;
 
 procedure TPageLauncherEntries.Initialize;
 var
-  EntryNotification, LaunchMethod, WindowAction, ComboBoxItem: string;
+  EntryNotification, LaunchMethod, WindowAction, ComboBoxItem, RuleMinimizePosition: string;
   ComboBoxMaxWidth, ComboBoxItemWidth: Integer;
   Entry: TLaunchEntry;
 begin
@@ -277,16 +263,8 @@ begin
     CheckGroupTriggerOn.Items.Add(WindowAction);
   for LaunchMethod in LAUNCH_METHODS do
     CheckGroupMethods.Items.Add(LaunchMethod);
-
-  ComboBoxMaxWidth := 0;
-  for ComboBoxItem in RULE_POSITIONS do
-  begin
-    ComboBoxMinimizeTo.Items.Add(ComboBoxItem);
-    ComboBoxItemWidth := ComboBoxMinimizeTo.Canvas.TextWidth(ComboBoxItem);
-    if ComboBoxItemWidth > ComboBoxMaxWidth then ComboBoxMaxWidth := ComboBoxItemWidth;
-  end;
-  ComboBoxMinimizeTo.Width := ComboBoxMaxWidth + VScrollWidth;
-  ComboBoxMinimizeTo.ItemIndex := 0;
+  for RuleMinimizePosition in RULE_MINIMIZE_POSITIONS do
+    RadioGroupMinimizeTo.Items.Add(RuleMinimizePosition);
 
   for Entry in Launcher do
   begin
@@ -392,7 +370,7 @@ begin
     if CheckGroupMethods.Checked[Ord(LaunchMethod)] then
       Include(Entry.LaunchMethods, LaunchMethod);
   end;
-  Entry.Position := TTrayPosition(ComboBoxMinimizeTo.ItemIndex);
+  Entry.Position := TTrayPosition(RadioGroupMinimizeTo.ItemIndex);
   Entry.Hotkey := FHotkey;
 
   case EditState of
@@ -475,8 +453,7 @@ begin
   MemoArguments.Text := Entry.Arguments;
   WorkingDirectoryEdit.Text := Entry.WorkingDirectory;
   RadioGroupNotification.ItemIndex := Ord(Entry.Notification);
-  FComboBoxMinimizeToItemIndex := Ord(Entry.Position);
-  ComboBoxMinimizeTo.ItemIndex := FComboBoxMinimizeToItemIndex;
+  RadioGroupMinimizeTo.ItemIndex := Ord(Entry.Position);
   for LaunchMethod in TLaunchMethods do
     CheckGroupMethods.Checked[Ord(LaunchMethod)] := LaunchMethod in Entry.LaunchMethods;
   for WindowAction in TLaunchWindowAction do

@@ -13,7 +13,7 @@
 {"hash":83276233,"name":"tpagelauncherentries.groupboxhotkey.caption","sourcebytes":[72,111,116,107,101,121],"value":"Hotkey"},
 {"hash":299076,"name":"tpagelauncherentries.buttonhotkeybind.caption","sourcebytes":[66,105,110,100],"value":"Bind"},
 {"hash":4860802,"name":"tpagelauncherentries.buttonhotkeyclear.caption","sourcebytes":[67,108,101,97,114],"value":"Clear"},
-{"hash":74626720,"name":"tpagelauncherentries.labelminimizeto.caption","sourcebytes":[77,105,110,105,109,105,122,101,32,116,111,58,32],"value":"Minimize to: "},
+{"hash":73691823,"name":"tpagelauncherentries.radiogroupminimizeto.caption","sourcebytes":[77,105,110,105,109,105,122,101,32,116,111],"value":"Minimize to"},
 {"hash":21703,"name":"tpagelauncherentries.actionnew.caption","sourcebytes":[78,101,119],"value":"New"},
 {"hash":366789,"name":"tpagelauncherentries.actionsave.caption","sourcebytes":[83,97,118,101],"value":"Save"},
 {"hash":78392485,"name":"tpagelauncherentries.actiondelete.caption","sourcebytes":[68,101,108,101,116,101],"value":"Delete"},

@@ -89,8 +89,8 @@ inherited PageLauncherEntries: TPageLauncherEntries
         HorzScrollBar.Page = 249
         HorzScrollBar.Smooth = True
         HorzScrollBar.Tracking = True
-        VertScrollBar.Increment = 56
-        VertScrollBar.Page = 565
+        VertScrollBar.Increment = 59
+        VertScrollBar.Page = 590
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
@@ -399,32 +399,37 @@ inherited PageLauncherEntries: TPageLauncherEntries
             OnClick = ButtonHotkeyClearClick
           end
         end
-        object LabelMinimizeTo: TLabel
+        object RadioGroupMinimizeTo: TRadioGroup
           AnchorSideLeft.Control = ScrollBoxEditor
-          AnchorSideTop.Control = ComboBoxMinimizeTo
-          AnchorSideTop.Side = asrCenter
-          Left = 10
-          Height = 17
-          Top = 524
-          Width = 75
-          BorderSpacing.Left = 10
-          Caption = 'Minimize to: '
-        end
-        object ComboBoxMinimizeTo: TComboBox
-          AnchorSideLeft.Control = LabelMinimizeTo
-          AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = GroupBoxHotkey
           AnchorSideTop.Side = asrBottom
-          Left = 90
-          Height = 25
+          AnchorSideRight.Control = ScrollBoxEditor
+          AnchorSideRight.Side = asrBottom
+          Left = 10
+          Height = 50
           Top = 520
-          Width = 100
-          BorderSpacing.Left = 5
+          Width = 359
+          Anchors = [akTop, akLeft, akRight]
+          AutoFill = True
+          AutoSize = True
+          BorderSpacing.Left = 10
           BorderSpacing.Top = 10
-          ItemHeight = 17
-          Style = csDropDownList
+          BorderSpacing.Right = 10
+          Caption = 'Minimize to'
+          ChildSizing.LeftRightSpacing = 10
+          ChildSizing.TopBottomSpacing = 10
+          ChildSizing.VerticalSpacing = 5
+          ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+          ChildSizing.EnlargeVertical = crsHomogenousChildResize
+          ChildSizing.ShrinkHorizontal = crsScaleChilds
+          ChildSizing.ShrinkVertical = crsScaleChilds
+          ChildSizing.Layout = cclLeftToRightThenTopToBottom
+          ChildSizing.ControlsPerLine = 3
+          Columns = 3
+          Constraints.MaxWidth = 600
+          Constraints.MinHeight = 50
           TabOrder = 8
-          OnChange = EntryChange
+          OnSelectionChanged = EntryChange
         end
       end
     end

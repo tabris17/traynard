@@ -50,6 +50,7 @@ type
     FHighlightTopmostColor: TColor;
     FHighlightTopmostThickness: byte;
     FDefaultTrayPosition: TTrayPosition;
+    FShowMainWindow: boolean;
     FListeners: array[TSettingsItem] of TMethodList;
     FConfig: TConfig;
     function GetAutorun: boolean;
@@ -69,6 +70,7 @@ type
     procedure SetLauncherMultiprocess(AValue: boolean);
     procedure SetMenuGrouped(AValue: boolean);
     procedure SetRuleOnStartup(AValue: boolean);
+    procedure SetShowMainWindow(AValue: boolean);
     procedure SetShowNotification(AValue: boolean);
     procedure SetSystemMenuItems(AValue: TSystemMenuItems); 
     procedure SetApplyRules(AValue: boolean);
@@ -91,7 +93,8 @@ type
     property HighlightTopmost: boolean read FHighlightTopmost write SetHighlightTopmost;
     property HighlightTopmostColor: TColor read FHighlightTopmostColor write SetHighlightTopmostColor;
     property HighlightTopmostThickness: byte read FHighlightTopmostThickness write SetHighlightTopmostThickness;
-    property DefaultTrayPosition: TTrayPosition read FDefaultTrayPosition write SetDefaultTrayPosition;
+    property DefaultTrayPosition: TTrayPosition read FDefaultTrayPosition write SetDefaultTrayPosition;  
+    property ShowMainWindow: boolean read FShowMainWindow write SetShowMainWindow;
     procedure Load;
     procedure AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
     procedure RemoveListener(const Item: TSettingsItem; const Listener: TNotifyEvent);
@@ -110,6 +113,7 @@ const
   KEY_GENERAL_HIGHLIGHT_TOPMOST_COLOR = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.color'; 
   KEY_GENERAL_HIGHLIGHT_TOPMOST_THICKNESS = KEY_GENERAL_HIGHLIGHT_TOPMOST + '.thickness';
   KEY_GENERAL_DEFAULT_TRAY_POSITION = 'general.default_tray_position';
+  KEY_GENERAL_SHOW_MAIN_WINDOW = 'general.show_main_window';
   KEY_HOTKEYS = 'hotkeys';
   KEY_ADVANCE_AUTO_MINIMIZE = 'advance.enable_auto_minimize';
   KEY_ADVANCE_CUSTOM_RULES = 'advance.enable_custom_rules';
@@ -279,6 +283,15 @@ begin
   FListeners[siRuleOnStartup].CallNotifyEvents(Self);
 end;
 
+procedure TSettings.SetShowMainWindow(AValue: boolean);
+begin
+  if FShowMainWindow = AValue then Exit;
+  FShowMainWindow := AValue;  
+  FConfig.SetBoolean(KEY_GENERAL_SHOW_MAIN_WINDOW, AValue);
+  Storage.SaveConfig(CONFIG_NAME, FConfig);
+  FListeners[siShowMainWindow].CallNotifyEvents(Self);
+end;
+
 procedure TSettings.SetShowNotification(AValue: boolean);
 begin
   if FShowNotification = AValue then Exit;
@@ -382,6 +395,7 @@ begin
       Include(FSystemMenuItems, SystemMenuPair.Item);
   end;
   FDefaultTrayPosition := TTrayPosition(FConfig.GetInteger(KEY_GENERAL_DEFAULT_TRAY_POSITION, DEFAULT_TRAY_POSITION_VALUE));
+  FShowMainWindow := FConfig.GetBoolean(KEY_GENERAL_SHOW_MAIN_WINDOW, True);
 end;
 
 procedure TSettings.AddListener(const Item: TSettingsItem; const Listener: TNotifyEvent);

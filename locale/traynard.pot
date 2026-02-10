@@ -556,6 +556,10 @@ msgstr ""
 msgid "Run as administrator"
 msgstr ""
 
+#: tpageoptions.checkboxshowmainwindow.caption
+msgid "Show main window on start"
+msgstr ""
+
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
 msgstr ""

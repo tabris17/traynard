@@ -29,6 +29,7 @@ type
     ButtonHotkeyReset: TButton;
     ButtonApplyLanguage: TButton;
     ButtonRefreshLanguage: TButton;
+    CheckBoxShowMainWindow: TCheckBox;
     CheckBoxRunAsAdmin: TCheckBox;
     CheckBoxMultiprocessLaunch: TCheckBox;
     CheckBoxHighlight: TCheckBox;
@@ -83,6 +84,7 @@ type
     procedure CheckBoxNotificationChange(Sender: TObject);
     procedure CheckBoxRuleOnStartupChange(Sender: TObject);
     procedure CheckBoxRunAsAdminChange(Sender: TObject);
+    procedure CheckBoxShowMainWindowChange(Sender: TObject);
     procedure CheckBoxUseRulesChange(Sender: TObject);
     procedure CheckGroupSystemMenuItemClick(Sender: TObject; Index: integer);
     procedure ColorButtonHighlightColorChanged(Sender: TObject);
@@ -114,6 +116,7 @@ type
     procedure HighlightTopmostColorChanged(Sender: TObject);
     procedure HighlightTopmostThicknessChanged(Sender: TObject);
     procedure DefaultTrayPositionChanged(Sender: TObject);
+    procedure ShowMainWindowChanged(Sender: TObject);
   end;
 
 implementation
@@ -301,6 +304,11 @@ begin
   Settings.RunAsAdministrator := (Sender as TCheckBox).Checked;
 end;
 
+procedure TPageOptions.CheckBoxShowMainWindowChange(Sender: TObject);
+begin
+  Settings.ShowMainWindow := (Sender as TCheckBox).Checked;
+end;
+
 procedure TPageOptions.CheckBoxLauncherChange(Sender: TObject);
 begin
   Settings.EnableLauncher := (Sender as TCheckBox).Checked;
@@ -369,7 +377,8 @@ begin
   AddListener(siHighlightTopmost, @HighlightTopmostChanged);
   AddListener(siHighlightTopmostColor, @HighlightTopmostColorChanged);
   AddListener(siHighlightTopmostThickness, @HighlightTopmostThicknessChanged);
-  AddListener(siDefaultTrayPosition, @DefaultTrayPositionChanged);
+  AddListener(siDefaultTrayPosition, @DefaultTrayPositionChanged); 
+  AddListener(siShowMainWindow, @ShowMainWindowChanged);
 
   RadioButtonTrayMenu.Tag := Ord(tpMenu); 
   RadioButtonTrayIcon.Tag := Ord(tpIcon);
@@ -535,6 +544,11 @@ begin
     else
       raise ERuntimeError.Create('Invalid tray position');
   end;
+end;
+
+procedure TPageOptions.ShowMainWindowChanged(Sender: TObject);
+begin
+  CheckBoxShowMainWindow.Checked := (Sender as TSettings).ShowMainWindow;
 end;
 
 end.

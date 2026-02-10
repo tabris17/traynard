@@ -10,7 +10,9 @@ uses
   Traynard.Window,
   Traynard.Hotkey,
   Traynard.Notification,
-  Traynard.Tray, Traynard.Task;
+  Traynard.Tray,
+  Traynard.Task,
+  Traynard.Settings;
 
 {$R *.res}
 
@@ -48,7 +50,7 @@ begin
   TrayManager := TTrayManager.Create(Application.MainForm);
   HotkeyManager := THotkeyManager.Create(Application.MainForm);
   if not Application.HasOption(ARGUMENT_SILENT_CHAR, ARGUMENT_SILENT) and
-     not Application.Terminated then
+     not Application.Terminated and Settings.ShowMainWindow then
   begin
     Application.CreateForm(TFormMain, FormMain);
     FormMain.Show;

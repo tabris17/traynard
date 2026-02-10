@@ -561,6 +561,10 @@ msgstr "程序启动时将规则应用于现有窗口"
 msgid "Run as administrator"
 msgstr "以管理员身份运行"
 
+#: tpageoptions.checkboxshowmainwindow.caption
+msgid "Show main window on start"
+msgstr "启动时显示主窗口"
+
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
 msgstr "启用自定义规则"
@@ -1161,10 +1165,6 @@ msgstr "是"
 #~ msgctxt "tpagerules.labelminimizeto.caption"
 #~ msgid "Minimize to: "
 #~ msgstr "最小化到:"
-
-#~ msgctxt "tpagelauncherentries.checkboxshowwindow.caption"
-#~ msgid "Show window on launch"
-#~ msgstr "启动时显示窗口"
 
 #~ msgctxt "tpagelauncherentries.actionlauncher.caption"
 #~ msgid "Launcher"

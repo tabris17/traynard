@@ -6,7 +6,7 @@ unit Traynard.I18n;
 interface
 
 uses
-  Classes, SysUtils, Generics.Collections, LCLTranslator, TypInfo;
+  Classes, SysUtils, Generics.Collections, LCLTranslator, TypInfo, Windows;
 
 type
 
@@ -54,14 +54,20 @@ type
     FLanguageList: TLanguageList;
     FLocalLanguage: string;
     FTranslated: boolean;
+    FMapFile: HANDLE;
+    FLangData: PVOID;
+    FLangDataSize: SIZE_T;
     procedure LanguageChanged(Sender: TObject);
     function GetAvailableLanguages: TLanguageList;
+    procedure LoadLangData;
+    procedure UnloadLangData;
   public
     constructor Create;
     destructor Destroy; override;
     property AvailableLanguages: TLanguageList read GetAvailableLanguages;
     property LocalLanguage: string read FLocalLanguage;
     property Translated: boolean read FTranslated;
+    property LangDataSize: SIZE_T read FLangDataSize;
     procedure RefreshAvailableLanguages;
     procedure Translate(const Lang: string);
     procedure Translate; overload;
@@ -73,7 +79,7 @@ var
 implementation
 
 uses
-  Forms, GetText, LazUTF8, LazFileUtils, LResources, Translations,
+  Forms, GetText, LazUTF8, LazFileUtils, LResources, Translations, LazLogger,
   Traynard.Storage, Traynard.Strings, Traynard.Settings, Traynard.Helpers, Traynard.Types;
 
 function ParseLanguage(Header: string): TLanguage; inline;
@@ -188,13 +194,17 @@ constructor TI18n.Create;
 begin
   FLanguageList := nil;
   FTranslated := False;
-  FLocalLanguage := GetLanguageID.LanguageID;
+  FLocalLanguage := GetLanguageID.LanguageID;        
+  FMapFile := 0;
+  FLangDataSize := 0;
+  FLangData := nil;
   Settings.AddListener(siLanguage, @LanguageChanged);
 end;
 
 destructor TI18n.Destroy;
 begin
   Settings.RemoveListeners(Self);
+  UnloadLangData;
   inherited Destroy;
 end;
 
@@ -246,6 +256,69 @@ begin
   end;
 
   Result := FLanguageList;
+end;
+
+procedure TI18n.LoadLangData;
+var
+  TextLen: DWORD;
+  MenuItem: TSystemMenuItem;
+  MenuItemDetail: PSystemMenuItemDetail;
+  Ptr: PByte;
+begin
+  UnloadLangData;
+
+  FLangDataSize := SYSTEM_MENU_LANG_DATA_MIN_SIZE;
+  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
+  begin
+    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
+    Inc(FLangDataSize, Length(MenuItemDetail^.Text));
+  end;
+
+  FMapFile := CreateFileMappingW(INVALID_HANDLE_VALUE, nil, PAGE_READWRITE, 0 , FLangDataSize, I18N_MAPPING_NAME);
+  if FMapFile = 0 then
+  begin
+    {$IFDEF DEBUG}
+    DebugLn(Format('CreateFileMappingW failed: %d', [GetLastError]));
+    {$ENDIF}
+    Exit;
+  end;
+  FLangData := MapViewOfFile(FMapFile, FILE_MAP_ALL_ACCESS, 0, 0, FLangDataSize);
+  if FLangData = nil then
+  begin
+    {$IFDEF DEBUG}
+    DebugLn(Format('MapViewOfFile failed: %d', [GetLastError]));
+    {$ENDIF}
+    CloseHandle(FMapFile);
+    FMapFile := 0;
+    Exit;
+  end;
+
+  {$IFDEF DEBUG}
+  DebugLn('[I18n.LoadLangData]');
+  {$ENDIF}
+
+  Ptr := FLangData;
+  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
+  begin
+    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
+    TextLen := Length(MenuItemDetail^.Text);
+    PDWORD(Ptr)^ := TextLen;
+    Inc(Ptr, SizeOf(DWORD));
+    Move(Pointer(MenuItemDetail^.Text)^, Ptr^, TextLen);
+    Inc(Ptr, TextLen);
+  end;
+end;
+
+procedure TI18n.UnloadLangData;
+begin
+  if FMapFile <> 0 then
+  begin
+    FLangDataSize := 0;
+    UnmapViewOfFile(FLangData);
+    FLangData := nil;
+    CloseHandle(FMapFile);
+    FMapFile := 0;
+  end;
 end;
 
 procedure TI18n.Translate(const Lang: string);
@@ -302,6 +375,8 @@ begin
     end;
     FTranslated := False;
   end;
+
+  LoadLangData;
 end;
 
 procedure TI18n.Translate;

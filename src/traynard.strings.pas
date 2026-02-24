@@ -25,6 +25,7 @@ const
   IS_TOP_LEVEL_WINDOW  = 'IsTopLevelWindow';
   HOOK_INSTALL         = 'Install';
   HOOK_UNINSTALL       = 'Uninstall';
+  I18N_MAPPING_NAME    = 'Local\' + APP_NAME + '_I18n';
 
 resourcestring
   ERROR_GET_OS_VERSION                = 'Failed to get OS version info';

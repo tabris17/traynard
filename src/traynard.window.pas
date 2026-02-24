@@ -212,7 +212,7 @@ implementation
 uses
   LazLogger, LazFileUtils, JwaPsApi, DwmApi, Graphics,
   Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Notification,
-  Traynard.Session, Traynard.Launcher;
+  Traynard.Session, Traynard.Launcher, Traynard.I18n;
 
 var
   WM_SHELLHOOKMESSAGE: LONG;
@@ -573,42 +573,20 @@ end;
 
 procedure TWindowManager.SetSystemMenuLanguage(WindowHandle: HWND);
 var
-  CopyData: COPYDATASTRUCT;
   Window: TWindow;
-  LangData: TBytes;
-  DataSize: DWORD = SYSTEM_MENU_LANG_DATA_MIN_SIZE;
-  TextLen: DWORD;
-  MenuItem: TSystemMenuItem;
-  MenuItemDetail: PSystemMenuItemDetail;
-  Ptr: PByte;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TWindowManager.SetSystemMenuLanguage]');
+  {$ENDIF}
   if not FHookInstalled then Exit;
-  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
-  begin
-    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
-    Inc(DataSize, Length(MenuItemDetail^.Text));
-  end;
-  SetLength(LangData, DataSize);
-  Ptr := @LangData[0];
-  for MenuItem in SYSTEM_MENU_LANG_DATA_ITEMS do
-  begin
-    MenuItemDetail := @SYSTEM_MENU_ITEM_DETAILS[MenuItem];
-    TextLen := Length(MenuItemDetail^.Text);
-    PDWORD(Ptr)^ := TextLen;
-    Inc(Ptr, SizeOf(DWORD));
-    Move(Pointer(MenuItemDetail^.Text)^, Ptr^, TextLen);
-    Inc(Ptr, TextLen);
-  end;
-  CopyData.dwData := SYSTEM_MENU_LANG_DATA_TYPE;
-  CopyData.cbData := DataSize;
-  CopyData.lpData := @LangData[0];
+
   if WindowHandle = 0 then
   begin
     for Window in FDesktop.FWindows.Values do
-      SendMessage(Window.Handle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
+      SendMessage(Window.Handle, FSystemMenuMessage, SYSTEM_MENU_LANG_MSG_WPARAM, LPARAM(I18n.LangDataSize));
   end
   else
-    SendMessage(WindowHandle, WM_COPYDATA, WPARAM(Application.MainFormHandle), LPARAM(@CopyData));
+    SendMessage(WindowHandle, FSystemMenuMessage, SYSTEM_MENU_LANG_MSG_WPARAM, LPARAM(I18n.LangDataSize));
 end;
 
 procedure TWindowManager.InstallHook;

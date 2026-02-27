@@ -45,11 +45,14 @@ inherited PageOptions: TPageOptions
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 21
+    Hint = 'Launch automatically as an administrator using Task Scheduler.'#13#10'Enable this option if you need to manage windows of programs that also run as administrator.'
     Top = 53
     Width = 139
     BorderSpacing.Top = 5
     Caption = 'Run as administrator'
     Enabled = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 2
     OnChange = CheckBoxRunAsAdminChange
   end
@@ -71,10 +74,13 @@ inherited PageOptions: TPageOptions
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 21
+    Hint = 'Enabling this will merge icons of windows from the same application into one submenu.'
     Top = 105
     Width = 238
     BorderSpacing.Top = 5
     Caption = 'Group tray menu items by application'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 4
     OnChange = CheckBoxMenuGroupedChange
   end
@@ -83,10 +89,13 @@ inherited PageOptions: TPageOptions
     AnchorSideTop.Side = asrBottom
     Left = 10
     Height = 21
+    Hint = 'Enabling this merges all window icons of the same application into one system tray icon.'
     Top = 131
     Width = 201
     BorderSpacing.Top = 5
     Caption = 'Group tray icons by application'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 5
     OnChange = CheckBoxIconGroupedChange
   end
@@ -451,10 +460,13 @@ inherited PageOptions: TPageOptions
     AnchorSideTop.Side = asrBottom
     Left = 26
     Height = 21
+    Hint = 'Monitor both the target process and its child processes.'#13#10'Useful for Electron.js-based applications.'
     Top = 842
     Width = 243
     BorderSpacing.Top = 5
     Caption = 'Support for multi-process applications'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 23
     OnChange = CheckBoxMultiprocessLaunchChange
   end

@@ -532,6 +532,10 @@ msgstr ""
 msgid "Group tray icons by application"
 msgstr ""
 
+#: tpageoptions.checkboxicongrouped.hint
+msgid "Enabling this merges all window icons of the same application into one system tray icon."
+msgstr ""
+
 #: tpageoptions.checkboxlauncher.caption
 msgid "Enable launcher"
 msgstr ""
@@ -540,8 +544,18 @@ msgstr ""
 msgid "Group tray menu items by application"
 msgstr ""
 
+#: tpageoptions.checkboxmenugrouped.hint
+msgid "Enabling this will merge icons of windows from the same application into one submenu."
+msgstr ""
+
 #: tpageoptions.checkboxmultiprocesslaunch.caption
 msgid "Support for multi-process applications"
+msgstr ""
+
+#: tpageoptions.checkboxmultiprocesslaunch.hint
+msgid ""
+"Monitor both the target process and its child processes.\n"
+"Useful for Electron.js-based applications."
 msgstr ""
 
 #: tpageoptions.checkboxnotification.caption
@@ -554,6 +568,12 @@ msgstr ""
 
 #: tpageoptions.checkboxrunasadmin.caption
 msgid "Run as administrator"
+msgstr ""
+
+#: tpageoptions.checkboxrunasadmin.hint
+msgid ""
+"Launch automatically as an administrator using Task Scheduler.\n"
+"Enable this option if you need to manage windows of programs that also run as administrator."
 msgstr ""
 
 #: tpageoptions.checkboxshowmainwindow.caption

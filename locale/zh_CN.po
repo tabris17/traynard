@@ -537,6 +537,12 @@ msgstr "在设为置顶的窗口周围显示边框"
 msgid "Group tray icons by application"
 msgstr "托盘图标按应用程序分组"
 
+#: tpageoptions.checkboxicongrouped.hint
+msgid ""
+"Enabling this merges all window icons of the same application into one "
+"system tray icon."
+msgstr "开启后，来自同一个程序的窗口图标会合并到一个托盘图标中"
+
 #: tpageoptions.checkboxlauncher.caption
 msgid "Enable launcher"
 msgstr "启用启动器"
@@ -545,9 +551,23 @@ msgstr "启用启动器"
 msgid "Group tray menu items by application"
 msgstr "托盘菜单按应用程序分组"
 
+#: tpageoptions.checkboxmenugrouped.hint
+msgid ""
+"Enabling this will merge icons of windows from the same application into one "
+"submenu."
+msgstr "开启后，来自同一个程序的窗口图标会合并到一个子菜单中"
+
 #: tpageoptions.checkboxmultiprocesslaunch.caption
 msgid "Support for multi-process applications"
 msgstr "支持多进程应用"
+
+#: tpageoptions.checkboxmultiprocesslaunch.hint
+msgid ""
+"Monitor both the target process and its child processes.\n"
+"Useful for Electron.js-based applications."
+msgstr ""
+"同时监控目标进程的子进程。\n"
+"适用于类似基于 Electron.js 开发的应用。"
 
 #: tpageoptions.checkboxnotification.caption
 msgid "Show notification when window is auto-minimized"
@@ -560,6 +580,15 @@ msgstr "程序启动时将规则应用于现有窗口"
 #: tpageoptions.checkboxrunasadmin.caption
 msgid "Run as administrator"
 msgstr "以管理员身份运行"
+
+#: tpageoptions.checkboxrunasadmin.hint
+msgid ""
+"Launch automatically as an administrator using Task Scheduler.\n"
+"Enable this option if you need to manage windows of programs that also run "
+"as administrator."
+msgstr ""
+"通过任务计划，以管理员身份自动启动。\n"
+"如果你需要管理同样以管理员身份启动的程序的窗口，请启用该选项。"
 
 #: tpageoptions.checkboxshowmainwindow.caption
 msgid "Show main window on start"
@@ -907,8 +936,8 @@ msgid ""
 "(free pascal). "
 msgstr ""
 "一款桌面工具，可将任意应用窗口最小化到系统托盘（又称“通知区域”）。该项目灵感"
-"来源于 <a href=\"https://github.com/fcFn/traymond\">Traymond</a>，并完全使"
-"用 Lazarus（Free Pascal）重写。"
+"来源于 <a href=\"https://github.com/fcFn/traymond\">Traymond</a>，并完全使用 "
+"Lazarus（Free Pascal）重写。"
 
 #: traynard.strings.html_about_license
 msgctxt "traynard.strings.html_about_license"

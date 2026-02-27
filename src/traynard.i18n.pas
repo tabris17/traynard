@@ -56,7 +56,7 @@ type
     FTranslated: boolean;
     FMapFile: HANDLE;
     FLangData: PVOID;
-    FLangDataSize: SIZE_T;
+    FLangDataSize: SizeInt;
     procedure LanguageChanged(Sender: TObject);
     function GetAvailableLanguages: TLanguageList;
     procedure LoadLangData;
@@ -67,7 +67,7 @@ type
     property AvailableLanguages: TLanguageList read GetAvailableLanguages;
     property LocalLanguage: string read FLocalLanguage;
     property Translated: boolean read FTranslated;
-    property LangDataSize: SIZE_T read FLangDataSize;
+    property LangDataSize: SizeInt read FLangDataSize;
     procedure RefreshAvailableLanguages;
     procedure Translate(const Lang: string);
     procedure Translate; overload;

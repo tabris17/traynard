@@ -63,7 +63,7 @@ jobs:
       - name: Translate messages
         shell: pwsh
         run: |
-          $msgfmt = 'C:\Program Files\gettext-iconv\bin\msgfmt.exe'
+          $msgfmt = "$env:LOCALAPPDATA\Programs\gettext-iconv\bin\msgfmt.exe"
           $localeDir = "locale"
           $outDir = 'out\languages'
           $distDir = 'out\traynard'

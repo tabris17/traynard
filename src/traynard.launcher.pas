@@ -429,7 +429,7 @@ begin
   if FProcesses.ProcessCount >= MAX_WAIT_PROCESSES then
     raise Exception.Create(ERROR_MAX_LAUNCHES);
 
-  FillChar(StartupInfo, SizeOf(StartupInfo), 0);
+  StartupInfo := Default(TStartupInfoW);
   StartupInfo.cb := SizeOf(StartupInfo);
   if Entry.Arguments <> '' then
     CmdLine := PWideChar(UnicodeString(Entry.Arguments));

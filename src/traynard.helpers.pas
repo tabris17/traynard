@@ -340,7 +340,7 @@ var
 begin
   TheDC := GetDC(0);
   MemDC := CreateCompatibleDC(TheDC);
-  FillChar(ABitmapInfo, SizeOf(BITMAPINFO), 0);
+  ABitmapInfo := Default(BITMAPINFO);
   with ABitmapInfo.bmiHeader do
   begin
     biSize := SizeOf(BITMAPINFOHEADER);

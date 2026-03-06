@@ -209,8 +209,16 @@ msgstr ""
 msgid "Auto to Tray Icon"
 msgstr ""
 
+#: tpagedesktop.actionautotrayicon.hint
+msgid "Mark the window as \"Auto-minimize\" to tray icon"
+msgstr ""
+
 #: tpagedesktop.actionautotraymenu.caption
 msgid "Auto to Tray Menu"
+msgstr ""
+
+#: tpagedesktop.actionautotraymenu.hint
+msgid "Mark the window as \"Auto-minimize\" to tray menu"
 msgstr ""
 
 #: tpagedesktop.actionclose.caption

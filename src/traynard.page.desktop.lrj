@@ -24,5 +24,7 @@
 {"hash":146640072,"name":"tpagedesktop.actionrefresh.caption","sourcebytes":[82,101,102,114,101,115,104],"value":"Refresh"},
 {"hash":5056664,"name":"tpagedesktop.actionflash.caption","sourcebytes":[70,108,97,115,104],"value":"Flash"},
 {"hash":256731854,"name":"tpagedesktop.actionautotrayicon.caption","sourcebytes":[65,117,116,111,32,116,111,32,84,114,97,121,32,73,99,111,110],"value":"Auto to Tray Icon"},
-{"hash":256814277,"name":"tpagedesktop.actionautotraymenu.caption","sourcebytes":[65,117,116,111,32,116,111,32,84,114,97,121,32,77,101,110,117],"value":"Auto to Tray Menu"}
+{"hash":206325886,"name":"tpagedesktop.actionautotrayicon.hint","sourcebytes":[77,97,114,107,32,116,104,101,32,119,105,110,100,111,119,32,97,115,32,34,65,117,116,111,45,109,105,110,105,109,105,122,101,34,32,116,111,32,116,114,97,121,32,105,99,111,110],"value":"Mark the window as \"Auto-minimize\" to tray icon"},
+{"hash":256814277,"name":"tpagedesktop.actionautotraymenu.caption","sourcebytes":[65,117,116,111,32,116,111,32,84,114,97,121,32,77,101,110,117],"value":"Auto to Tray Menu"},
+{"hash":206407285,"name":"tpagedesktop.actionautotraymenu.hint","sourcebytes":[77,97,114,107,32,116,104,101,32,119,105,110,100,111,119,32,97,115,32,34,65,117,116,111,45,109,105,110,105,109,105,122,101,34,32,116,111,32,116,114,97,121,32,109,101,110,117],"value":"Mark the window as \"Auto-minimize\" to tray menu"}
 ]}

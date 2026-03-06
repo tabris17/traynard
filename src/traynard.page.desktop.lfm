@@ -297,11 +297,13 @@ inherited PageDesktop: TPageDesktop
     object ActionAutoTrayIcon: TAction
       Caption = 'Auto to Tray Icon'
       Enabled = False
+      Hint = 'Mark the window as "Auto-minimize" to tray icon'
       OnExecute = ActionAutoTrayIconExecute
     end
     object ActionAutoTrayMenu: TAction
       Caption = 'Auto to Tray Menu'
       Enabled = False
+      Hint = 'Mark the window as "Auto-minimize" to tray menu'
       OnExecute = ActionAutoTrayMenuExecute
     end
   end

@@ -359,17 +359,14 @@
         <UnitName Value="Traynard.Page.Launcher"/>
       </Unit>
       <Unit>
-        <Filename Value="traynard.form.highlight.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormHighlight"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Traynard.Form.Highlight"/>
-      </Unit>
-      <Unit>
         <Filename Value="traynard.task.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Traynard.Task"/>
+      </Unit>
+      <Unit>
+        <Filename Value="traynard.highlight.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Traynard.Highlight"/>
       </Unit>
     </Units>
   </ProjectOptions>

@@ -26,6 +26,7 @@ const
   HOOK_INSTALL         = 'Install';
   HOOK_UNINSTALL       = 'Uninstall';
   I18N_MAPPING_NAME    = 'Local\' + APP_NAME + '_I18n';
+  CLASS_NAME_HIGHLIGHT = 'AlwaysOnTop_Highlight_Frame';
 
 resourcestring
   ERROR_GET_OS_VERSION                = 'Failed to get OS version info';
@@ -41,6 +42,7 @@ resourcestring
   ERROR_INSTALL_HOOK                  = 'Failed to install hook';
   ERROR_UNINSTALL_HOOK                = 'Failed to uninstall hook';
   ERROR_MAX_LAUNCHES                  = 'Exceeded the maximum number of launches';
+  ERROR_CREATE_HIGHLIGHT_FRAME        = 'Failed to create highlight frame "%s"';
 
   HTML_ABOUT_VERSION     = 'Version:';
   HTML_ABOUT_LICENSE     = 'License:';

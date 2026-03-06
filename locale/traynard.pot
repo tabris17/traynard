@@ -791,6 +791,11 @@ msgstr ""
 msgid "Failed to close the window"
 msgstr ""
 
+#: traynard.strings.error_create_highlight_frame
+#, object-pascal-format
+msgid "Failed to create highlight frame \"%s\""
+msgstr ""
+
 #: traynard.strings.error_file_properties
 msgid "Cannot access file properties"
 msgstr ""

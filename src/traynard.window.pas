@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Menus, Controls, ExtCtrls, Windows, JwaWinAble, LMessages, Generics.Collections,
-  Traynard.Types, Traynard.Strings, Traynard.Form.Highlight;
+  Traynard.Types, Traynard.Strings, Traynard.Highlight;
 
 type
 
@@ -148,7 +148,7 @@ type
     FOriginalWindowProc: TWndMethod;
     FAutoMinimizeWindows: specialize TDictionary<HWND, TTrayPosition>;
     FRestoredWindows: specialize TList<HWND>;
-    FTopmostWindows: specialize TObjectDictionary<HWND, TForm>;
+    FTopmostWindows: specialize TObjectDictionary<HWND, THighlightFrame>;
     FActiveWindow: HWND;
     function GetAutoMinimize: boolean;
     procedure SetAutoMinimize(AValue: boolean);
@@ -168,7 +168,7 @@ type
     function AddWindow(const Handle: HWND): boolean;
     function RemoveWindow(const Handle: HWND): boolean;
     function UpdateWindow(const Handle: HWND): boolean;
-    function FindHighlightForm(const Handle: HWND; out Form: TFormHighlight): boolean;
+    function FindHighlightFrame(const Handle: HWND; out Frame: THighlightFrame): boolean;
   private
     class function EnumAndMinimizeWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
     class function MinimizeOwnedWindowsProc(Handle: HWND; Param: LPARAM): WINBOOL; stdcall; static;
@@ -733,7 +733,7 @@ begin
   if (Sender as TSettings).HighlightTopmost then
   begin
     for Window in FTopmostWindows.Keys do
-      FTopmostWindows[Window] := TFormHighlight.Create(Window);
+      FTopmostWindows[Window] := THighlightFrame.Create(Window);
     if LocationChangeHook = 0 then
       FEventHooks[ehtLocationChange] := SetWinEventHook(
         EVENT_OBJECT_LOCATIONCHANGE,
@@ -902,13 +902,13 @@ begin
   Result := False;
 end;
 
-function TWindowManager.FindHighlightForm(const Handle: HWND; out Form: TFormHighlight): boolean;
+function TWindowManager.FindHighlightFrame(const Handle: HWND; out Frame: THighlightFrame): boolean;
 var
-  AForm: TForm;
+  HighlightFrame: THighlightFrame;
 begin
-  if Settings.HighlightTopmost and Self.FTopmostWindows.TryGetValue(Handle, AForm) then
+  if Settings.HighlightTopmost and Self.FTopmostWindows.TryGetValue(Handle, HighlightFrame) then
   begin                             
-    Form := AForm as TFormHighlight;
+    Frame := HighlightFrame;
     Exit(True);
   end;
   Result := False;
@@ -984,7 +984,7 @@ var
   Rule: TRule;
   LaunchEntry: TLaunchEntry;
   Window: TWindow;
-  HighlightForm: TFormHighlight;
+  HighlightFrame: THighlightFrame;
 begin
   if (hwnd = 0) or (idObject <> OBJID_WINDOW) or (idChild <> CHILDID_SELF) then Exit;
 
@@ -1002,14 +1002,14 @@ begin
     EVENT_OBJECT_CLOAKED:
     begin
       FSelf.UpdateWindow(hwnd);
-      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
-        HighlightForm.Visible := False;
+      if FSelf.FindHighlightFrame(hwnd, HighlightFrame) then
+        HighlightFrame.Visible := False;
     end;
     EVENT_OBJECT_UNCLOAKED:
     begin
       FSelf.UpdateWindow(hwnd);
-      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
-        HighlightForm.Visible := True;
+      if FSelf.FindHighlightFrame(hwnd, HighlightFrame) then
+        HighlightFrame.Visible := True;
     end;
     EVENT_SYSTEM_MINIMIZESTART:
     begin
@@ -1046,8 +1046,8 @@ begin
     end;
     EVENT_OBJECT_LOCATIONCHANGE:
     begin
-      if FSelf.FindHighlightForm(hwnd, HighlightForm) then
-        HighlightForm.UpdatePosition;
+      if FSelf.FindHighlightFrame(hwnd, HighlightFrame) then
+        HighlightFrame.UpdatePosition;
     end;
   end;
 end;
@@ -1062,7 +1062,7 @@ begin
   FCurrentPID := DWORD(GetProcessID);
   FAutoMinimizeWindows := specialize TDictionary<HWND, TTrayPosition>.Create;
   FRestoredWindows := specialize TList<HWND>.Create;
-  FTopmostWindows := specialize TObjectDictionary<HWND, TForm>.Create([doOwnsValues]);
+  FTopmostWindows := specialize TObjectDictionary<HWND, THighlightFrame>.Create([doOwnsValues]);
   FDesktop := TDesktopWindowCollection.Create;
   FTray := TTrayWindowCollection.Create;
   FSystemMenuItems := [];
@@ -1265,7 +1265,7 @@ end;
 procedure TWindowManager.SetWindowAlwaysOnTop(const Handle: HWND; const IsTopmost: boolean);
 var
   Window: TWindow;
-  HighlightForm: TForm;
+  HighlightFrame: THighlightFrame;
 begin
   if not FDesktop.FWindows.TryGetValue(Handle, Window) then
     raise Exception.Create(ERROR_WINDOW_NOT_FOUND);
@@ -1276,9 +1276,9 @@ begin
     raise Exception.Create(GetLastErrorMsg);
   if IsTopmost then
   begin
-    HighlightForm := TFormHighlight.Create(Handle);
-    if not FTopmostWindows.TryAdd(Handle, HighlightForm) then
-      HighlightForm.Free;
+    HighlightFrame := THighlightFrame.Create(Handle);
+    if not FTopmostWindows.TryAdd(Handle, HighlightFrame) then
+      HighlightFrame.Free;
   end
   else
     FTopmostWindows.Remove(Handle);

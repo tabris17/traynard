@@ -53,7 +53,6 @@ type
     procedure ActionRestoreLastExecute(Sender: TObject);
     procedure ActionApplyRulesExecute(Sender: TObject);
     procedure ApplicationPropertiesException(Sender: TObject; E: Exception);
-    procedure FormClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
@@ -162,11 +161,6 @@ end;
 procedure TFormBackground.ActionCloseExecute(Sender: TObject);
 begin
   if Assigned(FormMain) then FormMain.Close;
-end;
-
-procedure TFormBackground.FormClick(Sender: TObject);
-begin
-  ActionOpen.Execute;
 end;
 
 procedure TFormBackground.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

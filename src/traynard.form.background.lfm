@@ -4,7 +4,6 @@ object FormBackground: TFormBackground
   Top = 0
   Width = 320
   BorderStyle = bsNone
-  OnClick = FormClick
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   object ApplicationProperties: TApplicationProperties

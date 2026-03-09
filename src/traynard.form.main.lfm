@@ -108,8 +108,8 @@ object FormMain: TFormMain
     Height = 22
     Top = 578
     Width = 800
+    AutoHint = True
     Panels = <>
-    SimplePanel = False
   end
   object ActionList: TActionList
     Left = 224

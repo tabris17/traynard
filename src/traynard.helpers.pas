@@ -148,9 +148,11 @@ begin
   begin
     NamePath := TempPersistent.GetNamePath;
     if NamePath <> '' then Result := NamePath + '.' + Result;
-    {$IFDEF DEBUG}{$objectChecks-}{$ENDIF}
-    TempPersistent := TPersistentAccess(TempPersistent).GetOwner;
-    {$IFDEF DEBUG}{$objectChecks+}{$ENDIF}
+    repeat
+      {$IFDEF DEBUG}{$objectChecks-}{$ENDIF}
+      TempPersistent := TPersistentAccess(TempPersistent).GetOwner;
+      {$IFDEF DEBUG}{$objectChecks+}{$ENDIF}
+    until not (TempPersistent is TCustomFrame);
   end;
 end;
 

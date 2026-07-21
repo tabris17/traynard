@@ -287,7 +287,7 @@ function THotkeyManager.Unregister(const HotkeyID: longint): boolean;
 var
   HotkeyInfo: PHotkeyInfo;
 begin
-  if (HotkeyID > Length(FHotkeys)) or (HotkeyID = TEST_HOTKEY_ID) then Exit(False);
+  if (HotkeyID >= Length(FHotkeys)) or (HotkeyID = TEST_HOTKEY_ID) then Exit(False);
   HotkeyInfo := @FHotkeys[HotkeyID];
   if HotkeyInfo^.State <> hsSucceeded then Exit(False);
   Result := UnregisterHotkey(FMainForm.Handle, HotkeyID);

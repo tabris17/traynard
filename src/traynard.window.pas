@@ -299,6 +299,7 @@ begin
   begin
     SetLength(PathStr, MAX_LONG_PATH);
     Process := OpenProcess(PROCESS_QUERY_INFORMATION or PROCESS_VM_READ, False, PID);
+    if Process = 0 then Exit('');
     try
       SetLength(PathStr, GetModuleFileNameExW(Process, 0, PWideChar(PathStr), MAX_LONG_PATH));
     finally

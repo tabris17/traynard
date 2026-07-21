@@ -94,6 +94,7 @@ begin
     for Line in HeaderLines do
     begin
       KeyValuePair := Line.Split(':', 2);
+      if Length(KeyValuePair) < 2 then Continue;
       Key := KeyValuePair[0].Trim;
       Value := KeyValuePair[1].Trim;
       case Key of

@@ -468,6 +468,7 @@ destructor TWindowCollection.Destroy;
 begin
   FreeAndNil(FWindows);
   FreeAndNil(FOrderedWindowList);
+  inherited Destroy;
 end;
 
 function TWindowCollection.GetEnumerator: TWindowEnumerator;
@@ -1251,7 +1252,7 @@ begin
 
   if ShowWindow(Handle, SW_SHOW) then
   begin
-    { Failed to restore window }
+    { Window was not hidden; nothing to restore }
     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle));
     FTray.FWindows.Remove(Handle);
     TrayChanged;

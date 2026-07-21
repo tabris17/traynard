@@ -216,14 +216,14 @@ procedure TGroupedTrayIcon.RemoveWindow(const AHandle: HWND);
 var
   MenuItem: TMenuItem;
   Window: TWindow;
-  MenuItemBeforeCount, MenuItemAfterCount: integer;
+  MenuItemBeforeCount, MenuItemAfterCount, i: integer;
 begin
   MenuItemBeforeCount := FPopUpMenu.Items.Count;
-  for MenuItem in FPopUpMenu.Items do
+  for i := FPopUpMenu.Items.Count - 1 downto 0 do
   begin
-    if MenuItem.Tag = AHandle then
+    if FPopUpMenu.Items[i].Tag = AHandle then
     begin
-      FPopUpMenu.Items.Remove(MenuItem);
+      FPopUpMenu.Items.Delete(i);
       Break;
     end;
   end;
@@ -374,6 +374,7 @@ procedure TGroupedMenuItem.RemoveWindow(const AHandle: HWND);
 var
   MenuItem: TMenuItem;
   Window: TWindow;
+  i: integer;
 begin
   if (Count = 0) and (Tag = AHandle) then
   begin
@@ -381,11 +382,11 @@ begin
     Exit;
   end;
 
-  for MenuItem in Self do
+  for i := Count - 1 downto 0 do
   begin
-    if MenuItem.Tag = AHandle then
+    if Items[i].Tag = AHandle then
     begin
-      Remove(MenuItem);
+      Delete(i);
       Break;
     end;
   end;

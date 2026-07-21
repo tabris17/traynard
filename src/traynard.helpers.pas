@@ -399,7 +399,6 @@ end;
 initialization
 
 fpTemplate.DefaultStartDelimiter:='{{';
-fpTemplate.DefaultStartDelimiter:='{{';
 fpTemplate.DefaultEndDelimiter:='}}';
 fpTemplate.DefaultParamStartDelimiter:=' ';
 fpTemplate.DefaultParamEndDelimiter:='"';

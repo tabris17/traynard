@@ -238,6 +238,7 @@ begin
     Bh.hRgnBlur:= Rgn;
     Bh.fTransitionOnMaximized := False;
     DwmEnableBlurBehindWindow(FWindow, @Bh);
+    DeleteObject(Rgn);
   end;
 
   SetWindowPos(

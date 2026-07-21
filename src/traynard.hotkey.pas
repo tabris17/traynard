@@ -32,6 +32,7 @@ type
     procedure HotkeyRemoved(const HotkeyID: longint);
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     property Hotkey[HotkeyID: longint]: THotkeyInfo read GetHotkey;
     function TestHotkey(const AHotkey: THotkey): boolean;
     function Register(const AHotkey: THotkey; out HotkeyID: longint): boolean;
@@ -233,8 +234,28 @@ begin
   Rules.OnHotkeyAddedNotify := @HotkeyAdded;
   Rules.OnHotkeyRemovedNotify := @HotkeyRemoved;
   RegisterLauncherHotkeys;
-  Launcher.OnHotkeyAddedNotify := @HotkeyAdded; 
+  Launcher.OnHotkeyAddedNotify := @HotkeyAdded;
   Launcher.OnHotkeyRemovedNotify := @HotkeyRemoved;
+end;
+
+destructor THotkeyManager.Destroy;
+var
+  HotkeyID: longint;
+begin
+  Settings.RemoveListeners(Self);
+  Rules.OnHotkeyAddedNotify := nil;
+  Rules.OnHotkeyRemovedNotify := nil;
+  Launcher.OnHotkeyAddedNotify := nil;
+  Launcher.OnHotkeyRemovedNotify := nil;
+
+  for HotkeyID := 0 to High(FHotkeys) do
+  begin
+    if FHotkeys[HotkeyID].State = hsSucceeded then
+      UnregisterHotkey(FMainForm.Handle, HotkeyID);
+  end;
+
+  FMainForm.WindowProc := FOriginalWindowProc;
+  inherited Destroy;
 end;
 
 function THotkeyManager.TestHotkey(const AHotkey: THotkey): boolean;

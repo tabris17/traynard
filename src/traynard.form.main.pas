@@ -221,8 +221,11 @@ begin
 end;
 
 procedure TFormMain.FormHide(Sender: TObject);
+var
+  Page: TPage;
 begin
-  CurrentPage.Visible := False;
+  Page := CurrentPage;
+  if Assigned(Page) then Page.Visible := False;
 end;
 
 procedure TFormMain.FormShortCut(var Msg: TLMKey; var Handled: Boolean);
@@ -278,7 +281,10 @@ end;
 
 procedure TFormMain.ToolBarResize(Sender: TObject);
 begin
-  Spacer1.Height := ToolBar.Height - FNavButtonsHeight;
+  if ToolBar.Height > FNavButtonsHeight then
+    Spacer1.Height := ToolBar.Height - FNavButtonsHeight
+  else
+    Spacer1.Height := 0;
 end;
 
 function TFormMain.Popup(const Title, Message: string; const PopupType: TPopupType; const Timeout: Integer): TFormPopup;
@@ -296,8 +302,11 @@ end;
 
 function TFormMain.Navigate(PageIndex: TPageIndex): TPage;
 begin
-  if FHistory.Contains(CurrentPageIndex) then FHistory.Remove(CurrentPageIndex);
-  FHistory.Add(CurrentPageIndex);
+  if FCurrentPageIndex <> piNone then
+  begin
+    if FHistory.Contains(FCurrentPageIndex) then FHistory.Remove(FCurrentPageIndex);
+    FHistory.Add(FCurrentPageIndex);
+  end;
   CurrentPageIndex := PageIndex;
   Result := CurrentPage;
 end;

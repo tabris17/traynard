@@ -29,8 +29,10 @@ type
     procedure UpdateProcessList;
     procedure SetLaunchMenuItems;
     procedure LaunchMenuItemClick(Sender: TObject);
+    procedure EnableLauncherChanged(Sender: TObject);
   public
     procedure Initialize; override;
+    procedure Finalize; override;
     procedure FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);
   end;
 
@@ -154,12 +156,27 @@ begin
   end;
 end;
 
+procedure TPageLauncher.EnableLauncherChanged(Sender: TObject);
+var
+  ItemIndex: integer;
+begin
+  for ItemIndex := 1 to LaunchMenu.Items.Count - 1 do
+    LaunchMenu.Items[ItemIndex].Enabled := Settings.EnableLauncher;
+end;
+
 procedure TPageLauncher.Initialize;
 begin
   inherited Initialize;
   OnPageActivate := @PageActivate;
   OnPageDeactivate := @PageDeactivate;
   IconList.AddIcon(LoadIcon(0, IDI_APPLICATION));
+  Settings.AddListener(siUseLauncher, @EnableLauncherChanged);
+end;
+
+procedure TPageLauncher.Finalize;
+begin
+  Settings.RemoveListeners(Self);
+  inherited Finalize;
 end;
 
 procedure TPageLauncher.FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);

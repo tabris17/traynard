@@ -85,6 +85,7 @@ var
   Window: TWindow;
   WindowText: String;
 begin
+  if WindowManager.Tray.WindowCount = 0 then Exit;
   Window := WindowManager.Tray.LastWindow;
   WindowText := Window.Text;
   try

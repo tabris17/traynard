@@ -57,7 +57,7 @@ begin
   begin
     AlphaBlendValue := 0;
     TimerFadeOut.Enabled := False;
-    Free;
+    Release;
   end
   else
     AlphaBlendValue := AlphaBlendValue - ALPHA_BLEND_VALUE_STEP;

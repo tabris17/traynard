@@ -225,7 +225,7 @@ begin
     end
     else
     begin
-      WindowManager.EnableWindowAutoMinimize(Window.Handle, tpMenu);;
+      WindowManager.EnableWindowAutoMinimize(Window.Handle, tpMenu);
       ActionAutoTrayIcon.Checked := False;
       ActionAutoTrayMenu.Checked := True;
     end;

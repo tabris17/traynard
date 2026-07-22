@@ -53,12 +53,14 @@ end;
 
 procedure TFormPopup.TimerFadeOutTimer(Sender: TObject);
 begin
-  AlphaBlendValue := AlphaBlendValue - ALPHA_BLEND_VALUE_STEP;
-  if AlphaBlendValue = 0 then
+  if AlphaBlendValue <= ALPHA_BLEND_VALUE_STEP then
   begin
+    AlphaBlendValue := 0;
     TimerFadeOut.Enabled := False;
     Free;
-  end;
+  end
+  else
+    AlphaBlendValue := AlphaBlendValue - ALPHA_BLEND_VALUE_STEP;
 end;
 
 procedure TFormPopup.SetPopupType(AValue: TPopupType);
@@ -100,11 +102,13 @@ end;
 
 procedure TFormPopup.TimerFadeInTimer(Sender: TObject);
 begin
-  AlphaBlendValue := AlphaBlendValue + ALPHA_BLEND_VALUE_STEP;
-  if AlphaBlendValue = High(Byte) then
+  if AlphaBlendValue >= High(Byte) - ALPHA_BLEND_VALUE_STEP + 1 then
   begin
+    AlphaBlendValue := High(Byte);
     TimerFadeIn.Enabled := False;
-  end;
+  end
+  else
+    AlphaBlendValue := AlphaBlendValue + ALPHA_BLEND_VALUE_STEP;
 end;
 
 procedure TFormPopup.FormCreate(Sender: TObject);

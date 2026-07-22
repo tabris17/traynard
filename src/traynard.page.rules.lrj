@@ -2,7 +2,7 @@
 {"hash":46116983,"name":"tpagerules.panelwelcome.caption","sourcebytes":[83,101,108,101,99,116,32,97,32,114,117,108,101,32,102,114,111,109,32,116,104,101,32,108,101,102,116,32,108,105,115,116,32,116,111,32,101,100,105,116,32,111,114,32,99,114,101,97,116,101,32,97,32,110,101,119],"value":"Select a rule from the left list to edit or create a new"},
 {"hash":122814378,"name":"tpagerules.labelrulename.caption","sourcebytes":[82,117,108,101,32,78,97,109,101,58],"value":"Rule Name:"},
 {"hash":187373749,"name":"tpagerules.editrulename.texthint","sourcebytes":[85,110,105,113,117,101,32,110,97,109,101],"value":"Unique name"},
-{"hash":188853818,"name":"tpagerules.labelwindowtitle.caption","sourcebytes":[87,105,110,100,111,119,32,84,105,116,105,108,101,58],"value":"Window Titile:"},
+{"hash":196355146,"name":"tpagerules.labelwindowtitle.caption","sourcebytes":[87,105,110,100,111,119,32,84,105,116,108,101,58],"value":"Window Title:"},
 {"hash":173176978,"name":"tpagerules.editwindowtitle.texthint","sourcebytes":[84,101,120,116,32,105,110,32,116,104,101,32,119,105,110,100,111,119,32,116,105,116,108,101,32,98,97,114],"value":"Text in the window title bar"},
 {"hash":178666666,"name":"tpagerules.labelwindowclass.caption","sourcebytes":[87,105,110,100,111,119,32,67,108,97,115,115,58],"value":"Window Class:"},
 {"hash":44795319,"name":"tpagerules.editwindowclass.texthint","sourcebytes":[73,109,109,117,116,97,98,108,101,32,112,114,111,112,101,114,116,121,32,111,102,32,116,104,101,32,119,105,110,100,111,119],"value":"Immutable property of the window"},

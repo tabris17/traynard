@@ -735,7 +735,7 @@ msgid "Window Class:"
 msgstr ""
 
 #: tpagerules.labelwindowtitle.caption
-msgid "Window Titile:"
+msgid "Window Title:"
 msgstr ""
 
 #: tpagerules.panelwelcome.caption

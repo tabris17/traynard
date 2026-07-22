@@ -202,6 +202,11 @@ begin
   begin
     LabelHotkey.Font.Color := clRed;
     LabelHotkey.ShowHint := True;
+  end
+  else
+  begin
+    LabelHotkey.Font.Color := clDefault;
+    LabelHotkey.ShowHint := False;
   end;
 end;
 
@@ -426,7 +431,11 @@ begin
                      PWideChar(UnicodeString(Format(MSG_QUESTION_SAVE_RULE, [EditRuleName.Text]))),
                      PWideChar(UnicodeString(Application.Title)),
                      MB_YESNOCANCEL or MB_ICONQUESTION or MB_DEFBUTTON3) of
-      IDYES: ActionSaveExecute(Sender);
+      IDYES:
+      begin
+        ActionSaveExecute(Sender);
+        if Unsaved then Exit;
+      end;
       IDNO: Unsaved := False;
       else Exit;
     end;

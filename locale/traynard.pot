@@ -9,7 +9,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language-Name: 简体中文\n"
-"X-Generator: Poedit 3.7\n"
 
 #: tformbackground.actionapplyrules.caption
 msgid "Apply Rules"

@@ -1,0 +1,1185 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Language-Name: 简体中文\n"
+"X-Generator: Poedit 3.7\n"
+
+#: tformbackground.actionapplyrules.caption
+msgid "Apply Rules"
+msgstr ""
+
+#: tformbackground.actionautominimize.caption
+msgctxt "tformbackground.actionautominimize.caption"
+msgid "Auto-minimize"
+msgstr ""
+
+#: tformbackground.actionclose.caption
+msgctxt "tformbackground.actionclose.caption"
+msgid "Close"
+msgstr ""
+
+#: tformbackground.actionenablelauncher.caption
+msgid "Enable"
+msgstr ""
+
+#: tformbackground.actionexit.caption
+msgctxt "tformbackground.actionexit.caption"
+msgid "Exit"
+msgstr ""
+
+#: tformbackground.actionopen.caption
+msgctxt "tformbackground.actionopen.caption"
+msgid "Open"
+msgstr ""
+
+#: tformbackground.actionrestoreall.caption
+msgctxt "tformbackground.actionrestoreall.caption"
+msgid "Restore All"
+msgstr ""
+
+#: tformbackground.actionrestorelast.caption
+msgctxt "tformbackground.actionrestorelast.caption"
+msgid "Restore Last Window"
+msgstr ""
+
+#: tformbackground.menuitemempty.caption
+msgctxt "tformbackground.menuitemempty.caption"
+msgid "(empty)"
+msgstr ""
+
+#: tformbackground.menuitemlaunch.caption
+msgctxt "tformbackground.menuitemlaunch.caption"
+msgid "Launcher"
+msgstr ""
+
+#: tformhotkey.buttoncancel.caption
+msgctxt "tformhotkey.buttoncancel.caption"
+msgid "Cancel"
+msgstr ""
+
+#: tformhotkey.buttonok.caption
+msgctxt "tformhotkey.buttonok.caption"
+msgid "OK"
+msgstr ""
+
+#: tformhotkey.caption
+msgctxt "tformhotkey.caption"
+msgid "Hotkey Settings"
+msgstr ""
+
+#: tformhotkey.checkboxalt.caption
+msgctxt "tformhotkey.checkboxalt.caption"
+msgid "Alt"
+msgstr ""
+
+#: tformhotkey.checkboxctrl.caption
+msgctxt "tformhotkey.checkboxctrl.caption"
+msgid "Ctrl"
+msgstr ""
+
+#: tformhotkey.checkboxshift.caption
+msgctxt "tformhotkey.checkboxshift.caption"
+msgid "Shift"
+msgstr ""
+
+#: tformhotkey.checkboxwin.caption
+msgctxt "tformhotkey.checkboxwin.caption"
+msgid "Win"
+msgstr ""
+
+#: tformhotkey.comboboxkey.text
+msgid "None"
+msgstr ""
+
+#: tformhotkey.labelhotkey.caption
+msgid "Press any shortcut key"
+msgstr ""
+
+#: tformhotkey.toolbuttoncapture.caption
+msgctxt "tformhotkey.toolbuttoncapture.caption"
+msgid "Capture"
+msgstr ""
+
+#: tformhotkey.toolbuttonmanual.caption
+msgctxt "tformhotkey.toolbuttonmanual.caption"
+msgid "Manual"
+msgstr ""
+
+#: tformmain.actionabout.caption
+msgctxt "tformmain.actionabout.caption"
+msgid "About"
+msgstr ""
+
+#: tformmain.actionabout.hint
+msgctxt "tformmain.actionabout.hint"
+msgid "About"
+msgstr ""
+
+#: tformmain.actiondesktop.caption
+msgid "Desktop"
+msgstr ""
+
+#: tformmain.actiondesktop.hint
+msgctxt "tformmain.actiondesktop.hint"
+msgid "Ordinary windows on desktop"
+msgstr ""
+
+#: tformmain.actionexit.caption
+msgctxt "tformmain.actionexit.caption"
+msgid "Exit"
+msgstr ""
+
+#: tformmain.actionlauncher.caption
+msgctxt "tformmain.actionlauncher.caption"
+msgid "Launcher"
+msgstr ""
+
+#: tformmain.actionlauncher.hint
+msgid "Launch apps to tray"
+msgstr ""
+
+#: tformmain.actionlicense.caption
+msgctxt "tformmain.actionlicense.caption"
+msgid "License"
+msgstr ""
+
+#: tformmain.actionoptions.caption
+msgctxt "tformmain.actionoptions.caption"
+msgid "Options"
+msgstr ""
+
+#: tformmain.actionoptions.hint
+msgctxt "tformmain.actionoptions.hint"
+msgid "Options"
+msgstr ""
+
+#: tformmain.actionrules.caption
+msgid "Rules"
+msgstr ""
+
+#: tformmain.actiontray.caption
+msgid "Tray"
+msgstr ""
+
+#: tformmain.actiontray.hint
+msgid "Windows managed by program"
+msgstr ""
+
+#: tformmain.menuitemgithub.caption
+msgid "GitHub Repo"
+msgstr ""
+
+#: tformmain.menuitemhelp.caption
+msgid "Help"
+msgstr ""
+
+#: tformmain.menuitemissue.caption
+msgid "Report Issue"
+msgstr ""
+
+#: tformmain.menuitemusage.caption
+msgid "Usage"
+msgstr ""
+
+#: tformmain.toolbuttonlauncher.hint
+msgctxt "tformmain.toolbuttonlauncher.hint"
+msgid "Launcher"
+msgstr ""
+
+#: tformmain.toolbuttonmenu.hint
+msgid "Main menu"
+msgstr ""
+
+#: tformmain.toolbuttonrules.hint
+msgid "Custom rules"
+msgstr ""
+
+#: tformmain.toolbuttontray.hint
+msgid "Minimized windows in tray"
+msgstr ""
+
+#: tpagedesktop.actionautotrayicon.caption
+msgid "Auto to Tray Icon"
+msgstr ""
+
+#: tpagedesktop.actionautotrayicon.hint
+msgid "Mark the window as \"Auto-minimize\" to tray icon"
+msgstr ""
+
+#: tpagedesktop.actionautotraymenu.caption
+msgid "Auto to Tray Menu"
+msgstr ""
+
+#: tpagedesktop.actionautotraymenu.hint
+msgid "Mark the window as \"Auto-minimize\" to tray menu"
+msgstr ""
+
+#: tpagedesktop.actionclose.caption
+msgctxt "tpagedesktop.actionclose.caption"
+msgid "Close"
+msgstr ""
+
+#: tpagedesktop.actionclose.hint
+msgid "Close window"
+msgstr ""
+
+#: tpagedesktop.actioncopyclass.caption
+msgid "Window Class"
+msgstr ""
+
+#: tpagedesktop.actioncopyentirerow.caption
+msgid "Entire Row"
+msgstr ""
+
+#: tpagedesktop.actioncopyname.caption
+msgid "Window Name"
+msgstr ""
+
+#: tpagedesktop.actioncopypath.caption
+msgid "Application Path"
+msgstr ""
+
+#: tpagedesktop.actionflash.caption
+msgid "Flash"
+msgstr ""
+
+#: tpagedesktop.actionlocate.caption
+msgid "Open File Location"
+msgstr ""
+
+#: tpagedesktop.actionnewrule.caption
+msgid "New Rule"
+msgstr ""
+
+#: tpagedesktop.actionnewrule.hint
+msgid "New rule from the window"
+msgstr ""
+
+#: tpagedesktop.actionproperties.caption
+msgid "File Properties"
+msgstr ""
+
+#: tpagedesktop.actionrefresh.caption
+msgctxt "tpagedesktop.actionrefresh.caption"
+msgid "Refresh"
+msgstr ""
+
+#: tpagedesktop.actiontopmost.caption
+msgctxt "tpagedesktop.actiontopmost.caption"
+msgid "Always on Top"
+msgstr ""
+
+#: tpagedesktop.actiontrayicon.caption
+msgid "To Tray Icon"
+msgstr ""
+
+#: tpagedesktop.actiontraymenu.caption
+msgid "To Tray Menu"
+msgstr ""
+
+#: tpagedesktop.buttonminimize.caption
+msgctxt "tpagedesktop.buttonminimize.caption"
+msgid "Minimize"
+msgstr ""
+
+#: tpagedesktop.labelmanaged.caption
+msgctxt "tpagedesktop.labelmanaged.caption"
+msgid "Auto-minimize"
+msgstr ""
+
+#: tpagedesktop.listview.columns[0].caption
+msgctxt "tpagedesktop.listview.columns[0].caption"
+msgid "Name"
+msgstr ""
+
+#: tpagedesktop.listview.columns[1].caption
+msgctxt "tpagedesktop.listview.columns[1].caption"
+msgid "Handle"
+msgstr ""
+
+#: tpagedesktop.listview.columns[2].caption
+msgctxt "tpagedesktop.listview.columns[2].caption"
+msgid "Class"
+msgstr ""
+
+#: tpagedesktop.listview.columns[3].caption
+msgctxt "tpagedesktop.listview.columns[3].caption"
+msgid "PID"
+msgstr ""
+
+#: tpagedesktop.listview.columns[4].caption
+msgctxt "tpagedesktop.listview.columns[4].caption"
+msgid "Application"
+msgstr ""
+
+#: tpagedesktop.menuitemcopy.caption
+msgid "Copy"
+msgstr ""
+
+#: tpagedesktop.menuitemminimize.caption
+msgctxt "tpagedesktop.menuitemminimize.caption"
+msgid "Minimize"
+msgstr ""
+
+#: tpagelauncher.actionedit.caption
+msgctxt "tpagelauncher.actionedit.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
+#: tpagelauncher.buttonlaunch.caption
+msgctxt "tpagelauncher.buttonlaunch.caption"
+msgid "Launch"
+msgstr ""
+
+#: tpagelauncher.listview.columns[0].caption
+msgctxt "tpagelauncher.listview.columns[0].caption"
+msgid "Name"
+msgstr ""
+
+#: tpagelauncher.listview.columns[1].caption
+msgctxt "tpagelauncher.listview.columns[1].caption"
+msgid "PID"
+msgstr ""
+
+#: tpagelauncher.listview.columns[2].caption
+msgctxt "tpagelauncher.listview.columns[2].caption"
+msgid "Creation Time"
+msgstr ""
+
+#: tpagelauncher.listview.columns[3].caption
+msgctxt "tpagelauncher.listview.columns[3].caption"
+msgid "Command"
+msgstr ""
+
+#: tpagelauncher.menuitemempty.caption
+msgctxt "tpagelauncher.menuitemempty.caption"
+msgid "(empty)"
+msgstr ""
+
+#: tpagelauncherentries.actionclose.caption
+msgctxt "tpagelauncherentries.actionclose.caption"
+msgid "Close"
+msgstr ""
+
+#: tpagelauncherentries.actiondelete.caption
+msgctxt "tpagelauncherentries.actiondelete.caption"
+msgid "Delete"
+msgstr ""
+
+#: tpagelauncherentries.actionlaunch.caption
+msgctxt "tpagelauncherentries.actionlaunch.caption"
+msgid "Launch"
+msgstr ""
+
+#: tpagelauncherentries.actionnew.caption
+msgctxt "tpagelauncherentries.actionnew.caption"
+msgid "New"
+msgstr ""
+
+#: tpagelauncherentries.actionopen.caption
+msgctxt "tpagelauncherentries.actionopen.caption"
+msgid "Open"
+msgstr ""
+
+#: tpagelauncherentries.actionrunning.caption
+msgid "Running"
+msgstr ""
+
+#: tpagelauncherentries.actionsave.caption
+msgctxt "tpagelauncherentries.actionsave.caption"
+msgid "Save"
+msgstr ""
+
+#: tpagelauncherentries.buttonhotkeybind.caption
+msgctxt "tpagelauncherentries.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr ""
+
+#: tpagelauncherentries.buttonhotkeyclear.caption
+msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr ""
+
+#: tpagelauncherentries.checkgroupmethods.caption
+msgctxt "tpagelauncherentries.checkgroupmethods.caption"
+msgid "Launch Methods"
+msgstr ""
+
+#: tpagelauncherentries.checkgrouptriggeron.caption
+msgctxt "tpagelauncherentries.checkgrouptriggeron.caption"
+msgid "Trigger On"
+msgstr ""
+
+#: tpagelauncherentries.editentryname.texthint
+msgctxt "tpagelauncherentries.editentryname.texthint"
+msgid "Unique name"
+msgstr ""
+
+#: tpagelauncherentries.executablefilenameedit.texthint
+msgctxt "tpagelauncherentries.executablefilenameedit.texthint"
+msgid "Path of the executable file"
+msgstr ""
+
+#: tpagelauncherentries.groupboxhotkey.caption
+msgctxt "tpagelauncherentries.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr ""
+
+#: tpagelauncherentries.headertitle.caption
+msgctxt "tpagelauncherentries.headertitle.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
+#: tpagelauncherentries.labelarguments.caption
+msgctxt "tpagelauncherentries.labelarguments.caption"
+msgid "Arguments:"
+msgstr ""
+
+#: tpagelauncherentries.labelentryname.caption
+msgctxt "tpagelauncherentries.labelentryname.caption"
+msgid "Name:"
+msgstr ""
+
+#: tpagelauncherentries.labelexecutablepath.caption
+msgctxt "tpagelauncherentries.labelexecutablepath.caption"
+msgid "Executable Path:"
+msgstr ""
+
+#: tpagelauncherentries.labelworkingdirectory.caption
+msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
+msgid "Working Directory:"
+msgstr ""
+
+#: tpagelauncherentries.panelwelcome.caption
+msgctxt "tpagelauncherentries.panelwelcome.caption"
+msgid "Add commands here to run when Traynard starts or runs manually. The windows created by these processes will be minimized to system tray automatically."
+msgstr ""
+
+#: tpagelauncherentries.radiogroupminimizeto.caption
+msgctxt "tpagelauncherentries.radiogroupminimizeto.caption"
+msgid "Minimize to"
+msgstr ""
+
+#: tpagelauncherentries.radiogroupnotification.caption
+msgctxt "tpagelauncherentries.radiogroupnotification.caption"
+msgid "Notification"
+msgstr ""
+
+#: tpagelicense.headertitle.caption
+msgctxt "tpagelicense.headertitle.caption"
+msgid "License"
+msgstr ""
+
+#: tpageoptions.actionconfigdir.caption
+msgid "..."
+msgstr ""
+
+#: tpageoptions.actionconfigdir.hint
+msgid "Open Config Directory"
+msgstr ""
+
+#: tpageoptions.actionhotkeybind.caption
+msgctxt "tpageoptions.actionhotkeybind.caption"
+msgid "Bind"
+msgstr ""
+
+#: tpageoptions.actionhotkeyclear.caption
+msgctxt "tpageoptions.actionhotkeyclear.caption"
+msgid "Clear"
+msgstr ""
+
+#: tpageoptions.actionhotkeyreset.caption
+msgctxt "tpageoptions.actionhotkeyreset.caption"
+msgid "Reset"
+msgstr ""
+
+#: tpageoptions.actionlanguageapply.caption
+msgid "Apply"
+msgstr ""
+
+#: tpageoptions.actionlanguagerefresh.caption
+msgctxt "tpageoptions.actionlanguagerefresh.caption"
+msgid "Refresh"
+msgstr ""
+
+#: tpageoptions.actionlanguagereset.caption
+msgctxt "tpageoptions.actionlanguagereset.caption"
+msgid "Reset"
+msgstr ""
+
+#: tpageoptions.buttoneditlaunchentries.caption
+msgctxt "tpageoptions.buttoneditlaunchentries.caption"
+msgid "Edit Launch Entries"
+msgstr ""
+
+#: tpageoptions.buttoneditrules.caption
+msgid "Edit Rules"
+msgstr ""
+
+#: tpageoptions.checkboxautominimize.caption
+msgid "Enable auto-minimize to tray"
+msgstr ""
+
+#: tpageoptions.checkboxautorun.caption
+msgid "Autorun at system startup"
+msgstr ""
+
+#: tpageoptions.checkboxhighlight.caption
+msgctxt "tpageoptions.checkboxhighlight.caption"
+msgid "Show a border around the window marked as \"Always on Top\""
+msgstr ""
+
+#: tpageoptions.checkboxicongrouped.caption
+msgid "Group tray icons by application"
+msgstr ""
+
+#: tpageoptions.checkboxicongrouped.hint
+msgid "Enabling this merges all window icons of the same application into one system tray icon."
+msgstr ""
+
+#: tpageoptions.checkboxlauncher.caption
+msgid "Enable launcher"
+msgstr ""
+
+#: tpageoptions.checkboxmenugrouped.caption
+msgid "Group tray menu items by application"
+msgstr ""
+
+#: tpageoptions.checkboxmenugrouped.hint
+msgid "Enabling this will merge icons of windows from the same application into one submenu."
+msgstr ""
+
+#: tpageoptions.checkboxmultiprocesslaunch.caption
+msgid "Support for multi-process applications"
+msgstr ""
+
+#: tpageoptions.checkboxmultiprocesslaunch.hint
+msgid ""
+"Monitor both the target process and its child processes.\n"
+"Useful for Electron.js-based applications."
+msgstr ""
+
+#: tpageoptions.checkboxnotification.caption
+msgid "Show notification when window is auto-minimized"
+msgstr ""
+
+#: tpageoptions.checkboxruleonstartup.caption
+msgid "Apply rules to existing windows at startup"
+msgstr ""
+
+#: tpageoptions.checkboxrunasadmin.caption
+msgid "Run as administrator"
+msgstr ""
+
+#: tpageoptions.checkboxrunasadmin.hint
+msgid ""
+"Launch automatically as an administrator using Task Scheduler.\n"
+"Enable this option if you need to manage windows of programs that also run as administrator."
+msgstr ""
+
+#: tpageoptions.checkboxshowmainwindow.caption
+msgid "Show main window on start"
+msgstr ""
+
+#: tpageoptions.checkboxuserules.caption
+msgid "Enable custom rules"
+msgstr ""
+
+#: tpageoptions.checkgroupsystemmenu.caption
+msgid "Window System Menu"
+msgstr ""
+
+#: tpageoptions.colordialog.title
+msgid "Select Border Color"
+msgstr ""
+
+#: tpageoptions.dividerbeveladvanced.caption
+msgid "Advanced"
+msgstr ""
+
+#: tpageoptions.dividerbevelgeneral.caption
+msgid "General"
+msgstr ""
+
+#: tpageoptions.dividerbevelhotkey.caption
+msgctxt "tpageoptions.dividerbevelhotkey.caption"
+msgid "Hotkey"
+msgstr ""
+
+#: tpageoptions.labelconfigdir.caption
+msgid "Config directory"
+msgstr ""
+
+#: tpageoptions.labeldefaultminimizeto.caption
+msgid "Default minimize to:"
+msgstr ""
+
+#: tpageoptions.labelhighlightcolor.caption
+msgctxt "tpageoptions.labelhighlightcolor.caption"
+msgid "Color:"
+msgstr ""
+
+#: tpageoptions.labelhighlightthickness.caption
+msgid "Thickness:"
+msgstr ""
+
+#: tpageoptions.labellanguage.caption
+msgid "Select language"
+msgstr ""
+
+#: tpageoptions.listviewhotkeys.columns[0].caption
+msgid "Action"
+msgstr ""
+
+#: tpageoptions.listviewhotkeys.columns[1].caption
+msgid "Key"
+msgstr ""
+
+#: tpageoptions.listviewhotkeys.columns[2].caption
+msgid "Conflict"
+msgstr ""
+
+#: tpageoptions.radiobuttontrayicon.caption
+msgctxt "tpageoptions.radiobuttontrayicon.caption"
+msgid "Tray Icon"
+msgstr ""
+
+#: tpageoptions.radiobuttontraymenu.caption
+msgctxt "tpageoptions.radiobuttontraymenu.caption"
+msgid "Tray Menu"
+msgstr ""
+
+#: tpagerules.actionclose.caption
+msgctxt "tpagerules.actionclose.caption"
+msgid "Close"
+msgstr ""
+
+#: tpagerules.actiondelete.caption
+msgctxt "tpagerules.actiondelete.caption"
+msgid "Delete"
+msgstr ""
+
+#: tpagerules.actionnew.caption
+msgctxt "tpagerules.actionnew.caption"
+msgid "New"
+msgstr ""
+
+#: tpagerules.actionopen.caption
+msgctxt "tpagerules.actionopen.caption"
+msgid "Open"
+msgstr ""
+
+#: tpagerules.actionsave.caption
+msgctxt "tpagerules.actionsave.caption"
+msgid "Save"
+msgstr ""
+
+#: tpagerules.buttonhotkeybind.caption
+msgctxt "tpagerules.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr ""
+
+#: tpagerules.buttonhotkeyclear.caption
+msgctxt "tpagerules.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr ""
+
+#: tpagerules.checkgrouptriggeron.caption
+msgctxt "tpagerules.checkgrouptriggeron.caption"
+msgid "Trigger on"
+msgstr ""
+
+#: tpagerules.editapppath.texthint
+msgid "Window owner process file path"
+msgstr ""
+
+#: tpagerules.editrulename.texthint
+msgctxt "tpagerules.editrulename.texthint"
+msgid "Unique name"
+msgstr ""
+
+#: tpagerules.editwindowclass.texthint
+msgid "Immutable property of the window"
+msgstr ""
+
+#: tpagerules.editwindowtitle.texthint
+msgid "Text in the window title bar"
+msgstr ""
+
+#: tpagerules.groupboxhotkey.caption
+msgctxt "tpagerules.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr ""
+
+#: tpagerules.labelapppath.caption
+msgid "Application Path:"
+msgstr ""
+
+#: tpagerules.labelhotkey.hint
+msgid "Hotkey already in use"
+msgstr ""
+
+#: tpagerules.labelrulename.caption
+msgid "Rule Name:"
+msgstr ""
+
+#: tpagerules.labelwindowclass.caption
+msgid "Window Class:"
+msgstr ""
+
+#: tpagerules.labelwindowtitle.caption
+msgid "Window Titile:"
+msgstr ""
+
+#: tpagerules.panelwelcome.caption
+msgid "Select a rule from the left list to edit or create a new"
+msgstr ""
+
+#: tpagerules.radiogroupminimizeto.caption
+msgctxt "tpagerules.radiogroupminimizeto.caption"
+msgid "Minimize to"
+msgstr ""
+
+#: tpagerules.radiogroupnotification.caption
+msgctxt "tpagerules.radiogroupnotification.caption"
+msgid "Notification"
+msgstr ""
+
+#: tpagetray.actionrestore.caption
+msgid "Restore"
+msgstr ""
+
+#: tpagetray.actionrestoreall.caption
+msgctxt "tpagetray.actionrestoreall.caption"
+msgid "Restore All"
+msgstr ""
+
+#: tpagetray.actionrestorelast.caption
+msgctxt "tpagetray.actionrestorelast.caption"
+msgid "Restore Last Window"
+msgstr ""
+
+#: tpagetray.listview.columns[0].caption
+msgctxt "tpagetray.listview.columns[0].caption"
+msgid "Name"
+msgstr ""
+
+#: tpagetray.listview.columns[1].caption
+msgid "Pos"
+msgstr ""
+
+#: tpagetray.listview.columns[2].caption
+msgctxt "tpagetray.listview.columns[2].caption"
+msgid "Handle"
+msgstr ""
+
+#: tpagetray.listview.columns[3].caption
+msgctxt "tpagetray.listview.columns[3].caption"
+msgid "Class"
+msgstr ""
+
+#: tpagetray.listview.columns[4].caption
+msgctxt "tpagetray.listview.columns[4].caption"
+msgid "PID"
+msgstr ""
+
+#: tpagetray.listview.columns[5].caption
+msgctxt "tpagetray.listview.columns[5].caption"
+msgid "Application"
+msgstr ""
+
+#: traynard.strings.error_close_window
+msgid "Failed to close the window"
+msgstr ""
+
+#: traynard.strings.error_create_highlight_frame
+#, object-pascal-format
+msgid "Failed to create highlight frame \"%s\""
+msgstr ""
+
+#: traynard.strings.error_file_properties
+msgid "Cannot access file properties"
+msgstr ""
+
+#: traynard.strings.error_get_os_version
+msgid "Failed to get OS version info"
+msgstr ""
+
+#: traynard.strings.error_install_hook
+msgid "Failed to install hook"
+msgstr ""
+
+#: traynard.strings.error_max_launches
+msgid "Exceeded the maximum number of launches"
+msgstr ""
+
+#: traynard.strings.error_no_selected_window
+msgid "No selected window"
+msgstr ""
+
+#: traynard.strings.error_parse_toml_file
+#, object-pascal-format
+msgid "Failed to parse TOML file \"%s\""
+msgstr ""
+
+#: traynard.strings.error_register_shell_hook_window
+msgid "Failed to register shell hook window"
+msgstr ""
+
+#: traynard.strings.error_restore_window
+msgid "Failed to restore window"
+msgstr ""
+
+#: traynard.strings.error_set_topmost
+msgid "Cannot set window topmost status"
+msgstr ""
+
+#: traynard.strings.error_uninstall_hook
+msgid "Failed to uninstall hook"
+msgstr ""
+
+#: traynard.strings.error_uwp_window
+msgid "Unable to minimize the UWP app window"
+msgstr ""
+
+#: traynard.strings.error_window_not_found
+msgid "Window not found"
+msgstr ""
+
+#: traynard.strings.hotkey_minimize_to_icon
+msgctxt "traynard.strings.hotkey_minimize_to_icon"
+msgid "Minimize foreground window to tray icon"
+msgstr ""
+
+#: traynard.strings.hotkey_minimize_to_menu
+msgctxt "traynard.strings.hotkey_minimize_to_menu"
+msgid "Minimize foreground window to tray menu"
+msgstr ""
+
+#: traynard.strings.hotkey_open_close
+msgctxt "traynard.strings.hotkey_open_close"
+msgid "Open/Close main window"
+msgstr ""
+
+#: traynard.strings.hotkey_restore_all
+msgctxt "traynard.strings.hotkey_restore_all"
+msgid "Restore all windows"
+msgstr ""
+
+#: traynard.strings.hotkey_restore_last_window
+msgctxt "traynard.strings.hotkey_restore_last_window"
+msgid "Restore the last window"
+msgstr ""
+
+#: traynard.strings.hotkey_toggle_autominimize
+msgctxt "traynard.strings.hotkey_toggle_autominimize"
+msgid "Toggle auto-minimize to tray"
+msgstr ""
+
+#: traynard.strings.hotkey_toggle_rules
+msgctxt "traynard.strings.hotkey_toggle_rules"
+msgid "Toggle custom rules"
+msgstr ""
+
+#: traynard.strings.hotkey_toggle_topmost
+msgctxt "traynard.strings.hotkey_toggle_topmost"
+msgid "Toggle foreground window always on top"
+msgstr ""
+
+#: traynard.strings.html_about_build_date
+msgctxt "traynard.strings.html_about_build_date"
+msgid "Build date:"
+msgstr ""
+
+#: traynard.strings.html_about_compiler
+msgctxt "traynard.strings.html_about_compiler"
+msgid "Compiler:"
+msgstr ""
+
+#: traynard.strings.html_about_features
+msgid "Features"
+msgstr ""
+
+#: traynard.strings.html_about_feature_1
+msgctxt "traynard.strings.html_about_feature_1"
+msgid "Quick actions via global hotkeys"
+msgstr ""
+
+#: traynard.strings.html_about_feature_2
+msgctxt "traynard.strings.html_about_feature_2"
+msgid "Extended system menu for any window"
+msgstr ""
+
+#: traynard.strings.html_about_feature_3
+msgctxt "traynard.strings.html_about_feature_3"
+msgid "Auto-minimize windows by user rules"
+msgstr ""
+
+#: traynard.strings.html_about_feature_4
+msgid "Multi-language support"
+msgstr ""
+
+#: traynard.strings.html_about_intro
+msgctxt "traynard.strings.html_about_intro"
+msgid "A desktop utility for minimizing any application window to the system tray, A.K.A. \"notification area\". The project is inspired by <a href=\"https://github.com/fcFn/traymond\">Traymond</a> and completely rewritten in Lazarus (free pascal). "
+msgstr ""
+
+#: traynard.strings.html_about_license
+msgctxt "traynard.strings.html_about_license"
+msgid "License:"
+msgstr ""
+
+#: traynard.strings.html_about_maintainer
+msgctxt "traynard.strings.html_about_maintainer"
+msgid "Maintainer:"
+msgstr ""
+
+#: traynard.strings.html_about_source_code
+msgctxt "traynard.strings.html_about_source_code"
+msgid "Source code:"
+msgstr ""
+
+#: traynard.strings.html_about_title
+msgctxt "traynard.strings.html_about_title"
+msgid "About"
+msgstr ""
+
+#: traynard.strings.html_about_version
+msgctxt "traynard.strings.html_about_version"
+msgid "Version:"
+msgstr ""
+
+#: traynard.strings.menu_item_always_on_top
+msgctxt "traynard.strings.menu_item_always_on_top"
+msgid "Always on Top"
+msgstr ""
+
+#: traynard.strings.menu_item_minimize_to_tray_icon
+msgid "Minimize to Tray Icon"
+msgstr ""
+
+#: traynard.strings.menu_item_minimize_to_tray_menu
+msgid "Minimize to Tray Menu"
+msgstr ""
+
+#: traynard.strings.menu_item_restore_group
+msgid "Restore Group"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_application_required
+msgid "Executable path is required"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_launch_methods_required
+msgid "Launch methods is required"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_name_duplicate
+msgid "Launcher entry name is duplicate"
+msgstr ""
+
+#: traynard.strings.msg_launcher_entry_name_required
+msgid "Launcher entry name is required"
+msgstr ""
+
+#: traynard.strings.msg_must_run_as_administrator
+msgid "Must run as administrator"
+msgstr ""
+
+#: traynard.strings.msg_question_delete_launcher_entry
+#, object-pascal-format
+msgid "Delete entry \"%s\"?"
+msgstr ""
+
+#: traynard.strings.msg_question_delete_rule
+#, object-pascal-format
+msgid "Delete rule \"%s\"?"
+msgstr ""
+
+#: traynard.strings.msg_question_save_launcher_entry
+#, object-pascal-format
+msgid "Save entry to \"%s\"?"
+msgstr ""
+
+#: traynard.strings.msg_question_save_rule
+#, object-pascal-format
+msgid "Save rule to \"%s\"?"
+msgstr ""
+
+#: traynard.strings.msg_rule_app_path_required
+msgid "App path is required"
+msgstr ""
+
+#: traynard.strings.msg_rule_name_duplicate
+msgid "Rule name is duplicate"
+msgstr ""
+
+#: traynard.strings.msg_rule_name_required
+msgid "Rule name is required"
+msgstr ""
+
+#: traynard.strings.msg_rule_notification_required
+msgid "Notification condition is required"
+msgstr ""
+
+#: traynard.strings.msg_rule_trigger_on_required
+msgid "Trigger condition is required"
+msgstr ""
+
+#: traynard.strings.msg_rule_window_class_required
+msgid "Window class is required"
+msgstr ""
+
+#: traynard.strings.msg_rule_window_title_required
+msgid "Window title is required"
+msgstr ""
+
+#: traynard.strings.msg_windows_restored
+#, object-pascal-format
+msgid "%d window(s) restored"
+msgstr ""
+
+#: traynard.strings.msg_windows_restored_failed
+#, object-pascal-format
+msgid "%0:d window(s) restored, %1:d failed"
+msgstr ""
+
+#: traynard.strings.msg_window_minimized
+msgid "Window minimized"
+msgstr ""
+
+#: traynard.strings.msg_window_restored
+msgid "Window restored"
+msgstr ""
+
+#: traynard.strings.text_always
+msgctxt "traynard.strings.text_always"
+msgid "Always"
+msgstr ""
+
+#: traynard.strings.text_angle_bracketed_auto
+msgctxt "traynard.strings.text_angle_bracketed_auto"
+msgid "<Auto>"
+msgstr ""
+
+#: traynard.strings.text_any
+msgid "Any"
+msgstr ""
+
+#: traynard.strings.text_automatic
+msgid "Automatic"
+msgstr ""
+
+#: traynard.strings.text_bracketed_no_set
+msgctxt "traynard.strings.text_bracketed_no_set"
+msgid "(no set)"
+msgstr ""
+
+#: traynard.strings.text_contains
+msgid "Contains"
+msgstr ""
+
+#: traynard.strings.text_ends_with
+msgid "Ends with"
+msgstr ""
+
+#: traynard.strings.text_equals
+msgid "Equals"
+msgstr ""
+
+#: traynard.strings.text_first_time_only
+msgctxt "traynard.strings.text_first_time_only"
+msgid "First-time only"
+msgstr ""
+
+#: traynard.strings.text_follow_global_settings
+msgctxt "traynard.strings.text_follow_global_settings"
+msgid "Follow global settings"
+msgstr ""
+
+#: traynard.strings.text_hotkey
+msgctxt "traynard.strings.text_hotkey"
+msgid "Hotkey"
+msgstr ""
+
+#: traynard.strings.text_icon
+msgid "Icon"
+msgstr ""
+
+#: traynard.strings.text_manual
+msgctxt "traynard.strings.text_manual"
+msgid "Manual"
+msgstr ""
+
+#: traynard.strings.text_menu
+msgid "Menu"
+msgstr ""
+
+#: traynard.strings.text_never
+msgctxt "traynard.strings.text_never"
+msgid "Never"
+msgstr ""
+
+#: traynard.strings.text_regex_match
+msgid "Regex match"
+msgstr ""
+
+#: traynard.strings.text_starts_with
+msgid "Starts with"
+msgstr ""
+
+#: traynard.strings.text_system_menu_topmost
+msgctxt "traynard.strings.text_system_menu_topmost"
+msgid "Add \"Always on Top\" to every window menu"
+msgstr ""
+
+#: traynard.strings.text_system_menu_tray_icon
+msgctxt "traynard.strings.text_system_menu_tray_icon"
+msgid "Add \"Minimize to Tray Icon\" to every window menu"
+msgstr ""
+
+#: traynard.strings.text_system_menu_tray_menu
+msgctxt "traynard.strings.text_system_menu_tray_menu"
+msgid "Add \"Minimize to Tray Menu\" to every window menu"
+msgstr ""
+
+#: traynard.strings.text_tray_icon
+msgctxt "traynard.strings.text_tray_icon"
+msgid "Tray Icon"
+msgstr ""
+
+#: traynard.strings.text_tray_menu
+msgctxt "traynard.strings.text_tray_menu"
+msgid "Tray Menu"
+msgstr ""
+
+#: traynard.strings.text_window_creation
+msgctxt "traynard.strings.text_window_creation"
+msgid "Window creation"
+msgstr ""
+
+#: traynard.strings.text_window_deactivated
+msgid "Window deactivated"
+msgstr ""
+
+#: traynard.strings.text_window_minimizing
+msgctxt "traynard.strings.text_window_minimizing"
+msgid "Window minimizing"
+msgstr ""
+
+#: traynard.strings.text_window_title_change
+msgctxt "traynard.strings.text_window_title_change"
+msgid "Window title change"
+msgstr ""
+
+#: traynard.strings.text_yes
+msgid "Yes"
+msgstr ""
+

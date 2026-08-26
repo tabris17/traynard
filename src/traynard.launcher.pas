@@ -75,6 +75,8 @@ type
       CreationTime: TFileTime;
       Application: string;
       Arguments: string;
+      ProcessHandle: HANDLE;
+      WaitHandle: HANDLE;
     end;
 
     { TProcessCollection }
@@ -99,7 +101,6 @@ type
 
     Exception = class(SysUtils.Exception);
   private
-    FSelf: TLauncher; static;
     FCurrentPID: DWORD;
     FEntryList: TEntryList;
     FEntryMap: TEntryMap;
@@ -165,6 +166,20 @@ implementation
 
 uses
   Forms, JwaWinternl, Traynard.Helpers, Traynard.Strings, Traynard.Settings;
+
+type
+
+  { TProcessExitDispatcher }
+
+  // Routes wait-callback exit events to the Launcher singleton. Deliberately
+  // outlives it: Application may dispatch a queued event during Forms
+  // finalization, after this unit's finalization has freed the Launcher.
+  TProcessExitDispatcher = class
+    procedure ProcessExitEvent(Data: PtrInt);
+  end;
+
+var
+  ExitDispatcher: TProcessExitDispatcher;
 
 { TLaunchEntry }
 
@@ -271,7 +286,14 @@ begin
 end;
 
 procedure TLauncher.ProcessExitEvent(Data: PtrInt);
+var
+  Process: TProcess;
 begin
+  if FProcesses.Find(DWORD(Data), Process) then
+  begin
+    UnregisterWait(Process.WaitHandle);
+    CloseHandle(Process.ProcessHandle);
+  end;
   FProcesses.Remove(DWORD(Data));
   FProcesses.FPONotifyObservers(Self, ooDeleteItem, Pointer(Data));
 end;
@@ -300,7 +322,6 @@ begin
   FEntryMap := TEntryMap.Create;
   FHotkeyMap := THotkeyMap.Create([doOwnsValues]);
   FProcesses := TProcessCollection.Create;
-  FSelf := Self;
   FCurrentPID := DWORD(System.GetProcessID);
 end;
 
@@ -423,6 +444,7 @@ var
   CurrDir: PWideChar = nil;
   WaitHandle: HANDLE;
   Process: TProcess;
+  ApplicationPath, Arguments, WorkingDirectory: UnicodeString;
   CreationTime, _NoUseTime: TFileTime;
   Exc: Exception;
 begin
@@ -431,12 +453,19 @@ begin
 
   StartupInfo := Default(TStartupInfoW);
   StartupInfo.cb := SizeOf(StartupInfo);
+  ApplicationPath := UnicodeString(Entry.Application);
   if Entry.Arguments <> '' then
-    CmdLine := PWideChar(UnicodeString(Entry.Arguments));
+  begin
+    Arguments := UnicodeString(Entry.Arguments);
+    CmdLine := PWideChar(Arguments);
+  end;
   if Entry.WorkingDirectory <> '' then
-    CurrDir := PWideChar(UnicodeString(Entry.WorkingDirectory));
+  begin
+    WorkingDirectory := UnicodeString(Entry.WorkingDirectory);
+    CurrDir := PWideChar(WorkingDirectory);
+  end;
 
-  if not CreateProcessW(PWideChar(UnicodeString(Entry.Application)),
+  if not CreateProcessW(PWideChar(ApplicationPath),
                         CmdLine,
                         nil,
                         nil,
@@ -469,12 +498,20 @@ begin
     raise Exc;
   end;
 
-  Process.Name := Entry.Name;              
+  Process.Name := Entry.Name;
   Process.Application := Entry.Application;
   Process.Arguments := Entry.Arguments;
   Process.PID := ProcessInfo.dwProcessId;
   Process.CreationTime := CreationTime;
-  FProcesses.Add(Process.PID, Process);
+  Process.ProcessHandle := ProcessInfo.hProcess;
+  Process.WaitHandle := WaitHandle;
+  try
+    FProcesses.Add(Process.PID, Process);
+  except
+    UnregisterWait(WaitHandle);
+    CloseHandle(ProcessInfo.hProcess);
+    raise;
+  end;
   FProcesses.FPONotifyObservers(Self, ooAddItem, Pointer(PtrUInt(Process.PID)));
 end;
 
@@ -507,6 +544,7 @@ begin
       FConfigEntries := ConfigEntries as TTOMLArray;
       for ConfigEntry in FConfigEntries.Items do
       begin
+        Entry := Default(TEntry);
         try
           Entry.Load(ConfigEntry as TTOMLTable);
         except
@@ -587,7 +625,15 @@ end;
 
 class procedure TLauncher.WaitProcess(Param: PVOID; Fired: ByteBool); stdcall;
 begin
-  Application.QueueAsyncCall(@FSelf.ProcessExitEvent, PtrInt(Param));
+  Application.QueueAsyncCall(@ExitDispatcher.ProcessExitEvent, PtrInt(Param));
+end;
+
+{ TProcessExitDispatcher }
+
+procedure TProcessExitDispatcher.ProcessExitEvent(Data: PtrInt);
+begin
+  if Assigned(Launcher) then
+    Launcher.ProcessExitEvent(Data);
 end;
 
 { TLauncher.THotkeyEntry }
@@ -632,7 +678,17 @@ begin
 end;
 
 destructor TLauncher.TProcessCollection.Destroy;
+var
+  Process: TProcess;
 begin
+  for Process in FProcesses.Values do
+  begin
+    // UnregisterWaitEx blocks until an executing wait callback has returned,
+    // so no callback can enqueue a ProcessExitEvent after the Launcher is freed.
+    UnregisterWaitEx(Process.WaitHandle, INVALID_HANDLE_VALUE);
+    CloseHandle(Process.ProcessHandle);
+  end;
+
   inherited Destroy;
 
   FreeAndNil(FProcesses);
@@ -660,11 +716,15 @@ end;
 
 initialization
 
+ExitDispatcher := TProcessExitDispatcher.Create;
 Launcher := TLauncher.Create;
 
 finalization
 
 FreeAndNil(Launcher);
+// ExitDispatcher is deliberately never freed: a queued exit event can still be
+// dispatched by Application during Forms finalization, which runs after this
+// unit's finalization, and the dispatcher must still be alive to absorb it.
 
 end.
 

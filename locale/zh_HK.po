@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TraymondR 1.0\n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: tabris17\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language-Name: 香港繁體\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: tformbackground.actionapplyrules.caption
 msgid "Apply Rules"
@@ -25,6 +25,10 @@ msgstr "自動最小化"
 msgctxt "tformbackground.actionclose.caption"
 msgid "Close"
 msgstr "關閉"
+
+#: tformbackground.actionenablelauncher.caption
+msgid "Enable"
+msgstr "啟用"
 
 #: tformbackground.actionexit.caption
 msgctxt "tformbackground.actionexit.caption"
@@ -46,11 +50,23 @@ msgctxt "tformbackground.actionrestorelast.caption"
 msgid "Restore Last Window"
 msgstr "還原上一個視窗"
 
+#: tformbackground.menuitemempty.caption
+msgctxt "tformbackground.menuitemempty.caption"
+msgid "(empty)"
+msgstr "(空)"
+
+#: tformbackground.menuitemlaunch.caption
+msgctxt "tformbackground.menuitemlaunch.caption"
+msgid "Launcher"
+msgstr "啟動器"
+
 #: tformhotkey.buttoncancel.caption
+msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
 msgstr "取消"
 
 #: tformhotkey.buttonok.caption
+msgctxt "tformhotkey.buttonok.caption"
 msgid "OK"
 msgstr "確定"
 
@@ -112,6 +128,7 @@ msgid "Desktop"
 msgstr "桌面"
 
 #: tformmain.actiondesktop.hint
+msgctxt "tformmain.actiondesktop.hint"
 msgid "Ordinary windows on desktop"
 msgstr "桌面上的視窗"
 
@@ -119,6 +136,15 @@ msgstr "桌面上的視窗"
 msgctxt "tformmain.actionexit.caption"
 msgid "Exit"
 msgstr "退出"
+
+#: tformmain.actionlauncher.caption
+msgctxt "tformmain.actionlauncher.caption"
+msgid "Launcher"
+msgstr "啟動器"
+
+#: tformmain.actionlauncher.hint
+msgid "Launch apps to tray"
+msgstr "啟動應用程式到系統托盤"
 
 #: tformmain.actionlicense.caption
 msgctxt "tformmain.actionlicense.caption"
@@ -163,6 +189,11 @@ msgstr "回報問題"
 msgid "Usage"
 msgstr "使用說明"
 
+#: tformmain.toolbuttonlauncher.hint
+msgctxt "tformmain.toolbuttonlauncher.hint"
+msgid "Launcher"
+msgstr "啟動器"
+
 #: tformmain.toolbuttonmenu.hint
 msgid "Main menu"
 msgstr "主選單"
@@ -179,9 +210,17 @@ msgstr "最小化至系統托盤的視窗"
 msgid "Auto to Tray Icon"
 msgstr "自動至托盤圖示"
 
+#: tpagedesktop.actionautotrayicon.hint
+msgid "Mark the window as \"Auto-minimize\" to tray icon"
+msgstr "將視窗標記為「自動最小化」至托盤圖示"
+
 #: tpagedesktop.actionautotraymenu.caption
 msgid "Auto to Tray Menu"
 msgstr "自動至托盤選單"
+
+#: tpagedesktop.actionautotraymenu.hint
+msgid "Mark the window as \"Auto-minimize\" to tray menu"
+msgstr "將視窗標記為「自動最小化」至托盤選單"
 
 #: tpagedesktop.actionclose.caption
 msgctxt "tpagedesktop.actionclose.caption"
@@ -290,6 +329,154 @@ msgctxt "tpagedesktop.menuitemminimize.caption"
 msgid "Minimize"
 msgstr "最小化"
 
+#: tpagelauncher.actionedit.caption
+msgctxt "tpagelauncher.actionedit.caption"
+msgid "Edit Launch Entries"
+msgstr "編輯啟動項目"
+
+#: tpagelauncher.buttonlaunch.caption
+msgctxt "tpagelauncher.buttonlaunch.caption"
+msgid "Launch"
+msgstr "啟動"
+
+#: tpagelauncher.listview.columns[0].caption
+msgctxt "tpagelauncher.listview.columns[0].caption"
+msgid "Name"
+msgstr "名稱"
+
+#: tpagelauncher.listview.columns[1].caption
+msgctxt "tpagelauncher.listview.columns[1].caption"
+msgid "PID"
+msgstr "程序ID"
+
+#: tpagelauncher.listview.columns[2].caption
+msgctxt "tpagelauncher.listview.columns[2].caption"
+msgid "Creation Time"
+msgstr "建立時間"
+
+#: tpagelauncher.listview.columns[3].caption
+msgctxt "tpagelauncher.listview.columns[3].caption"
+msgid "Command"
+msgstr "命令列"
+
+#: tpagelauncher.menuitemempty.caption
+msgctxt "tpagelauncher.menuitemempty.caption"
+msgid "(empty)"
+msgstr "(空)"
+
+#: tpagelauncherentries.actionclose.caption
+msgctxt "tpagelauncherentries.actionclose.caption"
+msgid "Close"
+msgstr "關閉"
+
+#: tpagelauncherentries.actiondelete.caption
+msgctxt "tpagelauncherentries.actiondelete.caption"
+msgid "Delete"
+msgstr "刪除"
+
+#: tpagelauncherentries.actionlaunch.caption
+msgctxt "tpagelauncherentries.actionlaunch.caption"
+msgid "Launch"
+msgstr "啟動"
+
+#: tpagelauncherentries.actionnew.caption
+msgctxt "tpagelauncherentries.actionnew.caption"
+msgid "New"
+msgstr "新建"
+
+#: tpagelauncherentries.actionopen.caption
+msgctxt "tpagelauncherentries.actionopen.caption"
+msgid "Open"
+msgstr "打開"
+
+#: tpagelauncherentries.actionrunning.caption
+msgid "Running"
+msgstr "執行中"
+
+#: tpagelauncherentries.actionsave.caption
+msgctxt "tpagelauncherentries.actionsave.caption"
+msgid "Save"
+msgstr "儲存"
+
+#: tpagelauncherentries.buttonhotkeybind.caption
+msgctxt "tpagelauncherentries.buttonhotkeybind.caption"
+msgid "Bind"
+msgstr "綁定"
+
+#: tpagelauncherentries.buttonhotkeyclear.caption
+msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
+msgid "Clear"
+msgstr "清除"
+
+#: tpagelauncherentries.checkgroupmethods.caption
+msgctxt "tpagelauncherentries.checkgroupmethods.caption"
+msgid "Launch Methods"
+msgstr "啟動方式"
+
+#: tpagelauncherentries.checkgrouptriggeron.caption
+msgctxt "tpagelauncherentries.checkgrouptriggeron.caption"
+msgid "Trigger On"
+msgstr "觸發條件"
+
+#: tpagelauncherentries.editentryname.texthint
+msgctxt "tpagelauncherentries.editentryname.texthint"
+msgid "Unique name"
+msgstr "唯一名稱"
+
+#: tpagelauncherentries.executablefilenameedit.texthint
+msgctxt "tpagelauncherentries.executablefilenameedit.texthint"
+msgid "Path of the executable file"
+msgstr "可執行檔路徑"
+
+#: tpagelauncherentries.groupboxhotkey.caption
+msgctxt "tpagelauncherentries.groupboxhotkey.caption"
+msgid "Hotkey"
+msgstr "熱鍵"
+
+#: tpagelauncherentries.headertitle.caption
+msgctxt "tpagelauncherentries.headertitle.caption"
+msgid "Edit Launch Entries"
+msgstr "編輯啟動項目"
+
+#: tpagelauncherentries.labelarguments.caption
+msgctxt "tpagelauncherentries.labelarguments.caption"
+msgid "Arguments:"
+msgstr "參數:"
+
+#: tpagelauncherentries.labelentryname.caption
+msgctxt "tpagelauncherentries.labelentryname.caption"
+msgid "Name:"
+msgstr "名稱:"
+
+#: tpagelauncherentries.labelexecutablepath.caption
+msgctxt "tpagelauncherentries.labelexecutablepath.caption"
+msgid "Executable Path:"
+msgstr "可執行檔路徑:"
+
+#: tpagelauncherentries.labelworkingdirectory.caption
+msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
+msgid "Working Directory:"
+msgstr "工作目錄:"
+
+#: tpagelauncherentries.panelwelcome.caption
+msgctxt "tpagelauncherentries.panelwelcome.caption"
+msgid ""
+"Add commands here to run when Traynard starts or runs manually. The windows "
+"created by these processes will be minimized to system tray automatically."
+msgstr ""
+"在此新增要隨 Traynard 啟動或手動運行的命令。這些程序建立的視窗將自動最小化至"
+"系統托盤。"
+
+#: tpagelauncherentries.radiogroupminimizeto.caption
+msgctxt "tpagelauncherentries.radiogroupminimizeto.caption"
+msgid "Minimize to"
+msgstr "最小化至"
+
+#: tpagelauncherentries.radiogroupnotification.caption
+msgctxt "tpagelauncherentries.radiogroupnotification.caption"
+msgid "Notification"
+msgstr "通知"
+
 #: tpagelicense.headertitle.caption
 msgctxt "tpagelicense.headertitle.caption"
 msgid "License"
@@ -332,6 +519,11 @@ msgctxt "tpageoptions.actionlanguagereset.caption"
 msgid "Reset"
 msgstr "重設"
 
+#: tpageoptions.buttoneditlaunchentries.caption
+msgctxt "tpageoptions.buttoneditlaunchentries.caption"
+msgid "Edit Launch Entries"
+msgstr "編輯啟動項目"
+
 #: tpageoptions.buttoneditrules.caption
 msgid "Edit Rules"
 msgstr "編輯規則"
@@ -344,13 +536,46 @@ msgstr "啟用自動最小化至系統托盤"
 msgid "Autorun at system startup"
 msgstr "隨系統啟動自動運行"
 
+#: tpageoptions.checkboxhighlight.caption
+msgctxt "tpageoptions.checkboxhighlight.caption"
+msgid "Show a border around the window marked as \"Always on Top\""
+msgstr "在標記為「保持最前」的視窗周圍顯示邊框"
+
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
 msgstr "系統托盤圖示按應用程式分組"
 
+#: tpageoptions.checkboxicongrouped.hint
+msgid ""
+"Enabling this merges all window icons of the same application into one "
+"system tray icon."
+msgstr "啟用後，同一應用程式的所有視窗圖示會合併成一個系統托盤圖示。"
+
+#: tpageoptions.checkboxlauncher.caption
+msgid "Enable launcher"
+msgstr "啟用啟動器"
+
 #: tpageoptions.checkboxmenugrouped.caption
 msgid "Group tray menu items by application"
 msgstr "系統托盤選單按應用程式分組"
+
+#: tpageoptions.checkboxmenugrouped.hint
+msgid ""
+"Enabling this will merge icons of windows from the same application into one "
+"submenu."
+msgstr "啟用後，同一應用程式的視窗圖示會合併到一個子選單中。"
+
+#: tpageoptions.checkboxmultiprocesslaunch.caption
+msgid "Support for multi-process applications"
+msgstr "支援多程序應用程式"
+
+#: tpageoptions.checkboxmultiprocesslaunch.hint
+msgid ""
+"Monitor both the target process and its child processes.\n"
+"Useful for Electron.js-based applications."
+msgstr ""
+"同時監控目標程序及其子程序。\n"
+"適用於以 Electron.js 為基礎的應用程式。"
 
 #: tpageoptions.checkboxnotification.caption
 msgid "Show notification when window is auto-minimized"
@@ -360,6 +585,23 @@ msgstr "視窗自動最小化至托盤時顯示通知"
 msgid "Apply rules to existing windows at startup"
 msgstr "程式啟動時套用規則到現有視窗"
 
+#: tpageoptions.checkboxrunasadmin.caption
+msgid "Run as administrator"
+msgstr "以系統管理員身分執行"
+
+#: tpageoptions.checkboxrunasadmin.hint
+msgid ""
+"Launch automatically as an administrator using Task Scheduler.\n"
+"Enable this option if you need to manage windows of programs that also run "
+"as administrator."
+msgstr ""
+"使用工作排程器以系統管理員身分自動啟動。\n"
+"若需要管理同樣以系統管理員身分執行之程式的視窗，請啟用此選項。"
+
+#: tpageoptions.checkboxshowmainwindow.caption
+msgid "Show main window on start"
+msgstr "啟動時顯示主視窗"
+
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
 msgstr "啟用自訂規則"
@@ -367,6 +609,10 @@ msgstr "啟用自訂規則"
 #: tpageoptions.checkgroupsystemmenu.caption
 msgid "Window System Menu"
 msgstr "視窗系統選單"
+
+#: tpageoptions.colordialog.title
+msgid "Select Border Color"
+msgstr "選擇邊框顏色"
 
 #: tpageoptions.dividerbeveladvanced.caption
 msgid "Advanced"
@@ -385,6 +631,19 @@ msgstr "熱鍵"
 msgid "Config directory"
 msgstr "配置資料夾"
 
+#: tpageoptions.labeldefaultminimizeto.caption
+msgid "Default minimize to:"
+msgstr "預設最小化至:"
+
+#: tpageoptions.labelhighlightcolor.caption
+msgctxt "tpageoptions.labelhighlightcolor.caption"
+msgid "Color:"
+msgstr "顏色:"
+
+#: tpageoptions.labelhighlightthickness.caption
+msgid "Thickness:"
+msgstr "粗細:"
+
 #: tpageoptions.labellanguage.caption
 msgid "Select language"
 msgstr "選擇語言"
@@ -401,16 +660,28 @@ msgstr "按鍵"
 msgid "Conflict"
 msgstr "衝突"
 
+#: tpageoptions.radiobuttontrayicon.caption
+msgctxt "tpageoptions.radiobuttontrayicon.caption"
+msgid "Tray Icon"
+msgstr "系統托盤圖示"
+
+#: tpageoptions.radiobuttontraymenu.caption
+msgctxt "tpageoptions.radiobuttontraymenu.caption"
+msgid "Tray Menu"
+msgstr "系統托盤選單"
+
 #: tpagerules.actionclose.caption
 msgctxt "tpagerules.actionclose.caption"
 msgid "Close"
 msgstr "關閉"
 
 #: tpagerules.actiondelete.caption
+msgctxt "tpagerules.actiondelete.caption"
 msgid "Delete"
 msgstr "刪除"
 
 #: tpagerules.actionnew.caption
+msgctxt "tpagerules.actionnew.caption"
 msgid "New"
 msgstr "新建"
 
@@ -420,6 +691,7 @@ msgid "Open"
 msgstr "打開"
 
 #: tpagerules.actionsave.caption
+msgctxt "tpagerules.actionsave.caption"
 msgid "Save"
 msgstr "儲存"
 
@@ -434,7 +706,8 @@ msgid "Clear"
 msgstr "清除"
 
 #: tpagerules.checkgrouptriggeron.caption
-msgid "Trigger On"
+msgctxt "tpagerules.checkgrouptriggeron.caption"
+msgid "Trigger on"
 msgstr "觸發條件"
 
 #: tpagerules.editapppath.texthint
@@ -442,6 +715,7 @@ msgid "Window owner process file path"
 msgstr "視窗所屬程序檔案路徑"
 
 #: tpagerules.editrulename.texthint
+msgctxt "tpagerules.editrulename.texthint"
 msgid "Unique name"
 msgstr "唯一名稱"
 
@@ -462,9 +736,9 @@ msgstr "熱鍵"
 msgid "Application Path:"
 msgstr "應用程式路徑:"
 
-#: tpagerules.labelminimizeto.caption
-msgid "Minimize to: "
-msgstr "最小化至:"
+#: tpagerules.labelhotkey.hint
+msgid "Hotkey already in use"
+msgstr "熱鍵已被使用"
 
 #: tpagerules.labelrulename.caption
 msgid "Rule Name:"
@@ -482,7 +756,13 @@ msgstr "視窗標題:"
 msgid "Select a rule from the left list to edit or create a new"
 msgstr "建立新規則，或從左側列表選擇一個規則編輯"
 
+#: tpagerules.radiogroupminimizeto.caption
+msgctxt "tpagerules.radiogroupminimizeto.caption"
+msgid "Minimize to"
+msgstr "最小化至"
+
 #: tpagerules.radiogroupnotification.caption
+msgctxt "tpagerules.radiogroupnotification.caption"
 msgid "Notification"
 msgstr "通知"
 
@@ -533,6 +813,11 @@ msgstr "應用程式"
 msgid "Failed to close the window"
 msgstr "無法關閉視窗"
 
+#: traynard.strings.error_create_highlight_frame
+#, object-pascal-format
+msgid "Failed to create highlight frame \"%s\""
+msgstr "無法建立高亮邊框 \"%s\""
+
 #: traynard.strings.error_file_properties
 msgid "Cannot access file properties"
 msgstr "無法存取檔案屬性"
@@ -544,6 +829,10 @@ msgstr "無法取得作業系統版本資訊"
 #: traynard.strings.error_install_hook
 msgid "Failed to install hook"
 msgstr "無法安裝鉤子"
+
+#: traynard.strings.error_max_launches
+msgid "Exceeded the maximum number of launches"
+msgstr "已超出最大啟動次數"
 
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
@@ -705,10 +994,40 @@ msgstr "最小化至托盤選單"
 msgid "Restore Group"
 msgstr "還原整組"
 
+#: traynard.strings.msg_launcher_entry_application_required
+msgid "Executable path is required"
+msgstr "必須填寫可執行檔路徑"
+
+#: traynard.strings.msg_launcher_entry_launch_methods_required
+msgid "Launch methods is required"
+msgstr "必須選擇啟動方式"
+
+#: traynard.strings.msg_launcher_entry_name_duplicate
+msgid "Launcher entry name is duplicate"
+msgstr "啟動項目名稱重複"
+
+#: traynard.strings.msg_launcher_entry_name_required
+msgid "Launcher entry name is required"
+msgstr "必須填寫啟動項目名稱"
+
+#: traynard.strings.msg_must_run_as_administrator
+msgid "Must run as administrator"
+msgstr "必須以系統管理員身分執行"
+
+#: traynard.strings.msg_question_delete_launcher_entry
+#, object-pascal-format
+msgid "Delete entry \"%s\"?"
+msgstr "是否刪除啟動項目 \"%s\"?"
+
 #: traynard.strings.msg_question_delete_rule
 #, object-pascal-format
 msgid "Delete rule \"%s\"?"
 msgstr "是否刪除規則 \"%s\"?"
+
+#: traynard.strings.msg_question_save_launcher_entry
+#, object-pascal-format
+msgid "Save entry to \"%s\"?"
+msgstr "是否儲存啟動項目至 \"%s\"?"
 
 #: traynard.strings.msg_question_save_rule
 #, object-pascal-format
@@ -775,6 +1094,10 @@ msgstr "<自動>"
 msgid "Any"
 msgstr "任意"
 
+#: traynard.strings.text_automatic
+msgid "Automatic"
+msgstr "自動"
+
 #: traynard.strings.text_bracketed_no_set
 msgctxt "traynard.strings.text_bracketed_no_set"
 msgid "(no set)"
@@ -811,6 +1134,11 @@ msgstr "熱鍵"
 msgid "Icon"
 msgstr "圖示"
 
+#: traynard.strings.text_manual
+msgctxt "traynard.strings.text_manual"
+msgid "Manual"
+msgstr "手動"
+
 #: traynard.strings.text_menu
 msgid "Menu"
 msgstr "選單"
@@ -844,10 +1172,12 @@ msgid "Add \"Minimize to Tray Menu\" to every window menu"
 msgstr "在所有視窗選單新增「最小化至托盤選單」項目"
 
 #: traynard.strings.text_tray_icon
+msgctxt "traynard.strings.text_tray_icon"
 msgid "Tray Icon"
 msgstr "系統托盤圖示"
 
 #: traynard.strings.text_tray_menu
+msgctxt "traynard.strings.text_tray_menu"
 msgid "Tray Menu"
 msgstr "系統托盤選單"
 
@@ -855,6 +1185,10 @@ msgstr "系統托盤選單"
 msgctxt "traynard.strings.text_window_creation"
 msgid "Window creation"
 msgstr "視窗建立"
+
+#: traynard.strings.text_window_deactivated
+msgid "Window deactivated"
+msgstr "視窗失去焦點"
 
 #: traynard.strings.text_window_minimizing
 msgctxt "traynard.strings.text_window_minimizing"

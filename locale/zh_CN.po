@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TraymondR 1.0\n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: tabris17\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Language-Name: 简体中文\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: tformbackground.actionapplyrules.caption
 msgid "Apply Rules"
@@ -210,9 +210,17 @@ msgstr "最小化到托盘的窗口"
 msgid "Auto to Tray Icon"
 msgstr "自动到托盘图标"
 
+#: tpagedesktop.actionautotrayicon.hint
+msgid "Mark the window as \"Auto-minimize\" to tray icon"
+msgstr "将窗口标记为“自动最小化”到托盘图标"
+
 #: tpagedesktop.actionautotraymenu.caption
 msgid "Auto to Tray Menu"
 msgstr "自动到托盘菜单"
+
+#: tpagedesktop.actionautotraymenu.hint
+msgid "Mark the window as \"Auto-minimize\" to tray menu"
+msgstr "将窗口标记为“自动最小化”到托盘菜单"
 
 #: tpagedesktop.actionclose.caption
 msgctxt "tpagedesktop.actionclose.caption"
@@ -804,6 +812,11 @@ msgstr "应用程序"
 #: traynard.strings.error_close_window
 msgid "Failed to close the window"
 msgstr "无法关闭窗口"
+
+#: traynard.strings.error_create_highlight_frame
+#, object-pascal-format
+msgid "Failed to create highlight frame \"%s\""
+msgstr "无法创建高亮边框 \"%s\""
 
 #: traynard.strings.error_file_properties
 msgid "Cannot access file properties"

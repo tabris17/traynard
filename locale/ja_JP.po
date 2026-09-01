@@ -3,76 +3,77 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: tabris17\n"
 "Language-Team: \n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Language-Name: 简体中文\n"
-"X-Generator: Poedit 3.7\n"
+"X-Language-Name: 日本語\n"
+"X-Generator: Poedit 3.9\n"
 
 #: tformbackground.actionapplyrules.caption
 msgid "Apply Rules"
-msgstr ""
+msgstr "ルールの適用"
 
 #: tformbackground.actionautominimize.caption
 msgctxt "tformbackground.actionautominimize.caption"
 msgid "Auto-minimize"
-msgstr ""
+msgstr "自動最小化"
 
 #: tformbackground.actionclose.caption
 msgctxt "tformbackground.actionclose.caption"
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: tformbackground.actionenablelauncher.caption
 msgid "Enable"
-msgstr ""
+msgstr "有効にする"
 
 #: tformbackground.actionexit.caption
 msgctxt "tformbackground.actionexit.caption"
 msgid "Exit"
-msgstr ""
+msgstr "終了"
 
 #: tformbackground.actionopen.caption
 msgctxt "tformbackground.actionopen.caption"
 msgid "Open"
-msgstr ""
+msgstr "開く"
 
 #: tformbackground.actionrestoreall.caption
 msgctxt "tformbackground.actionrestoreall.caption"
 msgid "Restore All"
-msgstr ""
+msgstr "すべて元に戻す"
 
 #: tformbackground.actionrestorelast.caption
 msgctxt "tformbackground.actionrestorelast.caption"
 msgid "Restore Last Window"
-msgstr ""
+msgstr "最後のウィンドウを元に戻す"
 
 #: tformbackground.menuitemempty.caption
 msgctxt "tformbackground.menuitemempty.caption"
 msgid "(empty)"
-msgstr ""
+msgstr "(空)"
 
 #: tformbackground.menuitemlaunch.caption
 msgctxt "tformbackground.menuitemlaunch.caption"
 msgid "Launcher"
-msgstr ""
+msgstr "ランチャー"
 
 #: tformhotkey.buttoncancel.caption
 msgctxt "tformhotkey.buttoncancel.caption"
 msgid "Cancel"
-msgstr ""
+msgstr "キャンセル"
 
 #: tformhotkey.buttonok.caption
 msgctxt "tformhotkey.buttonok.caption"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: tformhotkey.caption
 msgctxt "tformhotkey.caption"
 msgid "Hotkey Settings"
-msgstr ""
+msgstr "ホットキーの設定"
 
 #: tformhotkey.checkboxalt.caption
 msgctxt "tformhotkey.checkboxalt.caption"
@@ -96,386 +97,390 @@ msgstr ""
 
 #: tformhotkey.comboboxkey.text
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: tformhotkey.labelhotkey.caption
 msgid "Press any shortcut key"
-msgstr ""
+msgstr "ショートカットキーを押してください"
 
 #: tformhotkey.toolbuttoncapture.caption
 msgctxt "tformhotkey.toolbuttoncapture.caption"
 msgid "Capture"
-msgstr ""
+msgstr "キャプチャ"
 
 #: tformhotkey.toolbuttonmanual.caption
 msgctxt "tformhotkey.toolbuttonmanual.caption"
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
 #: tformmain.actionabout.caption
 msgctxt "tformmain.actionabout.caption"
 msgid "About"
-msgstr ""
+msgstr "バージョン情報"
 
 #: tformmain.actionabout.hint
 msgctxt "tformmain.actionabout.hint"
 msgid "About"
-msgstr ""
+msgstr "バージョン情報"
 
 #: tformmain.actiondesktop.caption
 msgid "Desktop"
-msgstr ""
+msgstr "デスクトップ"
 
 #: tformmain.actiondesktop.hint
 msgctxt "tformmain.actiondesktop.hint"
 msgid "Ordinary windows on desktop"
-msgstr ""
+msgstr "デスクトップ上のウィンドウ"
 
 #: tformmain.actionexit.caption
 msgctxt "tformmain.actionexit.caption"
 msgid "Exit"
-msgstr ""
+msgstr "終了"
 
 #: tformmain.actionlauncher.caption
 msgctxt "tformmain.actionlauncher.caption"
 msgid "Launcher"
-msgstr ""
+msgstr "ランチャー"
 
 #: tformmain.actionlauncher.hint
 msgid "Launch apps to tray"
-msgstr ""
+msgstr "アプリをトレイに起動"
 
 #: tformmain.actionlicense.caption
 msgctxt "tformmain.actionlicense.caption"
 msgid "License"
-msgstr ""
+msgstr "ライセンス"
 
 #: tformmain.actionoptions.caption
 msgctxt "tformmain.actionoptions.caption"
 msgid "Options"
-msgstr ""
+msgstr "オプション"
 
 #: tformmain.actionoptions.hint
 msgctxt "tformmain.actionoptions.hint"
 msgid "Options"
-msgstr ""
+msgstr "オプション"
 
 #: tformmain.actionrules.caption
 msgid "Rules"
-msgstr ""
+msgstr "ルール"
 
 #: tformmain.actiontray.caption
 msgid "Tray"
-msgstr ""
+msgstr "トレイ"
 
 #: tformmain.actiontray.hint
 msgid "Windows managed by program"
-msgstr ""
+msgstr "プログラムが管理しているウィンドウ"
 
 #: tformmain.menuitemgithub.caption
 msgid "GitHub Repo"
-msgstr ""
+msgstr "GitHub リポジトリ"
 
 #: tformmain.menuitemhelp.caption
 msgid "Help"
-msgstr ""
+msgstr "ヘルプ"
 
 #: tformmain.menuitemissue.caption
 msgid "Report Issue"
-msgstr ""
+msgstr "問題を報告"
 
 #: tformmain.menuitemusage.caption
 msgid "Usage"
-msgstr ""
+msgstr "使い方"
 
 #: tformmain.toolbuttonlauncher.hint
 msgctxt "tformmain.toolbuttonlauncher.hint"
 msgid "Launcher"
-msgstr ""
+msgstr "ランチャー"
 
 #: tformmain.toolbuttonmenu.hint
 msgid "Main menu"
-msgstr ""
+msgstr "メインメニュー"
 
 #: tformmain.toolbuttonrules.hint
 msgid "Custom rules"
-msgstr ""
+msgstr "カスタムルール"
 
 #: tformmain.toolbuttontray.hint
 msgid "Minimized windows in tray"
-msgstr ""
+msgstr "トレイに最小化されたウィンドウ"
 
 #: tpagedesktop.actionautotrayicon.caption
 msgid "Auto to Tray Icon"
-msgstr ""
+msgstr "自動でトレイアイコンへ"
 
 #: tpagedesktop.actionautotrayicon.hint
 msgid "Mark the window as \"Auto-minimize\" to tray icon"
-msgstr ""
+msgstr "ウィンドウを「自動最小化」（トレイアイコン）に設定します"
 
 #: tpagedesktop.actionautotraymenu.caption
 msgid "Auto to Tray Menu"
-msgstr ""
+msgstr "自動でトレイメニューへ"
 
 #: tpagedesktop.actionautotraymenu.hint
 msgid "Mark the window as \"Auto-minimize\" to tray menu"
-msgstr ""
+msgstr "ウィンドウを「自動最小化」（トレイメニュー）に設定します"
 
 #: tpagedesktop.actionclose.caption
 msgctxt "tpagedesktop.actionclose.caption"
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: tpagedesktop.actionclose.hint
 msgid "Close window"
-msgstr ""
+msgstr "ウィンドウを閉じる"
 
 #: tpagedesktop.actioncopyclass.caption
 msgid "Window Class"
-msgstr ""
+msgstr "ウィンドウクラス"
 
 #: tpagedesktop.actioncopyentirerow.caption
 msgid "Entire Row"
-msgstr ""
+msgstr "行全体"
 
 #: tpagedesktop.actioncopyname.caption
 msgid "Window Name"
-msgstr ""
+msgstr "ウィンドウ名"
 
 #: tpagedesktop.actioncopypath.caption
 msgid "Application Path"
-msgstr ""
+msgstr "アプリケーションのパス"
 
 #: tpagedesktop.actionflash.caption
 msgid "Flash"
-msgstr ""
+msgstr "点滅"
 
 #: tpagedesktop.actionlocate.caption
 msgid "Open File Location"
-msgstr ""
+msgstr "ファイルの場所を開く"
 
 #: tpagedesktop.actionnewrule.caption
 msgid "New Rule"
-msgstr ""
+msgstr "新しいルール"
 
 #: tpagedesktop.actionnewrule.hint
 msgid "New rule from the window"
-msgstr ""
+msgstr "このウィンドウから新しいルールを作成"
 
 #: tpagedesktop.actionproperties.caption
 msgid "File Properties"
-msgstr ""
+msgstr "ファイルのプロパティ"
 
 #: tpagedesktop.actionrefresh.caption
 msgctxt "tpagedesktop.actionrefresh.caption"
 msgid "Refresh"
-msgstr ""
+msgstr "更新"
 
 #: tpagedesktop.actiontopmost.caption
 msgctxt "tpagedesktop.actiontopmost.caption"
 msgid "Always on Top"
-msgstr ""
+msgstr "常に手前に表示"
 
 #: tpagedesktop.actiontrayicon.caption
 msgid "To Tray Icon"
-msgstr ""
+msgstr "トレイアイコンへ"
 
 #: tpagedesktop.actiontraymenu.caption
 msgid "To Tray Menu"
-msgstr ""
+msgstr "トレイメニューへ"
 
 #: tpagedesktop.buttonminimize.caption
 msgctxt "tpagedesktop.buttonminimize.caption"
 msgid "Minimize"
-msgstr ""
+msgstr "最小化"
 
 #: tpagedesktop.labelmanaged.caption
 msgctxt "tpagedesktop.labelmanaged.caption"
 msgid "Auto-minimize"
-msgstr ""
+msgstr "自動最小化"
 
 #: tpagedesktop.listview.columns[0].caption
 msgctxt "tpagedesktop.listview.columns[0].caption"
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: tpagedesktop.listview.columns[1].caption
 msgctxt "tpagedesktop.listview.columns[1].caption"
 msgid "Handle"
-msgstr ""
+msgstr "ハンドル"
 
 #: tpagedesktop.listview.columns[2].caption
 msgctxt "tpagedesktop.listview.columns[2].caption"
 msgid "Class"
-msgstr ""
+msgstr "クラス"
 
 #: tpagedesktop.listview.columns[3].caption
 msgctxt "tpagedesktop.listview.columns[3].caption"
 msgid "PID"
-msgstr ""
+msgstr "PID"
 
 #: tpagedesktop.listview.columns[4].caption
 msgctxt "tpagedesktop.listview.columns[4].caption"
 msgid "Application"
-msgstr ""
+msgstr "アプリケーション"
 
 #: tpagedesktop.menuitemcopy.caption
 msgid "Copy"
-msgstr ""
+msgstr "コピー"
 
 #: tpagedesktop.menuitemminimize.caption
 msgctxt "tpagedesktop.menuitemminimize.caption"
 msgid "Minimize"
-msgstr ""
+msgstr "最小化"
 
 #: tpagelauncher.actionedit.caption
 msgctxt "tpagelauncher.actionedit.caption"
 msgid "Edit Launch Entries"
-msgstr ""
+msgstr "起動項目の編集"
 
 #: tpagelauncher.buttonlaunch.caption
 msgctxt "tpagelauncher.buttonlaunch.caption"
 msgid "Launch"
-msgstr ""
+msgstr "起動"
 
 #: tpagelauncher.listview.columns[0].caption
 msgctxt "tpagelauncher.listview.columns[0].caption"
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: tpagelauncher.listview.columns[1].caption
 msgctxt "tpagelauncher.listview.columns[1].caption"
 msgid "PID"
-msgstr ""
+msgstr "PID"
 
 #: tpagelauncher.listview.columns[2].caption
 msgctxt "tpagelauncher.listview.columns[2].caption"
 msgid "Creation Time"
-msgstr ""
+msgstr "作成日時"
 
 #: tpagelauncher.listview.columns[3].caption
 msgctxt "tpagelauncher.listview.columns[3].caption"
 msgid "Command"
-msgstr ""
+msgstr "コマンド"
 
 #: tpagelauncher.menuitemempty.caption
 msgctxt "tpagelauncher.menuitemempty.caption"
 msgid "(empty)"
-msgstr ""
+msgstr "(空)"
 
 #: tpagelauncherentries.actionclose.caption
 msgctxt "tpagelauncherentries.actionclose.caption"
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: tpagelauncherentries.actiondelete.caption
 msgctxt "tpagelauncherentries.actiondelete.caption"
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: tpagelauncherentries.actionlaunch.caption
 msgctxt "tpagelauncherentries.actionlaunch.caption"
 msgid "Launch"
-msgstr ""
+msgstr "起動"
 
 #: tpagelauncherentries.actionnew.caption
 msgctxt "tpagelauncherentries.actionnew.caption"
 msgid "New"
-msgstr ""
+msgstr "新規"
 
 #: tpagelauncherentries.actionopen.caption
 msgctxt "tpagelauncherentries.actionopen.caption"
 msgid "Open"
-msgstr ""
+msgstr "開く"
 
 #: tpagelauncherentries.actionrunning.caption
 msgid "Running"
-msgstr ""
+msgstr "実行中"
 
 #: tpagelauncherentries.actionsave.caption
 msgctxt "tpagelauncherentries.actionsave.caption"
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: tpagelauncherentries.buttonhotkeybind.caption
 msgctxt "tpagelauncherentries.buttonhotkeybind.caption"
 msgid "Bind"
-msgstr ""
+msgstr "割り当て"
 
 #: tpagelauncherentries.buttonhotkeyclear.caption
 msgctxt "tpagelauncherentries.buttonhotkeyclear.caption"
 msgid "Clear"
-msgstr ""
+msgstr "クリア"
 
 #: tpagelauncherentries.checkgroupmethods.caption
 msgctxt "tpagelauncherentries.checkgroupmethods.caption"
 msgid "Launch Methods"
-msgstr ""
+msgstr "起動方法"
 
 #: tpagelauncherentries.checkgrouptriggeron.caption
 msgctxt "tpagelauncherentries.checkgrouptriggeron.caption"
 msgid "Trigger On"
-msgstr ""
+msgstr "トリガー条件"
 
 #: tpagelauncherentries.editentryname.texthint
 msgctxt "tpagelauncherentries.editentryname.texthint"
 msgid "Unique name"
-msgstr ""
+msgstr "一意の名前"
 
 #: tpagelauncherentries.executablefilenameedit.texthint
 msgctxt "tpagelauncherentries.executablefilenameedit.texthint"
 msgid "Path of the executable file"
-msgstr ""
+msgstr "実行ファイルのパス"
 
 #: tpagelauncherentries.groupboxhotkey.caption
 msgctxt "tpagelauncherentries.groupboxhotkey.caption"
 msgid "Hotkey"
-msgstr ""
+msgstr "ホットキー"
 
 #: tpagelauncherentries.headertitle.caption
 msgctxt "tpagelauncherentries.headertitle.caption"
 msgid "Edit Launch Entries"
-msgstr ""
+msgstr "起動項目の編集"
 
 #: tpagelauncherentries.labelarguments.caption
 msgctxt "tpagelauncherentries.labelarguments.caption"
 msgid "Arguments:"
-msgstr ""
+msgstr "引数:"
 
 #: tpagelauncherentries.labelentryname.caption
 msgctxt "tpagelauncherentries.labelentryname.caption"
 msgid "Name:"
-msgstr ""
+msgstr "名前:"
 
 #: tpagelauncherentries.labelexecutablepath.caption
 msgctxt "tpagelauncherentries.labelexecutablepath.caption"
 msgid "Executable Path:"
-msgstr ""
+msgstr "実行ファイルのパス:"
 
 #: tpagelauncherentries.labelworkingdirectory.caption
 msgctxt "tpagelauncherentries.labelworkingdirectory.caption"
 msgid "Working Directory:"
-msgstr ""
+msgstr "作業ディレクトリ:"
 
 #: tpagelauncherentries.panelwelcome.caption
 msgctxt "tpagelauncherentries.panelwelcome.caption"
-msgid "Add commands here to run when Traynard starts or runs manually. The windows created by these processes will be minimized to system tray automatically."
+msgid ""
+"Add commands here to run when Traynard starts or runs manually. The windows "
+"created by these processes will be minimized to system tray automatically."
 msgstr ""
+"Traynard の起動時または手動で実行するコマンドをここに追加します。これらのプロ"
+"セスが作成したウィンドウは、自動的にシステムトレイに最小化されます。"
 
 #: tpagelauncherentries.radiogroupminimizeto.caption
 msgctxt "tpagelauncherentries.radiogroupminimizeto.caption"
 msgid "Minimize to"
-msgstr ""
+msgstr "最小化先"
 
 #: tpagelauncherentries.radiogroupnotification.caption
 msgctxt "tpagelauncherentries.radiogroupnotification.caption"
 msgid "Notification"
-msgstr ""
+msgstr "通知"
 
 #: tpagelicense.headertitle.caption
 msgctxt "tpagelicense.headertitle.caption"
 msgid "License"
-msgstr ""
+msgstr "ライセンス"
 
 #: tpageoptions.actionconfigdir.caption
 msgid "..."
@@ -483,703 +488,724 @@ msgstr ""
 
 #: tpageoptions.actionconfigdir.hint
 msgid "Open Config Directory"
-msgstr ""
+msgstr "設定フォルダーを開く"
 
 #: tpageoptions.actionhotkeybind.caption
 msgctxt "tpageoptions.actionhotkeybind.caption"
 msgid "Bind"
-msgstr ""
+msgstr "割り当て"
 
 #: tpageoptions.actionhotkeyclear.caption
 msgctxt "tpageoptions.actionhotkeyclear.caption"
 msgid "Clear"
-msgstr ""
+msgstr "クリア"
 
 #: tpageoptions.actionhotkeyreset.caption
 msgctxt "tpageoptions.actionhotkeyreset.caption"
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: tpageoptions.actionlanguageapply.caption
 msgid "Apply"
-msgstr ""
+msgstr "適用"
 
 #: tpageoptions.actionlanguagerefresh.caption
 msgctxt "tpageoptions.actionlanguagerefresh.caption"
 msgid "Refresh"
-msgstr ""
+msgstr "更新"
 
 #: tpageoptions.actionlanguagereset.caption
 msgctxt "tpageoptions.actionlanguagereset.caption"
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: tpageoptions.buttoneditlaunchentries.caption
 msgctxt "tpageoptions.buttoneditlaunchentries.caption"
 msgid "Edit Launch Entries"
-msgstr ""
+msgstr "起動項目の編集"
 
 #: tpageoptions.buttoneditrules.caption
 msgid "Edit Rules"
-msgstr ""
+msgstr "ルールの編集"
 
 #: tpageoptions.checkboxautominimize.caption
 msgid "Enable auto-minimize to tray"
-msgstr ""
+msgstr "トレイへの自動最小化を有効にする"
 
 #: tpageoptions.checkboxautorun.caption
 msgid "Autorun at system startup"
-msgstr ""
+msgstr "システム起動時に自動的に実行する"
 
 #: tpageoptions.checkboxhighlight.caption
 msgctxt "tpageoptions.checkboxhighlight.caption"
 msgid "Show a border around the window marked as \"Always on Top\""
-msgstr ""
+msgstr "「常に手前に表示」に設定されたウィンドウの周りに枠線を表示する"
 
 #: tpageoptions.checkboxicongrouped.caption
 msgid "Group tray icons by application"
-msgstr ""
+msgstr "トレイアイコンをアプリケーションごとにグループ化する"
 
 #: tpageoptions.checkboxicongrouped.hint
-msgid "Enabling this merges all window icons of the same application into one system tray icon."
+msgid ""
+"Enabling this merges all window icons of the same application into one "
+"system tray icon."
 msgstr ""
+"有効にすると、同じアプリケーションのすべてのウィンドウアイコンが1つのトレイア"
+"イコンにまとめられます。"
 
 #: tpageoptions.checkboxlauncher.caption
 msgid "Enable launcher"
-msgstr ""
+msgstr "ランチャーを有効にする"
 
 #: tpageoptions.checkboxmenugrouped.caption
 msgid "Group tray menu items by application"
-msgstr ""
+msgstr "トレイメニューの項目をアプリケーションごとにグループ化する"
 
 #: tpageoptions.checkboxmenugrouped.hint
-msgid "Enabling this will merge icons of windows from the same application into one submenu."
+msgid ""
+"Enabling this will merge icons of windows from the same application into one "
+"submenu."
 msgstr ""
+"有効にすると、同じアプリケーションのウィンドウアイコンが1つのサブメニューにま"
+"とめられます。"
 
 #: tpageoptions.checkboxmultiprocesslaunch.caption
 msgid "Support for multi-process applications"
-msgstr ""
+msgstr "マルチプロセスアプリケーションに対応する"
 
 #: tpageoptions.checkboxmultiprocesslaunch.hint
 msgid ""
 "Monitor both the target process and its child processes.\n"
 "Useful for Electron.js-based applications."
 msgstr ""
+"対象のプロセスとその子プロセスの両方を監視します。\n"
+"Electron.js ベースのアプリケーションに便利です。"
 
 #: tpageoptions.checkboxnotification.caption
 msgid "Show notification when window is auto-minimized"
-msgstr ""
+msgstr "ウィンドウの自動最小化時に通知を表示する"
 
 #: tpageoptions.checkboxruleonstartup.caption
 msgid "Apply rules to existing windows at startup"
-msgstr ""
+msgstr "起動時に既存のウィンドウにルールを適用する"
 
 #: tpageoptions.checkboxrunasadmin.caption
 msgid "Run as administrator"
-msgstr ""
+msgstr "管理者として実行する"
 
 #: tpageoptions.checkboxrunasadmin.hint
 msgid ""
 "Launch automatically as an administrator using Task Scheduler.\n"
-"Enable this option if you need to manage windows of programs that also run as administrator."
+"Enable this option if you need to manage windows of programs that also run "
+"as administrator."
 msgstr ""
+"タスクスケジューラを使用して、管理者として自動的に起動します。\n"
+"管理者として実行されるプログラムのウィンドウを管理する必要がある場合は、この"
+"オプションを有効にしてください。"
 
 #: tpageoptions.checkboxshowmainwindow.caption
 msgid "Show main window on start"
-msgstr ""
+msgstr "起動時にメインウィンドウを表示する"
 
 #: tpageoptions.checkboxuserules.caption
 msgid "Enable custom rules"
-msgstr ""
+msgstr "カスタムルールを有効にする"
 
 #: tpageoptions.checkgroupsystemmenu.caption
 msgid "Window System Menu"
-msgstr ""
+msgstr "ウィンドウのシステムメニュー"
 
 #: tpageoptions.colordialog.title
 msgid "Select Border Color"
-msgstr ""
+msgstr "枠線の色を選択"
 
 #: tpageoptions.dividerbeveladvanced.caption
 msgid "Advanced"
-msgstr ""
+msgstr "詳細"
 
 #: tpageoptions.dividerbevelgeneral.caption
 msgid "General"
-msgstr ""
+msgstr "全般"
 
 #: tpageoptions.dividerbevelhotkey.caption
 msgctxt "tpageoptions.dividerbevelhotkey.caption"
 msgid "Hotkey"
-msgstr ""
+msgstr "ホットキー"
 
 #: tpageoptions.labelconfigdir.caption
 msgid "Config directory"
-msgstr ""
+msgstr "設定の保存場所"
 
 #: tpageoptions.labeldefaultminimizeto.caption
 msgid "Default minimize to:"
-msgstr ""
+msgstr "既定の最小化先:"
 
 #: tpageoptions.labelhighlightcolor.caption
 msgctxt "tpageoptions.labelhighlightcolor.caption"
 msgid "Color:"
-msgstr ""
+msgstr "色:"
 
 #: tpageoptions.labelhighlightthickness.caption
 msgid "Thickness:"
-msgstr ""
+msgstr "太さ:"
 
 #: tpageoptions.labellanguage.caption
 msgid "Select language"
-msgstr ""
+msgstr "言語の選択"
 
 #: tpageoptions.listviewhotkeys.columns[0].caption
 msgid "Action"
-msgstr ""
+msgstr "アクション"
 
 #: tpageoptions.listviewhotkeys.columns[1].caption
 msgid "Key"
-msgstr ""
+msgstr "キー"
 
 #: tpageoptions.listviewhotkeys.columns[2].caption
 msgid "Conflict"
-msgstr ""
+msgstr "競合"
 
 #: tpageoptions.radiobuttontrayicon.caption
 msgctxt "tpageoptions.radiobuttontrayicon.caption"
 msgid "Tray Icon"
-msgstr ""
+msgstr "トレイアイコン"
 
 #: tpageoptions.radiobuttontraymenu.caption
 msgctxt "tpageoptions.radiobuttontraymenu.caption"
 msgid "Tray Menu"
-msgstr ""
+msgstr "トレイメニュー"
 
 #: tpagerules.actionclose.caption
 msgctxt "tpagerules.actionclose.caption"
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: tpagerules.actiondelete.caption
 msgctxt "tpagerules.actiondelete.caption"
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: tpagerules.actionnew.caption
 msgctxt "tpagerules.actionnew.caption"
 msgid "New"
-msgstr ""
+msgstr "新規"
 
 #: tpagerules.actionopen.caption
 msgctxt "tpagerules.actionopen.caption"
 msgid "Open"
-msgstr ""
+msgstr "開く"
 
 #: tpagerules.actionsave.caption
 msgctxt "tpagerules.actionsave.caption"
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: tpagerules.buttonhotkeybind.caption
 msgctxt "tpagerules.buttonhotkeybind.caption"
 msgid "Bind"
-msgstr ""
+msgstr "割り当て"
 
 #: tpagerules.buttonhotkeyclear.caption
 msgctxt "tpagerules.buttonhotkeyclear.caption"
 msgid "Clear"
-msgstr ""
+msgstr "クリア"
 
 #: tpagerules.checkgrouptriggeron.caption
 msgctxt "tpagerules.checkgrouptriggeron.caption"
 msgid "Trigger on"
-msgstr ""
+msgstr "トリガー条件"
 
 #: tpagerules.editapppath.texthint
 msgid "Window owner process file path"
-msgstr ""
+msgstr "ウィンドウを所有するプロセスのファイルパス"
 
 #: tpagerules.editrulename.texthint
 msgctxt "tpagerules.editrulename.texthint"
 msgid "Unique name"
-msgstr ""
+msgstr "一意の名前"
 
 #: tpagerules.editwindowclass.texthint
 msgid "Immutable property of the window"
-msgstr ""
+msgstr "ウィンドウの不変プロパティ"
 
 #: tpagerules.editwindowtitle.texthint
 msgid "Text in the window title bar"
-msgstr ""
+msgstr "ウィンドウのタイトルバーのテキスト"
 
 #: tpagerules.groupboxhotkey.caption
 msgctxt "tpagerules.groupboxhotkey.caption"
 msgid "Hotkey"
-msgstr ""
+msgstr "ホットキー"
 
 #: tpagerules.labelapppath.caption
 msgid "Application Path:"
-msgstr ""
+msgstr "アプリケーションのパス:"
 
 #: tpagerules.labelhotkey.hint
 msgid "Hotkey already in use"
-msgstr ""
+msgstr "このホットキーは既に使用されています"
 
 #: tpagerules.labelrulename.caption
 msgid "Rule Name:"
-msgstr ""
+msgstr "ルール名:"
 
 #: tpagerules.labelwindowclass.caption
 msgid "Window Class:"
-msgstr ""
+msgstr "ウィンドウクラス:"
 
 #: tpagerules.labelwindowtitle.caption
 msgid "Window Titile:"
-msgstr ""
+msgstr "ウィンドウタイトル:"
 
 #: tpagerules.panelwelcome.caption
 msgid "Select a rule from the left list to edit or create a new"
-msgstr ""
+msgstr "左のリストからルールを選択して編集するか、新規作成してください"
 
 #: tpagerules.radiogroupminimizeto.caption
 msgctxt "tpagerules.radiogroupminimizeto.caption"
 msgid "Minimize to"
-msgstr ""
+msgstr "最小化先"
 
 #: tpagerules.radiogroupnotification.caption
 msgctxt "tpagerules.radiogroupnotification.caption"
 msgid "Notification"
-msgstr ""
+msgstr "通知"
 
 #: tpagetray.actionrestore.caption
 msgid "Restore"
-msgstr ""
+msgstr "元に戻す"
 
 #: tpagetray.actionrestoreall.caption
 msgctxt "tpagetray.actionrestoreall.caption"
 msgid "Restore All"
-msgstr ""
+msgstr "すべて元に戻す"
 
 #: tpagetray.actionrestorelast.caption
 msgctxt "tpagetray.actionrestorelast.caption"
 msgid "Restore Last Window"
-msgstr ""
+msgstr "最後のウィンドウを元に戻す"
 
 #: tpagetray.listview.columns[0].caption
 msgctxt "tpagetray.listview.columns[0].caption"
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: tpagetray.listview.columns[1].caption
 msgid "Pos"
-msgstr ""
+msgstr "位置"
 
 #: tpagetray.listview.columns[2].caption
 msgctxt "tpagetray.listview.columns[2].caption"
 msgid "Handle"
-msgstr ""
+msgstr "ハンドル"
 
 #: tpagetray.listview.columns[3].caption
 msgctxt "tpagetray.listview.columns[3].caption"
 msgid "Class"
-msgstr ""
+msgstr "クラス"
 
 #: tpagetray.listview.columns[4].caption
 msgctxt "tpagetray.listview.columns[4].caption"
 msgid "PID"
-msgstr ""
+msgstr "PID"
 
 #: tpagetray.listview.columns[5].caption
 msgctxt "tpagetray.listview.columns[5].caption"
 msgid "Application"
-msgstr ""
+msgstr "アプリケーション"
 
 #: traynard.strings.error_close_window
 msgid "Failed to close the window"
-msgstr ""
+msgstr "ウィンドウを閉じられませんでした"
 
 #: traynard.strings.error_create_highlight_frame
 #, object-pascal-format
 msgid "Failed to create highlight frame \"%s\""
-msgstr ""
+msgstr "ハイライト枠 \"%s\" を作成できませんでした"
 
 #: traynard.strings.error_file_properties
 msgid "Cannot access file properties"
-msgstr ""
+msgstr "ファイルのプロパティにアクセスできません"
 
 #: traynard.strings.error_get_os_version
 msgid "Failed to get OS version info"
-msgstr ""
+msgstr "OS のバージョン情報を取得できませんでした"
 
 #: traynard.strings.error_install_hook
 msgid "Failed to install hook"
-msgstr ""
+msgstr "フックのインストールに失敗しました"
 
 #: traynard.strings.error_max_launches
 msgid "Exceeded the maximum number of launches"
-msgstr ""
+msgstr "起動可能な数の上限を超えました"
 
 #: traynard.strings.error_no_selected_window
 msgid "No selected window"
-msgstr ""
+msgstr "ウィンドウが選択されていません"
 
 #: traynard.strings.error_parse_toml_file
 #, object-pascal-format
 msgid "Failed to parse TOML file \"%s\""
-msgstr ""
+msgstr "TOML ファイル \"%s\" を解析できませんでした"
 
 #: traynard.strings.error_register_shell_hook_window
 msgid "Failed to register shell hook window"
-msgstr ""
+msgstr "シェルフックウィンドウの登録に失敗しました"
 
 #: traynard.strings.error_restore_window
 msgid "Failed to restore window"
-msgstr ""
+msgstr "ウィンドウを元に戻せませんでした"
 
 #: traynard.strings.error_set_topmost
 msgid "Cannot set window topmost status"
-msgstr ""
+msgstr "ウィンドウの最前面状態を設定できません"
 
 #: traynard.strings.error_uninstall_hook
 msgid "Failed to uninstall hook"
-msgstr ""
+msgstr "フックのアンインストールに失敗しました"
 
 #: traynard.strings.error_uwp_window
 msgid "Unable to minimize the UWP app window"
-msgstr ""
+msgstr "UWP アプリのウィンドウは最小化できません"
 
 #: traynard.strings.error_window_not_found
 msgid "Window not found"
-msgstr ""
+msgstr "ウィンドウが見つかりません"
 
 #: traynard.strings.hotkey_minimize_to_icon
 msgctxt "traynard.strings.hotkey_minimize_to_icon"
 msgid "Minimize foreground window to tray icon"
-msgstr ""
+msgstr "アクティブウィンドウをトレイアイコンに最小化"
 
 #: traynard.strings.hotkey_minimize_to_menu
 msgctxt "traynard.strings.hotkey_minimize_to_menu"
 msgid "Minimize foreground window to tray menu"
-msgstr ""
+msgstr "アクティブウィンドウをトレイメニューに最小化"
 
 #: traynard.strings.hotkey_open_close
 msgctxt "traynard.strings.hotkey_open_close"
 msgid "Open/Close main window"
-msgstr ""
+msgstr "メインウィンドウを開く/閉じる"
 
 #: traynard.strings.hotkey_restore_all
 msgctxt "traynard.strings.hotkey_restore_all"
 msgid "Restore all windows"
-msgstr ""
+msgstr "すべてのウィンドウを元に戻す"
 
 #: traynard.strings.hotkey_restore_last_window
 msgctxt "traynard.strings.hotkey_restore_last_window"
 msgid "Restore the last window"
-msgstr ""
+msgstr "最後のウィンドウを元に戻す"
 
 #: traynard.strings.hotkey_toggle_autominimize
 msgctxt "traynard.strings.hotkey_toggle_autominimize"
 msgid "Toggle auto-minimize to tray"
-msgstr ""
+msgstr "トレイへの自動最小化を切り替え"
 
 #: traynard.strings.hotkey_toggle_rules
 msgctxt "traynard.strings.hotkey_toggle_rules"
 msgid "Toggle custom rules"
-msgstr ""
+msgstr "カスタムルールを切り替え"
 
 #: traynard.strings.hotkey_toggle_topmost
 msgctxt "traynard.strings.hotkey_toggle_topmost"
 msgid "Toggle foreground window always on top"
-msgstr ""
+msgstr "アクティブウィンドウの「常に手前に表示」を切り替え"
 
 #: traynard.strings.html_about_build_date
 msgctxt "traynard.strings.html_about_build_date"
 msgid "Build date:"
-msgstr ""
+msgstr "ビルド日:"
 
 #: traynard.strings.html_about_compiler
 msgctxt "traynard.strings.html_about_compiler"
 msgid "Compiler:"
-msgstr ""
+msgstr "コンパイラー:"
 
 #: traynard.strings.html_about_features
 msgid "Features"
-msgstr ""
+msgstr "機能"
 
 #: traynard.strings.html_about_feature_1
 msgctxt "traynard.strings.html_about_feature_1"
 msgid "Quick actions via global hotkeys"
-msgstr ""
+msgstr "グローバルホットキーによるクイック操作"
 
 #: traynard.strings.html_about_feature_2
 msgctxt "traynard.strings.html_about_feature_2"
 msgid "Extended system menu for any window"
-msgstr ""
+msgstr "あらゆるウィンドウのシステムメニューを拡張"
 
 #: traynard.strings.html_about_feature_3
 msgctxt "traynard.strings.html_about_feature_3"
 msgid "Auto-minimize windows by user rules"
-msgstr ""
+msgstr "ユーザールールによるウィンドウの自動最小化"
 
 #: traynard.strings.html_about_feature_4
 msgid "Multi-language support"
-msgstr ""
+msgstr "多言語対応"
 
 #: traynard.strings.html_about_intro
 msgctxt "traynard.strings.html_about_intro"
-msgid "A desktop utility for minimizing any application window to the system tray, A.K.A. \"notification area\". The project is inspired by <a href=\"https://github.com/fcFn/traymond\">Traymond</a> and completely rewritten in Lazarus (free pascal). "
+msgid ""
+"A desktop utility for minimizing any application window to the system tray, "
+"A.K.A. \"notification area\". The project is inspired by <a href=\"https://"
+"github.com/fcFn/traymond\">Traymond</a> and completely rewritten in Lazarus "
+"(free pascal). "
 msgstr ""
+"任意のアプリケーションウィンドウをシステムトレイ（「通知領域」とも呼ばれま"
+"す）に最小化するデスクトップユーティリティです。このプロジェクトは <a href="
+"\"https://github.com/fcFn/traymond\">Traymond</a> に触発され、Lazarus (Free "
+"Pascal) で全面的に書き直されました。"
 
 #: traynard.strings.html_about_license
 msgctxt "traynard.strings.html_about_license"
 msgid "License:"
-msgstr ""
+msgstr "ライセンス:"
 
 #: traynard.strings.html_about_maintainer
 msgctxt "traynard.strings.html_about_maintainer"
 msgid "Maintainer:"
-msgstr ""
+msgstr "メンテナー:"
 
 #: traynard.strings.html_about_source_code
 msgctxt "traynard.strings.html_about_source_code"
 msgid "Source code:"
-msgstr ""
+msgstr "ソースコード:"
 
 #: traynard.strings.html_about_title
 msgctxt "traynard.strings.html_about_title"
 msgid "About"
-msgstr ""
+msgstr "バージョン情報"
 
 #: traynard.strings.html_about_version
 msgctxt "traynard.strings.html_about_version"
 msgid "Version:"
-msgstr ""
+msgstr "バージョン:"
 
 #: traynard.strings.menu_item_always_on_top
 msgctxt "traynard.strings.menu_item_always_on_top"
 msgid "Always on Top"
-msgstr ""
+msgstr "常に手前に表示"
 
 #: traynard.strings.menu_item_minimize_to_tray_icon
 msgid "Minimize to Tray Icon"
-msgstr ""
+msgstr "トレイアイコンに最小化"
 
 #: traynard.strings.menu_item_minimize_to_tray_menu
 msgid "Minimize to Tray Menu"
-msgstr ""
+msgstr "トレイメニューに最小化"
 
 #: traynard.strings.menu_item_restore_group
 msgid "Restore Group"
-msgstr ""
+msgstr "グループを元に戻す"
 
 #: traynard.strings.msg_launcher_entry_application_required
 msgid "Executable path is required"
-msgstr ""
+msgstr "実行ファイルのパスを入力してください"
 
 #: traynard.strings.msg_launcher_entry_launch_methods_required
 msgid "Launch methods is required"
-msgstr ""
+msgstr "起動方法を選択してください"
 
 #: traynard.strings.msg_launcher_entry_name_duplicate
 msgid "Launcher entry name is duplicate"
-msgstr ""
+msgstr "同じ名前の起動項目が既に存在します"
 
 #: traynard.strings.msg_launcher_entry_name_required
 msgid "Launcher entry name is required"
-msgstr ""
+msgstr "起動項目の名前を入力してください"
 
 #: traynard.strings.msg_must_run_as_administrator
 msgid "Must run as administrator"
-msgstr ""
+msgstr "管理者として実行する必要があります"
 
 #: traynard.strings.msg_question_delete_launcher_entry
 #, object-pascal-format
 msgid "Delete entry \"%s\"?"
-msgstr ""
+msgstr "起動項目 \"%s\" を削除しますか？"
 
 #: traynard.strings.msg_question_delete_rule
 #, object-pascal-format
 msgid "Delete rule \"%s\"?"
-msgstr ""
+msgstr "ルール \"%s\" を削除しますか？"
 
 #: traynard.strings.msg_question_save_launcher_entry
 #, object-pascal-format
 msgid "Save entry to \"%s\"?"
-msgstr ""
+msgstr "起動項目を \"%s\" に保存しますか？"
 
 #: traynard.strings.msg_question_save_rule
 #, object-pascal-format
 msgid "Save rule to \"%s\"?"
-msgstr ""
+msgstr "ルールを \"%s\" に保存しますか？"
 
 #: traynard.strings.msg_rule_app_path_required
 msgid "App path is required"
-msgstr ""
+msgstr "アプリケーションのパスを入力してください"
 
 #: traynard.strings.msg_rule_name_duplicate
 msgid "Rule name is duplicate"
-msgstr ""
+msgstr "同じ名前のルールが既に存在します"
 
 #: traynard.strings.msg_rule_name_required
 msgid "Rule name is required"
-msgstr ""
+msgstr "ルール名を入力してください"
 
 #: traynard.strings.msg_rule_notification_required
 msgid "Notification condition is required"
-msgstr ""
+msgstr "通知条件を選択してください"
 
 #: traynard.strings.msg_rule_trigger_on_required
 msgid "Trigger condition is required"
-msgstr ""
+msgstr "トリガー条件を選択してください"
 
 #: traynard.strings.msg_rule_window_class_required
 msgid "Window class is required"
-msgstr ""
+msgstr "ウィンドウクラスを入力してください"
 
 #: traynard.strings.msg_rule_window_title_required
 msgid "Window title is required"
-msgstr ""
+msgstr "ウィンドウタイトルを入力してください"
 
 #: traynard.strings.msg_windows_restored
 #, object-pascal-format
 msgid "%d window(s) restored"
-msgstr ""
+msgstr "%d 個のウィンドウを元に戻しました"
 
 #: traynard.strings.msg_windows_restored_failed
 #, object-pascal-format
 msgid "%0:d window(s) restored, %1:d failed"
-msgstr ""
+msgstr "%0:d 個のウィンドウを元に戻しました（%1:d 個失敗）"
 
 #: traynard.strings.msg_window_minimized
 msgid "Window minimized"
-msgstr ""
+msgstr "ウィンドウを最小化しました"
 
 #: traynard.strings.msg_window_restored
 msgid "Window restored"
-msgstr ""
+msgstr "ウィンドウを元に戻しました"
 
 #: traynard.strings.text_always
 msgctxt "traynard.strings.text_always"
 msgid "Always"
-msgstr ""
+msgstr "常に"
 
 #: traynard.strings.text_angle_bracketed_auto
 msgctxt "traynard.strings.text_angle_bracketed_auto"
 msgid "<Auto>"
-msgstr ""
+msgstr "<自動>"
 
 #: traynard.strings.text_any
 msgid "Any"
-msgstr ""
+msgstr "任意"
 
 #: traynard.strings.text_automatic
 msgid "Automatic"
-msgstr ""
+msgstr "自動"
 
 #: traynard.strings.text_bracketed_no_set
 msgctxt "traynard.strings.text_bracketed_no_set"
 msgid "(no set)"
-msgstr ""
+msgstr "(未設定)"
 
 #: traynard.strings.text_contains
 msgid "Contains"
-msgstr ""
+msgstr "部分一致"
 
 #: traynard.strings.text_ends_with
 msgid "Ends with"
-msgstr ""
+msgstr "後方一致"
 
 #: traynard.strings.text_equals
 msgid "Equals"
-msgstr ""
+msgstr "完全一致"
 
 #: traynard.strings.text_first_time_only
 msgctxt "traynard.strings.text_first_time_only"
 msgid "First-time only"
-msgstr ""
+msgstr "初回のみ"
 
 #: traynard.strings.text_follow_global_settings
 msgctxt "traynard.strings.text_follow_global_settings"
 msgid "Follow global settings"
-msgstr ""
+msgstr "全体設定に従う"
 
 #: traynard.strings.text_hotkey
 msgctxt "traynard.strings.text_hotkey"
 msgid "Hotkey"
-msgstr ""
+msgstr "ホットキー"
 
 #: traynard.strings.text_icon
 msgid "Icon"
-msgstr ""
+msgstr "アイコン"
 
 #: traynard.strings.text_manual
 msgctxt "traynard.strings.text_manual"
 msgid "Manual"
-msgstr ""
+msgstr "手動"
 
 #: traynard.strings.text_menu
 msgid "Menu"
-msgstr ""
+msgstr "メニュー"
 
 #: traynard.strings.text_never
 msgctxt "traynard.strings.text_never"
 msgid "Never"
-msgstr ""
+msgstr "しない"
 
 #: traynard.strings.text_regex_match
 msgid "Regex match"
-msgstr ""
+msgstr "正規表現"
 
 #: traynard.strings.text_starts_with
 msgid "Starts with"
-msgstr ""
+msgstr "前方一致"
 
 #: traynard.strings.text_system_menu_topmost
 msgctxt "traynard.strings.text_system_menu_topmost"
 msgid "Add \"Always on Top\" to every window menu"
-msgstr ""
+msgstr "すべてのウィンドウメニューに「常に手前に表示」を追加する"
 
 #: traynard.strings.text_system_menu_tray_icon
 msgctxt "traynard.strings.text_system_menu_tray_icon"
 msgid "Add \"Minimize to Tray Icon\" to every window menu"
-msgstr ""
+msgstr "すべてのウィンドウメニューに「トレイアイコンに最小化」を追加する"
 
 #: traynard.strings.text_system_menu_tray_menu
 msgctxt "traynard.strings.text_system_menu_tray_menu"
 msgid "Add \"Minimize to Tray Menu\" to every window menu"
-msgstr ""
+msgstr "すべてのウィンドウメニューに「トレイメニューに最小化」を追加する"
 
 #: traynard.strings.text_tray_icon
 msgctxt "traynard.strings.text_tray_icon"
 msgid "Tray Icon"
-msgstr ""
+msgstr "トレイアイコン"
 
 #: traynard.strings.text_tray_menu
 msgctxt "traynard.strings.text_tray_menu"
 msgid "Tray Menu"
-msgstr ""
+msgstr "トレイメニュー"
 
 #: traynard.strings.text_window_creation
 msgctxt "traynard.strings.text_window_creation"
 msgid "Window creation"
-msgstr ""
+msgstr "ウィンドウの作成"
 
 #: traynard.strings.text_window_deactivated
 msgid "Window deactivated"
-msgstr ""
+msgstr "ウィンドウの非アクティブ化"
 
 #: traynard.strings.text_window_minimizing
 msgctxt "traynard.strings.text_window_minimizing"
 msgid "Window minimizing"
-msgstr ""
+msgstr "ウィンドウの最小化"
 
 #: traynard.strings.text_window_title_change
 msgctxt "traynard.strings.text_window_title_change"
 msgid "Window title change"
-msgstr ""
+msgstr "ウィンドウタイトルの変更"
 
 #: traynard.strings.text_yes
 msgid "Yes"
-msgstr ""
-
+msgstr "はい"

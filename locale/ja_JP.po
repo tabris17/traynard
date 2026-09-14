@@ -754,7 +754,7 @@ msgid "Window Class:"
 msgstr "ウィンドウ クラス:"
 
 #: tpagerules.labelwindowtitle.caption
-msgid "Window Titile:"
+msgid "Window Title:"
 msgstr "ウィンドウ タイトル:"
 
 #: tpagerules.panelwelcome.caption

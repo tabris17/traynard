@@ -346,6 +346,7 @@ end;
 
 destructor TRules.Destroy;
 begin
+  DebugLn('[TRules.Destroy]');
   if Assigned(FConfig) then
   begin
     Storage.SaveConfig(CONFIG_NAME, FConfig);

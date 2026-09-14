@@ -151,7 +151,7 @@ var
 implementation
 
 uses
-  Windows, JwaWinReg, ShellApi, StrUtils, Traynard.Helpers, Traynard.Strings;
+  Windows, JwaWinReg, ShellApi, StrUtils, LazLogger, Traynard.Helpers, Traynard.Strings;
 
 { TSettings }
 
@@ -346,6 +346,7 @@ destructor TSettings.Destroy;
 var
   Item: TSettingsItem;
 begin
+  DebugLn('[TSettings.Destroy]');
   for Item := Low(TSettingsItem) to High(TSettingsItem) do
     FreeAndNil(FListeners[Item]);
 

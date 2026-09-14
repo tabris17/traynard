@@ -1,0 +1,20 @@
+D:\Projects\traynard\out\traynard.exe 
+Heap dump by heaptrc unit of D:\Projects\traynard\out\traynard.exe
+30259 memory blocks allocated : 10454762/10514264
+30258 memory blocks freed     : 10454754/10514256
+1 unfreed memory blocks : 8
+True heap size : 1146880 (160 used in System startup)
+True free heap : 1146496
+Should be : 1146520
+Call trace for block $000000000151BBC0 size 8
+  $0000000100012812
+  $000000010000F65A
+  $000000010000F4F5
+  $000000010021A49D  $TRAYNARD.LAUNCHER_$$_init$,  line 719 of traynard.launcher.pas
+  $0000000100011CCC
+  $0000000100003152  $main,  line 19 of traynard.lpr
+  $0000000100003466
+  $0000000100018330
+  $0000000100003120
+  $00007FFD8A867374
+  $00007FFD8C2BCC91

@@ -204,6 +204,7 @@ end;
 
 destructor TI18n.Destroy;
 begin
+  DebugLn('[TI18n.Destroy]');
   Settings.RemoveListeners(Self);
   UnloadLangData;
   inherited Destroy;

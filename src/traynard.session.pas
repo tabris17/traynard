@@ -32,7 +32,7 @@ const
 implementation
 
 uses
-  Windows, Traynard.Storage;
+  Windows, LazLogger, Traynard.Storage;
 
 { TSession }
 
@@ -58,6 +58,7 @@ destructor TSession.Destroy;
 var
   Filename: string;
 begin
+  DebugLn('[TSession.Destroy]');
   if Assigned(FStream) then
   begin
     Filename := FStream.FileName;

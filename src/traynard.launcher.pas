@@ -165,7 +165,7 @@ var
 implementation
 
 uses
-  Forms, JwaWinternl, Traynard.Helpers, Traynard.Strings, Traynard.Settings;
+  Forms, JwaWinternl, LazLogger, Traynard.Helpers, Traynard.Strings, Traynard.Settings;
 
 type
 
@@ -327,6 +327,7 @@ end;
 
 destructor TLauncher.Destroy;
 begin
+  DebugLn('[TLauncher.Destroy]');
   if Assigned(FConfig) then
   begin
     Storage.SaveConfig(CONFIG_NAME, FConfig);

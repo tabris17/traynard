@@ -1,0 +1,565 @@
+diff --git a/src/traynard.form.background.pas b/src/traynard.form.background.pas
+index 533b3c0..8f9795e 100644
+--- a/src/traynard.form.background.pas
++++ b/src/traynard.form.background.pas
+@@ -130,6 +130,7 @@ procedure TFormBackground.ActionRestoreLastExecute(Sender: TObject);
+ var
+   Window: TWindow;
+ begin
++  if WindowManager.Tray.WindowCount = 0 then Exit;
+   Window := WindowManager.Tray.LastWindow;
+   try
+     WindowManager.RestoreWindow(Window.Handle);
+diff --git a/src/traynard.form.main.pas b/src/traynard.form.main.pas
+index 356e18a..5b6f27e 100644
+--- a/src/traynard.form.main.pas
++++ b/src/traynard.form.main.pas
+@@ -221,8 +221,11 @@ begin
+ end;
+ 
+ procedure TFormMain.FormHide(Sender: TObject);
++var
++  Page: TPage;
+ begin
+-  CurrentPage.Visible := False;
++  Page := CurrentPage;
++  if Assigned(Page) then Page.Visible := False;
+ end;
+ 
+ procedure TFormMain.FormShortCut(var Msg: TLMKey; var Handled: Boolean);
+@@ -278,7 +281,10 @@ end;
+ 
+ procedure TFormMain.ToolBarResize(Sender: TObject);
+ begin
+-  Spacer1.Height := ToolBar.Height - FNavButtonsHeight;
++  if ToolBar.Height > FNavButtonsHeight then
++    Spacer1.Height := ToolBar.Height - FNavButtonsHeight
++  else
++    Spacer1.Height := 0;
+ end;
+ 
+ function TFormMain.Popup(const Title, Message: string; const PopupType: TPopupType; const Timeout: Integer): TFormPopup;
+@@ -296,8 +302,11 @@ end;
+ 
+ function TFormMain.Navigate(PageIndex: TPageIndex): TPage;
+ begin
+-  if FHistory.Contains(CurrentPageIndex) then FHistory.Remove(CurrentPageIndex);
+-  FHistory.Add(CurrentPageIndex);
++  if FCurrentPageIndex <> piNone then
++  begin
++    if FHistory.Contains(FCurrentPageIndex) then FHistory.Remove(FCurrentPageIndex);
++    FHistory.Add(FCurrentPageIndex);
++  end;
+   CurrentPageIndex := PageIndex;
+   Result := CurrentPage;
+ end;
+diff --git a/src/traynard.form.popup.pas b/src/traynard.form.popup.pas
+index ee42560..dfe40a9 100644
+--- a/src/traynard.form.popup.pas
++++ b/src/traynard.form.popup.pas
+@@ -53,12 +53,14 @@ end;
+ 
+ procedure TFormPopup.TimerFadeOutTimer(Sender: TObject);
+ begin
+-  AlphaBlendValue := AlphaBlendValue - ALPHA_BLEND_VALUE_STEP;
+-  if AlphaBlendValue = 0 then
++  if AlphaBlendValue <= ALPHA_BLEND_VALUE_STEP then
+   begin
++    AlphaBlendValue := 0;
+     TimerFadeOut.Enabled := False;
+-    Free;
+-  end;
++    Release;
++  end
++  else
++    AlphaBlendValue := AlphaBlendValue - ALPHA_BLEND_VALUE_STEP;
+ end;
+ 
+ procedure TFormPopup.SetPopupType(AValue: TPopupType);
+@@ -100,11 +102,13 @@ end;
+ 
+ procedure TFormPopup.TimerFadeInTimer(Sender: TObject);
+ begin
+-  AlphaBlendValue := AlphaBlendValue + ALPHA_BLEND_VALUE_STEP;
+-  if AlphaBlendValue = High(Byte) then
++  if AlphaBlendValue >= High(Byte) - ALPHA_BLEND_VALUE_STEP + 1 then
+   begin
++    AlphaBlendValue := High(Byte);
+     TimerFadeIn.Enabled := False;
+-  end;
++  end
++  else
++    AlphaBlendValue := AlphaBlendValue + ALPHA_BLEND_VALUE_STEP;
+ end;
+ 
+ procedure TFormPopup.FormCreate(Sender: TObject);
+diff --git a/src/traynard.helpers.pas b/src/traynard.helpers.pas
+index b77bf30..1227993 100644
+--- a/src/traynard.helpers.pas
++++ b/src/traynard.helpers.pas
+@@ -398,7 +398,6 @@ end;
+ 
+ initialization
+ 
+-fpTemplate.DefaultStartDelimiter:='{{';
+ fpTemplate.DefaultStartDelimiter:='{{';
+ fpTemplate.DefaultEndDelimiter:='}}';
+ fpTemplate.DefaultParamStartDelimiter:=' ';
+diff --git a/src/traynard.highlight.pas b/src/traynard.highlight.pas
+index f6b91aa..9d900d5 100644
+--- a/src/traynard.highlight.pas
++++ b/src/traynard.highlight.pas
+@@ -238,6 +238,7 @@ begin
+     Bh.hRgnBlur:= Rgn;
+     Bh.fTransitionOnMaximized := False;
+     DwmEnableBlurBehindWindow(FWindow, @Bh);
++    DeleteObject(Rgn);
+   end;
+ 
+   SetWindowPos(
+diff --git a/src/traynard.hotkey.pas b/src/traynard.hotkey.pas
+index 3b7d3ed..e1eb0de 100644
+--- a/src/traynard.hotkey.pas
++++ b/src/traynard.hotkey.pas
+@@ -32,6 +32,7 @@ type
+     procedure HotkeyRemoved(const HotkeyID: longint);
+   public
+     constructor Create(AOwner: TComponent); override;
++    destructor Destroy; override;
+     property Hotkey[HotkeyID: longint]: THotkeyInfo read GetHotkey;
+     function TestHotkey(const AHotkey: THotkey): boolean;
+     function Register(const AHotkey: THotkey; out HotkeyID: longint): boolean;
+@@ -233,10 +234,30 @@ begin
+   Rules.OnHotkeyAddedNotify := @HotkeyAdded;
+   Rules.OnHotkeyRemovedNotify := @HotkeyRemoved;
+   RegisterLauncherHotkeys;
+-  Launcher.OnHotkeyAddedNotify := @HotkeyAdded; 
++  Launcher.OnHotkeyAddedNotify := @HotkeyAdded;
+   Launcher.OnHotkeyRemovedNotify := @HotkeyRemoved;
+ end;
+ 
++destructor THotkeyManager.Destroy;
++var
++  HotkeyID: longint;
++begin
++  Settings.RemoveListeners(Self);
++  Rules.OnHotkeyAddedNotify := nil;
++  Rules.OnHotkeyRemovedNotify := nil;
++  Launcher.OnHotkeyAddedNotify := nil;
++  Launcher.OnHotkeyRemovedNotify := nil;
++
++  for HotkeyID := 0 to High(FHotkeys) do
++  begin
++    if FHotkeys[HotkeyID].State = hsSucceeded then
++      UnregisterHotkey(FMainForm.Handle, HotkeyID);
++  end;
++
++  FMainForm.WindowProc := FOriginalWindowProc;
++  inherited Destroy;
++end;
++
+ function THotkeyManager.TestHotkey(const AHotkey: THotkey): boolean;
+ begin
+   Result := RegisterHotkey(FMainForm.Handle, TEST_HOTKEY_ID, AHotkey.Modifiers or MOD_NOREPEAT, AHotkey.Key);
+@@ -266,7 +287,7 @@ function THotkeyManager.Unregister(const HotkeyID: longint): boolean;
+ var
+   HotkeyInfo: PHotkeyInfo;
+ begin
+-  if (HotkeyID > Length(FHotkeys)) or (HotkeyID = TEST_HOTKEY_ID) then Exit(False);
++  if (HotkeyID >= Length(FHotkeys)) or (HotkeyID = TEST_HOTKEY_ID) then Exit(False);
+   HotkeyInfo := @FHotkeys[HotkeyID];
+   if HotkeyInfo^.State <> hsSucceeded then Exit(False);
+   Result := UnregisterHotkey(FMainForm.Handle, HotkeyID);
+diff --git a/src/traynard.i18n.pas b/src/traynard.i18n.pas
+index 3ef83f4..d09c778 100644
+--- a/src/traynard.i18n.pas
++++ b/src/traynard.i18n.pas
+@@ -94,6 +94,7 @@ begin
+     for Line in HeaderLines do
+     begin
+       KeyValuePair := Line.Split(':', 2);
++      if Length(KeyValuePair) < 2 then Continue;
+       Key := KeyValuePair[0].Trim;
+       Value := KeyValuePair[1].Trim;
+       case Key of
+diff --git a/src/traynard.launcher.pas b/src/traynard.launcher.pas
+index 7c507b5..27f4d6e 100644
+--- a/src/traynard.launcher.pas
++++ b/src/traynard.launcher.pas
+@@ -75,6 +75,8 @@ type
+       CreationTime: TFileTime;
+       Application: string;
+       Arguments: string;
++      ProcessHandle: HANDLE;
++      WaitHandle: HANDLE;
+     end;
+ 
+     { TProcessCollection }
+@@ -99,7 +101,6 @@ type
+ 
+     Exception = class(SysUtils.Exception);
+   private
+-    FSelf: TLauncher; static;
+     FCurrentPID: DWORD;
+     FEntryList: TEntryList;
+     FEntryMap: TEntryMap;
+@@ -166,6 +167,20 @@ implementation
+ uses
+   Forms, JwaWinternl, Traynard.Helpers, Traynard.Strings, Traynard.Settings;
+ 
++type
++
++  { TProcessExitDispatcher }
++
++  // Routes wait-callback exit events to the Launcher singleton. Deliberately
++  // outlives it: Application may dispatch a queued event during Forms
++  // finalization, after this unit's finalization has freed the Launcher.
++  TProcessExitDispatcher = class
++    procedure ProcessExitEvent(Data: PtrInt);
++  end;
++
++var
++  ExitDispatcher: TProcessExitDispatcher;
++
+ { TLaunchEntry }
+ 
+ procedure TLaunchEntry.Validate;
+@@ -271,7 +286,14 @@ begin
+ end;
+ 
+ procedure TLauncher.ProcessExitEvent(Data: PtrInt);
++var
++  Process: TProcess;
+ begin
++  if FProcesses.Find(DWORD(Data), Process) then
++  begin
++    UnregisterWait(Process.WaitHandle);
++    CloseHandle(Process.ProcessHandle);
++  end;
+   FProcesses.Remove(DWORD(Data));
+   FProcesses.FPONotifyObservers(Self, ooDeleteItem, Pointer(Data));
+ end;
+@@ -300,7 +322,6 @@ begin
+   FEntryMap := TEntryMap.Create;
+   FHotkeyMap := THotkeyMap.Create([doOwnsValues]);
+   FProcesses := TProcessCollection.Create;
+-  FSelf := Self;
+   FCurrentPID := DWORD(System.GetProcessID);
+ end;
+ 
+@@ -423,6 +444,7 @@ var
+   CurrDir: PWideChar = nil;
+   WaitHandle: HANDLE;
+   Process: TProcess;
++  ApplicationPath, Arguments, WorkingDirectory: UnicodeString;
+   CreationTime, _NoUseTime: TFileTime;
+   Exc: Exception;
+ begin
+@@ -431,12 +453,19 @@ begin
+ 
+   StartupInfo := Default(TStartupInfoW);
+   StartupInfo.cb := SizeOf(StartupInfo);
++  ApplicationPath := UnicodeString(Entry.Application);
+   if Entry.Arguments <> '' then
+-    CmdLine := PWideChar(UnicodeString(Entry.Arguments));
++  begin
++    Arguments := UnicodeString(Entry.Arguments);
++    CmdLine := PWideChar(Arguments);
++  end;
+   if Entry.WorkingDirectory <> '' then
+-    CurrDir := PWideChar(UnicodeString(Entry.WorkingDirectory));
++  begin
++    WorkingDirectory := UnicodeString(Entry.WorkingDirectory);
++    CurrDir := PWideChar(WorkingDirectory);
++  end;
+ 
+-  if not CreateProcessW(PWideChar(UnicodeString(Entry.Application)),
++  if not CreateProcessW(PWideChar(ApplicationPath),
+                         CmdLine,
+                         nil,
+                         nil,
+@@ -469,12 +498,20 @@ begin
+     raise Exc;
+   end;
+ 
+-  Process.Name := Entry.Name;              
++  Process.Name := Entry.Name;
+   Process.Application := Entry.Application;
+   Process.Arguments := Entry.Arguments;
+   Process.PID := ProcessInfo.dwProcessId;
+   Process.CreationTime := CreationTime;
+-  FProcesses.Add(Process.PID, Process);
++  Process.ProcessHandle := ProcessInfo.hProcess;
++  Process.WaitHandle := WaitHandle;
++  try
++    FProcesses.Add(Process.PID, Process);
++  except
++    UnregisterWait(WaitHandle);
++    CloseHandle(ProcessInfo.hProcess);
++    raise;
++  end;
+   FProcesses.FPONotifyObservers(Self, ooAddItem, Pointer(PtrUInt(Process.PID)));
+ end;
+ 
+@@ -507,6 +544,7 @@ begin
+       FConfigEntries := ConfigEntries as TTOMLArray;
+       for ConfigEntry in FConfigEntries.Items do
+       begin
++        Entry := Default(TEntry);
+         try
+           Entry.Load(ConfigEntry as TTOMLTable);
+         except
+@@ -587,7 +625,15 @@ end;
+ 
+ class procedure TLauncher.WaitProcess(Param: PVOID; Fired: ByteBool); stdcall;
+ begin
+-  Application.QueueAsyncCall(@FSelf.ProcessExitEvent, PtrInt(Param));
++  Application.QueueAsyncCall(@ExitDispatcher.ProcessExitEvent, PtrInt(Param));
++end;
++
++{ TProcessExitDispatcher }
++
++procedure TProcessExitDispatcher.ProcessExitEvent(Data: PtrInt);
++begin
++  if Assigned(Launcher) then
++    Launcher.ProcessExitEvent(Data);
+ end;
+ 
+ { TLauncher.THotkeyEntry }
+@@ -632,7 +678,17 @@ begin
+ end;
+ 
+ destructor TLauncher.TProcessCollection.Destroy;
++var
++  Process: TProcess;
+ begin
++  for Process in FProcesses.Values do
++  begin
++    // UnregisterWaitEx blocks until an executing wait callback has returned,
++    // so no callback can enqueue a ProcessExitEvent after the Launcher is freed.
++    UnregisterWaitEx(Process.WaitHandle, INVALID_HANDLE_VALUE);
++    CloseHandle(Process.ProcessHandle);
++  end;
++
+   inherited Destroy;
+ 
+   FreeAndNil(FProcesses);
+@@ -660,11 +716,15 @@ end;
+ 
+ initialization
+ 
++ExitDispatcher := TProcessExitDispatcher.Create;
+ Launcher := TLauncher.Create;
+ 
+ finalization
+ 
+ FreeAndNil(Launcher);
++// ExitDispatcher is deliberately never freed: a queued exit event can still be
++// dispatched by Application during Forms finalization, which runs after this
++// unit's finalization, and the dispatcher must still be alive to absorb it.
+ 
+ end.
+ 
+diff --git a/src/traynard.page.desktop.pas b/src/traynard.page.desktop.pas
+index 59ca2d4..e452cde 100644
+--- a/src/traynard.page.desktop.pas
++++ b/src/traynard.page.desktop.pas
+@@ -225,7 +225,7 @@ begin
+     end
+     else
+     begin
+-      WindowManager.EnableWindowAutoMinimize(Window.Handle, tpMenu);;
++      WindowManager.EnableWindowAutoMinimize(Window.Handle, tpMenu);
+       ActionAutoTrayIcon.Checked := False;
+       ActionAutoTrayMenu.Checked := True;
+     end;
+diff --git a/src/traynard.page.launcher.pas b/src/traynard.page.launcher.pas
+index 1059d09..1da4a1e 100644
+--- a/src/traynard.page.launcher.pas
++++ b/src/traynard.page.launcher.pas
+@@ -29,8 +29,10 @@ type
+     procedure UpdateProcessList;
+     procedure SetLaunchMenuItems;
+     procedure LaunchMenuItemClick(Sender: TObject);
++    procedure EnableLauncherChanged(Sender: TObject);
+   public
+     procedure Initialize; override;
++    procedure Finalize; override;
+     procedure FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);
+   end;
+ 
+@@ -154,12 +156,27 @@ begin
+   end;
+ end;
+ 
++procedure TPageLauncher.EnableLauncherChanged(Sender: TObject);
++var
++  ItemIndex: integer;
++begin
++  for ItemIndex := 1 to LaunchMenu.Items.Count - 1 do
++    LaunchMenu.Items[ItemIndex].Enabled := Settings.EnableLauncher;
++end;
++
+ procedure TPageLauncher.Initialize;
+ begin
+   inherited Initialize;
+   OnPageActivate := @PageActivate;
+   OnPageDeactivate := @PageDeactivate;
+   IconList.AddIcon(LoadIcon(0, IDI_APPLICATION));
++  Settings.AddListener(siUseLauncher, @EnableLauncherChanged);
++end;
++
++procedure TPageLauncher.Finalize;
++begin
++  Settings.RemoveListeners(Self);
++  inherited Finalize;
+ end;
+ 
+ procedure TPageLauncher.FPOObservedChanged(ASender: TObject; Operation: TFPObservedOperation; Data: Pointer);
+diff --git a/src/traynard.page.rules.lfm b/src/traynard.page.rules.lfm
+index e2620c8..00ff38c 100644
+--- a/src/traynard.page.rules.lfm
++++ b/src/traynard.page.rules.lfm
+@@ -200,11 +200,11 @@ inherited PageRules: TPageRules
+           Left = 10
+           Height = 17
+           Top = 64
+-          Width = 81
++          Width = 78
+           BorderSpacing.Left = 10
+           BorderSpacing.Top = 10
+           BorderSpacing.Right = 10
+-          Caption = 'Window Titile:'
++          Caption = 'Window Title:'
+         end
+         object EditWindowTitle: TEdit
+           AnchorSideLeft.Control = ComboBoxWindowTitle
+diff --git a/src/traynard.page.rules.lrj b/src/traynard.page.rules.lrj
+index 2081615..e08182f 100644
+--- a/src/traynard.page.rules.lrj
++++ b/src/traynard.page.rules.lrj
+@@ -2,7 +2,7 @@
+ {"hash":46116983,"name":"tpagerules.panelwelcome.caption","sourcebytes":[83,101,108,101,99,116,32,97,32,114,117,108,101,32,102,114,111,109,32,116,104,101,32,108,101,102,116,32,108,105,115,116,32,116,111,32,101,100,105,116,32,111,114,32,99,114,101,97,116,101,32,97,32,110,101,119],"value":"Select a rule from the left list to edit or create a new"},
+ {"hash":122814378,"name":"tpagerules.labelrulename.caption","sourcebytes":[82,117,108,101,32,78,97,109,101,58],"value":"Rule Name:"},
+ {"hash":187373749,"name":"tpagerules.editrulename.texthint","sourcebytes":[85,110,105,113,117,101,32,110,97,109,101],"value":"Unique name"},
+-{"hash":188853818,"name":"tpagerules.labelwindowtitle.caption","sourcebytes":[87,105,110,100,111,119,32,84,105,116,105,108,101,58],"value":"Window Titile:"},
++{"hash":196355146,"name":"tpagerules.labelwindowtitle.caption","sourcebytes":[87,105,110,100,111,119,32,84,105,116,108,101,58],"value":"Window Title:"},
+ {"hash":173176978,"name":"tpagerules.editwindowtitle.texthint","sourcebytes":[84,101,120,116,32,105,110,32,116,104,101,32,119,105,110,100,111,119,32,116,105,116,108,101,32,98,97,114],"value":"Text in the window title bar"},
+ {"hash":178666666,"name":"tpagerules.labelwindowclass.caption","sourcebytes":[87,105,110,100,111,119,32,67,108,97,115,115,58],"value":"Window Class:"},
+ {"hash":44795319,"name":"tpagerules.editwindowclass.texthint","sourcebytes":[73,109,109,117,116,97,98,108,101,32,112,114,111,112,101,114,116,121,32,111,102,32,116,104,101,32,119,105,110,100,111,119],"value":"Immutable property of the window"},
+diff --git a/src/traynard.page.rules.pas b/src/traynard.page.rules.pas
+index 9e156fa..811a99a 100644
+--- a/src/traynard.page.rules.pas
++++ b/src/traynard.page.rules.pas
+@@ -202,6 +202,11 @@ begin
+   begin
+     LabelHotkey.Font.Color := clRed;
+     LabelHotkey.ShowHint := True;
++  end
++  else
++  begin
++    LabelHotkey.Font.Color := clDefault;
++    LabelHotkey.ShowHint := False;
+   end;
+ end;
+ 
+@@ -426,7 +431,11 @@ begin
+                      PWideChar(UnicodeString(Format(MSG_QUESTION_SAVE_RULE, [EditRuleName.Text]))),
+                      PWideChar(UnicodeString(Application.Title)),
+                      MB_YESNOCANCEL or MB_ICONQUESTION or MB_DEFBUTTON3) of
+-      IDYES: ActionSaveExecute(Sender);
++      IDYES:
++      begin
++        ActionSaveExecute(Sender);
++        if Unsaved then Exit;
++      end;
+       IDNO: Unsaved := False;
+       else Exit;
+     end;
+diff --git a/src/traynard.page.tray.pas b/src/traynard.page.tray.pas
+index a5a5a25..9462553 100644
+--- a/src/traynard.page.tray.pas
++++ b/src/traynard.page.tray.pas
+@@ -85,6 +85,7 @@ var
+   Window: TWindow;
+   WindowText: String;
+ begin
++  if WindowManager.Tray.WindowCount = 0 then Exit;
+   Window := WindowManager.Tray.LastWindow;
+   WindowText := Window.Text;
+   try
+diff --git a/src/traynard.tray.pas b/src/traynard.tray.pas
+index 4fbd259..8c663d6 100644
+--- a/src/traynard.tray.pas
++++ b/src/traynard.tray.pas
+@@ -216,14 +216,14 @@ procedure TGroupedTrayIcon.RemoveWindow(const AHandle: HWND);
+ var
+   MenuItem: TMenuItem;
+   Window: TWindow;
+-  MenuItemBeforeCount, MenuItemAfterCount: integer;
++  MenuItemBeforeCount, MenuItemAfterCount, i: integer;
+ begin
+   MenuItemBeforeCount := FPopUpMenu.Items.Count;
+-  for MenuItem in FPopUpMenu.Items do
++  for i := FPopUpMenu.Items.Count - 1 downto 0 do
+   begin
+-    if MenuItem.Tag = AHandle then
++    if FPopUpMenu.Items[i].Tag = AHandle then
+     begin
+-      FPopUpMenu.Items.Remove(MenuItem);
++      FPopUpMenu.Items.Delete(i);
+       Break;
+     end;
+   end;
+@@ -374,6 +374,7 @@ procedure TGroupedMenuItem.RemoveWindow(const AHandle: HWND);
+ var
+   MenuItem: TMenuItem;
+   Window: TWindow;
++  i: integer;
+ begin
+   if (Count = 0) and (Tag = AHandle) then
+   begin
+@@ -381,11 +382,11 @@ begin
+     Exit;
+   end;
+ 
+-  for MenuItem in Self do
++  for i := Count - 1 downto 0 do
+   begin
+-    if MenuItem.Tag = AHandle then
++    if Items[i].Tag = AHandle then
+     begin
+-      Remove(MenuItem);
++      Delete(i);
+       Break;
+     end;
+   end;
+diff --git a/src/traynard.window.pas b/src/traynard.window.pas
+index b5d7ce0..97ed8bc 100644
+--- a/src/traynard.window.pas
++++ b/src/traynard.window.pas
+@@ -299,6 +299,7 @@ begin
+   begin
+     SetLength(PathStr, MAX_LONG_PATH);
+     Process := OpenProcess(PROCESS_QUERY_INFORMATION or PROCESS_VM_READ, False, PID);
++    if Process = 0 then Exit('');
+     try
+       SetLength(PathStr, GetModuleFileNameExW(Process, 0, PWideChar(PathStr), MAX_LONG_PATH));
+     finally
+@@ -467,6 +468,7 @@ destructor TWindowCollection.Destroy;
+ begin
+   FreeAndNil(FWindows);
+   FreeAndNil(FOrderedWindowList);
++  inherited Destroy;
+ end;
+ 
+ function TWindowCollection.GetEnumerator: TWindowEnumerator;
+@@ -1250,7 +1252,7 @@ begin
+ 
+   if ShowWindow(Handle, SW_SHOW) then
+   begin
+-    { Failed to restore window }
++    { Window was not hidden; nothing to restore }
+     FTray.FPONotifyObservers(Self, ooDeleteItem, Pointer(Handle));
+     FTray.FWindows.Remove(Handle);
+     TrayChanged;

@@ -66,7 +66,7 @@ var
 implementation
 
 uses
-  TOML, FileUtil, Windows, Traynard.Strings;
+  TOML, FileUtil, Windows, LazLogger, Traynard.Strings;
 
 const
   CONFIG_EXT = '.toml';
@@ -274,6 +274,7 @@ end;
 
 destructor TStorage.Destroy;
 begin
+  DebugLn('[TStorage.Destroy]');
   inherited Destroy;
 end;
 

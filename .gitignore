@@ -4,3 +4,4 @@
 *.lps
 *.mo
 out/
+heap.trc

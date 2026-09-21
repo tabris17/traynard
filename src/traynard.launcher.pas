@@ -77,6 +77,11 @@ type
       Arguments: string;
       ProcessHandle: HANDLE;
       WaitHandle: HANDLE;
+
+      { Release frees WaitHandle and ProcessHandle.
+        When WaitForCallback is True uses blocking UnregisterWaitEx(INVALID_HANDLE_VALUE),
+        otherwise uses non-blocking UnregisterWait. }
+      procedure Release(const WaitForCallback: Boolean = False);
     end;
 
     { TProcessCollection }
@@ -253,6 +258,25 @@ begin
   Config.Add(KEY_POSITION, TOMLInteger(Ord(Position)));
 end;
 
+{ TProcess }
+
+procedure TLauncher.TProcess.Release(const WaitForCallback: Boolean = False);
+begin
+  if WaitHandle <> 0 then
+  begin
+    if WaitForCallback then
+      UnregisterWaitEx(WaitHandle, INVALID_HANDLE_VALUE)
+    else
+      UnregisterWait(WaitHandle);
+    WaitHandle := 0;
+  end;
+  if ProcessHandle <> 0 then
+  begin
+    CloseHandle(ProcessHandle);
+    ProcessHandle := 0;
+  end;
+end;
+
 function TLauncher.GetEntry(Index: SizeInt): TEntry;
 begin
   Result := FEntryMap[FEntryList[Index]];
@@ -291,10 +315,11 @@ var
 begin
   if FProcesses.Find(DWORD(Data), Process) then
   begin
-    UnregisterWait(Process.WaitHandle);
-    CloseHandle(Process.ProcessHandle);
-  end;
-  FProcesses.Remove(DWORD(Data));
+    FProcesses.Remove(DWORD(Data));
+    Process.Release;
+  end
+  else
+    FProcesses.Remove(DWORD(Data));
   FProcesses.FPONotifyObservers(Self, ooDeleteItem, Pointer(Data));
 end;
 
@@ -456,6 +481,7 @@ begin
 
   StartupInfo := Default(TStartupInfoW);
   StartupInfo.cb := SizeOf(StartupInfo);
+  Process := Default(TProcess);
   ApplicationPath := UnicodeString(Entry.Application);
   if Entry.Arguments <> '' then
   begin
@@ -481,6 +507,8 @@ begin
 
   CloseHandle(ProcessInfo.hThread);
 
+  Process.ProcessHandle := ProcessInfo.hProcess;
+
   if not RegisterWaitForSingleObject(WaitHandle,
                                      ProcessInfo.hProcess,
                                      @WaitProcess,
@@ -489,15 +517,16 @@ begin
                                      WT_EXECUTEONLYONCE) then
   begin
     Exc := Exception.Create(GetLastErrorMsg);
-    CloseHandle(ProcessInfo.hProcess);
+    Process.Release;
     raise Exc;
   end;
+
+  Process.WaitHandle := WaitHandle;
 
   if not GetProcessTimes(ProcessInfo.hProcess, CreationTime, _NoUseTime, _NoUseTime, _NoUseTime) then
   begin
     Exc := Exception.Create(GetLastErrorMsg);
-    UnregisterWait(WaitHandle);
-    CloseHandle(ProcessInfo.hProcess);
+    Process.Release;
     raise Exc;
   end;
 
@@ -506,13 +535,10 @@ begin
   Process.Arguments := Entry.Arguments;
   Process.PID := ProcessInfo.dwProcessId;
   Process.CreationTime := CreationTime;
-  Process.ProcessHandle := ProcessInfo.hProcess;
-  Process.WaitHandle := WaitHandle;
   try
     FProcesses.Add(Process.PID, Process);
   except
-    UnregisterWait(WaitHandle);
-    CloseHandle(ProcessInfo.hProcess);
+    Process.Release;
     raise;
   end;
   FProcesses.FPONotifyObservers(Self, ooAddItem, Pointer(PtrUInt(Process.PID)));
@@ -689,16 +715,11 @@ begin
   {$ENDIF}
 
   for Process in FProcesses.Values do
-  begin
-    // UnregisterWaitEx blocks until an executing wait callback has returned,
-    // so no callback can enqueue a ProcessExitEvent after the Launcher is freed.
-    UnregisterWaitEx(Process.WaitHandle, INVALID_HANDLE_VALUE);
-    CloseHandle(Process.ProcessHandle);
-  end;
-
-  inherited Destroy;
+    Process.Release(True);
 
   FreeAndNil(FProcesses);
+
+  inherited Destroy;
 end;
 
 function TLauncher.TProcessCollection.GetEnumerator: TProcessEnumerator;

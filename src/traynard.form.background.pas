@@ -127,16 +127,9 @@ begin
 end;
 
 procedure TFormBackground.ActionRestoreLastExecute(Sender: TObject);
-var
-  Window: TWindow;
 begin
-  if WindowManager.Tray.WindowCount = 0 then Exit;
-  Window := WindowManager.Tray.LastWindow;
-  try
-    WindowManager.RestoreWindow(Window.Handle);
-  except
-    on Exc: TWindowManager.Exception do;
-  end;
+  if WindowManager.Tray.WindowCount > 0 then
+    WindowManager.TryRestoreLastWindow;
 end;
 
 procedure TFormBackground.ActionApplyRulesExecute(Sender: TObject);

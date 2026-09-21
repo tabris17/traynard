@@ -274,7 +274,9 @@ end;
 
 destructor TStorage.Destroy;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TStorage.Destroy]');
+  {$ENDIF}
   inherited Destroy;
 end;
 

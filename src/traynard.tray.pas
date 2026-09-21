@@ -107,7 +107,7 @@ var
 implementation
 
 uses
-  Forms, LazFileUtils,
+  Forms, LazFileUtils, LazLogger,
   Traynard.Types, Traynard.Settings, Traynard.Helpers, Traynard.Strings;
 
 function GetIcon(Icon: HICON): HICON; inline;
@@ -655,6 +655,9 @@ end;
 
 destructor TTrayManager.Destroy;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TTrayManager.Destroy]');
+  {$ENDIF}
   WindowManager.Tray.FPODetachObserver(Self);
   Settings.RemoveListeners(Self);
   FreeAndNil(FTrayIcons);

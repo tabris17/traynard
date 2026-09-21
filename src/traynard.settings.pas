@@ -346,7 +346,9 @@ destructor TSettings.Destroy;
 var
   Item: TSettingsItem;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TSettings.Destroy]');
+  {$ENDIF}
   for Item := Low(TSettingsItem) to High(TSettingsItem) do
     FreeAndNil(FListeners[Item]);
 

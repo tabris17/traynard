@@ -466,6 +466,9 @@ end;
 
 destructor TWindowCollection.Destroy;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TWindowCollection.Destroy]');
+  {$ENDIF}
   FreeAndNil(FWindows);
   FreeAndNil(FOrderedWindowList);
   inherited Destroy;
@@ -1155,6 +1158,9 @@ var
   WinEventHook: HWINEVENTHOOK;
   TopmostWindow: HWND;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TWindowManager.Destroy]');
+  {$ENDIF}
   TryRestoreAllWindows;
   Settings.RemoveListeners(Self);
   SystemMenuItems := [];

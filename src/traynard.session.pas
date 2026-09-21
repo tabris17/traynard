@@ -58,7 +58,9 @@ destructor TSession.Destroy;
 var
   Filename: string;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TSession.Destroy]');
+  {$ENDIF}
   if Assigned(FStream) then
   begin
     Filename := FStream.FileName;

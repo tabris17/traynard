@@ -327,7 +327,9 @@ end;
 
 destructor TLauncher.Destroy;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TLauncher.Destroy]');
+  {$ENDIF}
   if Assigned(FConfig) then
   begin
     Storage.SaveConfig(CONFIG_NAME, FConfig);
@@ -682,6 +684,10 @@ destructor TLauncher.TProcessCollection.Destroy;
 var
   Process: TProcess;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TProcessCollection.Destroy]');
+  {$ENDIF}
+
   for Process in FProcesses.Values do
   begin
     // UnregisterWaitEx blocks until an executing wait callback has returned,

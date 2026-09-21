@@ -5,6 +5,7 @@ object FramePage: TFramePage
   Width = 500
   ClientHeight = 500
   ClientWidth = 500
+  LCLVersion = '4.8.0.0'
   TabOrder = 0
   object Header: TToolBar
     Left = 0

@@ -204,7 +204,9 @@ end;
 
 destructor TI18n.Destroy;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TI18n.Destroy]');
+  {$ENDIF}
   Settings.RemoveListeners(Self);
   UnloadLangData;
   inherited Destroy;

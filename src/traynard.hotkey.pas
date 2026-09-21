@@ -45,7 +45,7 @@ var
 implementation
 
 uses
-  Windows, Traynard.Window, Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Launcher, Traynard.Form.Main;
+  Windows, LazLogger, Traynard.Window, Traynard.Helpers, Traynard.Settings, Traynard.Rule, Traynard.Launcher, Traynard.Form.Main;
 
 { THotkeyManager }
 
@@ -242,6 +242,9 @@ destructor THotkeyManager.Destroy;
 var
   HotkeyID: longint;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[THotkeyManager.Destroy]');
+  {$ENDIF}
   Settings.RemoveListeners(Self);
   Rules.OnHotkeyAddedNotify := nil;
   Rules.OnHotkeyRemovedNotify := nil;

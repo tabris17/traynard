@@ -346,7 +346,9 @@ end;
 
 destructor TRules.Destroy;
 begin
+  {$IFDEF DEBUG}
   DebugLn('[TRules.Destroy]');
+  {$ENDIF}
   if Assigned(FConfig) then
   begin
     Storage.SaveConfig(CONFIG_NAME, FConfig);

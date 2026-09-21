@@ -39,7 +39,7 @@ type
 implementation
 
 uses
-  Windows, JwaWinBase, StrUtils,
+  LazLogger, Windows, JwaWinBase, StrUtils,
   Traynard.Types, Traynard.Form.Main, Traynard.Launcher, Traynard.Settings, Traynard.Helpers;
 
 {$R *.lfm}
@@ -175,6 +175,9 @@ end;
 
 procedure TPageLauncher.Finalize;
 begin
+  {$IFDEF DEBUG}
+  DebugLn('[TPageLauncher.Finalize]');
+  {$ENDIF}
   Settings.RemoveListeners(Self);
   inherited Finalize;
 end;
